@@ -15,4 +15,4 @@ RUN service mysql start && \
 VOLUME /var/lib/mysql
 EXPOSE 3306
 
-CMD ["mysqld_safe"]
+CMD [ "mysqld_safe", "--skip-syslog" ]
