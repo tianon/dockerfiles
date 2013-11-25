@@ -2,8 +2,7 @@ FROM tianon/debian:wheezy
 
 # see https://github.com/vatesfr/xo/blob/master/installation.md
 
-RUN apt-get update
-RUN apt-get install -q -y checkinstall curl g++ git make python
+RUN apt-get update && apt-get install -q -y checkinstall curl g++ git make python
 
 RUN curl -s 'http://nodejs.org/dist/node-latest.tar.gz' | tar -v -C /usr/src -xz && ln -s /usr/src/node-v* /usr/src/node
 RUN cd /usr/src/node && ./configure && checkinstall
