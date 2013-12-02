@@ -1,0 +1,10 @@
+FROM tianon/debian:wheezy
+
+RUN apt-get update && apt-get install -yq rtorrent
+
+RUN mkdir -p /torrents/session
+VOLUME /torrents
+
+ADD rtorrent.rc /.rtorrent.rc
+
+CMD ["rtorrent"]
