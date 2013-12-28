@@ -1,4 +1,4 @@
-FROM tianon/debian:wheezy
+FROM stackbrew/debian:wheezy
 
 RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
 RUN echo 'deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/debian wheezy main' > /etc/apt/sources.list.d/mariadb.list

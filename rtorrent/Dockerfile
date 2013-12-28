@@ -1,4 +1,4 @@
-FROM tianon/debian:wheezy
+FROM stackbrew/debian:wheezy
 
 RUN apt-get update && apt-get install -yq rtorrent
 

@@ -1,4 +1,4 @@
-FROM tianon/debian:sid
+FROM stackbrew/debian:sid
 
 RUN apt-get update && apt-get install -yq mesa-utils
 

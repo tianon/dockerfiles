@@ -1,4 +1,4 @@
-FROM tianon/debian:jessie
+FROM stackbrew/debian:jessie
 
 RUN apt-get update && apt-get install -yq curl
 
