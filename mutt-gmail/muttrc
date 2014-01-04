@@ -8,7 +8,7 @@ set smtp_pass = "" # leave blank for prompt
 set from = "%GMAIL_FROM%"
 set realname = "%GMAIL_NAME%"
 
-# Change the following line to a different editor you prefer.
+# Change the following line to a different editor you prefer (and update the Dockerfile accordingly, of course).
 set editor = "vim"
 
 # Basic config, you can leave this as is
