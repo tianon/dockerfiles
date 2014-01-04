@@ -1,4 +1,4 @@
-FROM stackbrew/debian:wheezy
+FROM debian:wheezy
 
 RUN apt-get update && apt-get install -yq curl python-pymongo python-setuptools
 

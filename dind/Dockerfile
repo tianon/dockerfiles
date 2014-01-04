@@ -1,4 +1,4 @@
-FROM stackbrew/debian:sid
+FROM debian:sid
 
 RUN apt-get update && apt-get install -yq curl
 

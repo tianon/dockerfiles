@@ -1,4 +1,4 @@
-FROM stackbrew/debian:wheezy
+FROM debian:wheezy
 
 # see https://github.com/vatesfr/xo/blob/master/installation.md
 

@@ -1,4 +1,4 @@
-FROM stackbrew/debian:wheezy
+FROM debian:wheezy
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -yq curl
 RUN curl http://nginx.org/keys/nginx_signing.key | apt-key add -
