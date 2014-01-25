@@ -53,13 +53,16 @@ _start:
 
 	; sys_exit(return_code)
 
-	mov	rax, 60          ; sys_exit
-	mov	rdi, 0           ; return 0 (success)
+	;mov	rax, 60          ; sys_exit
+	;mov	rdi, 0           ; return 0 (success)
+	; even smaller hax thanks to @tiborvass:
+	mov	al, 60	; sys_exit
+	cdq			; Sign-extend eax into edi to return 0 (success)
 	syscall
 
-	message:
-		db 'Hello, world!',0x0A	     ; message and newline
-	length: equ	$-message            ; message length calculation
+;	message:
+;		db 'Hello, world!',0x0A	     ; message and newline
+;	length: equ	$-message            ; message length calculation
 
 ; File size calculation
 filesize equ $ - $$
