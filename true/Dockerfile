@@ -1,3 +1,3 @@
 FROM scratch
-ADD true /
+ADD true-asm /true
 CMD ["/true"]
