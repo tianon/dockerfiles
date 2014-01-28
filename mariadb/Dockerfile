@@ -1,10 +1,8 @@
 FROM debian:wheezy
 
-RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
-RUN echo 'deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/debian wheezy main' > /etc/apt/sources.list.d/mariadb.list
-RUN apt-get update
+RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db && echo 'deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/debian wheezy main' > /etc/apt/sources.list.d/mariadb.list
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -yq mariadb-server
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -yq mariadb-server
 
 RUN sed -ri 's/^(bind-address|skip-networking)/;\1/' /etc/mysql/my.cnf
 
