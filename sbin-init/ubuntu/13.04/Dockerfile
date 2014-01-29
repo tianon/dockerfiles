@@ -1,4 +1,4 @@
-FROM stackbrew/ubuntu:13.04
+FROM ubuntu:13.04
 MAINTAINER Tianon Gravi <admwiggin@gmail.com>
 
 # much of this was gleaned from https://github.com/lxc/lxc/blob/lxc-0.8.0/templates/lxc-ubuntu.in

@@ -1,4 +1,4 @@
-FROM stackbrew/ubuntu:12.04
+FROM ubuntu:12.04
 
 RUN apt-get update && apt-get install -yq curl
 
