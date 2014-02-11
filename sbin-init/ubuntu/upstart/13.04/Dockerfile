@@ -6,7 +6,7 @@ MAINTAINER Tianon Gravi <admwiggin@gmail.com>
 # we're going to want this bad boy installed so we can connect :)
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -yq ssh
 
-ADD init-lxc.conf /etc/init/lxc.conf
+ADD init-lxc.conf /etc/init/fake-container-events.conf
 
 # undo some leet hax of the base image
 RUN rm /usr/sbin/policy-rc.d; \
