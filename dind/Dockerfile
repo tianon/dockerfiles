@@ -1,4 +1,4 @@
-FROM debian:sid
+FROM debian:wheezy
 
 RUN apt-get update && apt-get install -yq curl
 
@@ -9,4 +9,5 @@ RUN curl -sLS https://raw.github.com/dotcloud/docker/master/hack/install.sh | sh
 
 RUN curl -sLS https://raw.github.com/dotcloud/docker/master/hack/dind -o /dind && chmod +x /dind
 
+VOLUME /var/lib/docker
 ENTRYPOINT ["/dind"]
