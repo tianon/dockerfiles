@@ -17,8 +17,26 @@ if [ ! "$GMAIL_NAME" ]; then
 	GMAIL_NAME="$GMAIL_FROM"
 fi
 
-sed -i "s/%GMAIL_LOGIN%/$GMAIL/g" /.muttrc
-sed -i "s/%GMAIL_FROM%/$GMAIL_FROM/g" /.muttrc
-sed -i "s/%GMAIL_NAME%/$GMAIL_NAME/g" /.muttrc
+sed -i "s/%GMAIL_LOGIN%/$GMAIL/g" "$HOME/.muttrc"
+sed -i "s/%GMAIL_FROM%/$GMAIL_FROM/g" "$HOME/.muttrc"
+sed -i "s/%GMAIL_NAME%/$GMAIL_NAME/g" "$HOME/.muttrc"
+
+if [ -d "$HOME/.gnupg" ]; then
+	{
+		echo
+		echo 'source /usr/share/doc/mutt/examples/gpg.rc'
+		echo 'set pgp_use_gpg_agent = yes'
+		if [ "$GPG_ID" ]; then
+			echo "set pgp_sign_as = $GPG_ID"
+		fi
+		echo 'set crypt_replysign = yes'
+		echo 'set crypt_replysignencrypted = yes'
+		echo 'set crypt_verify_sig = yes'
+	} >> "$HOME/.muttrc"
+fi
+
+if [ -e "$HOME/.muttrc.local" ]; then
+	echo "source $HOME/.muttrc.local" >> "$HOME/.muttrc"
+fi
 
 exec "$@"
