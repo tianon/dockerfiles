@@ -3,13 +3,26 @@
 # Change the following six lines to match your Gmail account details
 set imap_user = "%GMAIL_LOGIN%"
 set imap_pass = "" # leave blank for prompt
-set smtp_url = "smtp://%GMAIL_LOGIN%@smtp.gmail.com:587/"
+set smtp_url = "smtps://$imap_user@smtp.gmail.com:465/"
 set smtp_pass = "" # leave blank for prompt
 set from = "%GMAIL_FROM%"
 set realname = "%GMAIL_NAME%"
 
 # Change the following line to a different editor you prefer (and update the Dockerfile accordingly, of course).
 set editor = "vim"
+
+# I like seeing the headers. :)
+set edit_headers = yes
+my_hdr X-Docker-Image: tianon/mutt-gmail
+my_hdr X-Shameless-Plug: irc://irc.oftc.net/%23debian-paultag-fanclub
+
+# TODO figure out how to use the sidebar more effectively :)
+set sidebar_visible = no
+
+# Tianon keybindings and settings, because he's special.
+bind pager <up> previous-line
+bind pager <down> next-line
+set resolve = no # uh, don't randomly take me to other messages when I do things
 
 # Basic config, you can leave this as is
 set folder = "imaps://imap.gmail.com:993"

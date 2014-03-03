@@ -1,6 +1,6 @@
 FROM debian:stable
 
-RUN apt-get update && apt-get install -yq ca-certificates mutt
+RUN apt-get update && apt-get install -yq ca-certificates mutt-patched
 
 ENV HOME /root
 
@@ -14,7 +14,9 @@ ENV BROWSER lynx
 RUN apt-get update && apt-get install -yq vim-nox
 
 ADD muttrc $HOME/.muttrc
-ADD entrypoint.sh /entrypoint.sh
+ADD vimrc $HOME/.vimrc
 
+ADD entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["mutt"]
+
+CMD ["mutt-patched"]

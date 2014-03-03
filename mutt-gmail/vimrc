@@ -1,0 +1,18 @@
+" not meant to be a full-fledged vimrc, just the basics
+scriptencoding utf-8
+
+if filereadable(expand("$HOME/.vimrc.prelocal"))
+	source $HOME/.vimrc.prelocal
+endif
+
+filetype plugin indent on
+syntax on
+
+set nocompatible " start with Vim defaults
+set backspace=indent,eol,start " allow backspacing over lots of stuff
+set autoindent " autoindent is good
+set noet ts=4 sw=4 " tab size and stuff
+set ruler " show the cursor position all the time
+set wildmenu " show list of options ("Android style") when tab-completing in vim commands
+
+set spell
