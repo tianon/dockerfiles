@@ -11,7 +11,10 @@ set realname = "%GMAIL_NAME%"
 # Change the following line to a different editor you prefer (and update the Dockerfile accordingly, of course).
 set editor = "vim"
 
-# I like seeing the headers. :)
+# I like seeing some headers. :)
+ignore *
+unignore date subject x- user-agent posted-to content-type
+unignore to cc bcc reply-to from
 set edit_headers = yes
 my_hdr X-Docker-Image: tianon/mutt-gmail
 my_hdr X-Shameless-Plug: irc://irc.oftc.net/%23debian-paultag-fanclub
