@@ -13,6 +13,8 @@ ENV BROWSER lynx
 # my preferred editor :) (see also muttrc)
 RUN apt-get update && apt-get install -yq vim-nox
 
+ENV LANG C.UTF-8
+
 ADD muttrc $HOME/.muttrc
 ADD vimrc $HOME/.vimrc
 
