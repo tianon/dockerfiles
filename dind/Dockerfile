@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM debian:testing
 
 RUN apt-get update && apt-get install -yq curl
 
