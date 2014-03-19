@@ -22,7 +22,8 @@ RUN cd /usr/local/go/src \
 		done \
 	'
 
-RUN apt-get update && apt-get install -yq git mercurial
+# these are useful for "go get"
+RUN apt-get update && apt-get install -yq bzr git mercurial
 
 RUN mkdir -p /go/src
 ENV GOPATH /go
