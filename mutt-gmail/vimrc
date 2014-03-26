@@ -17,4 +17,4 @@ set wildmenu " show list of options ("Android style") when tab-completing in vim
 
 set spell
 
-au FileType mail set formatoptions=nt
+au FileType mail set formatoptions=nt expandtab
