@@ -16,3 +16,5 @@ set ruler " show the cursor position all the time
 set wildmenu " show list of options ("Android style") when tab-completing in vim commands
 
 set spell
+
+au FileType mail set formatoptions=nt
