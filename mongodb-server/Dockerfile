@@ -10,3 +10,4 @@ RUN sed -i ' \
 
 VOLUME /var/lib/mongodb
 CMD ["mongod", "--config", "/etc/mongodb.conf"]
+EXPOSE 27017
