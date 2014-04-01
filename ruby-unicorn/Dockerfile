@@ -8,8 +8,11 @@ RUN apt-get update && apt-get install -yq bundler
 ENV BUNDLE_APP_CONFIG /apps/bundle
 ENV BUNDLE_PATH /apps/gems
 
+ENV RAILS_ENV production
+ENV RACK_ENV deployment
+
 WORKDIR /apps/rails
-CMD ["unicorn_rails"]
+CMD ["unicorn"]
 EXPOSE 8080
 
 # TODO find a clean way to do this here in such a way that gems like rmagick can install cleanly without first installing libmagickcore-dev
