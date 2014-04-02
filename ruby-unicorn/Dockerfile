@@ -1,7 +1,5 @@
 FROM debian:unstable
 
-RUN apt-get update && apt-get install -yq unicorn
-
 RUN apt-get update && apt-get install -yq bundler
 
 # set a few bundle config variables so that a local .bundle in our development directory doesn't screw up our image
@@ -12,6 +10,8 @@ ENV RAILS_ENV production
 ENV RACK_ENV deployment
 
 WORKDIR /apps/rails
+
+RUN apt-get update && apt-get install -yq unicorn
 CMD ["unicorn"]
 EXPOSE 8080
 
