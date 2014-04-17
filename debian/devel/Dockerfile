@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -yq \
 		devscripts \
 		dh-make \
 		equivs \
+		git bzr mercurial subversion \
 		libcrypt-ssleay-perl \
 		libfile-fcntllock-perl \
 		libwww-perl \
