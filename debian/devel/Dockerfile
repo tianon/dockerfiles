@@ -31,6 +31,6 @@ RUN { \
 	echo 'dch -i'; \
 	echo 'lintian --ftp-master-rejects'; \
 	echo 'uscan --force-download --verbose --download-current-version'; \
-} >> /root/.bash_history
+} >> "$HOME/.bash_history"
 
 CMD ["bash"]
