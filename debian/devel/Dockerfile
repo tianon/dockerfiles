@@ -1,4 +1,4 @@
-FROM debian:sid
+FROM debian:experimental
 
 # normal build deps
 RUN apt-get update && apt-get install -yq \
