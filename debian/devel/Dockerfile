@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -yq \
 		--no-install-recommends
 
 # need an editor for "dch -i"
-RUN apt-get update && apt-get install -yq vim-nox --no-install-recommends
+RUN apt-get update && apt-get install -yq vim --no-install-recommends
 
 # a few extra little useful things
 RUN apt-get update && apt-get install -yq bash-completion curl less wget
