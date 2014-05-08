@@ -33,4 +33,6 @@ RUN { \
 	echo 'uscan --force-download --verbose --download-current-version'; \
 } >> "$HOME/.bash_history"
 
+ADD prep-source-package.sh /tianon-prep-source-package.sh
+
 CMD ["bash"]
