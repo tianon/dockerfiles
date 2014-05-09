@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -yq \
 		libfile-fcntllock-perl \
 		libwww-perl \
 		lintian \
+		python-distro-info \
 		python3-debian \
 		--no-install-recommends
 
