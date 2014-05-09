@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -yq \
 		build-essential \
 		devscripts \
 		dh-make \
+		dput-ng \
 		equivs \
 		git bzr mercurial subversion \
 		libcrypt-ssleay-perl \
