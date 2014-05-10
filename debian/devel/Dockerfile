@@ -35,6 +35,12 @@ RUN { \
 	echo 'uscan --force-download --verbose --download-current-version'; \
 } >> "$HOME/.bash_history"
 
+# make sure things are pretty
+ENV LANG C.UTF-8
+ENV TERM xterm-256color
+RUN cp /etc/skel/.bashrc /root/ \
+	&& sed -ri 's/^#(force_color_prompt=yes)/\1/' /root/.bashrc
+
 ADD prep-source-package.sh /tianon-prep-source-package.sh
 
 CMD ["bash"]
