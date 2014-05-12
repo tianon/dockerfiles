@@ -34,6 +34,8 @@ RUN /usr/sbin/update-rc.d -f ondemand remove; \
 # small fix for SSH in 13.10 (that's harmless everywhere else)
 RUN sed -ri 's/^session\s+required\s+pam_loginuid.so$/session optional pam_loginuid.so/' /etc/pam.d/sshd
 
+RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+
 # set a cheap, simple password for great convenience
 RUN echo 'root:docker.io' | chpasswd
 
