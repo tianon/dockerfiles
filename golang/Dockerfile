@@ -2,7 +2,7 @@ FROM debian:stable
 
 RUN apt-get update && apt-get install -yq build-essential curl
 
-RUN curl -s https://go.googlecode.com/files/go1.2.src.tar.gz \
+RUN curl -s https://go.googlecode.com/files/go1.2.1.src.tar.gz \
 	| tar -v -C /usr/local -xz
 ENV PATH /usr/local/go/bin:$PATH
 
