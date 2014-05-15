@@ -1,6 +1,6 @@
-FROM debian:testing
+FROM debian:jessie
 
-RUN apt-get update && apt-get install -yq apache2
+RUN apt-get update && apt-get install -y apache2
 
 # let's copy a few of the settings from /etc/init.d/apache2
 ENV APACHE_CONFDIR /etc/apache2
@@ -17,8 +17,15 @@ ENV LANG C
 # ...
 RUN mkdir -p $APACHE_RUN_DIR $APACHE_LOCK_DIR $APACHE_LOG_DIR
 
+# make CustomLog (access log) go to stdout instead of files
+#  and ErrorLog to stderr
+RUN find "$APACHE_CONFDIR" -type f -exec sed -ri ' \
+	s!^(\s*CustomLog)\s+\S+!\1 /proc/self/fd/1!g; \
+	s!^(\s*ErrorLog)\s+\S+!\1 /proc/self/fd/2!g; \
+' '{}' ';'
+
 EXPOSE 80
 
-CMD ["apache2", "-cErrorLog /dev/stderr", "-DFOREGROUND"]
+CMD ["apache2", "-DFOREGROUND"]
 
 # I really don't like Apache.  Irrationally.
