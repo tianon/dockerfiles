@@ -8,10 +8,12 @@ RUN apt-get update && apt-get install -yq \
 		dput-ng \
 		equivs \
 		git bzr mercurial subversion \
+		git-buildpackage svn-buildpackage \
 		libcrypt-ssleay-perl \
 		libfile-fcntllock-perl \
 		libwww-perl \
 		lintian \
+		openssh-client \
 		python-distro-info \
 		python3-debian \
 		--no-install-recommends
@@ -33,7 +35,12 @@ RUN { \
 	echo 'dch -i'; \
 	echo 'lintian --ftp-master-rejects'; \
 	echo 'uscan --force-download --verbose --download-current-version'; \
-} >> "$HOME/.bash_history"
+} >> ~/.bash_history
+
+# for ssh to debian hosts, let's make sure we know their fingerprints <3
+RUN mkdir -p ~/.ssh && chmod 700 ~/.ssh \
+	&& wget -O ~/.ssh/known_hosts https://db.debian.org/debian_known_hosts \
+	&& chmod 644 ~/.ssh/known_hosts
 
 # make sure things are pretty
 ENV LANG C.UTF-8
