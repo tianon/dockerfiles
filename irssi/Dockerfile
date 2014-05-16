@@ -1,6 +1,6 @@
 FROM debian:jessie
 
-RUN apt-get update && apt-get install -y ca-certificates irssi libwww-perl
+RUN apt-get update && apt-get install -y ca-certificates irssi libwww-perl wget
 
 RUN useradd --create-home user
 USER user
