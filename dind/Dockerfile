@@ -1,13 +1,12 @@
-FROM debian:testing
+FROM debian:jessie
 
-RUN apt-get update && apt-get install -yq curl
+RUN apt-get update && apt-get install -y curl
 
-#RUN curl -sLS https://get.docker.io | sh
+RUN curl -SL https://get.docker.io/builds/Linux/x86_64/docker-latest -o /usr/bin/docker \
+	&& chmod +x /usr/bin/docker
 
-# let's grab the lastest "master" version of the install.sh script >:)
-RUN curl -sLS https://raw.github.com/dotcloud/docker/master/hack/install.sh | sh
-
-RUN curl -sLS https://raw.github.com/dotcloud/docker/master/hack/dind -o /dind && chmod +x /dind
+RUN curl -SL https://raw.github.com/dotcloud/docker/master/hack/dind -o /dind \
+	&& chmod +x /dind
 
 VOLUME /var/lib/docker
 ENTRYPOINT ["/dind"]
