@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y mariadb-server
 
 RUN sed -ri 's/^(bind-address|skip-networking)/;\1/' /etc/mysql/my.cnf
 
-ADD https://raw.githubusercontent.com/infosiftr/docker-mysql/f1cc58a4ed/docker-entrypoint.sh /entrypoint.sh
+ADD https://raw.githubusercontent.com/infosiftr/docker-mysql/b9f1fde6cd/docker-entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
