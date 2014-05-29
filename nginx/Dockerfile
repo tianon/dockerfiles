@@ -3,7 +3,7 @@ FROM debian:wheezy
 RUN apt-get update && apt-get install -y curl
 
 RUN curl http://nginx.org/keys/nginx_signing.key | apt-key add -
-RUN echo 'deb http://nginx.org/packages/debian/ jessie nginx' > /etc/apt/sources.list.d/nginx.list
+RUN echo 'deb http://nginx.org/packages/debian/ wheezy nginx' > /etc/apt/sources.list.d/nginx.list
 
 RUN apt-get update && apt-get install -y nginx
 
