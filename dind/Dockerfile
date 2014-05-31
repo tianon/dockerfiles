@@ -1,6 +1,6 @@
 FROM debian:jessie
 
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update && apt-get install -y aufs-tools ca-certificates curl git iptables xz-utils
 
 RUN curl -SL https://get.docker.io/builds/Linux/x86_64/docker-latest -o /usr/bin/docker \
 	&& chmod +x /usr/bin/docker
