@@ -6,6 +6,7 @@ usage() {
 	echo "   ie: $0 docker.io docker/docker.io.git"
 	echo "   ie: $0 golang-dbus pkg-go/packages/golang-dbus.git"
 	echo "   ie: $0 fake https://github.com/tianon/debian-fake.git"
+	echo "   ie: $0 python-astor svn://svn.debian.org/svn/python-modules/packages/python-astor/trunk"
 }
 
 pkg="$1"
@@ -21,7 +22,11 @@ if [[ "$repo" != *'://'* ]]; then
 fi
 
 set -x
-git clone "$repo" "/usr/src/$pkg"
+if [[ "$repo" == svn://* ]]; then
+	svn co "$repo" "/usr/src/$pkg"
+else
+	git clone "$repo" "/usr/src/$pkg"
+fi
 cd "/usr/src/$pkg"
 apt-get update && mk-build-deps -irt'apt-get -yV --no-install-recommends' debian/control
 if [ -e debian/watch ]; then

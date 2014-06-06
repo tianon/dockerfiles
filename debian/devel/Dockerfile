@@ -48,6 +48,6 @@ ENV TERM xterm-256color
 RUN cp /etc/skel/.bashrc /root/ \
 	&& sed -ri 's/^#(force_color_prompt=yes)/\1/' /root/.bashrc
 
-ADD prep-source-package.sh /tianon-prep-source-package.sh
+ADD scripts /tianon
 
 CMD ["bash"]
