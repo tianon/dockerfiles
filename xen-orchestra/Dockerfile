@@ -1,23 +1,21 @@
-FROM debian:wheezy
+FROM node
 
 # see https://github.com/vatesfr/xo/blob/master/installation.md
 
-RUN apt-get update && apt-get install -q -y checkinstall curl g++ git make python
+RUN apt-get update && apt-get install -y ruby-compass
 
-RUN curl -s 'http://nodejs.org/dist/node-latest.tar.gz' | tar -v -C /usr/src -xz && ln -s /usr/src/node-v* /usr/src/node
-RUN cd /usr/src/node && ./configure && checkinstall
+ENV XO_REF v3.4.0
 
-RUN mkdir /xo
-RUN git clone git://github.com/vatesfr/xo-server.git /xo/xo-server
-RUN git clone git://github.com/vatesfr/xo-web.git /xo/xo-web
+RUN mkdir -p /usr/src/xo
+WORKDIR /usr/src/xo
+RUN git clone -b $XO_REF git://github.com/vatesfr/xo-server.git
+RUN git clone -b $XO_REF git://github.com/vatesfr/xo-web.git
 
-RUN cd /xo/xo-server && npm install
-#RUN cd /xo/xo-server/public/http && for e in ../../../xo-web/public/*; do ln -s "$e"; done
+RUN cd xo-server && npm install
+RUN cd xo-server && cp config/local.yaml.dist config/local.yaml
 
-# TODO use links to get a redis server/database instead (since that's where configuration actually goes)
-RUN apt-get install -q -y redis-server
-
-# TODO see note above about redis
-CMD /etc/init.d/redis-server start && /xo/xo-server/xo-server
+RUN cd xo-web && npm install
+RUN cd xo-web && ./gulp --production
 
 EXPOSE 80
+CMD ["./xo-server/xo-server"]
