@@ -1,0 +1,92 @@
+# Note: Relative paths will be resolved from XO-Server's directory.
+
+#=====================================================================
+
+# It may be necessary to run XO-Server as a privileged user (e.g.
+# `root`) for instance to allow the HTTP server to listen on a
+# [privileged ports](http://www.w3.org/Daemon/User/Installation/PrivilegedPorts.html).
+#
+# To avoid security issues, XO-Server can drop its privileges by
+# changing the user and the group is running with.
+#
+# Note: XO-Server will change them just after reading the
+# configuration.
+
+# User to run XO-Server as.
+#
+# Note: The user can be specified using either its name or its numeric
+# identifier.
+#
+# Default: undefined
+#user: 'nobody'
+
+# Group to run XO-Server as.
+#
+# Note: The group can be specified using either its name or its
+# numeric identifier.
+#
+# Default: undefined
+#group: 'nogroup'
+
+#=====================================================================
+
+# Configuration of the embedded HTTP server.
+http:
+
+  # Hosts & ports on which to listen.
+  #
+  # By default, the server listens on 0.0.0.0:80.
+  listen:
+    # Basic HTTP.
+    -
+      # Address on which the server is listening on.
+      #
+      # Sets it to '127.0.0.1' to listen only on the local host.
+      #
+      # Default: '0.0.0.0' (all addresses)
+      #host: '127.0.0.1'
+
+      # Port on which the server is listening on.
+      #
+      # Default: undefined
+      port: 80
+
+      # Instead of `host` and `port` a path to a UNIX socket may be
+      # specified (overrides `host` and `port`).
+      #
+      # Default: undefined
+      #socket: './http.sock'
+
+    # Basic HTTPS.
+    # -
+    #   # The only difference is the presence of the certificate and the
+    #   # key.
+
+    #   #host: '127.0.0.1'
+    #   port: 443
+
+    #   # File containing the certificate (PEM format).
+    #   #
+    #   # Default: undefined
+    #   certificate: './certificate.pem'
+
+    #   # File containing the private key (PEM format).
+    #   #
+    #   # If the key is encrypted, the passphrase will be asked at
+    #   # server startup.
+    #   #
+    #   # Default: undefined
+    #   key: './key.pem'
+
+  # List of files/directories which will be served.
+  mounts:
+    '/': '../xo-web/dist/'
+
+#=====================================================================
+
+# Connection to the Redis server.
+redis:
+    # Syntax: tcp://[db[:password]@]hostname[:port]
+    #
+    # Default: tcp://localhost:6379
+    uri: 'tcp://redis'

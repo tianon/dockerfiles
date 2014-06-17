@@ -17,5 +17,9 @@ RUN cd xo-server && cp config/local.yaml.dist config/local.yaml
 RUN cd xo-web && npm install
 RUN cd xo-web && ./gulp --production
 
+ADD local.yaml /usr/src/xo/xo-server/config/
+
 EXPOSE 80
-CMD ["./xo-server/xo-server"]
+#CMD ["./xo-server/xo-server"]
+# see https://github.com/vatesfr/xo-server/pull/28
+CMD ["sh", "-eu", "./xo-server/xo-server"]
