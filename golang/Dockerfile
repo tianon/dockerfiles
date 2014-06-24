@@ -1,20 +1,26 @@
-FROM debian:stable
+FROM debian:wheezy
 
-RUN apt-get update && apt-get install -yq build-essential curl
+# necessary for building Go
+RUN apt-get update && apt-get install -y build-essential curl
 
-RUN curl -s https://go.googlecode.com/files/go1.2.1.src.tar.gz \
-	| tar -v -C /usr/local -xz
-ENV PATH /usr/local/go/bin:$PATH
+# these are useful for "go get"
+RUN apt-get update && apt-get install -y bzr git mercurial
 
-ENV GOLANG_CROSSPLATFORMS	\
+RUN curl -sSL http://golang.org/dl/go1.3.src.tar.gz \
+	| tar -v -C /usr/src -xz
+WORKDIR /usr/src/go
+
+ENV GOLANG_CROSSPLATFORMS \
 	darwin/386 darwin/amd64 \
 	freebsd/386 freebsd/amd64 freebsd/arm \
 	linux/386 linux/amd64 linux/arm \
 	windows/386 windows/amd64
+
 # (set an explicit GOARM of 5 for maximum ARM compatibility)
 ENV GOARM 5
-RUN cd /usr/local/go/src \
-	&& bash -xc '\
+
+RUN bash -xc '\
+		cd src; \
 		for platform in $GOLANG_CROSSPLATFORMS; do \
 			GOOS=${platform%/*} \
 			GOARCH=${platform##*/} \
@@ -22,9 +28,9 @@ RUN cd /usr/local/go/src \
 		done \
 	'
 
-# these are useful for "go get"
-RUN apt-get update && apt-get install -yq bzr git mercurial
+ENV PATH /usr/src/go/bin:$PATH
 
 RUN mkdir -p /go/src
 ENV GOPATH /go
+ENV PATH /go/bin:$PATH
 WORKDIR /go
