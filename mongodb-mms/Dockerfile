@@ -11,4 +11,5 @@ RUN curl -sSL https://mms.mongodb.com/download/agent/monitoring/mongodb-mms-moni
 ADD docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
+USER mongodb-mms-agent
 CMD ["mongodb-mms-monitoring-agent", "-conf", "/etc/mongodb-mms/monitoring-agent.config"]
