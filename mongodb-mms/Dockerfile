@@ -1,10 +1,14 @@
 FROM debian:wheezy
 
-RUN apt-get update && apt-get install -yq curl python-pymongo python-setuptools
+RUN apt-get update && apt-get install -y curl logrotate
 
-RUN curl https://mms.mongodb.com/settings/mms-monitoring-agent.tar.gz | tar -xz
-WORKDIR /mms-agent
+# see https://mms.mongodb.com/settings/monitoring-agent
+# click on "Ubuntu 12.04+"
+RUN curl -sSL https://mms.mongodb.com/download/agent/monitoring/mongodb-mms-monitoring-agent_2.2.0.70-1_amd64.deb -o mms.deb \
+	&& dpkg -i mms.deb \
+	&& rm mms.deb
 
-ADD entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["python", "agent.py"]
+ADD docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+CMD ["mongodb-mms-monitoring-agent", "-conf", "/etc/mongodb-mms/monitoring-agent.config"]
