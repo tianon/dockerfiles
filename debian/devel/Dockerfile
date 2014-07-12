@@ -1,7 +1,7 @@
 FROM debian:experimental
 
 # normal build deps
-RUN apt-get update && apt-get install -yq \
+RUN apt-get update && apt-get install -y \
 		build-essential \
 		devscripts \
 		dh-make \
@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -yq \
 		openssh-client \
 		python-distro-info \
 		python3-debian \
+		quilt \
 		--no-install-recommends
 
 # need an editor for "dch -i"
@@ -47,6 +48,10 @@ ENV LANG C.UTF-8
 ENV TERM xterm-256color
 RUN cp /etc/skel/.bashrc /root/ \
 	&& sed -ri 's/^#(force_color_prompt=yes)/\1/' /root/.bashrc
+
+# quilt is much amaze: https://wiki.debian.org/UsingQuilt#Using_quilt_with_Debian_source_packages
+ENV QUILT_PATCHES debian/patches
+ENV QUILT_REFRESH_ARGS -p ab --no-timestamps --no-index
 
 ADD scripts /tianon
 
