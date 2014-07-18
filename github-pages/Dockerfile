@@ -1,6 +1,6 @@
 FROM debian:sid
 
-RUN apt-get update && apt-get install -yq \
+RUN apt-get update && apt-get install -y \
 		build-essential \
 		python-pygments \
 		ruby \
