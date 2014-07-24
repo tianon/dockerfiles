@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -yq vim --no-install-recommends
 RUN apt-get update && apt-get install -yq bash-completion curl less wget
 
 # need deb-src for compiling packages
-RUN sed 'p; s/^deb /deb-src /' /etc/apt/sources.list && \
+RUN sed -i 'p; s/^deb /deb-src /' /etc/apt/sources.list /etc/apt/sources.list.d/experimental.list && \
 	apt-get update
 
 # tianon is _really_ lazy, and likes a preseeded bash history
