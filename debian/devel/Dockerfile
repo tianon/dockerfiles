@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
 		git bzr mercurial subversion \
 		git-buildpackage svn-buildpackage \
 		libcrypt-ssleay-perl \
+		libdistro-info-perl \
 		libfile-fcntllock-perl \
 		libwww-perl \
 		lintian \
