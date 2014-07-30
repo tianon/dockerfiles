@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y curl logrotate
 
 # see https://mms.mongodb.com/settings/monitoring-agent
 # click on "Ubuntu 12.04+"
-RUN curl -sSL https://mms.mongodb.com/download/agent/monitoring/mongodb-mms-monitoring-agent_2.3.1.89-1_amd64.deb -o mms.deb \
+RUN curl -sSL https://mms.mongodb.com/download/agent/monitoring/mongodb-mms-monitoring-agent_2.4.0.101-1_amd64.deb -o mms.deb \
 	&& dpkg -i mms.deb \
 	&& rm mms.deb
 
