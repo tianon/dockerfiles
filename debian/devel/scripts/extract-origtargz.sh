@@ -131,31 +131,32 @@ extractTarball() {
 	
 	tmpDir="$(mktemp -d)"
 	
-	echo -n "unpacking '$tarball' ..."
+	echo -n "extracting '$tarball' ... "
 	tar -xf "$tarball" -C "$tmpDir"
-	echo ' done'
+	echo 'done'
 	
 	files=( "$tmpDir"/* )
 	if [ "${#files[@]}" -eq 0 ]; then
 		rm -rf "$tmpDir"
 		return
 	fi
+	
 	srcDir="${files[0]}"
 	if [ "${#files[@]}" -gt 1 ]; then
 		echo >&2 "warning: '$tarball' contained more than just a single directory"
 		echo >&2 "  ignoring all except $srcDir"
 	fi
 	
-	echo -n "filling '$destDir' with '$tarball' contents ..."
+	echo -n "filling '$destDir' ... "
 	rsync -a "${rsyncArgs[@]}" "$srcDir"/ "$destDir"/
-	echo ' done'
+	echo 'done'
 	
 	rm -rf "$tmpDir"
 }
 
-echo -n "cleaning out '$dest' (excluding '$debian') ..."
+echo -n "cleaning out '$dest' (excluding '$debian') ... "
 find "$dest" -mindepth 1 -not \( -path "$debian" -or -path "$debian/*" \) -delete
-echo ' done'
+echo 'done'
 
 extractTarball "$origTarball" "$dest" "$debian"
 
