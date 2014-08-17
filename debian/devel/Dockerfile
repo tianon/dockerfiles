@@ -2,6 +2,7 @@ FROM debian:experimental
 
 # normal build deps
 RUN apt-get update && apt-get install -y \
+		bash-completion curl less rsync vim wget \
 		build-essential \
 		devscripts \
 		dh-make \
@@ -18,17 +19,11 @@ RUN apt-get update && apt-get install -y \
 		python-distro-info \
 		python3-debian \
 		quilt \
-		--no-install-recommends
-
-# need an editor for "dch -i"
-RUN apt-get update && apt-get install -yq vim --no-install-recommends
-
-# a few extra little useful things
-RUN apt-get update && apt-get install -yq bash-completion curl less wget
+		--no-install-recommends \
+	&& rm -rf /var/lib/apt/lists/*
 
 # need deb-src for compiling packages
-RUN sed -i 'p; s/^deb /deb-src /' /etc/apt/sources.list /etc/apt/sources.list.d/experimental.list && \
-	apt-get update
+RUN sed -i 'p; s/^deb /deb-src /' /etc/apt/sources.list /etc/apt/sources.list.d/experimental.list
 
 # tianon is _really_ lazy, and likes a preseeded bash history
 ENV HOME /root
@@ -47,13 +42,11 @@ RUN mkdir -p ~/.ssh && chmod 700 ~/.ssh \
 # make sure things are pretty
 ENV LANG C.UTF-8
 ENV TERM xterm-256color
-RUN cp /etc/skel/.bashrc /root/ \
-	&& sed -ri 's/^#(force_color_prompt=yes)/\1/' /root/.bashrc
+RUN cp /etc/skel/.bashrc ~/ \
+	&& sed -ri 's/^#(force_color_prompt=yes)/\1/' ~/.bashrc
 
 # quilt is much amaze: https://wiki.debian.org/UsingQuilt#Using_quilt_with_Debian_source_packages
 ENV QUILT_PATCHES debian/patches
 ENV QUILT_REFRESH_ARGS -p ab --no-timestamps --no-index
 
-ADD scripts /tianon
-
-CMD ["bash"]
+COPY scripts /tianon
