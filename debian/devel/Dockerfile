@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y \
 	&& rm -rf /var/lib/apt/lists/*
 
 # need deb-src for compiling packages
-RUN sed -i 'p; s/^deb /deb-src /' /etc/apt/sources.list /etc/apt/sources.list.d/experimental.list
+RUN find /etc/apt/sources.list* -type f -exec sed -i 'p; s/^deb /deb-src /' '{}' +
 
 # tianon is _really_ lazy, and likes a preseeded bash history
 ENV HOME /root
