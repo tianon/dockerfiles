@@ -21,14 +21,18 @@ if [[ "$repo" != *'://'* ]]; then
 	repo="git://anonscm.debian.org/$repo"
 fi
 
+scriptDir="$(dirname "$(readlink -f "$BASH_SOURCE")")"
+
 set -x
 if [[ "$repo" == svn://* ]]; then
 	svn co "$repo" "/usr/src/$pkg"
 else
 	git clone "$repo" "/usr/src/$pkg"
 fi
+
 cd "/usr/src/$pkg"
 apt-get update && mk-build-deps -irt'apt-get -yV --no-install-recommends' debian/control
+
 if [ -e debian/watch ]; then
 	uscan --force-download --verbose --download-current-version
 elif [ -x debian/helpers/generate-tarball.sh ]; then
@@ -36,5 +40,7 @@ elif [ -x debian/helpers/generate-tarball.sh ]; then
 else
 	exit 0
 fi
-origtargz --unpack
+
+"$scriptDir/extract-origtargz.sh"
+
 echo 'ready for dpkg-buildpackage -uc -us in' "/usr/src/$pkg"
