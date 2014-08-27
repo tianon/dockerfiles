@@ -23,4 +23,4 @@ set -x
 "$scriptDir/prep-source-package.sh" "$pkg" "$repo"
 cd "/usr/src/$pkg"
 dpkg-buildpackage -uc -us
-debi || apt-get install -f
+debi || apt-get install -f -y
