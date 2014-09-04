@@ -19,6 +19,7 @@ RUN mkdir -p .caff/gnupghome \
 		echo 'personal-digest-preferences SHA512'; \
 		echo 'cert-digest-algo SHA512'; \
 		echo 'default-preference-list SHA512 SHA384 SHA256 SHA224 AES256 AES192 AES CAST5 ZLIB BZIP2 ZIP Uncompressed'; \
+		echo 'keyid-format long'; \
 	} > .caff/gnupghome/gpg.conf
 
 ENTRYPOINT ["caff"]
