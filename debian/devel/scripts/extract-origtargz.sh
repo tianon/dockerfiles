@@ -154,8 +154,8 @@ extractTarball() {
 	rm -rf "$tmpDir"
 }
 
-echo -n "cleaning out '$dest' (excluding '$debian') ... "
-find "$dest" -mindepth 1 -not \( -path "$debian" -or -path "$debian/*" \) -delete
+echo -n "cleaning out '$dest' (excluding '.git', '.svn', and '$debian') ... "
+find "$dest" -mindepth 1 \( -name '.git' -o -name '.svn' -o -path "$debian" \) -prune -o -delete
 echo 'done'
 
 extractTarball "$origTarball" "$dest" "$debian"
