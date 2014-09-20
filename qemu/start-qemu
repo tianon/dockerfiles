@@ -1,0 +1,50 @@
+#!/bin/bash
+set -e
+
+# main available options:
+#   QEMU_CPU=n    (cores)
+#   QEMU_RAM=nnn  (megabytes)
+#   QEMU_HDA      (filename)
+#   QEMU_HDA_SIZE (bytes, suffixes like "G" allowed)
+#   QEMU_CDROM    (filename)
+
+hostArch="$(uname -m)"
+qemuArch="${QEMU_ARCH:-$hostArch}"
+qemu="${QEMU_BIN:-qemu-system-$qemuArch}"
+qemuArgs=()
+
+if [ -e /dev/kvm ]; then
+	qemuArgs+=( -enable-kvm )
+elif [ "$hostArch" = "$qemuArch" ]; then
+	echo >&2
+	echo >&2 'warning: /dev/kvm not found'
+	echo >&2 '  PERFORMANCE WILL SUFFER'
+	echo >&2 '  (hint: docker run --device /dev/kvm ...)'
+	echo >&2
+	sleep 3
+fi
+
+qemuArgs+=( -smp "${QEMU_CPU:-1}" )
+qemuArgs+=( -m "${QEMU_RAM:-512}" )
+
+if [ "$QEMU_HDA" ]; then
+	if [ ! -f "$QEMU_HDA" -o ! -s "$QEMU_HDA" ]; then
+		qemu-img create "$QEMU_HDA" "${QEMU_HDA_SIZE:-8G}"
+	fi
+	qemuArgs+=( -hda "$QEMU_HDA" )
+fi
+
+if [ "$QEMU_CDROM" ]; then
+	qemuArgs+=( -cdrom "$QEMU_CDROM" )
+fi
+
+qemuArgs+=(
+	-net nic
+	-net user,hostname="$(hostname)",hostfwd=tcp:':22'-':22'
+	-vnc ':0'
+	-serial stdio
+	"$@"
+)
+
+set -x
+exec "$qemu" "${qemuArgs[@]}"
