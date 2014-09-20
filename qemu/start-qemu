@@ -29,7 +29,10 @@ qemuArgs+=( -m "${QEMU_RAM:-512}" )
 
 if [ "$QEMU_HDA" ]; then
 	if [ ! -f "$QEMU_HDA" -o ! -s "$QEMU_HDA" ]; then
-		qemu-img create "$QEMU_HDA" "${QEMU_HDA_SIZE:-8G}"
+		(
+			set -x
+			qemu-img create -f qcow2 -o preallocation=off "$QEMU_HDA" "${QEMU_HDA_SIZE:-8G}"
+		)
 	fi
 	qemuArgs+=( -hda "$QEMU_HDA" )
 fi
