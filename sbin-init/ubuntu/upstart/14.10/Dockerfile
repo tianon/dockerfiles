@@ -1,4 +1,4 @@
-FROM ubuntu:13.10
+FROM ubuntu:14.10
 
 # much of this was gleaned from https://github.com/lxc/lxc/blob/lxc-0.8.0/templates/lxc-ubuntu.in
 # and then heavily modified and hacked like crazy
