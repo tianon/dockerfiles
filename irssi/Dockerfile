@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:sid
 
 RUN apt-get update && apt-get install -y ca-certificates irssi libwww-perl wget
 
