@@ -1,4 +1,9 @@
 FROM perl
 
-ENV PERL_CPANM_OPT --verbose
-RUN curl -SL http://cpanmin.us | perl - App::cpanminus
+# secure by default ♥ (thanks to sri!)
+ENV PERL_CPANM_OPT --verbose --mirror https://cpan.metacpan.org/ --mirror-only
+RUN cpanm Digest::SHA Module::Signature
+ENV PERL_CPANM_OPT $PERL_CPANM_OPT --verify
+
+# reinstall cpanm itself, for good measure
+RUN cpanm App::cpanminus
