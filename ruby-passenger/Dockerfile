@@ -1,29 +1,19 @@
-FROM tianon/apache2
+FROM ruby:2
 
-RUN apt-get update && apt-get install -yq libapache2-mod-passenger
+# throw errors if Gemfile has been modified since Gemfile.lock
+RUN bundle config --global frozen 1
 
-RUN apt-get update && apt-get install -yq bundler
+RUN apt-get update && apt-get install -y nodejs --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-RUN a2dissite '*' || :
-RUN { \
-		echo '<VirtualHost *:80>'; \
-		echo '  DocumentRoot /apps/rails/public'; \
-		echo '  <Directory /apps/rails/public>'; \
-		echo '    AllowOverride all'; \
-		echo '    Options -MultiViews'; \
-		echo '    Require all granted'; \
-		echo '  </Directory>'; \
-		echo '</VirtualHost>'; \
-	} > /etc/apache2/sites-available/rails.conf \
-	&& a2ensite rails
+RUN gem install passenger
 
-# set a few bundle config variables so that a local .bundle in our development directory doesn't screw up our image
-ENV BUNDLE_APP_CONFIG /apps/bundle
-ENV BUNDLE_PATH /apps/gems
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-# TODO find a clean way to do this here in such a way that gems like rmagick can install cleanly without first installing libmagickcore-dev
-#ONBUILD ADD Gemfile /apps/rails/Gemfile
-#ONBUILD ADD Gemfile.lock /apps/rails/Gemfile.lock
-#ONBUILD RUN cd /apps/rails && bundle install --deployment
-#ONBUILD ADD . /apps/rails
-#ONBUILD RUN chown -R www-data:www-data /apps/rails
+ONBUILD COPY Gemfile* *.gemspec /usr/src/app/
+ONBUILD RUN bundle install
+
+ONBUILD COPY . /usr/src/app
+
+EXPOSE 3000
+CMD ["passenger", "start"]
