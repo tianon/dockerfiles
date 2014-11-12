@@ -10,5 +10,8 @@ RUN { \
 RUN ln -sf /dev/stdout /var/log/apt-cacher-ng/apt-cacher.out \
 	&& ln -sf /dev/stderr /var/log/apt-cacher-ng/apt-cacher.err
 
+RUN echo 'http://http.debian.net/debian/' > /etc/apt-cacher-ng/backends_debian
+RUN echo 'http://archive.ubuntu.com/ubuntu/' > /etc/apt-cacher-ng/backends_ubuntu
+
 EXPOSE 80
 CMD ["apt-cacher-ng", "-c", "/etc/apt-cacher-ng"]
