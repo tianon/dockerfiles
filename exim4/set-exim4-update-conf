@@ -1,0 +1,23 @@
+#!/bin/bash
+set -e
+
+conf='/etc/exim4/update-exim4.conf.conf'
+
+sedExpr=''
+while [ $# -gt 0 ]; do
+	key="$1"
+	value="$2"
+	shift 2
+	
+	if ! grep -qE "^#?${key}=" "$conf"; then
+		echo >&2 "error: '$key' not found in '$conf'"
+		exit 1
+	fi
+	
+	sed_escaped_value="$(echo "$value" | sed 's/[\/&]/\\&/g')"
+	sedExpr+=$'\n\t'"s/^#?(${key})=.*/\1='${sed_escaped_value}'/;"
+done
+
+set -x
+sed -ri "$sedExpr"$'\n' "$conf"
+update-exim4.conf -v
