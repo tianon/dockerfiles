@@ -49,5 +49,5 @@ RUN echo 'root:docker.io' | chpasswd
 # we can has SSH
 EXPOSE 22
 
-# pepare for takeoff
+# prepare for takeoff
 CMD ["/sbin/init"]
