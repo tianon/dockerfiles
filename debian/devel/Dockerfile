@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y \
 		python-distro-info \
 		python3-debian \
 		quilt \
+		reprepro \
 		--no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
 
