@@ -1,7 +1,7 @@
-FROM python:3
+FROM python:3-slim
 
-RUN git clone https://github.com/sivel/speedtest-cli.git /usr/src/speedtest-cli
-WORKDIR /usr/src/speedtest-cli
-RUN python setup.py install
+ENV SPEEDTEST_CLI_VERSION 0.3.1
+
+RUN pip install speedtest-cli==$SPEEDTEST_CLI_VERSION
 
 CMD ["speedtest-cli"]
