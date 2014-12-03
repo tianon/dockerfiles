@@ -10,7 +10,7 @@ RUN dpkg --add-architecture i386 \
 	&& apt-get purge -y --auto-remove wget \
 	&& { dpkg -i skype.deb || true; } \
 	&& rm skype.deb \
-	&& apt-get install -y -f
+	&& apt-get update && apt-get install -y -f && rm -rf /var/lib/apt/lists/*
 
 USER user
 VOLUME /home/user
