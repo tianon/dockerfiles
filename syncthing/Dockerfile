@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y ca-certificates --no-install-recommends
 # gpg: key BCE524C7: public key "Jakob Borg (calmh) <jakob@nym.se>" imported
 RUN gpg --keyserver pgp.mit.edu --recv-keys 9DCC29A8312F5C0F2625E76E49F5AEC0BCE524C7
 
-ENV SYNCTHING_VERSION 0.10.11
+ENV SYNCTHING_VERSION 0.10.12
 
 RUN set -x \
 	&& apt-get update && apt-get install -y curl --no-install-recommends && rm -rf /var/lib/apt/lists/* \
