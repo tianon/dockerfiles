@@ -1,7 +1,6 @@
 FROM debian:sid
 
 RUN apt-get update && apt-get install -y \
-		qemu-kvm \
 		qemu-system \
 		qemu-utils \
 		--no-install-recommends
