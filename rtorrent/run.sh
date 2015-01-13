@@ -8,6 +8,7 @@ fi
 
 torrents="$HOME/downloads/torrents"
 mkdir -p "$torrents"
+touch "$torrents/.torrent.rc"
 
 set -x
 exec docker run -it --rm \
