@@ -7,7 +7,7 @@ if [ "$(id -u)" != 1000 -o "$(id -g)" != 1000 ]; then
 fi
 
 torrents="$HOME/downloads/torrents"
-mkdir -p "$torrents"
+mkdir -p "$torrents/session"
 touch "$torrents/.torrent.rc"
 
 set -x
