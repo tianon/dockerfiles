@@ -8,6 +8,8 @@ true-c: true.c
 true-go: true.go
 	go build -o $@ -ldflags -d $<
 
+.PHONY: all
 all: true-asm true-c true-go
+.PHONY: clean
 clean:
 	rm -f true-asm true-c true-go
