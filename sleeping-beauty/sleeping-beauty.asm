@@ -53,7 +53,7 @@ _start:
 
 do_pause:
 	; pause()
-	mov al, 29 ; sys_pause
+	mov al, 34 ; sys_pause
 	syscall
 
 	; tight loop because jpetazzo is trolling
