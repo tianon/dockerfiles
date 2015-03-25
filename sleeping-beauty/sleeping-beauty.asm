@@ -53,8 +53,8 @@ _start:
 
 do_pause:
 	; pause()
-	mov al, 29 ; sys_pause
-	syscall
+	mov eax, 29 ; sys_pause
+	int 0x80 ; execute syscall
 
 	; tight loop because jpetazzo is trolling
 	jmp do_pause
