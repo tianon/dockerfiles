@@ -55,6 +55,9 @@ bind editor <Tab> complete-query
 bind editor ^T complete
 bind editor <space> noop
 
+# let G be for IMAP instead of POP (defaults to "fetch-mail")
+bind index G imap-fetch-mail
+
 # Gmail-style keyboard shortcuts
 macro index,pager y "<enter-command>unset trash\n <delete-message>" "Gmail archive message"
 macro index,pager d "<enter-command>set trash=\"imaps://imap.googlemail.com/[GMail]/Bin\"\n <delete-message>" "Gmail delete message"
