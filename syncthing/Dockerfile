@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y ca-certificates --no-install-recommends
 # gpg: key 00654A3E: public key "Syncthing Release Management <release@syncthing.net>" imported
 RUN gpg --keyserver pool.sks-keyservers.net --recv-keys 37C84554E7E0A261E4F76E1ED26E6ED000654A3E
 
-ENV SYNCTHING_VERSION 0.11.0
+ENV SYNCTHING_VERSION 0.11.1
 
 RUN set -x \
 	&& apt-get update && apt-get install -y curl --no-install-recommends && rm -rf /var/lib/apt/lists/* \
