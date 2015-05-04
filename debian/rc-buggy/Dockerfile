@@ -1,3 +1,3 @@
 FROM debian:sid
 
-RUN echo 'deb http://httpredir.debian.org/debian rc-buggy main' > /etc/apt/sources.list.d/rc-buggy.list
+RUN awk '$1 ~ "^deb" { $3 = "rc-buggy"; print }' /etc/apt/sources.list > /etc/apt/sources.list.d/experimental.list

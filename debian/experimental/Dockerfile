@@ -1,3 +1,3 @@
 FROM debian:unstable
 
-RUN echo 'deb http://httpredir.debian.org/debian experimental main' > /etc/apt/sources.list.d/experimental.list
+RUN awk '$1 ~ "^deb" { $3 = "experimental"; print }' /etc/apt/sources.list > /etc/apt/sources.list.d/experimental.list
