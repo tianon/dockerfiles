@@ -6,11 +6,6 @@ if [ "$HOME" = '/home/user' ]; then
 	exit 1
 fi
 
-if [ "$(id -u)" != 1000 -o "$(id -g)" != 1000 ]; then
-	echo >&2 'uh, your UID and GID ought to be 1000, or things will likely break'
-	exit 1
-fi
-
 mkdir -p "$HOME/.config/syncthing"
 
 set -x
@@ -18,6 +13,7 @@ set -x
 docker run -d \
 	--name syncthing \
 	--restart always \
+	-u "$(id -u):$(id -g)" \
 	-v "$HOME:$HOME" \
 	-v "$HOME/.config/syncthing:/home/user/.config/syncthing" \
 	--net host \
