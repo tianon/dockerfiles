@@ -2,6 +2,7 @@ FROM debian:experimental
 
 # normal build deps
 RUN apt-get update && apt-get install -y \
+		autopkgtest \
 		bash-completion curl less rsync vim wget \
 		build-essential \
 		devscripts \
