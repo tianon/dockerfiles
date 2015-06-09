@@ -2,7 +2,7 @@ FROM debian:wheezy
 
 RUN apt-get update && apt-get install -y curl logrotate
 
-ENV MMS_VERSION 3.3.0.183-1
+ENV MMS_VERSION 3.4.0.190-1
 
 # see https://mms.mongodb.com/settings/monitoring-agent
 # click on "Ubuntu 12.04+"
