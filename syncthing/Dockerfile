@@ -12,7 +12,7 @@ ENV SYNCTHING_VERSION 0.11.13
 RUN set -x \
 	&& apt-get update && apt-get install -y curl --no-install-recommends && rm -rf /var/lib/apt/lists/* \
 	&& tarball="syncthing-linux-amd64-v${SYNCTHING_VERSION}.tar.gz" \
-	&& curl -SL "https://github.com/syncthing/syncthing/releases/download/v${SYNCTHING_VERSION}/"{"$tarball",sha1sum.txt.asc} -O \
+	&& curl -fSL "https://github.com/syncthing/syncthing/releases/download/v${SYNCTHING_VERSION}/"{"$tarball",sha1sum.txt.asc} -O \
 	&& apt-get purge -y --auto-remove curl \
 	&& gpg --verify sha1sum.txt.asc \
 	&& grep -E " ${tarball}\$" sha1sum.txt.asc | sha1sum -c - \
