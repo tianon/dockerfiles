@@ -8,3 +8,4 @@ current="${current#v}"
 
 set -x
 sed -ri 's/^(ENV SYNCTHING_VERSION) .*/\1 '"$current"'/' Dockerfile
+./inotify/update.sh
