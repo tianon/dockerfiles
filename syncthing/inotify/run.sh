@@ -18,5 +18,4 @@ docker run -d \
 	-v "$HOME/.config/syncthing:/home/user/.config/syncthing" \
 	--net host \
 	tianon/syncthing-inotify "$@"
-sleep 1
-docker logs syncthing-inotify
+timeout 10s docker logs -f syncthing-inotify || true
