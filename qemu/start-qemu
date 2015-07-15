@@ -7,6 +7,7 @@ set -e
 #   QEMU_HDA      (filename)
 #   QEMU_HDA_SIZE (bytes, suffixes like "G" allowed)
 #   QEMU_CDROM    (filename)
+#   QEMU_BOOT     (-boot)
 
 hostArch="$(uname -m)"
 qemuArch="${QEMU_ARCH:-$hostArch}"
@@ -39,6 +40,10 @@ fi
 
 if [ "$QEMU_CDROM" ]; then
 	qemuArgs+=( -cdrom "$QEMU_CDROM" )
+fi
+
+if [ "$QEMU_BOOT" ]; then
+	qemuArgs+=( -boot "$QEMU_BOOT" )
 fi
 
 qemuArgs+=(

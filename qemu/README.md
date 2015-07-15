@@ -11,4 +11,5 @@
 		-e QEMU_RAM=4096 \
 		-v /home/jsmith/downloads/debian.iso:/tmp/debian.iso:ro \
 		-e QEMU_CDROM=/tmp/debian.iso \
+		-e QEMU_BOOT='order=d' \
 		tianon/qemu
