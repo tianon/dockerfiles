@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
 		autopkgtest qemu \
 		bash-completion curl less rsync vim wget \
 		build-essential \
+		debian-keyring \
 		devscripts \
 		dh-make \
 		dput-ng \
