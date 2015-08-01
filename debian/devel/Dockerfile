@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y \
 		python3-debian \
 		quilt \
 		reprepro \
+		sudo \
 		--no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
 
@@ -31,6 +32,8 @@ RUN find /etc/apt/sources.list* -type f -exec sed -i 'p; s/^deb /deb-src /' '{}'
 
 # let's make apt list package versions, since those are handy during devel
 RUN echo 'APT::Get::Show-Versions "1";' > /etc/apt/apt.conf.d/verbose
+
+RUN echo 'ALL ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/allusers-nopass
 
 # tianon is _really_ lazy, and likes a preseeded bash history
 ENV HOME /root
