@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
 		build-essential \
 		debian-keyring \
 		devscripts \
-		dh-make \
+		dh-make dh-make-golang \
 		dput-ng \
 		equivs \
 		git bzr mercurial subversion \
