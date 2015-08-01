@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
 		libwww-perl \
 		lintian \
 		openssh-client \
+		pristine-tar \
 		python-distro-info \
 		python3-debian \
 		quilt \
