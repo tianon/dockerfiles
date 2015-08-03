@@ -27,6 +27,7 @@ RUN apt-get update && apt-get install -y \
 		quilt \
 		reprepro \
 		sudo \
+		ubuntu-dev-tools \
 		--no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
 
@@ -61,5 +62,8 @@ RUN cp /etc/skel/.bashrc ~/ \
 # quilt is much amaze: https://wiki.debian.org/UsingQuilt#Using_quilt_with_Debian_source_packages
 ENV QUILT_PATCHES debian/patches
 ENV QUILT_REFRESH_ARGS -p ab --no-timestamps --no-index
+
+# make sure pbuilder-dist uses a sane default mirror
+ENV UBUNTUTOOLS_DEBIAN_MIRROR http://httpredir.debian.org/debian
 
 COPY scripts /tianon
