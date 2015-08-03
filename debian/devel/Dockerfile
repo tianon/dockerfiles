@@ -1,5 +1,8 @@
 FROM debian:experimental
 
+RUN echo 'APT::Get::Show-Versions "1";' > /etc/apt/apt.conf.d/verbose
+RUN echo 'deb http://incoming.debian.org/debian-buildd buildd-unstable main' > /etc/apt/sources.list.d/incoming.list
+
 # normal build deps
 RUN apt-get update && apt-get install -y \
 		autopkgtest qemu \
