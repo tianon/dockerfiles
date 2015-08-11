@@ -82,6 +82,11 @@ fi
 pkg="$(dpkg-parsechangelog -l"$changelog" -SSource)"
 ver="$(dpkg-parsechangelog -l"$changelog" -SVersion)"
 origVer="${ver%-*}" # strip everything from the last dash
+if [ "$origVer" = "$ver" ]; then
+	# native package!  no orig.tar exists
+	echo >&2 "$pkg is native! ($ver)"
+	exit
+fi
 origVer="$(echo "$origVer" | sed -r 's/^[0-9]+://')" # strip epoch
 origTarballPrefix="${pkg}_${origVer}.orig"
 
