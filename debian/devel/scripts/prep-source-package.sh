@@ -33,14 +33,7 @@ fi
 cd "/usr/src/$pkg"
 apt-get update && mk-build-deps -irt'apt-get -yV --no-install-recommends' debian/control
 
-if [ -e debian/watch ]; then
-	uscan --force-download --verbose --download-current-version
-elif [ -x debian/helpers/generate-tarball.sh ]; then
-	./debian/helpers/generate-tarball.sh ..
-else
-	exit 0
-fi
-
+"$scriptDir/fetch-origtargz.sh"
 "$scriptDir/extract-origtargz.sh"
 
 echo 'ready for dpkg-buildpackage -uc -us in' "/usr/src/$pkg"
