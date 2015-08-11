@@ -1,6 +1,8 @@
 FROM debian:experimental
 
+# let's make apt list package versions, since those are handy during devel
 RUN echo 'APT::Get::Show-Versions "1";' > /etc/apt/apt.conf.d/verbose
+
 RUN echo 'deb http://incoming.debian.org/debian-buildd buildd-unstable main' > /etc/apt/sources.list.d/incoming.list
 
 # normal build deps
@@ -33,9 +35,6 @@ RUN apt-get update && apt-get install -y \
 
 # need deb-src for compiling packages
 RUN find /etc/apt/sources.list* -type f -exec sed -i 'p; s/^deb /deb-src /' '{}' +
-
-# let's make apt list package versions, since those are handy during devel
-RUN echo 'APT::Get::Show-Versions "1";' > /etc/apt/apt.conf.d/verbose
 
 RUN echo 'ALL ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/allusers-nopass
 
