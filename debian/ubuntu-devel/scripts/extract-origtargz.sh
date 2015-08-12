@@ -82,6 +82,11 @@ fi
 pkg="$(dpkg-parsechangelog -l"$changelog" -SSource)"
 ver="$(dpkg-parsechangelog -l"$changelog" -SVersion)"
 origVer="${ver%-*}" # strip everything from the last dash
+if [ "$origVer" = "$ver" ]; then
+	# native package!  no orig.tar exists
+	echo >&2 "$pkg is native! ($ver)"
+	exit
+fi
 origVer="$(echo "$origVer" | sed -r 's/^[0-9]+://')" # strip epoch
 origTarballPrefix="${pkg}_${origVer}.orig"
 
@@ -154,8 +159,8 @@ extractTarball() {
 	rm -rf "$tmpDir"
 }
 
-echo -n "cleaning out '$dest' (excluding '$debian') ... "
-find "$dest" -mindepth 1 -not \( -path "$debian" -or -path "$debian/*" \) -delete
+echo -n "cleaning out '$dest' (excluding '.git', '.svn', and '$debian') ... "
+find "$dest" -mindepth 1 \( -name '.git' -o -name '.svn' -o -path "$debian" \) -prune -o -exec rm -rf '{}' +
 echo 'done'
 
 extractTarball "$origTarball" "$dest" "$debian"

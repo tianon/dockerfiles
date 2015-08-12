@@ -1,11 +1,17 @@
-FROM ubuntu-debootstrap:utopic
+FROM ubuntu-debootstrap:devel
+
+# let's make apt list package versions, since those are handy during devel
+RUN echo 'APT::Get::Show-Versions "1";' > /etc/apt/apt.conf.d/verbose
+
 
 # normal build deps
 RUN apt-get update && apt-get install -y \
+		autopkgtest qemu \
 		bash-completion curl less rsync vim wget \
 		build-essential \
+		debian-keyring \
 		devscripts \
-		dh-make \
+		dh-make dh-make-golang \
 		dput-ng \
 		equivs \
 		git bzr mercurial subversion \
@@ -16,14 +22,20 @@ RUN apt-get update && apt-get install -y \
 		libwww-perl \
 		lintian \
 		openssh-client \
+		pristine-tar \
 		python-distro-info \
 		python3-debian \
 		quilt \
+		reprepro \
+		sudo \
+		ubuntu-dev-tools pbuilder \
 		--no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
 
 # need deb-src for compiling packages
 RUN find /etc/apt/sources.list* -type f -exec sed -i 'p; s/^deb /deb-src /' '{}' +
+
+RUN echo 'ALL ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/allusers-nopass
 
 # tianon is _really_ lazy, and likes a preseeded bash history
 ENV HOME /root
@@ -48,5 +60,8 @@ RUN cp /etc/skel/.bashrc ~/ \
 # quilt is much amaze: https://wiki.debian.org/UsingQuilt#Using_quilt_with_Debian_source_packages
 ENV QUILT_PATCHES debian/patches
 ENV QUILT_REFRESH_ARGS -p ab --no-timestamps --no-index
+
+# make sure pbuilder-dist uses a sane default mirror
+ENV UBUNTUTOOLS_DEBIAN_MIRROR http://httpredir.debian.org/debian
 
 COPY scripts /tianon
