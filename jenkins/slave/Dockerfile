@@ -1,6 +1,7 @@
 FROM docker:dind
 
 RUN apk add --update \
+		bash \
 		git \
 		openjdk7-jre \
 		openssh \
