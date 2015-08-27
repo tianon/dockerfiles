@@ -1,4 +1,4 @@
-FROM tianon/docker-master:latest
+FROM tianon/docker-master:master
 
 RUN apk add --update \
 		git \

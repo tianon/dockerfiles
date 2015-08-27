@@ -1,4 +1,4 @@
-FROM tianon/docker-master:latest
+FROM tianon/docker-master:master
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN apk add --update \

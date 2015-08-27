@@ -20,9 +20,6 @@ declare -A sha256s=(
 	[master]="$(curl -fsSL "${urls[master]}.sha256" | cut -d' ' -f1)"
 	[experimental]="$(curl -fsSL "${urls[experimental]}.sha256" | cut -d' ' -f1)"
 )
-declare -A tags=(
-	[master]='latest'
-)
 
 for version in "${!versions[@]}"; do
 	(
@@ -32,7 +29,7 @@ for version in "${!versions[@]}"; do
 			s!^(ENV DOCKER_URL) .*!\1 '"${urls[$version]}"'!;
 			s/^(ENV DOCKER_SHA256) .*/\1 '"${sha256s[$version]}"'/;
 			s/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/;
-			s/^(FROM .*docker.*):.*/\1:'"${tags[$version]:-$version}"'/;
+			s/^(FROM .*docker.*):.*/\1:'"$version"'/;
 		' "$version/Dockerfile" "$version"/*/Dockerfile
 	)
 done
