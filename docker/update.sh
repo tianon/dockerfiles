@@ -17,8 +17,8 @@ declare -A urls=(
 	[experimental]="https://experimental.docker.com/builds/Linux/x86_64/docker-${versions[experimental]}"
 )
 declare -A sha256s=(
-	[master]="$(curl -fsSL "${urls[master]}.sha256")"
-	[experimental]="$(curl -fsSL "${urls[experimental]}.sha256")"
+	[master]="$(curl -fsSL "${urls[master]}.sha256" | cut -d' ' -f1)"
+	[experimental]="$(curl -fsSL "${urls[experimental]}.sha256" | cut -d' ' -f1)"
 )
 declare -A tags=(
 	[master]='latest'
