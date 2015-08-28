@@ -11,7 +11,7 @@ versions=( "${versions[@]%/}" )
 
 image='tianon/docker-master'
 for version in "${versions[@]}"; do
-	docker build -t "$image:$version" "$version"
+	docker build -t "$image:$version" --pull "$version"
 	docker build -t "$image:$version-dind" "$version/dind"
 	docker build -t "$image:$version-git" "$version/git"
 	if [ "$version" = 'master' ]; then
