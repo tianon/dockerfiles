@@ -7,7 +7,7 @@ RUN apk add --update \
 
 ENV DOCKER_VERSION 1.9.0-dev
 ENV DOCKER_URL https://master.dockerproject.org/linux/amd64/docker-1.9.0-dev
-ENV DOCKER_SHA256 8def39c763c2590a06a65ca54297690cfef0cebc3abfc225434deffb1bbff335
+ENV DOCKER_SHA256 0efb59a8577305517bac143c8a18c430e3e3f3f931a40ae8d83931d78bf2557b
 
 RUN wget "${DOCKER_URL}" -O /usr/local/bin/docker \
 	&& echo "${DOCKER_SHA256}  /usr/local/bin/docker" | sha256sum -c - \
