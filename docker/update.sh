@@ -4,7 +4,7 @@ set -eo pipefail
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 # "tac|tac" for http://stackoverflow.com/a/28879552/433558
-dindLatest="$(curl -fsSL 'https://github.com/docker/docker/commits/master/hack/dind.atom'| tac|tac | awk -F '[[:space:]]*[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
+dindLatest="$(curl -fsSL 'https://github.com/docker/docker/commits/master/hack/dind.atom'| tac|tac | awk -F ' *[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
 
 #masterCommit="$(curl -fsSL 'https://master.dockerproject.org/commit')"
 
