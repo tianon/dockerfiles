@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
 		dput-ng \
 		equivs \
 		git bzr mercurial subversion \
-		git-buildpackage svn-buildpackage \
+		git-buildpackage git-dpm svn-buildpackage \
 		golang-go \
 		libcrypt-ssleay-perl \
 		libdistro-info-perl \
