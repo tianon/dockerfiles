@@ -12,4 +12,7 @@
 		-v /home/jsmith/downloads/debian.iso:/tmp/debian.iso:ro \
 		-e QEMU_CDROM=/tmp/debian.iso \
 		-e QEMU_BOOT='order=d' \
+		-e QEMU_PORTS='2375 2376' \
 		tianon/qemu
+
+Note: port 22 will always be mapped (regardless of the contents of `QEMU_PORTS`).

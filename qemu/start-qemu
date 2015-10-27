@@ -8,11 +8,13 @@ set -e
 #   QEMU_HDA_SIZE (bytes, suffixes like "G" allowed)
 #   QEMU_CDROM    (filename)
 #   QEMU_BOOT     (-boot)
+#   QEMU_PORTS="xxx[ xxx ...]" (space separated port numbers)
 
 hostArch="$(uname -m)"
 qemuArch="${QEMU_ARCH:-$hostArch}"
 qemu="${QEMU_BIN:-qemu-system-$qemuArch}"
 qemuArgs=()
+qemuPorts=( 22 $QEMU_PORTS )
 
 if [ -e /dev/kvm ]; then
 	qemuArgs+=( -enable-kvm )
@@ -46,9 +48,16 @@ if [ "$QEMU_BOOT" ]; then
 	qemuArgs+=( -boot "$QEMU_BOOT" )
 fi
 
+netArg='user'
+netArg+=",hostname=$(hostname)"
+for port in "${qemuPorts[@]}"; do
+	netArg+=",hostfwd=tcp::$port-:$port"
+	netArg+=",hostfwd=udp::$port-:$port"
+done
+
 qemuArgs+=(
 	-net nic
-	-net user,hostname="$(hostname)",hostfwd=tcp:':22'-':22'
+	-net "$netArg"
 	-vnc ':0'
 	-serial stdio
 	"$@"
