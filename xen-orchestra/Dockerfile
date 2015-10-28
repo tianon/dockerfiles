@@ -1,25 +1,26 @@
-FROM node
+FROM node:0.12
 
-# see https://github.com/vatesfr/xo/blob/master/installation.md
+# see https://github.com/vatesfr/xo/blob/a269af702992616f67b7bcf066eac0a1124ac8bf/doc/installation/manual_installation.md
 
-RUN apt-get update && apt-get install -y ruby-compass
+#RUN apt-get update && apt-get install -y ruby-compass
 
-ENV XO_REF v3.4.0
+WORKDIR /usr/src/xo/server
 
-RUN mkdir -p /usr/src/xo
-WORKDIR /usr/src/xo
-RUN git clone -b $XO_REF git://github.com/vatesfr/xo-server.git
-RUN git clone -b $XO_REF git://github.com/vatesfr/xo-web.git
+ENV XO_REF v4.7.0
 
-RUN cd xo-server && npm install
-RUN cd xo-server && cp config/local.yaml.dist config/local.yaml
+RUN git clone -b "$XO_REF" --single-branch git://github.com/vatesfr/xo-server.git .
+RUN git clone -b "$XO_REF" --single-branch git://github.com/vatesfr/xo-web.git ../web
 
-RUN cd xo-web && npm install
-RUN cd xo-web && ./gulp --production
+RUN set -x \
+	&& npm install \
+	&& npm run build \
+	&& cp sample.config.yaml .xo-server.yaml \
+	&& sed -i "s!#'/': '/path/to/xo-web/dist/'!'/': '../web/dist/'!" .xo-server.yaml
 
-ADD local.yaml /usr/src/xo/xo-server/config/
+RUN set -x \
+	&& cd ../web \
+	&& npm install \
+	&& npm run build
 
 EXPOSE 80
-#CMD ["./xo-server/xo-server"]
-# see https://github.com/vatesfr/xo-server/pull/28
-CMD ["sh", "-eu", "./xo-server/xo-server"]
+CMD ["npm", "start"]
