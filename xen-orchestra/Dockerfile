@@ -13,14 +13,17 @@ RUN git clone -b "$XO_REF" --single-branch git://github.com/vatesfr/xo-web.git .
 
 RUN set -x \
 	&& npm install \
-	&& npm run build \
-	&& cp sample.config.yaml .xo-server.yaml \
-	&& sed -i "s!#'/': '/path/to/xo-web/dist/'!'/': '../web/dist/'!" .xo-server.yaml
+	&& npm run build
 
 RUN set -x \
 	&& cd ../web \
 	&& npm install \
 	&& npm run build
+
+RUN sed " \
+		s!#'/': '/path/to/xo-web/dist/'!'/': '../web/dist/'!; \
+		s!#uri: ''!uri: 'tcp://redis:6379'!; \
+	" sample.config.yaml >.xo-server.yaml
 
 EXPOSE 80
 CMD ["npm", "start"]
