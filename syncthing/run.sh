@@ -16,6 +16,7 @@ docker run -d \
 	-u "$(id -u):$(id -g)" \
 	-v "$HOME:$HOME" \
 	-v "$HOME/.config/syncthing:/home/user/.config/syncthing" \
+	-v /mnt:/mnt \
 	--net host \
 	tianon/syncthing "$@"
 timeout 10s docker logs -f syncthing || true
