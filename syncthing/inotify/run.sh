@@ -16,6 +16,7 @@ docker run -d \
 	-u "$(id -u):$(id -g)" \
 	-v "$HOME:$HOME" \
 	-v "$HOME/.config/syncthing:/home/user/.config/syncthing" \
+	-v /etc:/etc \
 	-v /mnt:/mnt \
 	--net host \
 	tianon/syncthing-inotify "$@"
