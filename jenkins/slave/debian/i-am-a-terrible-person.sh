@@ -2,7 +2,6 @@
 set -e
 
 # start SSHd in the background, like the horrible people we are
-mkdir -p /var/run/sshd
-/usr/sbin/sshd -D &
+/etc/init.d/ssh start
 
 exec dockerd-entrypoint.sh "$@"
