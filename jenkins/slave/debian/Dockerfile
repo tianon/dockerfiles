@@ -9,6 +9,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		e2fsprogs \
 		iptables \
 		xz-utils \
+		\
+		bsdmainutils \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& sed -ri 's/^#?PermitRootLogin[[:space:]].*$/PermitRootLogin yes/g' /etc/ssh/sshd_config
 
