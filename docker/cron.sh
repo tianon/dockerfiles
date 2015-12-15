@@ -9,6 +9,6 @@ if git commit -m 'Run docker/update.sh' .; then
 	git push
 fi
 
-docker pull -a tianon/docker-master
+#docker pull -a tianon/docker-master
 ./build.sh
 ./push.sh
