@@ -4,7 +4,7 @@ RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		ca-certificates curl \
 		\
-		git \
+		git openssh-client \
 	&& rm -rf /var/lib/apt/lists/*
 
 # grab gosu for easy step-down from root
