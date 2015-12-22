@@ -10,11 +10,11 @@ dindLatest="$(curl -fsSL 'https://github.com/docker/docker/commits/master/hack/d
 
 declare -A versions=(
 	[master]="$(curl -fsSL 'https://master.dockerproject.org/version')"
-	[experimental]="$(curl -fsSL 'https://experimental.docker.com/latest')"
+	[experimental]="$(curl -fsSL 'http://experimental.docker.com.s3.amazonaws.com/latest')"
 )
 declare -A urls=(
 	[master]="https://master.dockerproject.org/linux/amd64/docker-${versions[master]}"
-	[experimental]="https://experimental.docker.com/builds/Linux/x86_64/docker-${versions[experimental]}"
+	[experimental]="http://experimental.docker.com.s3.amazonaws.com/builds/Linux/x86_64/docker-${versions[experimental]}"
 )
 declare -A sha256s=(
 	[master]="$(curl -fsSL "${urls[master]}.sha256" | cut -d' ' -f1)"
