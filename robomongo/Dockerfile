@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -yq \
 	libqt5gui5
 
 RUN mkdir /usr/share/applications && \
-	curl -L http://robomongo.org/files/linux/robomongo-0.8.4-RC2-x86_64.deb -o /robomongo.deb && \
+	curl -L http://app.robomongo.org/files/linux/robomongo-0.8.5-x86_64.deb -o /robomongo.deb && \
 	{ dpkg -i /robomongo.deb || apt-get install -yq -f ;} && \
 	rm /robomongo.deb || true
 
