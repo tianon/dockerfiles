@@ -20,5 +20,8 @@ ENV LANG en_US.utf8
 RUN mkdir -p "$PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR" && chmod -R a+rwX "$PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR"
 VOLUME $PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR
 
+COPY docker-entrypoint.sh /
+
 EXPOSE 32400
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/usr/lib/plexmediaserver/Plex Media Server"]
