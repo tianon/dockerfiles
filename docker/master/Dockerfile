@@ -6,7 +6,7 @@ RUN apk add --update \
 
 ENV DOCKER_VERSION 1.10.0-dev
 ENV DOCKER_URL https://master.dockerproject.org/linux/amd64/docker-1.10.0-dev
-ENV DOCKER_SHA256 6595f33de63f49a9b4a74fc76d1fe6759237e6abcaa83d1269eeaef0fb73f0f2
+ENV DOCKER_SHA256 66045538c74af6d6aaeba53d2a09a6bd924d281df4ccaf9a3be6af51a2fb5ceb
 
 RUN curl -fSL "${DOCKER_URL}" -o /usr/local/bin/docker \
 	&& echo "${DOCKER_SHA256}  /usr/local/bin/docker" | sha256sum -c - \
