@@ -7,10 +7,11 @@ RUN dpkg-divert --local --rename /usr/bin/xdg-open \
 	&& { \
 		echo '#!/bin/bash'; \
 		echo 'set -e'; \
+		echo 'exec &> /proc/1/fd/1'; \
 		echo 'echo'; \
 		echo 'echo --- WEB BROWSER ---'; \
 		echo 'echo'; \
-		echo 'echo "" "$@"'; \
+		echo 'echo "  $@"'; \
 		echo 'echo'; \
 		echo 'echo'; \
 	} > /usr/bin/xdg-open \
