@@ -45,3 +45,12 @@ docker run -dit \
 	tianon/nylas-sync-engine \
 	inbox-start
 ```
+
+## Auth
+
+```console
+$ docker run -it --rm \
+	--link nylas-sync-mysql:mysql \
+	tianon/nylas-sync-engine \
+	inbox-auth jsmith@gmail.com
+```
