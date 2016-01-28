@@ -1,0 +1,53 @@
+{
+    "DATABASE_HOSTS": [
+        {
+            "HOSTNAME": "mysql",
+            "PORT": 3306,
+            "SHARDS": [
+                {
+                    "ID": 0,
+                    "SCHEMA_NAME": "inbox",
+                    "OPEN": true
+                },
+                {
+                    "ID": 1,
+                    "SCHEMA_NAME": "inbox_1",
+                    "OPEN": true
+                }
+            ]
+        }
+    ],
+
+    "SYNC_STEAL_ACCOUNTS": true,
+
+    "DB_POOL_SIZE": 25,
+    "DB_POOL_MAX_OVERFLOW": 5,
+
+    "LOGDIR": "/var/log/inboxapp",
+    "LOGLEVEL": 10,
+
+    "REDIS_HOSTNAME": "redis",
+    "REDIS_PORT": 6379,
+
+    "ACCOUNT_QUEUE_REDIS_HOSTNAME": "redis",
+    "ACCOUNT_QUEUE_REDIS_DB": 3,
+
+    "BASE_ALIVE_THRESHOLD": 480,
+    "CONTACTS_ALIVE_THRESHOLD": 480,
+    "EVENTS_ALIVE_THRESHOLD": 480,
+    "EAS_THROTTLED_ALIVE_THRESHOLD": 600,
+    "EAS_PING_ALIVE_THRESHOLD": 780,
+
+    "GOOGLE_OAUTH_REDIRECT_URI": "urn:ietf:wg:oauth:2.0:oob",
+    "MS_LIVE_OAUTH_REDIRECT_URI": "https://login.live.com/oauth20_desktop.srf",
+
+    "STORE_MESSAGES_ON_S3": false,
+    "MSG_PARTS_DIRECTORY": "/var/lib/inboxapp/parts",
+
+    "CALENDAR_POLL_FREQUENCY": 300,
+    "EMAIL_EXCEPTIONS": false,
+    "ENCRYPT_SECRETS": false,
+    "DEBUG_CONSOLE_ON": true,
+
+    "FEATURE_FLAGS": "ical_autoimport"
+}
