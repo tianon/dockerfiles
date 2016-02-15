@@ -1,0 +1,45 @@
+FROM buildpack-deps:jessie-curl
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+		file \
+		g++ \
+		gcc \
+		git \
+		libffi-dev \
+		liblua5.2-dev \
+		libmysqlclient-dev \
+		libpython-dev \
+		libsodium-dev \
+		libssl-dev \
+		libxslt1-dev \
+		pkg-config \
+		python-pip \
+	&& rm -rf /var/lib/apt/lists/*
+# tell pynacl to use system libsodium
+ENV SODIUM_INSTALL system
+
+WORKDIR /usr/src/sync-engine
+
+#ENV SYNC_VERSION v0.3.0 # 2014 :'(
+ENV SYNC_VERSION 9ed320220f292c0acb360d5ac0158e80ea8b6f03
+
+RUN curl -fSL "https://github.com/nylas/sync-engine/archive/$SYNC_VERSION.tar.gz" -o sync.tar.gz \
+	&& tar -xzf sync.tar.gz --strip-components=1 \
+	&& rm sync.tar.gz
+
+# https://github.com/eventable/vobject/issues/2
+RUN sed -i 's/^vobject==0.8.1c/vobject==0.8.2/' requirements.txt
+
+# ugh, NameError: name 'PROTOCOL_SSLv3' is not defined
+RUN sed -i 's/^gevent==1.0.1/gevent==1.1rc3/' requirements.txt
+
+RUN pip install -r requirements.txt
+
+RUN pip install .
+
+COPY config.json secrets.yml /etc/inboxapp/
+
+USER 1000:1000
+COPY entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["bash"] # TODO inbox-api or inbox-start
