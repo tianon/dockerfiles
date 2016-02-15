@@ -21,14 +21,11 @@ ENV SODIUM_INSTALL system
 WORKDIR /usr/src/sync-engine
 
 #ENV SYNC_VERSION v0.3.0 # 2014 :'(
-ENV SYNC_VERSION 9ed320220f292c0acb360d5ac0158e80ea8b6f03
+ENV SYNC_VERSION d715f4c7c2869b1e51f92af47908a9e011ae8aea
 
 RUN curl -fSL "https://github.com/nylas/sync-engine/archive/$SYNC_VERSION.tar.gz" -o sync.tar.gz \
 	&& tar -xzf sync.tar.gz --strip-components=1 \
 	&& rm sync.tar.gz
-
-# https://github.com/eventable/vobject/issues/2
-RUN sed -i 's/^vobject==0.8.1c/vobject==0.8.2/' requirements.txt
 
 # ugh, NameError: name 'PROTOCOL_SSLv3' is not defined
 RUN sed -i 's/^gevent==1.0.1/gevent==1.1rc3/' requirements.txt
