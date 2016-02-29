@@ -15,7 +15,7 @@ ENV PHPMYADMIN_VERSION 4.5.5
 RUN set -x \
 	&& curl -fsSL "https://files.phpmyadmin.net/phpMyAdmin/${PHPMYADMIN_VERSION}/phpMyAdmin-${PHPMYADMIN_VERSION}-english.tar.xz" -o phpmyadmin.tar.xz \
 	&& curl -fsSL "https://files.phpmyadmin.net/phpMyAdmin/${PHPMYADMIN_VERSION}/phpMyAdmin-${PHPMYADMIN_VERSION}-english.tar.xz.asc" -o phpmyadmin.tar.xz.asc \
-	&& gpg --verify phpmyadmin.tar.xz.asc \
+	&& gpg --batch --verify phpmyadmin.tar.xz.asc phpmyadmin.tar.xz \
 	&& tar -xvf phpmyadmin.tar.xz --strip-components=1 \
 	&& rm -v phpmyadmin.tar.xz* \
 	&& chown -R www-data:www-data .
