@@ -130,7 +130,7 @@ extractTarball() {
 	rsyncArgs=()
 	for exclude in "${excludes[@]}"; do
 		if [ "${exclude#$destDir/}" != "$exclude" ]; then
-			rsyncArgs+=( --exclude="${exclude#$destDir/}" )
+			rsyncArgs+=( --exclude="/${exclude#$destDir/}" )
 		fi
 	done
 	

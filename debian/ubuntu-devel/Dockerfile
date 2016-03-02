@@ -1,4 +1,4 @@
-FROM ubuntu-debootstrap:devel
+FROM ubuntu:xenial
 
 # let's make apt list package versions, since those are handy during devel
 RUN echo 'APT::Get::Show-Versions "1";' > /etc/apt/apt.conf.d/verbose
@@ -11,11 +11,12 @@ RUN apt-get update && apt-get install -y \
 		build-essential \
 		debian-keyring \
 		devscripts \
-		dh-make dh-make-golang \
+		dh-make \
 		dput-ng \
 		equivs \
 		git bzr mercurial subversion \
-		git-buildpackage svn-buildpackage \
+		git-buildpackage git-dpm svn-buildpackage \
+		golang-go \
 		libcrypt-ssleay-perl \
 		libdistro-info-perl \
 		libfile-fcntllock-perl \
@@ -31,6 +32,13 @@ RUN apt-get update && apt-get install -y \
 		ubuntu-dev-tools pbuilder \
 		--no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
+
+# get dh-make-golang from Git since it's so rapidly changing
+RUN mkdir -p /go \
+	&& export GOPATH=/go \
+	&& go get -v github.com/debian/dh-make-golang \
+	&& mv /go/bin/dh-make-golang /usr/local/bin/ \
+	&& rm -rf /go
 
 # need deb-src for compiling packages
 RUN find /etc/apt/sources.list* -type f -exec sed -i 'p; s/^deb /deb-src /' '{}' +
