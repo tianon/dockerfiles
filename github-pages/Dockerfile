@@ -1,14 +1,15 @@
-FROM debian:sid
+# https://pages.github.com/versions/
+FROM ruby:2.1-slim
 
-RUN apt-get update && apt-get install -y \
-		build-essential \
-		python-pygments \
-		ruby \
-		ruby-dev
+RUN apt-get update && apt-get install -y --no-install-recommends \
+		gcc make patch \
+		nodejs python-pygments \
+	&& rm -rf /var/lib/apt/lists/*
 
-RUN gem install --no-rdoc --no-ri github-pages
+RUN gem install github-pages
 
-ONBUILD ADD . /blog
-ONBUILD WORKDIR /blog
-ONBUILD EXPOSE 4000
-ONBUILD CMD ["jekyll", "serve"]
+WORKDIR /blog
+EXPOSE 4000
+CMD ["jekyll", "serve", "--host", "0.0.0.0"]
+
+ONBUILD COPY . /blog
