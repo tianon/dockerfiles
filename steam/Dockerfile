@@ -1,6 +1,6 @@
 FROM tianon/steamos
 
-RUN apt-get update && apt-get install -yq steam-launcher
+RUN apt-get update && apt-get install -y steam-launcher zenity && rm -rf /var/lib/apt/lists/*
 
 # add the sources.list stuff that steam will at first start
 RUN echo 'deb [arch=amd64,i386] http://repo.steampowered.com/steam precise steam' > /etc/apt/sources.list.d/steam.list && \
