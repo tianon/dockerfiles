@@ -1,16 +1,19 @@
-FROM alpine:3.2
+FROM alpine:3.3
 
-RUN apk add --update \
-		curl \
-	&& rm -rf /var/cache/apk/*
+RUN apk add --no-cache curl
 
 ENV DOCKER_VERSION 1.11.0-dev
-ENV DOCKER_URL https://master.dockerproject.org/linux/amd64/docker-1.11.0-dev
-ENV DOCKER_SHA256 78212d193b22f6f8088bc8a81e55187fd875955aa68b36983adc3f22f60cfbaa
+ENV DOCKER_URL https://master.dockerproject.org/linux/amd64/docker-1.11.0-dev.tgz
+ENV DOCKER_SHA256 7f236816c481a981146360060b092a63d968dbcf8624e9182b033f9cbb6c9c31
 
-RUN curl -fSL "${DOCKER_URL}" -o /usr/local/bin/docker \
-	&& echo "${DOCKER_SHA256}  /usr/local/bin/docker" | sha256sum -c - \
-	&& chmod +x /usr/local/bin/docker
+RUN set -x \
+	&& curl -fSL "${DOCKER_URL}" -o docker.tgz \
+	&& echo "${DOCKER_SHA256} *docker.tgz" | sha256sum -c - \
+	&& tar -xzvf docker.tgz \
+	&& mv docker/* /usr/local/bin/ \
+	&& rmdir docker \
+	&& rm docker.tgz \
+	&& docker -v
 
 COPY docker-entrypoint.sh /usr/local/bin/
 

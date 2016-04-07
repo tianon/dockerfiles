@@ -13,8 +13,8 @@ declare -A versions=(
 	[experimental]="$(curl -fsSL 'http://experimental.docker.com.s3.amazonaws.com/latest')"
 )
 declare -A urls=(
-	[master]="https://master.dockerproject.org/linux/amd64/docker-${versions[master]}"
-	[experimental]="http://experimental.docker.com.s3.amazonaws.com/builds/Linux/x86_64/docker-${versions[experimental]}"
+	[master]="https://master.dockerproject.org/linux/amd64/docker-${versions[master]}.tgz"
+	[experimental]="http://experimental.docker.com.s3.amazonaws.com/builds/Linux/x86_64/docker-${versions[experimental]}.tgz"
 )
 declare -A sha256s=(
 	[master]="$(curl -fsSL "${urls[master]}.sha256" | cut -d' ' -f1)"
