@@ -1,6 +1,5 @@
 FROM tianon/docker-master:master
 
-RUN apk add --update \
+RUN apk add --no-cache \
 		git \
-		openssh-client \
-	&& rm -rf /var/cache/apk/*
+		openssh-client
