@@ -2,9 +2,9 @@ FROM alpine:3.3
 
 RUN apk add --no-cache curl
 
-ENV DOCKER_VERSION 1.11.0-dev
-ENV DOCKER_URL https://master.dockerproject.org/linux/amd64/docker-1.11.0-dev.tgz
-ENV DOCKER_SHA256 55d7b9a3e22faafc16abf2a8e3cf0c6e3803cd995ea880da77fa3d5384c07b61
+ENV DOCKER_VERSION 1.12.0-dev
+ENV DOCKER_URL https://master.dockerproject.org/linux/amd64/docker-1.12.0-dev.tgz
+ENV DOCKER_SHA256 95dc7e53c2edaa73a926ec0ea013bc2c1c3a991a4fb38b09d118e3d455fbb333
 
 RUN set -x \
 	&& curl -fSL "${DOCKER_URL}" -o docker.tgz \
