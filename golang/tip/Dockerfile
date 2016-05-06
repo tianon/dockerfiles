@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV GOLANG_BRANCH master
-ENV GOLANG_COMMIT c165988360457553ccbfa4a09919de3262a4438a
+ENV GOLANG_COMMIT b90cb3f4716d3fede57bf8e798d27406fba5c294
 ENV GOLANG_SRC_URL https://github.com/golang/go/archive/$GOLANG_COMMIT.tar.gz
 
 ENV GOLANG_BOOTSTRAP_VERSION 1.6.2
