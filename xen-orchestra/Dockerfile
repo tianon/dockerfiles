@@ -1,4 +1,4 @@
-FROM node:0.12
+FROM node:4
 
 # see https://github.com/vatesfr/xo/blob/a269af702992616f67b7bcf066eac0a1124ac8bf/doc/installation/manual_installation.md
 
@@ -6,10 +6,11 @@ FROM node:0.12
 
 WORKDIR /usr/src/xo/server
 
-ENV XO_REF v4.7.0
+ENV XO_SERVER_REF v4.16.1
+ENV XO_WEB_REF v4.16.0
 
-RUN git clone -b "$XO_REF" --single-branch git://github.com/vatesfr/xo-server.git .
-RUN git clone -b "$XO_REF" --single-branch git://github.com/vatesfr/xo-web.git ../web
+RUN git clone -b "$XO_SERVER_REF" --depth 1 https://github.com/vatesfr/xo-server.git .
+RUN git clone -b "$XO_WEB_REF" --depth 1 https://github.com/vatesfr/xo-web.git ../web
 
 RUN set -x \
 	&& npm install \
@@ -22,8 +23,8 @@ RUN set -x \
 
 RUN sed " \
 		s!#'/': '/path/to/xo-web/dist/'!'/': '../web/dist/'!; \
-		s!#uri: ''!uri: 'tcp://redis:6379'!; \
-	" sample.config.yaml >.xo-server.yaml
+		s!#uri: ''!uri: 'redis://redis:6379'!; \
+	" sample.config.yaml > .xo-server.yaml
 
 EXPOSE 80
 CMD ["npm", "start"]
