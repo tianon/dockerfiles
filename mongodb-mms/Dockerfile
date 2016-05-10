@@ -1,17 +1,20 @@
-FROM debian:wheezy
+FROM debian:jessie
 
-RUN apt-get update && apt-get install -y curl logrotate
+RUN apt-get update && apt-get install -y wget logrotate && rm -rf /var/lib/apt/lists/*
 
-ENV MMS_VERSION 3.4.0.190-1
+ENV MMS_VERSION 4.2.0.263-1
 
 # see https://mms.mongodb.com/settings/monitoring-agent
 # click on "Ubuntu 12.04+"
-RUN curl -sSL https://mms.mongodb.com/download/agent/monitoring/mongodb-mms-monitoring-agent_${MMS_VERSION}_amd64.deb -o mms.deb \
+RUN wget -O mms.deb "https://mms.mongodb.com/download/agent/monitoring/mongodb-mms-monitoring-agent_${MMS_VERSION}_amd64.deb" \
 	&& dpkg -i mms.deb \
 	&& rm mms.deb
 
-ADD docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
+# missing dep in mms.deb
+RUN apt-get update && apt-get install -y libsasl2-2 && rm -rf /var/lib/apt/lists/*
+
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 USER mongodb-mms-agent
 CMD ["mongodb-mms-monitoring-agent", "-conf", "/etc/mongodb-mms/monitoring-agent.config"]
