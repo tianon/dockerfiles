@@ -6,7 +6,7 @@ ENV MMS_VERSION 4.2.0.263-1
 
 # see https://mms.mongodb.com/settings/monitoring-agent
 # click on "Ubuntu 12.04+"
-RUN wget -O mms.deb "https://mms.mongodb.com/download/agent/monitoring/mongodb-mms-monitoring-agent_${MMS_VERSION}_amd64.deb" \
+RUN wget -O mms.deb "https://cloud.mongodb.com/download/agent/monitoring/mongodb-mms-monitoring-agent_${MMS_VERSION}_$(dpkg --print-architecture).ubuntu1604.deb" \
 	&& dpkg -i mms.deb \
 	&& rm mms.deb
 
