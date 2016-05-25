@@ -11,7 +11,7 @@ RUN apk add --no-cache \
 
 # TODO aufs-tools
 
-ENV DIND_COMMIT 81aa1b507f51901eafcfaad70a656da376cf937d
+ENV DIND_COMMIT 27afaf3774d7f46028ab72192d4c1b65f8d88b87
 
 RUN wget "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind" -O /usr/local/bin/dind \
 	&& chmod +x /usr/local/bin/dind
