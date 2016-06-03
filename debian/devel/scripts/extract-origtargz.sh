@@ -160,7 +160,8 @@ extractTarball() {
 }
 
 echo -n "cleaning out '$dest' (excluding '.git', '.svn', and '$debian') ... "
-find "$dest" -mindepth 1 \( -name '.git' -o -name '.svn' -o -path "$debian" \) -prune -o -exec rm -rf '{}' +
+find "$dest" -mindepth 1 \( -name '.git' -o -name '.svn' -o -path "$debian" \) -prune -o -not -type d -exec rm -f '{}' +
+find "$dest" -depth -mindepth 1 -not \( -name '.git' -o -path '*/.git/*' -o -name '.svn' -o -path '*/.svn/*' -o -path "$debian" -o -path "$debian/*" \) -exec rmdir '{}' +
 echo 'done'
 
 extractTarball "$origTarball" "$dest" "$debian"
