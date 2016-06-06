@@ -15,8 +15,8 @@ for version in "${versions[@]}"; do
 	docker build -t "$image:$version-dind" "$version/dind"
 	docker build -t "$image:$version-git" "$version/git"
 	if [ "$version" = 'master' ]; then
-		docker tag -f "$image:$version" "$image:latest"
-		docker tag -f "$image:$version-dind" "$image:dind"
-		docker tag -f "$image:$version-git" "$image:git"
+		docker tag "$image:$version" "$image:latest"
+		docker tag "$image:$version-dind" "$image:dind"
+		docker tag "$image:$version-git" "$image:git"
 	fi
 done
