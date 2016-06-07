@@ -1,6 +1,9 @@
-FROM alpine:3.3
+FROM alpine:3.4
 
-RUN apk add --no-cache curl
+RUN apk add --no-cache \
+		ca-certificates \
+		curl \
+		openssl
 
 ENV DOCKER_VERSION 1.12.0-dev
 ENV DOCKER_URL http://experimental.docker.com.s3.amazonaws.com/builds/Linux/x86_64/docker-1.12.0-dev.tgz

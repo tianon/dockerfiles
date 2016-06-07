@@ -1,9 +1,6 @@
-FROM alpine:3.2
+FROM alpine:3.4
 
-RUN apk add --update \
-		ca-certificates \
-		python3 \
-	&& rm -rf /var/cache/apk/*
+RUN apk add --no-cache ca-certificates python3
 
 ENV SPEEDTEST_CLI_VERSION 0.3.4
 
