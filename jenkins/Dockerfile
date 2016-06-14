@@ -19,7 +19,7 @@ RUN curl -o /usr/local/bin/gosu -fSL "https://github.com/tianon/gosu/releases/do
 RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 150FDE3F7787E7D11EF4E12A9B7D32F2D50582E6
 RUN echo 'deb http://pkg.jenkins-ci.org/debian binary/' > /etc/apt/sources.list.d/jenkins.list
 
-ENV JENKINS_VERSION 2.8
+ENV JENKINS_VERSION 2.9
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		jenkins=${JENKINS_VERSION} \
