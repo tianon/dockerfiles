@@ -7,7 +7,7 @@ RUN apk add --no-cache \
 
 ENV DOCKER_VERSION 1.12.0-rc3
 ENV DOCKER_URL http://experimental.docker.com.s3.amazonaws.com/builds/Linux/x86_64/docker-1.12.0-rc3.tgz
-ENV DOCKER_SHA256 c3ebffee44f91bc2bae4bb114fcae4211292f0a2f1a5887375eb04368467ef76
+ENV DOCKER_SHA256 f51cb6dad1b66665a669620e7c40dff4628b6ffc56dcfa8cdd81389cc5c81c81
 
 RUN set -x \
 	&& curl -fSL "${DOCKER_URL}" -o docker.tgz \
