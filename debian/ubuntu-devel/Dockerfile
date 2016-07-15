@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:yakkety
 
 # let's make apt list package versions, since those are handy during devel
 RUN echo 'APT::Get::Show-Versions "1";' > /etc/apt/apt.conf.d/verbose
