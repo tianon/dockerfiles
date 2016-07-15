@@ -7,7 +7,7 @@ RUN apk add --no-cache \
 
 ENV DOCKER_VERSION 1.12.0-dev
 ENV DOCKER_URL https://master.dockerproject.org/linux/amd64/docker-1.12.0-dev.tgz
-ENV DOCKER_SHA256 2f98dcaa93a421f4a3c1b0cf53dc1fb87f4f652d11f89dda260a524160aeead6
+ENV DOCKER_SHA256 5f8f026eef3d9cdfb01e3ab6aa560f80984cc7bb70774a639d40caec7d2f1c62
 
 RUN set -x \
 	&& curl -fSL "${DOCKER_URL}" -o docker.tgz \
