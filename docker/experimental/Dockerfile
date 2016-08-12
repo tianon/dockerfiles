@@ -5,9 +5,9 @@ RUN apk add --no-cache \
 		curl \
 		openssl
 
-ENV DOCKER_VERSION 1.12.0
-ENV DOCKER_URL http://experimental.docker.com.s3.amazonaws.com/builds/Linux/x86_64/docker-1.12.0.tgz
-ENV DOCKER_SHA256 04fbc9ee331c8bafadd02bb8065c4e0e713fa2747f070f77c0b630db1da18e10
+ENV DOCKER_VERSION 1.12.1-rc1
+ENV DOCKER_URL http://experimental.docker.com.s3.amazonaws.com/builds/Linux/x86_64/docker-1.12.1-rc1.tgz
+ENV DOCKER_SHA256 c75c1db6f09433284a1ecaa6402a8d128bde8240114fce7f0cb942d1d67ac0f5
 
 RUN set -x \
 	&& curl -fSL "${DOCKER_URL}" -o docker.tgz \
