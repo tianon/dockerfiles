@@ -3,7 +3,7 @@ FROM buildpack-deps:jessie-curl
 # /var/lib/dpkg/info/plexmediaserver.postinst: 39: /var/lib/dpkg/info/plexmediaserver.postinst: start: not found
 RUN ln -s /bin/true /usr/local/bin/start
 
-ENV PLEX_URL https://downloads.plex.tv/plex-media-server/0.9.15.2.1663-7efd046/plexmediaserver_0.9.15.2.1663-7efd046_amd64.deb
+ENV PLEX_URL https://downloads.plex.tv/plex-media-server/1.1.4.2757-24ffd60/plexmediaserver_1.1.4.2757-24ffd60_amd64.deb
 
 RUN curl -fSL "$PLEX_URL" -o /tmp/plex.deb \
 	&& dpkg --unpack /tmp/plex.deb \
