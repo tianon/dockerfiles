@@ -1,0 +1,28 @@
+language: bash
+services: docker
+
+env:
+  - VERSION=4.4
+  - VERSION=4.3
+  - VERSION=4.2
+  - VERSION=4.1
+  - VERSION=4.0
+  - VERSION=3.2
+  - VERSION=3.1
+
+install:
+  - git clone https://github.com/docker-library/official-images.git ~/official-images
+
+before_script:
+  - env | sort
+  - cd "$VERSION"
+  - image="bash:$VERSION"
+
+script:
+  - docker build -t "$image" .
+  - ~/official-images/test/run.sh "$image"
+
+after_script:
+  - docker images
+
+# vim:set et ts=2 sw=2:
