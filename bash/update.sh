@@ -10,7 +10,11 @@ fi
 versions=( "${versions[@]%/}" )
 
 ftpBase='ftp://ftp.gnu.org/gnu/bash'
-allBase="$(curl --silent --list-only "$ftpBase/")"
+allBaseVersions="$(
+	curl --silent --list-only "$ftpBase/" \
+		| grep -E '^bash-[0-9].*\.tar\.gz$' \
+		| sed -r 's/^bash-|\.tar\.gz$//g'
+)"
 
 travisEnv=
 for version in "${versions[@]}"; do
@@ -18,9 +22,8 @@ for version in "${versions[@]}"; do
 
 	IFS=$'\n'
 	allVersions=( $(
-		echo "$allBase" \
-			| grep '^bash-'"$bashVersion"'.*\.tar\.gz$' \
-			| sed -r 's/^bash-|\.tar\.gz$//g' \
+		echo "$allBaseVersions" \
+			| grep -E "^$bashVersion(\.|\$)" \
 			| grep -vE -- '-(rc|beta)' \
 			| sort -rV
 	) )
