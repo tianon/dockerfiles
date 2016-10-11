@@ -7,6 +7,8 @@ RUN apk add --update \
 		openssh \
 	&& rm -rf /var/cache/apk/*
 
+RUN sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+
 RUN ssh-keygen -A
 RUN echo 'root:docker' | chpasswd
 
