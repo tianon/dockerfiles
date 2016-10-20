@@ -24,7 +24,7 @@ RUN { \
 RUN ln -sf /dev/stdout /var/log/apt-cacher-ng/apt-cacher.out \
 	&& ln -sf /dev/stderr /var/log/apt-cacher-ng/apt-cacher.err
 
-RUN echo 'http://httpredir.debian.org/debian/' > /etc/apt-cacher-ng/backends_debian
+RUN echo 'http://deb.debian.org/debian/' > /etc/apt-cacher-ng/backends_debian
 RUN echo 'http://archive.ubuntu.com/ubuntu/' > /etc/apt-cacher-ng/backends_ubuntu
 
 EXPOSE 80

@@ -71,6 +71,6 @@ ENV QUILT_PATCHES debian/patches
 ENV QUILT_REFRESH_ARGS -p ab --no-timestamps --no-index
 
 # make sure pbuilder-dist uses a sane default mirror
-ENV UBUNTUTOOLS_DEBIAN_MIRROR http://httpredir.debian.org/debian
+ENV UBUNTUTOOLS_DEBIAN_MIRROR http://deb.debian.org/debian
 
 COPY scripts /tianon
