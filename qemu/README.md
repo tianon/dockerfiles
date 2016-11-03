@@ -16,3 +16,7 @@
 		tianon/qemu
 
 Note: port 22 will always be mapped (regardless of the contents of `QEMU_PORTS`).
+
+For supplying additional arguments, use a command of `start-qemu <args>`. For example, to use `-curses`, one would `docker run ... tianon/qemu start-qemu -curses`.
+
+For UEFI support, [the `ovmf` package](https://packages.debian.org/sid/ovmf) is installed, which can be utilized most easily by supplying `--bios /usr/share/ovmf/OVMF.fd`.
