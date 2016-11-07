@@ -1,8 +1,9 @@
-FROM debian:jessie
+FROM debian:stretch
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		ca-certificates curl wget \
+		gnupg2 dirmngr \
 		\
 		git openssh-client \
 	&& rm -rf /var/lib/apt/lists/*
@@ -31,7 +32,12 @@ RUN set -x \
 	&& chmod +x /usr/local/bin/tini \
 	&& tini -h
 
-RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 150FDE3F7787E7D11EF4E12A9B7D32F2D50582E6
+# workaround "apt-key adv --recv-keys" hanging in stretch and above
+ENV JENKINS_GPG_KEY 150FDE3F7787E7D11EF4E12A9B7D32F2D50582E6
+RUN export GNUPGHOME="$(mktemp -d)" \
+	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$JENKINS_GPG_KEY" \
+	&& gpg --export "$JENKINS_GPG_KEY" | apt-key add - \
+	&& rm -r "$GNUPGHOME"
 RUN echo 'deb http://pkg.jenkins-ci.org/debian binary/' > /etc/apt/sources.list.d/jenkins.list
 
 ENV JENKINS_VERSION 2.29
