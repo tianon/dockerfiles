@@ -1,4 +1,4 @@
-FROM perl
+FROM perl:5.22
 
 # secure by default ♥ (thanks to sri!)
 ENV PERL_CPANM_OPT --verbose --mirror https://cpan.metacpan.org --mirror-only
