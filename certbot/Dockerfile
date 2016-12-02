@@ -27,5 +27,6 @@ RUN set -ex; \
 	apk del .build-deps
 
 #VOLUME /etc/letsencrypt
+VOLUME /var/lib/letsencrypt
 
 ENTRYPOINT ["certbot"]
