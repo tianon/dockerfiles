@@ -28,5 +28,6 @@ RUN set -ex; \
 
 #VOLUME /etc/letsencrypt
 VOLUME /var/lib/letsencrypt
+#VOLUME /var/log/letsencrypt
 
 ENTRYPOINT ["certbot"]
