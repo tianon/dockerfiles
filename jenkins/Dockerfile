@@ -40,7 +40,7 @@ RUN export GNUPGHOME="$(mktemp -d)" \
 	&& rm -r "$GNUPGHOME"
 RUN echo 'deb http://pkg.jenkins-ci.org/debian binary/' > /etc/apt/sources.list.d/jenkins.list
 
-ENV JENKINS_VERSION 2.36
+ENV JENKINS_VERSION 2.37
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		jenkins=${JENKINS_VERSION} \
