@@ -7,6 +7,7 @@ For example:
 ```console
 $ docker run -dit \
 	--name google-cloud-print-connector \
+	--restart always \
 	--net host \
 	-v /path/to/config/dir:/config \
 	-w /config \
