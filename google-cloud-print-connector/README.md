@@ -12,7 +12,7 @@ $ docker run -dit \
 	-v /var/run/dbus:/var/run/dbus:ro \
 	-v /path/to/config/dir:/config \
 	-w /config \
-	--user 1000 \
+	--user 1000:1000 \
 	tianon/google-cloud-print-connector \
 	gcp-cups-connector --log-to-console
 ```
