@@ -9,8 +9,10 @@ $ docker run -dit \
 	--name google-cloud-print-connector \
 	--restart always \
 	--net host \
+	-v /var/run/dbus:/var/run/dbus:ro \
 	-v /path/to/config/dir:/config \
 	-w /config \
+	--user 1000 \
 	tianon/google-cloud-print-connector \
 	gcp-cups-connector --log-to-console
 ```
