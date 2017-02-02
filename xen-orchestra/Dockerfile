@@ -5,9 +5,9 @@ FROM node:4
 WORKDIR /usr/src/xo/server
 
 # https://github.com/vatesfr/xo-server/releases
-ENV XO_SERVER_REF v5.4.0
+ENV XO_SERVER_REF v5.6.1
 # https://github.com/vatesfr/xo-web/releases
-ENV XO_WEB_REF v5.4.0
+ENV XO_WEB_REF v5.6.0
 
 RUN git clone -b "$XO_SERVER_REF" --depth 1 https://github.com/vatesfr/xo-server.git .
 RUN git clone -b "$XO_WEB_REF" --depth 1 https://github.com/vatesfr/xo-web.git ../web
