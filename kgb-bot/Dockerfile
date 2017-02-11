@@ -7,6 +7,8 @@ RUN apt-get update \
 	&& cp -v /etc/kgb-bot/kgb.conf /etc/kgb-bot/kgb.conf.orig
 
 COPY kgb.conf /etc/kgb-bot/kgb.conf
+# "/etc/kgb-bot/kgb.conf is world-readable" :'(
+RUN chmod 0640 /etc/kgb-bot/kgb.conf
 
 EXPOSE 5391
 
