@@ -1,6 +1,7 @@
 Usage:
 
 Either bind-mount or `COPY` into `/etc/kgb-bot/kgb.conf.d/some-file.conf` a configuration similar to the following:
+
 ```yaml
 ---
 repositories:
@@ -12,7 +13,7 @@ repositories:
     # private: yes
 # Some witty answer for people that talk to the bot
 #smart_answers:
-#  - "I wont speak with you!"
+#  - "I won't speak with you!"
 #  - "Do not disturb!"
 #  - "Leave me alone, I am buzy!"
 # Admins are allowed some special !commands (currently only !version)
