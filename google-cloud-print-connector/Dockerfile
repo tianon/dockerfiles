@@ -36,8 +36,8 @@ RUN set -ex; \
 	apk del .build-deps
 
 # https://github.com/google/cloud-print-connector/releases
-#ENV GCPC_VERSION 2016.01.02
-ENV GCPC_VERSION d353d01
+ENV GCPC_VERSION v1.1
+#ENV GCPC_VERSION d353d01
 # https://github.com/google/cloud-print-connector/commit/d353d01
 ENV GCPC_IMPORT github.com/google/cloud-print-connector
 
