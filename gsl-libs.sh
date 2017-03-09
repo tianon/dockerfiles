@@ -56,8 +56,12 @@ versionedTagsEntry() {
 	local fullVersion="$1"; shift
 	local aliases=( "$@" )
 
+	# replace "~" with "-"
 	local tilde='~'
 	fullVersion="${fullVersion//$tilde/-}"
+
+	# remove any leading "v"
+	fullVersion="${fullVersion#v}"
 
 	local versionAliases=()
 	while [ "${fullVersion%[.-]*}" != "$fullVersion" ]; do
