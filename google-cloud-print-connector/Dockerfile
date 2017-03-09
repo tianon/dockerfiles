@@ -36,8 +36,8 @@ RUN set -ex; \
 	apk del .build-deps
 
 # https://github.com/google/cloud-print-connector/releases
-ENV GCPC_VERSION v1.1
-#ENV GCPC_VERSION d353d01
+ENV GOOGLE_CLOUD_PRINT_CONNECTOR_VERSION v1.1
+#ENV GOOGLE_CLOUD_PRINT_CONNECTOR_VERSION d353d01
 # https://github.com/google/cloud-print-connector/commit/d353d01
 ENV GCPC_IMPORT github.com/google/cloud-print-connector
 
@@ -53,13 +53,13 @@ RUN set -ex; \
 		tar \
 	; \
 	\
-	wget -O gcpc.tar.gz "https://$GCPC_IMPORT/archive/$GCPC_VERSION.tar.gz"; \
+	wget -O gcpc.tar.gz "https://$GCPC_IMPORT/archive/$GOOGLE_CLOUD_PRINT_CONNECTOR_VERSION.tar.gz"; \
 	mkdir -p "$GOPATH/src/$GCPC_IMPORT"; \
 	tar -xvf gcpc.tar.gz --strip-components=1 -C "$GOPATH/src/$GCPC_IMPORT"; \
 	rm gcpc.tar.gz; \
 	\
 	go install -v \
-		-ldflags "-X $GCPC_IMPORT/lib.BuildDate=$GCPC_VERSION" \
+		-ldflags "-X $GCPC_IMPORT/lib.BuildDate=$GOOGLE_CLOUD_PRINT_CONNECTOR_VERSION" \
 		"$GCPC_IMPORT/..." \
 	; \
 	\

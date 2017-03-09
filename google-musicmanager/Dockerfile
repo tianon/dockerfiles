@@ -42,9 +42,9 @@ RUN set -ex; \
 	\
 	echo "deb [arch=$(dpkg --print-architecture)] http://dl.google.com/linux/musicmanager/deb stable main" > /etc/apt/sources.list.d/google-musicmanager.list
 
-ENV GMM_VERSION 1.0.243.1116-r0
+ENV GOOGLE_MUSICMANAGER_VERSION 1.0.243.1116-r0
 
 RUN set -ex; \
 	apt-get update; \
-	apt-get install -yV google-musicmanager-beta="$GMM_VERSION"; \
+	apt-get install -yV google-musicmanager-beta="$GOOGLE_MUSICMANAGER_VERSION"; \
 	rm -rf /var/lib/apt/lists/*

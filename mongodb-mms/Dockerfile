@@ -2,11 +2,11 @@ FROM debian:jessie
 
 RUN apt-get update && apt-get install -y wget logrotate && rm -rf /var/lib/apt/lists/*
 
-ENV MMS_VERSION 5.6.0.364-1
+ENV MONGODB_MMS_VERSION 5.6.0.364-1
 
 # see https://mms.mongodb.com/settings/monitoring-agent
 # click on "Ubuntu 12.04+"
-RUN wget -O mms.deb "https://cloud.mongodb.com/download/agent/monitoring/mongodb-mms-monitoring-agent_${MMS_VERSION}_$(dpkg --print-architecture).ubuntu1604.deb" \
+RUN wget -O mms.deb "https://cloud.mongodb.com/download/agent/monitoring/mongodb-mms-monitoring-agent_${MONGODB_MMS_VERSION}_$(dpkg --print-architecture).ubuntu1604.deb" \
 	&& dpkg -i mms.deb \
 	&& rm mms.deb
 

@@ -3,7 +3,7 @@ FROM alpine:3.4
 WORKDIR /opt/prometheus
 ENV PATH /opt/prometheus:$PATH
 
-ENV PROM_VERSION 1.2.1
+ENV PROMETHEUS_VERSION 1.2.1
 
 RUN set -ex; \
 	\
@@ -13,7 +13,7 @@ RUN set -ex; \
 		tar \
 	; \
 	\
-	wget -O /tmp/prom.tar.gz "https://github.com/prometheus/prometheus/releases/download/v${PROM_VERSION}/prometheus-${PROM_VERSION}.linux-amd64.tar.gz"; \
+	wget -O /tmp/prom.tar.gz "https://github.com/prometheus/prometheus/releases/download/v${PROMETHEUS_VERSION}/prometheus-${PROMETHEUS_VERSION}.linux-amd64.tar.gz"; \
 	tar \
 		--extract \
 		--file /tmp/prom.tar.gz \
