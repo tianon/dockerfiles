@@ -31,9 +31,9 @@ join() {
 }
 
 globalEntry() {
-	cat <<-'EOH'
+	cat <<-EOH
 		Maintainers: Tianon Gravi <tianon@tianon.xyz> (@tianon)
-		GitRepo: https://github.com/tianon/dockerfiles.git
+		GitRepo: https://github.com/${2:-tianon}/${1:-dockerfiles}.git
 	EOH
 }
 
