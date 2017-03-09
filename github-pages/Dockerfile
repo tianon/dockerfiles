@@ -1,5 +1,5 @@
 # https://pages.github.com/versions/
-FROM ruby:2.1-slim
+FROM ruby:2.3-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		gcc make patch \
