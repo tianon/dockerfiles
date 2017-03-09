@@ -39,7 +39,7 @@ if [ "$QEMU_HDA" ]; then
 	fi
 	# http://wiki.qemu.org/download/qemu-doc.html#Invocation
 	#qemuArgs+=( -hda "$QEMU_HDA" )
-	qemuArgs+=( -drive file="$QEMU_HDA",index=0,media=disk,format=qcow2,discard=unmap )
+	qemuArgs+=( -drive file="$QEMU_HDA",index=0,media=disk,discard=unmap )
 fi
 
 if [ "$QEMU_CDROM" ]; then
