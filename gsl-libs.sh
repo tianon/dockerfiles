@@ -51,10 +51,8 @@ tagsEntry() {
 	EOE
 }
 
-versionedTagsEntry() {
-	local dir="$1"; shift
+_versionAliasesHelper() {
 	local fullVersion="$1"; shift
-	local aliases=( "$@" )
 
 	# replace "~" with "-"
 	local tilde='~'
@@ -63,14 +61,34 @@ versionedTagsEntry() {
 	# remove any leading "v"
 	fullVersion="${fullVersion#v}"
 
-	local versionAliases=()
+	versionAliases=()
 	while [ "${fullVersion%[.-]*}" != "$fullVersion" ]; do
 		versionAliases+=( "$fullVersion" )
 		fullVersion="${fullVersion%[.-]*}"
 	done
-	versionAliases+=( "$fullVersion" "${aliases[@]}" )
+	versionAliases+=( "$fullVersion" )
+}
+
+versionedTagsEntry() {
+	local dir="$1"; shift
+	local fullVersion="$1"; shift
+	local aliases=( "$@" )
+
+	_versionAliasesHelper "$fullVersion"
+	versionAliases+=( "${aliases[@]}" )
 
 	tagsEntry "$dir" "${versionAliases[@]}"
+}
+
+_versionEnvHelper() {
+	local dir="$1"; shift
+	local fullVersionEnv="$1"; shift
+
+	local commit="$(dirCommit "$dir")"
+	local fullVersion="$(git -C "$dir" show "$commit":./Dockerfile  | awk '$1 == "ENV" && $2 == "'"$fullVersionEnv"'" { print $3; exit }')"
+	[ -n "$fullVersion" ]
+
+	echo "$fullVersion"
 }
 
 versionedEnvTagsEntry() {
@@ -78,9 +96,34 @@ versionedEnvTagsEntry() {
 	local fullVersionEnv="$1"; shift
 	local aliases=( "$@" )
 
-	local commit="$(dirCommit "$dir")"
-	local fullVersion="$(git -C "$dir" show "$commit":./Dockerfile  | awk '$1 == "ENV" && $2 == "'"$fullVersionEnv"'" { print $3; exit }')"
+	local fullVersion="$(_versionEnvHelper "$dir" "$fullVersionEnv")"
 	[ -n "$fullVersion" ]
 
 	versionedTagsEntry "$dir" "$fullVersion" "${aliases[@]}"
+}
+
+versionedVariantEntry() {
+	local dir="$1"; shift
+	local fullVersion="$1"; shift
+	local variant="$1"; shift
+	local aliases=( "$@" )
+
+	_versionAliasesHelper "$fullVersion"
+	variantAliases=( "${versionAliases[@]/%/-$variant}" )
+	variantAliases=( "${variantAliases[@]//latest-/}" )
+	variantAliases+=( "${aliases[@]}" )
+
+	tagsEntry "$dir/$variant" "${variantAliases[@]}"
+}
+
+versionedEnvVariantEntry() {
+	local dir="$1"; shift
+	local fullVersionEnv="$1"; shift
+	local variant="$1"; shift
+	local aliases=( "$@" )
+
+	local fullVersion="$(_versionEnvHelper "$dir" "$fullVersionEnv")"
+	[ -n "$fullVersion" ]
+
+	versionedVariantEntry "$dir" "$fullVersion" "$variant" "${aliases[@]}"
 }
