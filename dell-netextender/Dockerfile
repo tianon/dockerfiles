@@ -22,4 +22,7 @@ RUN set -ex; \
 	); \
 	rm -rf /opt/netExtenderClient
 
+# NetExtender connected successfully. Type "Ctrl-c" to disconnect...
+STOPSIGNAL SIGINT
+
 CMD ["netExtender"]
