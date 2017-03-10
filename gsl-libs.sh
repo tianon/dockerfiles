@@ -102,21 +102,46 @@ versionedEnvTagsEntry() {
 	versionedTagsEntry "$dir" "$fullVersion" "${aliases[@]}"
 }
 
+# for variants whose version number comes from the variant Dockerfile (openjdk:alpine)
 versionedVariantEntry() {
+	local dir="$1"; shift
+	local variant="$1"; shift
+	local fullVersion="$1"; shift
+	local aliases=( "$@" )
+
+	_versionAliasesHelper "$fullVersion"
+	variantAliases=( "${versionAliases[@]/%/-$variant}" )
+	#variantAliases=( "${variantAliases[@]//latest-/}" )
+	variantAliases+=( "${aliases[@]}" )
+
+	tagsEntry "$dir" "${variantAliases[@]}"
+}
+
+# for variants whose version number comes from the parent Dockerfile (tianon/dell-netextender:gui)
+versionedSubvariantEntry() {
 	local dir="$1"; shift
 	local fullVersion="$1"; shift
 	local variant="$1"; shift
 	local aliases=( "$@" )
 
-	_versionAliasesHelper "$fullVersion"
-	variantAliases=( "${versionAliases[@]/%/-$variant}" )
-	variantAliases=( "${variantAliases[@]//latest-/}" )
-	variantAliases+=( "${aliases[@]}" )
-
-	tagsEntry "$dir/$variant" "${variantAliases[@]}"
+	versionedVariantEntry "$dir/$variant" "$variant" "$fullVersion" "${aliases[@]}"
 }
 
+# for variants whose version number comes from the variant Dockerfile (openjdk:alpine)
 versionedEnvVariantEntry() {
+	local dir="$1"; shift
+	local variant="$1"; shift
+	local fullVersionEnv="$1"; shift
+	local aliases=( "$@" )
+
+	local fullVersion="$(_versionEnvHelper "$dir" "$fullVersionEnv")"
+	[ -n "$fullVersion" ]
+
+	versionedVariantEntry "$dir" "$variant" "$fullVersion" "${aliases[@]}"
+}
+
+# for variants whose version number comes from the parent Dockerfile (tianon/dell-netextender:gui)
+versionedEnvSubvariantEntry() {
 	local dir="$1"; shift
 	local fullVersionEnv="$1"; shift
 	local variant="$1"; shift
@@ -125,5 +150,6 @@ versionedEnvVariantEntry() {
 	local fullVersion="$(_versionEnvHelper "$dir" "$fullVersionEnv")"
 	[ -n "$fullVersion" ]
 
-	versionedVariantEntry "$dir" "$fullVersion" "$variant" "${aliases[@]}"
+	versionedSubvariantEntry "$dir" "$fullVersion" "$variant" "${aliases[@]}"
 }
+

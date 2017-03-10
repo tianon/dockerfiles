@@ -11,4 +11,4 @@ globalEntry
 env="${dir^^}_VERSION"
 env="${env//-/_}"
 versionedEnvTagsEntry "$dir" "$env" latest
-versionedEnvVariantEntry "$dir" "$env" gui gui
+versionedEnvSubvariantEntry "$dir" "$env" gui gui
