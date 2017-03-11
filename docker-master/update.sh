@@ -21,15 +21,14 @@ declare -A sha256s=(
 	#[experimental]="$(curl -fsSL "${urls[experimental]}.sha256" | cut -d' ' -f1)"
 )
 
-for version in "${!versions[@]}"; do
-	(
-		set -x
-		sed -ri '
-			s/^(ENV DOCKER_VERSION) .*/\1 '"${versions[$version]}"'/;
-			s!^(ENV DOCKER_URL) .*!\1 '"${urls[$version]}"'!;
-			s/^(ENV DOCKER_SHA256) .*/\1 '"${sha256s[$version]}"'/;
-			s/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/;
-			s/^(FROM .*docker.*):.*/\1:'"$version"'/;
-		' "$version/Dockerfile" "$version"/*/Dockerfile
-	)
-done
+version='master'
+(
+	set -x
+	sed -ri '
+		s/^(ENV DOCKER_VERSION) .*/\1 '"${versions[$version]}"'/;
+		s!^(ENV DOCKER_URL) .*!\1 '"${urls[$version]}"'!;
+		s/^(ENV DOCKER_SHA256) .*/\1 '"${sha256s[$version]}"'/;
+		#s/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/;
+		s/^(FROM .*docker.*):.*/\1:'"$version"'/;
+	' Dockerfile */Dockerfile
+)
