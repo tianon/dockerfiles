@@ -18,7 +18,7 @@ RUN set -x \
 	&& echo 'dockremap:165536:65536' >> /etc/subuid \
 	&& echo 'dockremap:165536:65536' >> /etc/subgid
 
-ENV DIND_COMMIT 3b5fac462d21ca164b3778647420016315289034
+ENV DIND_COMMIT 52379fa76dee07ca038624d639d9e14f4fb719ff
 
 RUN wget "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind" -O /usr/local/bin/dind \
 	&& chmod +x /usr/local/bin/dind
