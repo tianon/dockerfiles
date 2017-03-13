@@ -3,7 +3,7 @@ set -e
 
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
-url="$(curl -fsSL 'https://plex.tv/downloads' | grep '_amd64.deb".*Ubuntu' | cut -d'"' -f2)"
+version="$(curl -fsSL 'https://plex.tv/downloads/details/1?build=linux-ubuntu-x86_64&channel=16&distro=ubuntu' | sed -n 's/.*Release.*version="\([^"]*\)".*/\1/p')"
 
 set -x
-sed -ri 's!^(ENV PLEX_URL) .*!\1 '"$url"'!' Dockerfile
+sed -ri 's!^(ENV PLEX_VERSION) .*!\1 '"$version"'!' Dockerfile
