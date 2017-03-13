@@ -9,5 +9,4 @@ source gsl-libs.sh
 
 globalEntry
 
-# TODO add version tags for media-server versions
-tagsEntry "$dir/media-server" media-server
+versionedEnvVariantEntry "$dir/media-server" media-server 'PLEX_VERSION' media-server
