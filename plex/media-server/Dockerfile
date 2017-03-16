@@ -1,14 +1,20 @@
-FROM buildpack-deps:jessie-curl
+FROM debian:jessie-slim
 
 # /var/lib/dpkg/info/plexmediaserver.postinst: 39: /var/lib/dpkg/info/plexmediaserver.postinst: start: not found
 RUN ln -s /bin/true /usr/local/bin/start
+
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+		ca-certificates \
+		wget \
+	&& rm -rf /var/lib/apt/lists/*
 
 # https://www.plex.tv/downloads/#getdownload
 ENV PLEX_VERSION 1.4.3.3433-03e4cfa35
 
 ENV PLEX_URL https://downloads.plex.tv/plex-media-server/${PLEX_VERSION}/plexmediaserver_${PLEX_VERSION}_amd64.deb
 
-RUN curl -fSL "$PLEX_URL" -o /tmp/plex.deb \
+RUN wget -O /tmp/plex.deb "$PLEX_URL" \
 	&& dpkg --unpack /tmp/plex.deb \
 	&& apt-get install -f \
 	&& rm /tmp/plex.deb
