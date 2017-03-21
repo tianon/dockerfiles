@@ -9,6 +9,7 @@ set -e
 #   QEMU_CDROM    (filename)
 #   QEMU_BOOT     (-boot)
 #   QEMU_PORTS="xxx[ xxx ...]" (space separated port numbers)
+#   QEMU_NET_USER_EXTRA="net=192.168.76.0/24,dhcpstart=192.168.76.9" (extra raw args for "-net user,...")
 
 hostArch="$(uname -m)"
 qemuArch="${QEMU_ARCH:-$hostArch}"
@@ -52,6 +53,9 @@ fi
 
 netArg='user'
 netArg+=",hostname=$(hostname)"
+if [ "$QEMU_NET_USER_EXTRA" ]; then
+	netArg+=",$QEMU_NET_USER_EXTRA"
+fi
 for port in "${qemuPorts[@]}"; do
 	netArg+=",hostfwd=tcp::$port-:$port"
 	netArg+=",hostfwd=udp::$port-:$port"
