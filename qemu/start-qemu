@@ -15,7 +15,7 @@ hostArch="$(uname -m)"
 qemuArch="${QEMU_ARCH:-$hostArch}"
 qemu="${QEMU_BIN:-qemu-system-$qemuArch}"
 qemuArgs=()
-qemuPorts=( 22 $QEMU_PORTS )
+qemuPorts=( 22 ${QEMU_PORTS:-} )
 
 if [ -e /dev/kvm ]; then
 	qemuArgs+=( -enable-kvm )
@@ -31,7 +31,7 @@ fi
 qemuArgs+=( -smp "${QEMU_CPU:-1}" )
 qemuArgs+=( -m "${QEMU_RAM:-512}" )
 
-if [ "$QEMU_HDA" ]; then
+if [ -n "${QEMU_HDA:-}" ]; then
 	if [ ! -f "$QEMU_HDA" -o ! -s "$QEMU_HDA" ]; then
 		(
 			set -x
@@ -43,17 +43,17 @@ if [ "$QEMU_HDA" ]; then
 	qemuArgs+=( -drive file="$QEMU_HDA",index=0,media=disk,discard=unmap )
 fi
 
-if [ "$QEMU_CDROM" ]; then
+if [ -n "${QEMU_CDROM:-}" ]; then
 	qemuArgs+=( -cdrom "$QEMU_CDROM" )
 fi
 
-if [ "$QEMU_BOOT" ]; then
+if [ -n "${QEMU_BOOT:-}" ]; then
 	qemuArgs+=( -boot "$QEMU_BOOT" )
 fi
 
 netArg='user'
 netArg+=",hostname=$(hostname)"
-if [ "$QEMU_NET_USER_EXTRA" ]; then
+if [ -n "${QEMU_NET_USER_EXTRA:-}" ]; then
 	netArg+=",$QEMU_NET_USER_EXTRA"
 fi
 for port in "${qemuPorts[@]}"; do
