@@ -10,12 +10,19 @@ set -e
 #   QEMU_BOOT     (-boot)
 #   QEMU_PORTS="xxx[ xxx ...]" (space separated port numbers)
 #   QEMU_NET_USER_EXTRA="net=192.168.76.0/24,dhcpstart=192.168.76.9" (extra raw args for "-net user,...")
+#   QEMU_NO_SSH=1 (suppress automatic port 22 forwarding)
+#   QEMU_NO_SERIAL=1 (suppress automatic "-serial stdio")
 
 hostArch="$(uname -m)"
 qemuArch="${QEMU_ARCH:-$hostArch}"
 qemu="${QEMU_BIN:-qemu-system-$qemuArch}"
 qemuArgs=()
-qemuPorts=( 22 ${QEMU_PORTS:-} )
+
+qemuPorts=()
+if [ -z "${QEMU_NO_SSH:-}" ]; then
+	qemuPorts+=( 22 )
+fi
+qemuPorts+=( ${QEMU_PORTS:-} )
 
 if [ -e /dev/kvm ]; then
 	qemuArgs+=( -enable-kvm )
@@ -65,9 +72,13 @@ qemuArgs+=(
 	-net nic
 	-net "$netArg"
 	-vnc ':0'
-	-serial stdio
-	"$@"
 )
+if [ -z "${QEMU_NO_SERIAL:-}" ]; then
+	qemuArgs+=(
+		-serial stdio
+	)
+fi
+qemuArgs+=( "$@" )
 
 set -x
 exec "$qemu" "${qemuArgs[@]}"
