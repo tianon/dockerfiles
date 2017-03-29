@@ -1,5 +1,8 @@
 FROM ruby:2.4-alpine
 
+RUN apk add --no-cache \
+		git
+
 ENV TRAVIS_CLI_VERSION 1.8.8
 
 RUN set -ex; \
