@@ -12,6 +12,7 @@ set -e
 #   QEMU_NET_USER_EXTRA="net=192.168.76.0/24,dhcpstart=192.168.76.9" (extra raw args for "-net user,...")
 #   QEMU_NO_SSH=1 (suppress automatic port 22 forwarding)
 #   QEMU_NO_SERIAL=1 (suppress automatic "-serial stdio")
+#   QEMU_KEYBOARD="en-us"
 
 hostArch="$(uname -m)"
 qemuArch="${QEMU_ARCH:-$hostArch}"
@@ -77,6 +78,9 @@ if [ -z "${QEMU_NO_SERIAL:-}" ]; then
 	qemuArgs+=(
 		-serial stdio
 	)
+fi
+if [ -n "${QEMU_KEYBOARD:-}" ]; then
+	qemuArgs+=( -k "$QEMU_KEYBOARD" )
 fi
 qemuArgs+=( "$@" )
 
