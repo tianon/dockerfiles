@@ -44,9 +44,14 @@ RUN echo 'deb https://pkg.jenkins.io/debian binary/' > /etc/apt/sources.list.d/j
 
 ENV JENKINS_VERSION 2.54
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-		jenkins=${JENKINS_VERSION} \
-	&& rm -rf /var/lib/apt/lists/*
+RUN set -ex; \
+# update-alternatives: error: error creating symbolic link '/usr/share/man/man1/rmid.1.gz.dpkg-tmp': No such file or directory
+	mkdir -p /usr/share/man/man1; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		jenkins="$JENKINS_VERSION" \
+	; \
+	rm -rf /var/lib/apt/lists/*
 
 ENV JENKINS_HOME /var/lib/jenkins
 RUN mkdir -p "$JENKINS_HOME" && chown -R jenkins:jenkins "$JENKINS_HOME"
