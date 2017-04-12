@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:stretch-slim
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
@@ -32,13 +32,15 @@ RUN set -x \
 	&& chmod +x /usr/local/bin/tini \
 	&& tini -h
 
-# workaround "apt-key adv --recv-keys" hanging in stretch and above
+RUN apt-get update && apt-get install -y apt-transport-https && rm -rf /var/lib/apt/lists/*
+
 ENV JENKINS_GPG_KEY 150FDE3F7787E7D11EF4E12A9B7D32F2D50582E6
 RUN export GNUPGHOME="$(mktemp -d)" \
 	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$JENKINS_GPG_KEY" \
-	&& gpg --export "$JENKINS_GPG_KEY" | apt-key add - \
-	&& rm -r "$GNUPGHOME"
-RUN echo 'deb http://pkg.jenkins-ci.org/debian binary/' > /etc/apt/sources.list.d/jenkins.list
+	&& gpg --export --armor "$JENKINS_GPG_KEY" > /etc/apt/trusted.gpg.d/jenkins.gpg.asc \
+	&& rm -r "$GNUPGHOME" \
+	&& apt-key list
+RUN echo 'deb https://pkg.jenkins.io/debian binary/' > /etc/apt/sources.list.d/jenkins.list
 
 ENV JENKINS_VERSION 2.54
 
