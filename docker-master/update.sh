@@ -7,6 +7,7 @@ cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 dindLatest="$(curl -fsSL 'https://github.com/docker/docker/commits/master/hack/dind.atom'| tac|tac | awk -F ' *[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
 
 #masterCommit="$(curl -fsSL 'https://master.dockerproject.org/commit')"
+masterCommit="$(git ls-remote https://github.com/docker/docker.git refs/heads/master | cut -d$'\t' -f1)"
 
 declare -A versions=(
 	[master]="$(curl -fsSL 'https://master.dockerproject.org/version')"
@@ -31,4 +32,7 @@ version='master'
 		#s/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/;
 		s/^(FROM .*docker.*):.*/\1:'"$version"'/;
 	' Dockerfile */Dockerfile
+	sed -ri \
+		-e 's!^(ENV DOCKER_GITCOMMIT) .*!\1 '"$masterCommit"'!' \
+		Dockerfile.build
 )
