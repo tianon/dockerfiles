@@ -9,11 +9,11 @@ RUN apt-get update \
 		wget \
 	&& rm -rf /var/lib/apt/lists/*
 
-ENV DELL_NETEXTENDER_VERSION 8.5.797
+# https://sslvpn.demo.sonicwall.com
+#   u: demo    p: password
 
 RUN set -ex; \
-# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=netextender
-	wget -O netextender.tgz "https://sslvpn.demo.sonicwall.com/NetExtender.Linux.${DELL_NETEXTENDER_VERSION}.x86_64.tgz"; \
+	wget -O netextender.tgz 'https://sslvpn.demo.sonicwall.com/NetExtender.x86_64.tgz'; \
 	tar -xvf netextender.tgz -C /opt/; \
 	rm netextender.tgz; \
 	( \

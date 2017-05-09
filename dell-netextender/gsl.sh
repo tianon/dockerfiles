@@ -8,7 +8,5 @@ cd ..
 source gsl-libs.sh
 
 globalEntry
-env="${dir^^}_VERSION"
-env="${env//-/_}"
-versionedEnvTagsEntry "$dir" "$env" latest
-versionedEnvSubvariantEntry "$dir" "$env" gui gui
+tagsEntry "$dir" latest
+tagsEntry "$dir/gui" gui
