@@ -1,3 +1,7 @@
+# usage:
+#   $ docker build -t some-name - < Dockerfile.build
+#   $ docker run --rm some-name tar -cC /artifacts . | tar -xvC target-directory
+
 FROM golang:1.8-stretch
 
 RUN set -ex; \
