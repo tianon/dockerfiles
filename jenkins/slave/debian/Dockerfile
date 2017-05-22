@@ -1,4 +1,4 @@
-FROM buildpack-deps:sid-scm
+FROM buildpack-deps:jessie-scm
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		openjdk-7-jre-headless \
