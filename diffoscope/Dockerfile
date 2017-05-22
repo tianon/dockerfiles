@@ -1,0 +1,17 @@
+FROM python:3-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+		libarchive13 \
+		libmagic1 \
+		xz-utils \
+# xxd (xxd not available in path. Falling back to Python hexlify.)
+		vim-common \
+# readelf ('readelf' not available in path. Falling back to binary comparison.)
+		binutils-multiarch \
+	&& rm -rf /var/lib/apt/lists/*
+
+ENV DIFFOSCOPE_VERSION 82
+
+RUN pip install diffoscope==$DIFFOSCOPE_VERSION
+
+CMD ["diffoscope"]
