@@ -1,7 +1,7 @@
-FROM buildpack-deps:jessie-scm
+FROM buildpack-deps:stretch-scm
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-		openjdk-7-jre-headless \
+		openjdk-8-jre-headless \
 		openssh-server \
 		\
 		aufs-tools \
