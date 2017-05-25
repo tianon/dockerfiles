@@ -11,6 +11,7 @@ RUN sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
 
 RUN ssh-keygen -A
 RUN echo 'root:docker' | chpasswd
+RUN sed -ri 's/^#?PermitRootLogin[[:space:]].*$/PermitRootLogin yes/g' /etc/ssh/sshd_config
 
 # let's make /root a volume so ~/.ssh/authorized_keys is easier to save
 VOLUME /root
