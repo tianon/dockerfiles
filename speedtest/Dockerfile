@@ -9,4 +9,4 @@ RUN pip3 install speedtest-cli==$SPEEDTEST_VERSION
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["speedtest-cli"]
+ENTRYPOINT ["speedtest-cli"]
