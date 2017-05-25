@@ -2,7 +2,7 @@
 
 FROM debian:jessie
 
-RUN useradd --create-home user
+RUN adduser user
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
