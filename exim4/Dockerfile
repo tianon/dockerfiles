@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y exim4-daemon-light && rm -rf /var/lib/a
 
 COPY set-exim4-update-conf /usr/local/bin/
 COPY entrypoint.sh /usr/local/bin/
+RUN chmod u+x /usr/local/bin/*
 ENTRYPOINT ["entrypoint.sh"]
 
 EXPOSE 25
