@@ -1,4 +1,4 @@
-FROM golang:1.7-alpine
+FROM golang:1.8-alpine
 
 # fetch dependencies
 # format: import-path=strip-components=tarball-url
@@ -36,9 +36,7 @@ RUN set -ex; \
 	apk del .build-deps
 
 # https://github.com/google/cloud-print-connector/releases
-ENV GOOGLE_CLOUD_PRINT_CONNECTOR_VERSION v1.1
-#ENV GOOGLE_CLOUD_PRINT_CONNECTOR_VERSION d353d01
-# https://github.com/google/cloud-print-connector/commit/d353d01
+ENV GOOGLE_CLOUD_PRINT_CONNECTOR_VERSION v1.11
 ENV GCPC_IMPORT github.com/google/cloud-print-connector
 
 RUN set -ex; \
