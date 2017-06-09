@@ -1,4 +1,4 @@
-FROM java:8-jre
+FROM openjdk:8-jre
 
 # https://ehour.nl/download/downloadfile.php?get=ehour-latest-standalone-unix.sh
 # https://ehour.nl/download/downloadfile.php?get=ehour-1.4.3-standalone-unix.sh

@@ -1,4 +1,4 @@
-FROM java:7-jre
+FROM openjdk:7-jre
 
 WORKDIR /usr/local/kafka
 ENV PATH $PATH:/usr/local/kafka/bin
