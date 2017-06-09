@@ -10,7 +10,7 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 # https://www.plex.tv/downloads/#getdownload
-ENV PLEX_VERSION 1.4.3.3433-03e4cfa35
+ENV PLEX_VERSION 1.5.6.3790-4613ce077
 
 ENV PLEX_URL https://downloads.plex.tv/plex-media-server/${PLEX_VERSION}/plexmediaserver_${PLEX_VERSION}_amd64.deb
 

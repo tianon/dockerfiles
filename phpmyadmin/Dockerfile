@@ -22,7 +22,7 @@ RUN set -ex; \
 		gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
 	done
 
-ENV PHPMYADMIN_VERSION 4.7.0
+ENV PHPMYADMIN_VERSION 4.7.1
 
 RUN set -x \
 	&& curl -fsSL "https://files.phpmyadmin.net/phpMyAdmin/${PHPMYADMIN_VERSION}/phpMyAdmin-${PHPMYADMIN_VERSION}-english.tar.xz" -o phpmyadmin.tar.xz \
