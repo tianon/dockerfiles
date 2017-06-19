@@ -6,8 +6,8 @@ RUN apk add --no-cache \
 		openssl
 
 ENV DOCKER_VERSION 17.06.0-dev
-ENV DOCKER_URL https://master.dockerproject.org/linux/amd64/docker-17.06.0-dev.tgz
-ENV DOCKER_SHA256 5602528bd27a90c72f48fc32e70b6081a07c269c0f09abd909d9eb80ad343254
+ENV DOCKER_URL https://master.dockerproject.org/linux/x86_64/docker-17.06.0-dev.tgz
+ENV DOCKER_SHA256 9b673a9bc4ed395528bf5c2af4436053f06c435841ca3d960628879f1975525f
 
 RUN set -x \
 	&& curl -fSL "${DOCKER_URL}" -o docker.tgz \
