@@ -1,3 +1,8 @@
 FROM debian:jessie
 
-RUN apt-get update && apt-get install -y texlive-full biber latexmk make
+RUN apt-get update && apt-get install -y \
+		biber \
+		latexmk \
+		make \
+		texlive-full \
+	&& rm -rf /var/lib/apt/lists/*
