@@ -1,4 +1,4 @@
-FROM php:5.6-apache
+FROM php:7-apache
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		libmcrypt-dev \
@@ -6,9 +6,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install mbstring mcrypt mysqli
-RUN set -ex; \
-	pecl install uploadprogress-1.0.3.1; \
-	docker-php-ext-enable uploadprogress
 
 # https://docs.phpmyadmin.net/en/latest/setup.html#verifying-phpmyadmin-releases
 ENV GPG_KEYS \
