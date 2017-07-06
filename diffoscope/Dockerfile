@@ -10,6 +10,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		binutils-multiarch \
 	&& rm -rf /var/lib/apt/lists/*
 
+# for "diffoscope --progress"
+RUN pip install progressbar33==2.4
+
 ENV DIFFOSCOPE_VERSION 83
 
 RUN pip install diffoscope==$DIFFOSCOPE_VERSION
