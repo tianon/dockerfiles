@@ -10,7 +10,7 @@ RUN set -ex; \
 		debootstrap debian-archive-keyring ubuntu-archive-keyring \
 		wget ca-certificates \
 		\
-		devscripts \
+		devscripts libwww-perl file \
 		sudo \
 	; \
 	rm -rf /var/lib/apt/lists/*
