@@ -53,6 +53,11 @@ RUN set -ex; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
+# "java.awt.AWTError: Assistive Technology not found: org.GNOME.Accessibility.AtkWrapper"
+# https://askubuntu.com/a/723503
+# https://bugs.debian.org/798794
+RUN sed -i 's/^assistive_technologies=/#&/' /etc/java-8-openjdk/accessibility.properties
+
 ENV JENKINS_HOME /var/lib/jenkins
 RUN mkdir -p "$JENKINS_HOME" && chown -R jenkins:jenkins "$JENKINS_HOME"
 VOLUME $JENKINS_HOME
