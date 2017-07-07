@@ -1,5 +1,10 @@
 FROM openjdk:8-jre
 
+# "java.awt.AWTError: Assistive Technology not found: org.GNOME.Accessibility.AtkWrapper"
+# https://askubuntu.com/a/723503
+# https://bugs.debian.org/798794
+RUN sed -i 's/^assistive_technologies=/#&/' /etc/java-8-openjdk/accessibility.properties
+
 # https://ehour.nl/download/downloadfile.php?get=ehour-latest-standalone-unix.sh
 # https://ehour.nl/download/downloadfile.php?get=ehour-1.4.3-standalone-unix.sh
 ENV EHOUR_VERSION 1.4.3
