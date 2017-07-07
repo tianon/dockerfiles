@@ -9,8 +9,20 @@ RUN set -ex; \
 		\
 		debootstrap debian-archive-keyring ubuntu-archive-keyring \
 		wget ca-certificates \
+		\
+		devscripts \
+		sudo \
 	; \
 	rm -rf /var/lib/apt/lists/*
+
+# https://gist.github.com/tianon/a0080cbca558e4b907fe
+# (useful sbuild-related scripts)
+RUN set -ex; \
+	wget -O /tmp/sbuild-bins.tgz 'https://gist.github.com/tianon/a0080cbca558e4b907fe/archive/05d13124573c1f51f2ad40041444643abeab9935.tar.gz'; \
+	mkdir /tianon-sbuild-bins; \
+	tar -xvf /tmp/sbuild-bins.tgz -C /tianon-sbuild-bins --strip-components=1; \
+	rm /tmp/sbuild-bins.tgz
+ENV PATH $PATH:/tianon-sbuild-bins
 
 # usage: download-debuerreotype-tarball.sh suite [arch]
 #    ie: download-debuerreotype-tarball.sh stretch
