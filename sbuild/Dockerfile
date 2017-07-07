@@ -7,7 +7,7 @@ RUN set -ex; \
 	apt-get install -y --no-install-recommends \
 		sbuild schroot \
 		\
-		debootstrap \
+		debootstrap debian-archive-keyring ubuntu-archive-keyring \
 		wget ca-certificates \
 	; \
 	rm -rf /var/lib/apt/lists/*
