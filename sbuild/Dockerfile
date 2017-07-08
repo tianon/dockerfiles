@@ -10,6 +10,7 @@ RUN set -ex; \
 		debootstrap debian-archive-keyring ubuntu-archive-keyring \
 		wget ca-certificates \
 		\
+		apt-utils \
 		devscripts libwww-perl file \
 		fakeroot \
 		rsync sudo \
