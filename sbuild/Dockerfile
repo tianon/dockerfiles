@@ -13,7 +13,7 @@ RUN set -ex; \
 		apt-utils \
 		devscripts libwww-perl file \
 		fakeroot \
-		rsync sudo \
+		rsync sudo unzip \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
