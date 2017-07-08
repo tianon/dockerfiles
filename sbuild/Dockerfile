@@ -11,7 +11,7 @@ RUN set -ex; \
 		wget ca-certificates \
 		\
 		devscripts libwww-perl file \
-		sudo \
+		rsync sudo \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
