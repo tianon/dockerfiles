@@ -11,6 +11,7 @@ RUN set -ex; \
 		wget ca-certificates \
 		\
 		devscripts libwww-perl file \
+		fakeroot \
 		rsync sudo \
 	; \
 	rm -rf /var/lib/apt/lists/*
