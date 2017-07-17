@@ -1,4 +1,4 @@
-FROM debian:jessie-slim
+FROM debian:stretch-slim
 
 # /var/lib/dpkg/info/plexmediaserver.postinst: 39: /var/lib/dpkg/info/plexmediaserver.postinst: start: not found
 RUN ln -s /bin/true /usr/local/bin/start
@@ -14,13 +14,18 @@ ENV PLEX_VERSION 1.7.5.4035-313f93718
 
 ENV PLEX_URL https://downloads.plex.tv/plex-media-server/${PLEX_VERSION}/plexmediaserver_${PLEX_VERSION}_amd64.deb
 
-RUN wget -O /tmp/plex.deb "$PLEX_URL" \
-	&& dpkg --unpack /tmp/plex.deb \
-	&& apt-get install -f \
-	&& rm /tmp/plex.deb
+RUN set -ex; \
+	wget -O /tmp/plex.deb "$PLEX_URL"; \
+	dpkg --unpack /tmp/plex.deb; \
+	apt-get update; \
+	apt-get install -f; \
+	dpkg -l | grep -q plex; \
+	rm /tmp/plex.deb; \
+	rm -rf /var/lib/apt/lists/*
 
 ENV PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR /var/lib/plexmediaserver/Library/Application Support
 ENV PLEX_MEDIA_SERVER_HOME /usr/lib/plexmediaserver
+ENV PLEX_MEDIA_SERVER_INFO_DEVICE docker
 ENV PLEX_MEDIA_SERVER_MAX_PLUGIN_PROCS 6
 ENV PLEX_MEDIA_SERVER_TMPDIR /tmp
 ENV LD_LIBRARY_PATH /usr/lib/plexmediaserver
