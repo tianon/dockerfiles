@@ -24,7 +24,7 @@ ENV DOCKER_BUILDTAGS \
 # we cannot support devicemapper properly in a fully-static binary
 		exclude_graphdriver_devicemapper
 
-ENV DOCKER_GITCOMMIT 2e38c07814fbb99364838df2cd1092744f6bd1e1
+ENV DOCKER_GITCOMMIT 2638729c7a57332737e2096d68bed5e1940053d4
 
 WORKDIR /go/src/github.com/docker/docker
 RUN set -ex; \
