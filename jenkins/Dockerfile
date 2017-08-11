@@ -40,9 +40,9 @@ RUN export GNUPGHOME="$(mktemp -d)" \
 	&& gpg --export --armor "$JENKINS_GPG_KEY" > /etc/apt/trusted.gpg.d/jenkins.gpg.asc \
 	&& rm -r "$GNUPGHOME" \
 	&& apt-key list
-RUN echo 'deb https://pkg.jenkins.io/debian-stable binary/' > /etc/apt/sources.list.d/jenkins.list
+RUN echo 'deb https://pkg.jenkins.io/debian binary/' > /etc/apt/sources.list.d/jenkins.list
 
-ENV JENKINS_VERSION 2.60.2
+ENV JENKINS_VERSION 2.67
 
 RUN set -ex; \
 # update-alternatives: error: error creating symbolic link '/usr/share/man/man1/rmid.1.gz.dpkg-tmp': No such file or directory
