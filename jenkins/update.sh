@@ -4,7 +4,7 @@ set -e
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 latest="$(
-	curl -fsSL 'https://pkg.jenkins.io/debian/binary/Packages.gz' \
+	curl -fsSL 'https://pkg.jenkins.io/debian-stable/binary/Packages.gz' \
 		| gunzip \
 		| awk -F ': ' '
 			$1 == "Package" { pkg = $2 }
