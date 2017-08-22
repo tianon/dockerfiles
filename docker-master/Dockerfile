@@ -5,7 +5,7 @@ RUN apk add --no-cache \
 
 ENV DOCKER_VERSION 17.06.0-dev
 ENV DOCKER_URL https://master.dockerproject.org/linux/x86_64/docker-17.06.0-dev.tgz
-ENV DOCKER_SHA256 db6442df632c57a33f319240a1cc4755581dc2c496cb29390105aca553d0ec02
+ENV DOCKER_SHA256 df570e5a398338da679dfa9db7b1aa3d47342f39ca3e73918e48c7cbfe7e5f41
 
 RUN set -ex; \
 	apk add --no-cache --virtual .fetch-deps \
