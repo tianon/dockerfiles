@@ -1,4 +1,4 @@
-FROM alpine:3.4
+FROM alpine:3.6
 
 WORKDIR /opt/prometheus
 ENV PATH /opt/prometheus:$PATH
@@ -9,8 +9,7 @@ RUN set -ex; \
 	\
 	apk add --no-cache --virtual .fetch-deps \
 		ca-certificates \
-		openssl \
-		tar \
+		libressl \
 	; \
 	\
 	wget -O /tmp/prom.tar.gz "https://github.com/prometheus/prometheus/releases/download/v${PROMETHEUS_VERSION}/prometheus-${PROMETHEUS_VERSION}.linux-amd64.tar.gz"; \

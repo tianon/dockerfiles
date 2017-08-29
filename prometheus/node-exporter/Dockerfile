@@ -1,4 +1,4 @@
-FROM alpine:3.4
+FROM alpine:3.6
 
 WORKDIR /opt/node-exporter
 ENV PATH /opt/node-exporter:$PATH
@@ -9,8 +9,7 @@ RUN set -ex; \
 	\
 	apk add --no-cache --virtual .fetch-deps \
 		ca-certificates \
-		openssl \
-		tar \
+		libressl \
 	; \
 	\
 	wget -O /tmp/node-exporter.tar.gz "https://github.com/prometheus/node_exporter/releases/download/${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz"; \
