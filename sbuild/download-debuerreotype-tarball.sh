@@ -16,8 +16,8 @@ case "$arch" in
 	*) echo >&2 "error: unknown bashbrew arch for dpkg arch '$arch'"; exit 1 ;;
 esac
 
-wget -O "$suite-$arch.tar.xz.sha256" "https://github.com/debuerreotype/docker-debian-artifacts/raw/dist-$bashbrewArch/$suite/sbuild/rootfs.tar.xz.sha256"
-wget -O "$suite-$arch.tar.xz" "https://github.com/debuerreotype/docker-debian-artifacts/raw/dist-$bashbrewArch/$suite/sbuild/rootfs.tar.xz"
+wget -O "$suite-$arch.tar.xz.sha256" "https://doi-janky.infosiftr.net/job/tianon/job/debuerreotype/job/$bashbrewArch/lastSuccessfulBuild/artifact/$suite/sbuild/rootfs.tar.xz.sha256"
+wget -O "$suite-$arch.tar.xz" "https://doi-janky.infosiftr.net/job/tianon/job/debuerreotype/job/$bashbrewArch/lastSuccessfulBuild/artifact/$suite/sbuild/rootfs.tar.xz"
 sha256="$(sha256sum "$suite-$arch.tar.xz" | cut -d' ' -f1)"
 ( set -x && [ "$sha256" = "$(< "$suite-$arch.tar.xz.sha256")" ] )
 
