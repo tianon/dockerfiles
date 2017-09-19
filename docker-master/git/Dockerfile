@@ -1,4 +1,4 @@
-FROM tianon/docker-master:master
+FROM tianon/docker-master
 
 RUN apk add --no-cache \
 		git \

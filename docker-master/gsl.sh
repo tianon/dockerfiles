@@ -8,7 +8,6 @@ cd ..
 source gsl-libs.sh
 
 globalEntry
-env='DOCKER_VERSION'
-versionedEnvTagsEntry "$dir" "$env" latest master
-versionedEnvSubvariantEntry "$dir" "$env" dind dind master-dind
-versionedEnvSubvariantEntry "$dir" "$env" git git master-git
+tagsEntry "$dir" latest master
+tagsEntry "$dir/dind" dind master-dind
+tagsEntry "$dir/git" git master-git

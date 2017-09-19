@@ -152,4 +152,3 @@ versionedEnvSubvariantEntry() {
 
 	versionedSubvariantEntry "$dir" "$fullVersion" "$variant" "${aliases[@]}"
 }
-
