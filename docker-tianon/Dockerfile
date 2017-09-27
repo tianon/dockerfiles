@@ -24,6 +24,7 @@ RUN set -eux; \
 		\
 		aufs-tools \
 		iproute2 \
+		psmisc \
 		xz-utils \
 	; \
 	rm -rf /var/lib/apt/lists/*
