@@ -1,11 +1,13 @@
 FROM debian:stretch-slim
 
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends \
+RUN echo "deb http://ftp.debian.org/debian stretch-backports main" >> /etc/apt/sources.list \
+	&& apt-get update \
+	&& apt-get install -y -t stretch-backports --no-install-recommends \
 		ca-certificates \
 		git \
 		vim-nox \
 		wget \
+		ssh \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV LANG C.UTF-8
