@@ -1,4 +1,4 @@
-FROM golang:1.8-alpine
+FROM golang:1.9-alpine
 
 # fetch dependencies
 # format: import-path=strip-components=tarball-url
