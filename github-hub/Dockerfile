@@ -5,9 +5,10 @@ RUN echo "deb http://ftp.debian.org/debian stretch-backports main" >> /etc/apt/s
 	&& apt-get install -y -t stretch-backports --no-install-recommends \
 		ca-certificates \
 		git \
+		less \
+		ssh \
 		vim-nox \
 		wget \
-		ssh \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV LANG C.UTF-8
