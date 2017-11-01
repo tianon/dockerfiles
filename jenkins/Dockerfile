@@ -3,7 +3,7 @@ FROM debian:stretch-slim
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		ca-certificates curl wget \
-		gnupg2 dirmngr \
+		gnupg dirmngr \
 		\
 		git openssh-client \
 	&& rm -rf /var/lib/apt/lists/*

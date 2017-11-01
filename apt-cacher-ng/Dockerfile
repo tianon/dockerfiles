@@ -5,7 +5,7 @@ ENV TINI_VERSION v0.13.0
 RUN set -x \
 	\
 	&& fetchDeps=' \
-		gnupg2 dirmngr \
+		gnupg dirmngr \
 		wget ca-certificates \
 	' \
 	&& apt-get update && apt-get install -y --no-install-recommends $fetchDeps && rm -rf /var/lib/apt/lists/* \

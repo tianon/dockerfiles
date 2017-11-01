@@ -18,8 +18,8 @@ RUN set -ex; \
 	toRemove=''; \
 	if ! command -v gpg; then \
 		apt-get update; \
-		toRemove="$toRemove gnupg2"; \
-		apt-get install -y --no-install-recommends gnupg2; \
+		toRemove="$toRemove gnupg"; \
+		apt-get install -y --no-install-recommends gnupg; \
 		if ! command -v dirmngr; then \
 			toRemove="$toRemove dirmngr"; \
 			apt-get install -y --no-install-recommends dirmngr; \
