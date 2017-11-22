@@ -4,7 +4,7 @@ set -e
 opts=(
 	dc_local_interfaces '0.0.0.0 ; ::0'
 	dc_other_hostnames ''
-	dc_relay_nets "$(ip address show | awk -v ORS=':' '$1 == "inet" { print $2 }' | rev | cut -c 2- | rev)"
+	dc_relay_nets '0.0.0.0/0'
 )
 
 if [ "$GMAIL_USER" -a "$GMAIL_PASSWORD" ]; then
