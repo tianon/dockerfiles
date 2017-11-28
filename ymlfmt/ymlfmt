@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+
+# inspired heavily by https://github.com/mmlb/yamlfmt/blob/edf2fec5c2c224a44169b49d238a836e802619fb/yamlfmt
+
+import argparse, os, pathlib, subprocess, sys, tempfile
+
+from ruamel.yaml import YAML
+
+yaml = YAML(typ='rt')
+yaml.indent(mapping=2, sequence=4, offset=2)
+
+parser = argparse.ArgumentParser()
+parser.add_argument('file', metavar='file.yml', help='files to parse (defaults to stdin)', nargs='*', default='-')
+parser.add_argument('-d', '--diff', help='display diffs instead of rewriting files', action='store_true')
+parser.add_argument('-w', '--write', help='write result to (source) file instead of stdout', action='store_true')
+args = parser.parse_args()
+
+def do_the_thing(nin, nout):
+    fin = sys.stdin if nin == '-' else pathlib.Path(nin) if isinstance(nin, str) else nin
+    fout = sys.stdout if nout == '-' else pathlib.Path(nout) if isinstance(nout, str) else nout
+    data = yaml.load(fin)
+    yaml.dump(data, fout)
+
+if args.diff and args.write:
+    raise Exception('invalid combination of options (--diff and --write are exclusive)')
+
+for f in args.file:
+    if args.diff:
+        if f == '-':
+            raise Exception('invalid combination of options (--diff and stdout)')
+        with subprocess.Popen(['diff', '-u', f, '/dev/stdin'], stdin=subprocess.PIPE) as proc:
+            do_the_thing(f, proc.stdin)
+    elif args.write:
+        if f == '-':
+            raise Exception('invalid combination of options (--write and stdout)')
+        (fdir, fbase) = os.path.split(f)
+        (fname, fext) = os.path.splitext(fbase)
+        tempf = tempfile.NamedTemporaryFile(dir=fdir, prefix=fname+'-', suffix=fext, delete=False)
+        do_the_thing(f, tempf)
+        tempf.close()
+        os.replace(tempf.name, f)
+    else:
+        do_the_thing(f, '-')
