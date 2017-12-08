@@ -1,7 +1,7 @@
 FROM debian:stretch-slim
 
 # http://www.makemkv.com/forum2/viewtopic.php?f=3&t=224
-ENV MAKEMKV_VERSION 1.10.7
+ENV MAKEMKV_VERSION 1.10.8
 
 # beta code: http://www.makemkv.com/forum2/viewtopic.php?f=5&t=1053
 RUN set -ex; \
