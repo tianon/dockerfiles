@@ -73,9 +73,14 @@ for port in "${qemuPorts[@]}"; do
 	netArg+=",hostfwd=udp::$port-:$port"
 done
 
+qemuNetDevice='virtio-net-pci'
+case "$qemuArch" in
+	arm) qemuNetDevice='virtio-net-device' ;;
+esac
+
 qemuArgs+=(
 	-netdev "$netArg,id=net"
-	-device virtio-net-pci,netdev=net
+	-device "$qemuNetDevice,netdev=net"
 	-vnc ':0'
 )
 if [ -z "${QEMU_NO_SERIAL:-}" ]; then
