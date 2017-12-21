@@ -24,12 +24,30 @@ RUN set -eux; \
 		patch \
 		\
 		gcc \
+		gnutls-dev \
+		libaio-dev \
+		libbz2-dev \
 		libc-dev \
+		libcap-dev \
+		libcap-ng-dev \
+		libcurl4-gnutls-dev \
 		libglib2.0-dev \
+		libiscsi-dev \
+		libjpeg-dev \
+		libncursesw5-dev \
+		libnfs-dev \
+		libnuma-dev \
 		libpixman-1-dev \
+		libpng-dev \
+		libseccomp-dev \
+		libssh2-1-dev \
+		libusb-1.0-0-dev \
+		libusbredirparser-dev \
+		libxen-dev \
 		make \
 		pkg-config \
 		python \
+		xfslibs-dev \
 		zlib1g-dev \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
@@ -37,7 +55,7 @@ RUN set -eux; \
 	wget -O qemu.tar.xz "https://download.qemu.org/qemu-2.11.0.tar.xz"; \
 # TODO verify signature
 	mkdir /usr/src/qemu; \
-	tar -xvf qemu.tar.xz -C /usr/src/qemu --strip-components=1; \
+	tar -xf qemu.tar.xz -C /usr/src/qemu --strip-components=1; \
 	rm qemu.tar.xz; \
 	\
 	cd /usr/src/qemu; \
@@ -48,7 +66,55 @@ RUN set -eux; \
 	rm -rf /qemu-patches; \
 	\
 	./configure --help; \
-	./configure; \
+	./configure \
+		--target-list=' \
+# system targets
+# (https://sources.debian.org/src/qemu/stretch/debian/rules/#L57-L61, slimmed)
+			i386-softmmu x86_64-softmmu aarch64-softmmu arm-softmmu m68k-softmmu \
+			mips64-softmmu mips64el-softmmu ppc64-softmmu \
+			sparc64-softmmu s390x-softmmu \
+# user targets
+# (https://sources.debian.org/src/qemu/stretch/debian/rules/#L81-L86, slimmed)
+			i386-linux-user x86_64-linux-user aarch64-linux-user arm-linux-user m68k-linux-user \
+			mips64-linux-user mips64el-linux-user \
+			ppc64-linux-user ppc64le-linux-user sparc64-linux-user \
+			s390x-linux-user \
+		' \
+		--disable-docs \
+		--disable-gtk --disable-vte \
+		--disable-sdl \
+		--enable-attr \
+		--enable-bzip2 \
+		--enable-cap-ng \
+		--enable-curl \
+		--enable-curses \
+		--enable-fdt \
+		--enable-gnutls \
+		--enable-kvm \
+		--enable-libiscsi \
+		--enable-libnfs \
+		--enable-libssh2 \
+		--enable-libusb \
+		--enable-linux-aio \
+		--enable-linux-user \
+		--enable-modules \
+		--enable-numa \
+		--enable-seccomp \
+		--enable-system \
+		--enable-tools \
+		--enable-usb-redir \
+		--enable-vhost-net \
+		--enable-vhost-user \
+		--enable-vhost-vsock \
+		--enable-virtfs \
+		--enable-vnc \
+		--enable-vnc-jpeg \
+		--enable-vnc-png \
+		--enable-xen \
+		--enable-xfsctl \
+#		--enable-rbd \
+#		--enable-vde \
+	; \
 	make -j "$(nproc)"; \
 	make install; \
 	\

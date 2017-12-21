@@ -75,7 +75,7 @@ done
 
 qemuArgs+=(
 	-netdev "$netArg,id=net"
-	-device virtio-net-device,netdev=net
+	-device virtio-net-pci,netdev=net
 	-vnc ':0'
 )
 if [ -z "${QEMU_NO_SERIAL:-}" ]; then
