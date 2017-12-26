@@ -3,9 +3,9 @@ FROM alpine:3.6
 RUN apk add --no-cache \
 		ca-certificates
 
-ENV DOCKER_VERSION master-dockerproject-2017-12-24
+ENV DOCKER_VERSION master-dockerproject-2017-12-25
 ENV DOCKER_URL https://master.dockerproject.org/linux/x86_64/docker.tgz
-ENV DOCKER_SHA256 2ba21e92682eba6f87a72f6a885b27e7d188a1904e21848abfa77440fd385238
+ENV DOCKER_SHA256 9933502393d63fc1df6f51e125bd14a28de65c4eb5382868d80a6d5ec3b3fa33
 
 RUN set -ex; \
 	apk add --no-cache --virtual .fetch-deps \
