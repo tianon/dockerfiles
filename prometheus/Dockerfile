@@ -21,6 +21,7 @@ RUN set -ex; \
 		s390x)   promArch='s390x'   ;; \
 		x86)     promArch='386'     ;; \
 		x86_64)  promArch='amd64'   ;; \
+		*) echo >&2 "error: unsupported arch: $apkArch"; exit 1 ;; \
 	esac; \
 	\
 	wget -O /tmp/prom.tar.gz "https://github.com/prometheus/prometheus/releases/download/v${PROMETHEUS_VERSION}/prometheus-${PROMETHEUS_VERSION}.linux-${promArch}.tar.gz"; \
