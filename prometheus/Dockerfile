@@ -1,9 +1,10 @@
-FROM alpine:3.6
+FROM alpine:3.7
 
 WORKDIR /opt/prometheus
 ENV PATH /opt/prometheus:$PATH
 
-ENV PROMETHEUS_VERSION 1.2.1
+# https://github.com/prometheus/prometheus/releases
+ENV PROMETHEUS_VERSION 2.0.0
 
 RUN set -ex; \
 	\
@@ -12,7 +13,17 @@ RUN set -ex; \
 		libressl \
 	; \
 	\
-	wget -O /tmp/prom.tar.gz "https://github.com/prometheus/prometheus/releases/download/v${PROMETHEUS_VERSION}/prometheus-${PROMETHEUS_VERSION}.linux-amd64.tar.gz"; \
+	apkArch="$(apk --print-arch)"; \
+	case "$apkArch" in \
+		aarch64) promArch='arm64'   ;; \
+		armhf)   promArch='armv6'   ;; \
+		ppc64le) promArch='ppc64le' ;; \
+		s390x)   promArch='s390x'   ;; \
+		x86)     promArch='386'     ;; \
+		x86_64)  promArch='amd64'   ;; \
+	esac; \
+	\
+	wget -O /tmp/prom.tar.gz "https://github.com/prometheus/prometheus/releases/download/v${PROMETHEUS_VERSION}/prometheus-${PROMETHEUS_VERSION}.linux-${promArch}.tar.gz"; \
 	tar \
 		--extract \
 		--file /tmp/prom.tar.gz \
@@ -21,7 +32,7 @@ RUN set -ex; \
 	; \
 	rm /tmp/prom.tar.gz; \
 	\
-	prometheus -version; \
+	prometheus --version; \
 	\
 	apk del .fetch-deps
 
