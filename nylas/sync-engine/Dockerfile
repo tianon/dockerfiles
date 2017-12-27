@@ -13,8 +13,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		libssl-dev \
 		libxslt1-dev \
 		pkg-config \
-		python-pip \
+		python \
 	&& rm -rf /var/lib/apt/lists/*
+# install pip from upstream (since "python-pip" is too old)
+RUN wget -O get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
+	&& python get-pip.py --no-cache-dir \
+	&& pip --version \
+	&& rm -f get-pip.py
 # tell pynacl to use system libsodium
 ENV SODIUM_INSTALL system
 
