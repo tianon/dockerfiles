@@ -121,18 +121,16 @@ RUN set -eux; \
 	cd /; \
 	rm -rf /usr/src/qemu; \
 	\
-	libs="$( \
-		find /usr/local -type f -executable -exec ldd '{}' ';' \
-			| awk '/=>/ { print $(NF-1) }' \
-			| sort -u \
-			| xargs dpkg-query --search \
-			| cut -d: -f1 \
-			| sort -u \
-	)"; \
-	savedAptMark="$savedAptMark $libs"; \
-	\
 	apt-mark auto '.*' > /dev/null; \
 	[ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; \
+	find /usr/local -type f -executable -exec ldd '{}' ';' \
+		| awk '/=>/ { print $(NF-1) }' \
+		| sort -u \
+		| xargs -r dpkg-query --search \
+		| cut -d: -f1 \
+		| sort -u \
+		| xargs -r apt-mark manual \
+	; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 
 STOPSIGNAL SIGHUP
