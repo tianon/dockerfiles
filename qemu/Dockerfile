@@ -133,7 +133,7 @@ RUN set -eux; \
 	\
 	apt-mark auto '.*' > /dev/null; \
 	[ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; \
-	apt-get purge -y --auto-remove
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 
 STOPSIGNAL SIGHUP
 
