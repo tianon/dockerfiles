@@ -4,15 +4,15 @@ FROM golang:1.9-alpine
 # format: import-path=strip-components=tarball-url
 ENV GCPC_DEPS \
 # https://github.com/coreos/go-systemd/releases
-	github.com/coreos/go-systemd=1=https://github.com/coreos/go-systemd/archive/v14.tar.gz \
+	github.com/coreos/go-systemd=1=https://github.com/coreos/go-systemd/archive/v15.tar.gz \
 # https://github.com/satori/go.uuid/releases
 	github.com/satori/go.uuid=1=https://github.com/satori/go.uuid/archive/v1.1.0.tar.gz \
 # https://github.com/urfave/cli/releases
-	github.com/urfave/cli=1=https://github.com/urfave/cli/archive/v1.19.1.tar.gz \
+	github.com/urfave/cli=1=https://github.com/urfave/cli/archive/v1.20.0.tar.gz \
 # https://github.com/golang/net/commits/master
-	golang.org/x/net=1=https://github.com/golang/net/archive/8fd7f25.tar.gz \
+	golang.org/x/net=1=https://github.com/golang/net/archive/434ec0c7fe3742c984919a691b2018a6e9694425.tar.gz \
 # https://github.com/golang/oauth2/commits/master
-	golang.org/x/oauth2=1=https://github.com/golang/oauth2/archive/314dd2c.tar.gz \
+	golang.org/x/oauth2=1=https://github.com/golang/oauth2/archive/30785a2c434e431ef7c507b54617d6a951d5f2b4.tar.gz \
 # https://bazaar.launchpad.net/~chipaca/go-xdg/v0/files ("view revision")
 # https://bazaar.launchpad.net/~chipaca/go-xdg/v0/revision/10?start_revid=10 ("download tarball")
 	launchpad.net/go-xdg/v0=3=https://bazaar.launchpad.net/~chipaca/go-xdg/v0/tarball/10?start_revid=10
