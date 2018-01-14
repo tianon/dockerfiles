@@ -49,7 +49,7 @@ if [ -n "${QEMU_HDA:-}" ]; then
 	#qemuArgs+=( -hda "$QEMU_HDA" )
 	#qemuArgs+=( -drive file="$QEMU_HDA",index=0,media=disk,discard=unmap )
 	qemuArgs+=(
-		-drive file=arm32v7.qcow2,index=0,media=disk,discard=unmap,detect-zeroes=unmap,if=none,id=hda
+		-drive file="$QEMU_HDA",index=0,media=disk,discard=unmap,detect-zeroes=unmap,if=none,id=hda
 		-device virtio-scsi-device
 		-device scsi-hd,drive=hda
 	)
