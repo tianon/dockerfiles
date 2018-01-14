@@ -23,6 +23,8 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*; \
 	rm /tmp/plex.deb
 
+# https://github.com/plexinc/pms-docker/blob/7529befa25c89a67731129f71ee73c22a3a647d6/root/etc/services.d/plex/run
+# https://support.plex.tv/articles/200273978-linux-user-and-storage-configuration/
 ENV PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR /var/lib/plexmediaserver/Library/Application Support
 ENV PLEX_MEDIA_SERVER_HOME /usr/lib/plexmediaserver
 ENV PLEX_MEDIA_SERVER_INFO_DEVICE docker
