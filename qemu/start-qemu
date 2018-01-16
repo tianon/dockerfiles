@@ -45,17 +45,18 @@ if [ -n "${QEMU_HDA:-}" ]; then
 			qemu-img create -f qcow2 -o preallocation=off "$QEMU_HDA" "${QEMU_HDA_SIZE:-8G}"
 		)
 	fi
+
 	# http://wiki.qemu.org/download/qemu-doc.html#Invocation
-	#qemuArgs+=( -hda "$QEMU_HDA" )
-	#qemuArgs+=( -drive file="$QEMU_HDA",index=0,media=disk,discard=unmap )
-	qemuSCSIDevice='virtio-scsi-pci'
+	qemuScsiDevice='virtio-scsi-pci'
 	case "$qemuArch" in
-		arm) qemuSCSIDevice='virtio-scsi-device' ;;
+		arm) qemuScsiDevice='virtio-scsi-device' ;;
 	esac
 
+	#qemuArgs+=( -hda "$QEMU_HDA" )
+	#qemuArgs+=( -drive file="$QEMU_HDA",index=0,media=disk,discard=unmap )
 	qemuArgs+=(
 		-drive file="$QEMU_HDA",index=0,media=disk,discard=unmap,detect-zeroes=unmap,if=none,id=hda
-		-device "$qemuSCSIDevice"
+		-device "$qemuScsiDevice"
 		-device scsi-hd,drive=hda
 	)
 fi
