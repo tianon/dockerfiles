@@ -48,9 +48,14 @@ if [ -n "${QEMU_HDA:-}" ]; then
 	# http://wiki.qemu.org/download/qemu-doc.html#Invocation
 	#qemuArgs+=( -hda "$QEMU_HDA" )
 	#qemuArgs+=( -drive file="$QEMU_HDA",index=0,media=disk,discard=unmap )
+	qemuSCSIDevice='virtio-scsi-pci'
+	case "$qemuArch" in
+		arm) qemuSCSIDevice='virtio-scsi-device' ;;
+	esac
+
 	qemuArgs+=(
 		-drive file="$QEMU_HDA",index=0,media=disk,discard=unmap,detect-zeroes=unmap,if=none,id=hda
-		-device virtio-scsi-device
+		-device "$qemuSCSIDevice"
 		-device scsi-hd,drive=hda
 	)
 fi
