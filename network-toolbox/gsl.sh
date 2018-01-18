@@ -9,4 +9,4 @@ source gsl-libs.sh
 
 globalEntry
 tagsEntry "$dir/alpine" alpine
-tagsEntry "$dir/debian" debian
+tagsEntry "$dir/debian" debian latest
