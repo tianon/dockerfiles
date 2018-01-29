@@ -29,6 +29,9 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
+RUN set -eux; \
+	mkdir -p /var/spool/exim4 /var/log/exim4; \
+	chown -R Debian-exim:Debian-exim /var/spool/exim4 /var/log/exim4
 VOLUME ["/var/spool/exim4", "/var/log/exim4"]
 
 COPY set-exim4-update-conf docker-entrypoint.sh /usr/local/bin/
