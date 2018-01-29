@@ -2,8 +2,6 @@
 
 You probably want to bind-mount in some kind of `/etc/mailname` that actually makes sense.  Probably also worth setting `-h` to the same value.  Something like `-v /etc/mailname:/etc/mailname:ro -h "$(cat /etc/mailname)"` might be reasonable.
 
-Also, it's worth noting that Exim is grumpy about signals here (possibly [this pid1 issue](https://github.com/docker/docker/issues/3793)), so you'll have to just `docker kill` the container to stop it, unfortunately.
-
 ## sSMTP
 
 If you want to use this with another container that has sSMTP or similar installed, here's a configuration you can adapt: (assuming your second container uses something like `--link some-exim4:smtp`)
