@@ -27,7 +27,8 @@ RUN set -eux; \
 	apt-get install -y \
 		exim4-daemon-light \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/*; \
+	rm -vf /etc/mailname
 
 RUN set -eux; \
 	mkdir -p /var/spool/exim4 /var/log/exim4; \
