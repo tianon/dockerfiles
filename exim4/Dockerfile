@@ -28,7 +28,7 @@ RUN set -eux; \
 		exim4-daemon-light \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
-	rm -vf /etc/mailname
+	ln -svfT /etc/hostname /etc/mailname
 
 RUN set -eux; \
 	mkdir -p /var/spool/exim4 /var/log/exim4; \
