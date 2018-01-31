@@ -8,6 +8,8 @@ RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		apt-transport-https \
 		ca-certificates \
+# wget is invoked by skypeforlinux for crash reports
+		wget \
 	&& rm -rf /var/lib/apt/lists/*
 
 # https://repo.skype.com/data/SKYPE-GPG-KEY
