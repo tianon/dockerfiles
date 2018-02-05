@@ -6,8 +6,9 @@ RUN echo 'APT::Get::Show-Versions "1";' > /etc/apt/apt.conf.d/verbose
 # normal build deps
 RUN set -eux; \
 	apt-get update; \
-# for some reason "tzdata" is prompting via debconf via Readline, which hangs
-	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata; \
+# if "tzdata" is installed with the later set of packages, it uses the "Readline" method of prompting for "debconf" input, which hangs
+	apt-get install -y --no-install-recommends tzdata; \
+# (so we just install it before whatever gets installed that makes debconf think it can/should use Readline)
 	apt-get install -y --no-install-recommends \
 		autopkgtest qemu \
 		bash-completion curl less rsync vim wget \
