@@ -3,9 +3,12 @@ FROM ubuntu:devel
 # let's make apt list package versions, since those are handy during devel
 RUN echo 'APT::Get::Show-Versions "1";' > /etc/apt/apt.conf.d/verbose
 
-
 # normal build deps
-RUN apt-get update && apt-get install -y \
+RUN set -eux; \
+	apt-get update; \
+# for some reason "tzdata" is prompting via debconf via Readline, which hangs
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata; \
+	apt-get install -y --no-install-recommends \
 		autopkgtest qemu \
 		bash-completion curl less rsync vim wget \
 		build-essential \
@@ -30,8 +33,8 @@ RUN apt-get update && apt-get install -y \
 		reprepro \
 		sudo \
 		ubuntu-dev-tools pbuilder \
-		--no-install-recommends \
-	&& rm -rf /var/lib/apt/lists/*
+	; \
+	rm -rf /var/lib/apt/lists/*
 
 # get dh-make-golang from Git since it's so rapidly changing
 RUN mkdir -p /go \
