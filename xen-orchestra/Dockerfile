@@ -8,13 +8,12 @@ RUN set -ex; \
 
 WORKDIR /usr/src/xo/server
 
-# https://github.com/vatesfr/xo-server/releases
+# https://github.com/vatesfr/xen-orchestra/releases
 ENV XO_SERVER_REF v5.6.4
-# https://github.com/vatesfr/xo-web/releases
 ENV XO_WEB_REF v5.6.3
 
-RUN git clone -b "$XO_SERVER_REF" --depth 1 https://github.com/vatesfr/xo-server.git .
-RUN git clone -b "$XO_WEB_REF" --depth 1 https://github.com/vatesfr/xo-web.git ../web
+RUN git clone -b "xo-server/$XO_SERVER_REF" --depth 1 https://github.com/vatesfr/xen-orchestra.git .
+RUN git clone -b "xo-web/$XO_WEB_REF" --depth 1 https://github.com/vatesfr/xen-orchestra.git ../web
 
 # tone down the NPM log level (default from image is "info")
 ENV NPM_CONFIG_LOGLEVEL warn
