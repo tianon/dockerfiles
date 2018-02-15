@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		netcat-openbsd \
 		openssh-client \
 		procps \
+		rsync \
 		wget \
 		\
 		dnsutils \

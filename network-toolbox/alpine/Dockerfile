@@ -6,6 +6,7 @@ RUN apk add --no-cache \
 		curl \
 		libressl \
 		openssh-client \
+		rsync \
 		wget \
 		\
 		bind-tools \
