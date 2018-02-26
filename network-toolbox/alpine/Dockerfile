@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM alpine:3.7
 
 RUN apk add --no-cache \
 		bash \
@@ -16,4 +16,4 @@ RUN apk add --no-cache \
 		iputils \
 		net-tools
 
-CMD ["bash"]
+CMD ["bash", "--login", "-i"]
