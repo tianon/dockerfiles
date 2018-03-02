@@ -8,6 +8,7 @@ RUN apk add --no-cache \
 		libressl \
 		openssh-client \
 		rsync \
+		socat \
 		tshark \
 		wget \
 		\

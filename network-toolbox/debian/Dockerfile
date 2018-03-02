@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		openssh-client \
 		procps \
 		rsync \
+		socat \
 		tshark \
 		wget \
 		\
