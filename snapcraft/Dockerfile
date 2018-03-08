@@ -5,7 +5,7 @@ FROM ubuntu:xenial
 #RUN sed -i 's/ universe$/ universe multiverse/' /etc/apt/sources.list
 
 # pin specific version so we can update with a natural cache bust
-ENV SNAPCRAFT_VERSION 2.35
+ENV SNAPCRAFT_VERSION 2.39.3+really2.35
 
 RUN apt-get update \
 	&& apt-get install -y snapcraft=$SNAPCRAFT_VERSION \
