@@ -1,12 +1,15 @@
 FROM debian:stretch-slim
 
+# FPL_MainFeature detection only seemed to work with OpenJDK 9 (8 was insufficient)
+RUN echo 'deb http://deb.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list
+
 # This disc requires Java runtime (JRE), but none was found. Certain functions will fail, please install Java. See http://www.makemkv.com/bdjava/ for details.
 RUN set -eux; \
 # update-alternatives: error: error creating symbolic link '/usr/share/man/man1/rmid.1.gz.dpkg-tmp': No such file or directory
 	mkdir -p /usr/share/man/man1; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		openjdk-8-jre-headless \
+		openjdk-9-jre-headless \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
