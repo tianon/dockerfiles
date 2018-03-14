@@ -23,6 +23,7 @@ RUN set -ex; \
 		ca-certificates \
 		g++ \
 		gcc \
+		gnupg dirmngr \
 		libavcodec-dev \
 		libexpat-dev \
 		libqt4-dev \
@@ -34,9 +35,23 @@ RUN set -ex; \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
 	\
+	wget -O 'sha256sums.txt.sig' "https://www.makemkv.com/download/makemkv-sha-${MAKEMKV_VERSION}.txt"; \
+# pub   dsa2048 2017-05-26 [SC]
+#       2ECF 2330 5F1F C0B3 2001  6733 94E3 083A 1804 2697
+# uid           [ unknown] MakeMKV (signature) <support@makemkv.com>
+	export GNUPGHOME="$(mktemp -d)"; \
+	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 2ECF23305F1FC0B32001673394E3083A18042697; \
+	gpg --batch --decrypt --output sha256sums.txt sha256sums.txt.sig; \
+	rm -rf "$GNUPGHOME" sha256sums.txt.sig; \
+	\
 	export PREFIX='/usr/local'; \
 	for ball in makemkv-oss makemkv-bin; do \
 		wget -O "$ball.tgz" "http://www.makemkv.com/download/${ball}-${MAKEMKV_VERSION}.tar.gz"; \
+		sha256="$(grep "  $ball-${MAKEMKV_VERSION}[.]tar[.]gz\$" sha256sums.txt)"; \
+		sha256="${sha256%% *}"; \
+		[ -n "$sha256" ]; \
+		echo "$sha256 *$ball.tgz" | sha256sum -c -; \
+		\
 		mkdir -p "$ball"; \
 		tar -xvf "$ball.tgz" -C "$ball" --strip-components=1; \
 		rm "$ball.tgz"; \
@@ -54,6 +69,8 @@ RUN set -ex; \
 		cd ..; \
 		rm -r "$ball"; \
 	done; \
+	\
+	rm sha256sums.txt; \
 	\
 	apt-mark auto '.*' > /dev/null; \
 	[ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; \
