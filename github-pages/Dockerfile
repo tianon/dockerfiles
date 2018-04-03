@@ -2,7 +2,7 @@
 FROM ruby:2.3-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-		gcc make patch \
+		g++ gcc make patch \
 		nodejs python-pygments \
 	&& rm -rf /var/lib/apt/lists/*
 
