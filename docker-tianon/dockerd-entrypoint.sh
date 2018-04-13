@@ -22,4 +22,9 @@ if [ -z "${DOCKER_HOST:-}" ] && [ -n "${DOCKER_PORT_2375_TCP:-}" ]; then
 	export DOCKER_HOST='tcp://docker:2375'
 fi
 
+if [ "$1" = 'dockerd' ]; then
+	# explicitly remove Docker's default PID file to ensure that it can start properly if it was stopped uncleanly (and thus didn't clean up the PID file)
+	rm -f /var/run/docker.pid
+fi
+
 exec "$@"
