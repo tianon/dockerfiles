@@ -1,6 +1,6 @@
 # see https://repo.skype.com
 
-FROM debian:jessie
+FROM debian:stretch
 
 RUN useradd --create-home user
 
@@ -21,17 +21,26 @@ ENV SKYPE_REPO_GPG \
 	D4040146BE3972509FD57FC71F3045A5DF7587C3
 
 RUN set -ex; \
+	savedAptMark="$(apt-mark showmanual)"; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		gnupg dirmngr \
+	; \
+	rm -rf /var/lib/apt/lists/*; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	for key in $SKYPE_REPO_GPG; do \
 		gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
 	done; \
 	gpg --export $GPG_KEYS > /etc/apt/trusted.gpg.d/skype.gpg; \
-	rm -r "$GNUPGHOME"; \
-	apt-key list
+	rm -rf "$GNUPGHOME"; \
+	apt-key list; \
+	apt-mark auto '.*' > /dev/null; \
+	[ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; \
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 
 RUN echo 'deb [arch=amd64] https://repo.skype.com/deb stable main' > /etc/apt/sources.list.d/skype-stable.list
 
-ENV SKYPE_VERSION 8.14.0.10
+ENV SKYPE_VERSION 8.20.0.9
 
 RUN apt-get update \
 	&& apt-get install -y \
