@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:stretch-slim
 
 # https://www.google.com/linuxrepositories/
 ENV GPG_KEYS \
@@ -13,15 +13,13 @@ ENV GPG_KEYS \
 # sub   elg2048 2007-03-08 [E]
 #		4CCA1EAF950CEE4AB83976DCA040830F7FAC5991
 
-RUN set -ex; \
+RUN set -eux; \
 	\
-	toRemove=''; \
+	aptMark="$(apt-mark showmanual)"; \
 	if ! command -v gpg; then \
 		apt-get update; \
-		toRemove="$toRemove gnupg"; \
 		apt-get install -y --no-install-recommends gnupg; \
 		if ! command -v dirmngr; then \
-			toRemove="$toRemove dirmngr"; \
 			apt-get install -y --no-install-recommends dirmngr; \
 		fi; \
 		rm -rf /var/lib/apt/lists/*; \
@@ -36,13 +34,13 @@ RUN set -ex; \
 	gpg --export $GPG_KEYS > /etc/apt/trusted.gpg.d/google.gpg; \
 	rm -rf "$GNUPGHOME"; \
 	\
-	if [ -n "$toRemove" ]; then \
-		apt-get purge -y --auto-remove $toRemove; \
-	fi; \
+	apt-mark auto '.*' > /dev/null; \
+	[ -z "$aptMark" ] || apt-mark manual $aptMark; \
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	\
-	echo "deb [arch=$(dpkg --print-architecture)] http://dl.google.com/linux/musicmanager/deb stable main" > /etc/apt/sources.list.d/google-musicmanager.list
+	echo 'deb http://dl.google.com/linux/musicmanager/deb stable main' > /etc/apt/sources.list.d/google-musicmanager.list
 
-ENV GOOGLE_MUSICMANAGER_VERSION 1.0.243.1116-r0
+ENV GOOGLE_MUSICMANAGER_VERSION 1.0.467.4929-r0
 
 RUN set -ex; \
 	apt-get update; \
