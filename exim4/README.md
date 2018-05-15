@@ -16,3 +16,7 @@ Then `sendmail` in your linked container should work as expected.  You can also 
 ## Gmail
 
 If you'd rather not relay mail directly (which is a smart thing to not want to do generally), you can trivially configure this container to relay via a Gmail account instead!  Just add `-e GMAIL_USER=youruser@yourdomain.com -e GMAIL_PASSWORD=yourpasswordhere` and the entrypoint will automatically preconfigure to relay via the Gmail account specified!
+
+## Custom SMTP Smarthost
+
+If you don't want to relay from a Gmail account, you can define a SMTP relay server with `-e SMTP_RELAY=yourserver.yourdomain.com`. The entrypoint will preconfigure exim4-config too.
