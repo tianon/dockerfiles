@@ -30,6 +30,11 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*; \
 	ln -svfT /etc/hostname /etc/mailname
 
+# https://blog.dhampir.no/content/exim4-line-length-in-debian-stretch-mail-delivery-failed-returning-message-to-sender
+# https://serverfault.com/a/881197
+# https://bugs.debian.org/828801
+RUN echo "IGNORE_SMTP_LINE_LENGTH_LIMIT='true'" >> /etc/exim4/update-exim4.conf.conf
+
 RUN set -eux; \
 	mkdir -p /var/spool/exim4 /var/log/exim4; \
 	chown -R Debian-exim:Debian-exim /var/spool/exim4 /var/log/exim4
