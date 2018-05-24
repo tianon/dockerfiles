@@ -1,11 +1,12 @@
-FROM php:7.1-apache
+# https://www.phpmyadmin.net/downloads/
+FROM php:7.2-apache
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-		libmcrypt-dev \
+		gnupg dirmngr \
 		xz-utils \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install mbstring mcrypt mysqli
+RUN docker-php-ext-install mbstring mysqli
 
 # https://docs.phpmyadmin.net/en/latest/setup.html#verifying-phpmyadmin-releases
 ENV GPG_KEYS \
