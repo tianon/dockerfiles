@@ -1,18 +1,19 @@
-FROM golang:1.9-alpine
+FROM golang:1.10-alpine
 
 # fetch dependencies
 # format: import-path=strip-components=tarball-url
 ENV GCPC_DEPS \
 # https://github.com/coreos/go-systemd/releases
-	github.com/coreos/go-systemd=1=https://github.com/coreos/go-systemd/archive/v15.tar.gz \
+	github.com/coreos/go-systemd=1=https://github.com/coreos/go-systemd/archive/v17.tar.gz \
 # https://github.com/satori/go.uuid/releases
-	github.com/satori/go.uuid=1=https://github.com/satori/go.uuid/archive/v1.1.0.tar.gz \
+# (https://github.com/satori/go.uuid/commit/0ef6afb2f6cdd6cdaeee3885a95099c63f18fc8c -- hopefully we'll get a newer release than v1.2.0 soonish)
+	github.com/satori/go.uuid=1=https://github.com/satori/go.uuid/archive/36e9d2ebbde5e3f13ab2e25625fd453271d6522e.tar.gz \
 # https://github.com/urfave/cli/releases
 	github.com/urfave/cli=1=https://github.com/urfave/cli/archive/v1.20.0.tar.gz \
 # https://github.com/golang/net/commits/master
-	golang.org/x/net=1=https://github.com/golang/net/archive/434ec0c7fe3742c984919a691b2018a6e9694425.tar.gz \
+	golang.org/x/net=1=https://github.com/golang/net/archive/dfa909b99c79129e1100513e5cd36307665e5723.tar.gz \
 # https://github.com/golang/oauth2/commits/master
-	golang.org/x/oauth2=1=https://github.com/golang/oauth2/archive/30785a2c434e431ef7c507b54617d6a951d5f2b4.tar.gz \
+	golang.org/x/oauth2=1=https://github.com/golang/oauth2/archive/770e5ebd4ab27c4d70b0983674d138217f5e2c72.tar.gz \
 # https://bazaar.launchpad.net/~chipaca/go-xdg/v0/files ("view revision")
 # https://bazaar.launchpad.net/~chipaca/go-xdg/v0/revision/10?start_revid=10 ("download tarball")
 	launchpad.net/go-xdg/v0=3=https://bazaar.launchpad.net/~chipaca/go-xdg/v0/tarball/10?start_revid=10
@@ -36,7 +37,7 @@ RUN set -ex; \
 	apk del .build-deps
 
 # https://github.com/google/cloud-print-connector/releases
-ENV GOOGLE_CLOUD_PRINT_CONNECTOR_VERSION v1.13
+ENV GOOGLE_CLOUD_PRINT_CONNECTOR_VERSION v1.16
 ENV GCPC_IMPORT github.com/google/cloud-print-connector
 
 RUN set -ex; \
