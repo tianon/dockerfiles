@@ -19,7 +19,7 @@ sha256="$(curl -fsSL "${url}.sha256" | cut -d' ' -f1)"
 		s/^(ENV DOCKER_VERSION) .*/\1 '"$version"'/;
 		s!^(ENV DOCKER_URL) .*!\1 '"$url"'!;
 		s/^(ENV DOCKER_SHA256) .*/\1 '"$sha256"'/;
-		#s/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/;
+		s/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/;
 	' Dockerfile */Dockerfile
 	sed -ri \
 		-e 's!^(ENV DOCKER_GITCOMMIT) .*!\1 '"$masterCommit"'!' \
