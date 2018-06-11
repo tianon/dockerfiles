@@ -5,6 +5,7 @@ RUN apk add --no-cache \
 		bash-completion \
 		ca-certificates \
 		curl \
+		gnupg \
 		libressl \
 		openssh-client \
 		rsync \
