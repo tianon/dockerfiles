@@ -11,7 +11,7 @@ RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 
 ENV DOCKER_VERSION master-dockerproject-2018-06-16
 ENV DOCKER_URL https://master.dockerproject.org/linux/x86_64/docker.tgz
-ENV DOCKER_SHA256 fe9996240e12867790818ae44e49350c2e78a6bb56c0dcafc7bd54e6f7f6cfb0
+ENV DOCKER_SHA256 b31f6664934e6d8f8b858f027de82c7386752d0a2b1ff5b67672844558473e1b
 
 RUN set -ex; \
 	apk add --no-cache --virtual .fetch-deps \
