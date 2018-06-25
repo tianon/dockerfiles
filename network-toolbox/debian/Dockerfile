@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		\
 		dnsutils \
 		inetutils-ping \
+		iperf \
 		iproute2 \
 		iptables \
 		net-tools \

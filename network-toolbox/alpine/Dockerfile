@@ -14,6 +14,7 @@ RUN apk add --no-cache \
 		wget \
 		\
 		bind-tools \
+		iperf \
 		iptables \
 		iputils \
 		net-tools
