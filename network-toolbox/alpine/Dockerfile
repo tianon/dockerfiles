@@ -17,5 +17,6 @@ RUN apk add --no-cache \
 		socat \
 		tshark \
 		wget
+# TODO add "nbtscan" when we get to Alpine 3.9 (if it makes it out of edge for 3.9)
 
 CMD ["bash", "--login", "-i"]

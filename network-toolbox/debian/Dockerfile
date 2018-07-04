@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		iperf \
 		iproute2 \
 		iptables \
+		nbtscan \
 		net-tools \
 		netcat-openbsd \
 		openssh-client \
