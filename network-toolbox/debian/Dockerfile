@@ -4,22 +4,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		bash-completion \
 		ca-certificates \
 		curl \
-		gnupg dirmngr \
-		netcat-openbsd \
-		openssh-client \
-		procps \
-		rsync \
-		socat \
-		tshark \
-		wget \
-		\
 		dnsutils \
+		gnupg dirmngr \
 		inetutils-ping \
 		iperf \
 		iproute2 \
 		iptables \
 		net-tools \
+		netcat-openbsd \
+		openssh-client \
+		procps \
+		rsync \
+		socat \
 		traceroute \
+		tshark \
+		wget \
 	&& rm -rf /var/lib/apt/lists/*
 
 CMD ["bash", "--login", "-i"]
