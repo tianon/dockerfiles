@@ -24,7 +24,7 @@ fi
 
 if [ "$1" = 'dockerd' ]; then
 	# explicitly remove Docker's default PID file to ensure that it can start properly if it was stopped uncleanly (and thus didn't clean up the PID file)
-	rm -f /var/run/docker.pid
+	find /run /var/run -iname 'docker*.pid' -delete
 fi
 
 exec "$@"
