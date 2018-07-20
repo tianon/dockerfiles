@@ -40,4 +40,4 @@ RUN set -ex; \
 VOLUME /opt/prometheus/data
 
 EXPOSE 9090
-CMD ["prometheus"]
+CMD ["prometheus", "--config.file=/opt/prometheus/prometheus.yml", "--storage.tsdb.path=/opt/prometheus/data", "--web.console.libraries=/opt/prometheus/console_libraries", "--web.console.templates=/opt/prometheus/consoles"]
