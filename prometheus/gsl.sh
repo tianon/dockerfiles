@@ -12,5 +12,6 @@ env="${dir^^}_VERSION"
 env="${env//-/_}"
 versionedEnvTagsEntry "$dir" "$env" latest
 
-# TODO add version tags for node-exporter versions
+# TODO add version tags for exporter versions
+tagsEntry "$dir/blackbox-exporter" blackbox-exporter
 tagsEntry "$dir/node-exporter" node-exporter
