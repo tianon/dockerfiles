@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY *.patch /qemu-patches/
 
 # https://www.qemu.org/download/#source
-ENV QEMU_VERSION 2.12.0
+ENV QEMU_VERSION 2.12.1
 
 RUN set -eux; \
 	\
