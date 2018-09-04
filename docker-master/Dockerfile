@@ -9,9 +9,9 @@ RUN apk add --no-cache \
 # - docker run --rm debian:stretch grep '^hosts:' /etc/nsswitch.conf
 RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 
-ENV DOCKER_VERSION master-dockerproject-2018-09-02
+ENV DOCKER_VERSION master-dockerproject-2018-09-03
 ENV DOCKER_URL https://master.dockerproject.org/linux/x86_64/docker.tgz
-ENV DOCKER_SHA256 c9f656cf1b54221a89a7470ba8603b7d44b2c1bcbd70ce26228d031e1aa1699e
+ENV DOCKER_SHA256 504219f5087c53eb8a8d1950823c5b7e53bec02d2c9e0ff38db6faf4d00f167d
 
 RUN set -ex; \
 	apk add --no-cache --virtual .fetch-deps \
