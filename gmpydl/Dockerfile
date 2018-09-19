@@ -10,7 +10,7 @@ RUN set -eux; \
 # https://pypi.org/project/gmusicapi/
 ENV GMUSICAPI_VERSION 11.0.2
 
-RUN pip install "gmusicapi == $GMUSICAPI_VERSION"
+RUN pip install --no-cache-dir "gmusicapi == $GMUSICAPI_VERSION"
 
 # https://github.com/stevenewbs/gmpydl/commits/master
 # https://github.com/stevenewbs/gmpydl/releases
