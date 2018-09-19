@@ -6,7 +6,7 @@ true-c: true.c
 	gcc -Os -o $@ -static $<
 
 true-go: true.go
-	go build -o $@ -ldflags -d $<
+	CGO_ENABLED=0 go build -o $@ -ldflags '-d -s -w' $<
 
 .PHONY: all
 all: true-asm true-c true-go
