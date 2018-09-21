@@ -3,7 +3,8 @@ true-asm: true.asm
 	chmod +x true-asm
 
 true-c: true.c
-	gcc -Os -o $@ -static $<
+	gcc -o $@ -static -Os -nostartfiles -fno-asynchronous-unwind-tables $<
+	strip $@
 
 true-go: true.go
 	CGO_ENABLED=0 go build -o $@ -ldflags '-d -s -w' $<
