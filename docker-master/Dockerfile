@@ -13,16 +13,9 @@ ENV DOCKER_VERSION master-dockerproject-2018-10-03
 ENV DOCKER_URL https://master.dockerproject.org/linux/x86_64/docker.tgz
 ENV DOCKER_SHA256 40d17c0dd22cec1e77f2082de9cb244ccb8248c68cfc1db31319fb5f93b1dec2
 
-RUN set -ex; \
-# why we use "curl" instead of "wget":
-# + wget -O docker.tgz https://download.docker.com/linux/static/stable/x86_64/docker-17.03.1-ce.tgz
-# Connecting to download.docker.com (54.230.87.253:443)
-# wget: error getting response: Connection reset by peer
-	apk add --no-cache --virtual .fetch-deps \
-		curl \
-		tar \
-	; \
-	curl -fL -o docker.tgz "${DOCKER_URL}"; \
+RUN set -eux; \
+	\
+	wget -O docker.tgz "${DOCKER_URL}"; \
 	\
 	echo "$DOCKER_SHA256 *docker.tgz"; \
 	\
@@ -33,10 +26,8 @@ RUN set -ex; \
 	; \
 	rm docker.tgz; \
 	\
-	apk del .fetch-deps; \
-	\
-	dockerd -v; \
-	docker -v
+	dockerd --version; \
+	docker --version
 
 COPY modprobe.sh /usr/local/bin/modprobe
 COPY docker-entrypoint.sh /usr/local/bin/
