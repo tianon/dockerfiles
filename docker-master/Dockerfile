@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.8
 
 RUN apk add --no-cache \
 		ca-certificates
@@ -14,6 +14,10 @@ ENV DOCKER_URL https://master.dockerproject.org/linux/x86_64/docker.tgz
 ENV DOCKER_SHA256 40d17c0dd22cec1e77f2082de9cb244ccb8248c68cfc1db31319fb5f93b1dec2
 
 RUN set -ex; \
+# why we use "curl" instead of "wget":
+# + wget -O docker.tgz https://download.docker.com/linux/static/stable/x86_64/docker-17.03.1-ce.tgz
+# Connecting to download.docker.com (54.230.87.253:443)
+# wget: error getting response: Connection reset by peer
 	apk add --no-cache --virtual .fetch-deps \
 		curl \
 		tar \
