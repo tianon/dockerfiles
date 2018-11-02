@@ -3,6 +3,7 @@ FROM python:3-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		libarchive13 \
 		libmagic1 \
+		unzip \
 		xz-utils \
 # xxd (xxd not available in path. Falling back to Python hexlify.)
 		vim-common \
