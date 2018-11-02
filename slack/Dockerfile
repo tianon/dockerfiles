@@ -49,6 +49,8 @@ RUN set -eux; \
 		libx11-xcb1 \
 # 3.0.2: slack: error while loading shared libraries: libasound.so.2: cannot open shared object file: No such file or directory
 		libasound2 \
+# 3.3.3: slack: error while loading shared libraries: libgtk-3.so.0: cannot open shared object file: No such file or directory
+		libgtk-3-0 \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
