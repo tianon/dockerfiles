@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		vim-nox \
 # "No authenticators available"
 		libsasl2-modules \
+# "GPGME: CMS protocol not available"
+		gpgsm \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV BROWSER lynx
