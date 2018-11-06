@@ -17,9 +17,12 @@ if [ ! "$GMAIL_NAME" ]; then
 	GMAIL_NAME="$GMAIL_FROM"
 fi
 
-sed -i "s/%GMAIL_LOGIN%/$GMAIL/g" "$HOME/.muttrc"
-sed -i "s/%GMAIL_FROM%/$GMAIL_FROM/g" "$HOME/.muttrc"
-sed -i "s/%GMAIL_NAME%/$GMAIL_NAME/g" "$HOME/.muttrc"
+sed -i \
+	-e "s/%GMAIL_LOGIN%/$GMAIL/g" \
+	-e "s/%GMAIL_FROM%/$GMAIL_FROM/g" \
+	-e "s/%GMAIL_NAME%/$GMAIL_NAME/g" \
+	-e "s/%GMAIL_PASS%/$GMAIL_PASS/g" \
+	"$HOME/.muttrc"
 
 if [ -d "$HOME/.gnupg" ]; then
 	{

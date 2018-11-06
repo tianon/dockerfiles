@@ -1,16 +1,20 @@
-FROM debian:jessie
+FROM debian:stretch-slim
 
 RUN groupadd -g 1000 user \
 	&& useradd --create-home -d /home/user -g user -u 1000 user
 
-RUN apt-get update && apt-get install -y ca-certificates mutt-patched
+RUN echo 'path-include /usr/share/doc/mutt/examples/*' >> /etc/dpkg/dpkg.cfg.d/mutt
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+		ca-certificates \
+		mutt \
 # a browser is necessary!
-RUN apt-get update && apt-get install -y lynx
-ENV BROWSER lynx
-
+		lynx \
 # my preferred editor :) (see also muttrc)
-RUN apt-get update && apt-get install -y vim-nox
+		vim-nox \
+	&& rm -rf /var/lib/apt/lists/*
+
+ENV BROWSER lynx
 
 USER user
 ENV HOME /home/user
@@ -25,4 +29,4 @@ ADD vimrc $HOME/.vimrc
 ADD entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["mutt-patched"]
+CMD ["mutt"]
