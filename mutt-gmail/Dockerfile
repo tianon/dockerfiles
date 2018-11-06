@@ -12,6 +12,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		lynx \
 # my preferred editor :) (see also muttrc)
 		vim-nox \
+# "No authenticators available"
+		libsasl2-modules \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV BROWSER lynx
