@@ -29,9 +29,9 @@ RUN set -ex; \
 	rm -rf /var/lib/apt/lists/*; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	for key in $SKYPE_REPO_GPG; do \
-		gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+		gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
 	done; \
-	gpg --export $GPG_KEYS > /etc/apt/trusted.gpg.d/skype.gpg; \
+	gpg --batch --export $GPG_KEYS > /etc/apt/trusted.gpg.d/skype.gpg; \
 	rm -rf "$GNUPGHOME"; \
 	apt-key list; \
 	apt-mark auto '.*' > /dev/null; \

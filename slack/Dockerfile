@@ -28,8 +28,8 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists; \
 	\
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$SLACK_GPG_KEY"; \
-	gpg --export --armor "$SLACK_GPG_KEY" > /etc/apt/trusted.gpg.d/slack.gpg.asc; \
+	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$SLACK_GPG_KEY"; \
+	gpg --batch --export --armor "$SLACK_GPG_KEY" > /etc/apt/trusted.gpg.d/slack.gpg.asc; \
 	rm -rf "$GNUPGHOME"; \
 	apt-key list; \
 	\

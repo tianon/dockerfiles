@@ -27,11 +27,11 @@ RUN set -eux; \
 	\
 	export GNUPGHOME="$(mktemp -d)"; \
 	for key in $GPG_KEYS; do \
-		gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+		gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
 	done; \
 # only stretch+ supports --armor in trusted.gpg.asc
-#	gpg --export --armor $GPG_KEYS | tee /etc/apt/trusted.gpg.d/google.gpg.asc; \
-	gpg --export $GPG_KEYS > /etc/apt/trusted.gpg.d/google.gpg; \
+#	gpg --batch --export --armor $GPG_KEYS | tee /etc/apt/trusted.gpg.d/google.gpg.asc; \
+	gpg --batch --export $GPG_KEYS > /etc/apt/trusted.gpg.d/google.gpg; \
 	rm -rf "$GNUPGHOME"; \
 	\
 	apt-mark auto '.*' > /dev/null; \
