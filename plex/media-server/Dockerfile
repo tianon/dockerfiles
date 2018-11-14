@@ -11,9 +11,9 @@ RUN apt-get update \
 
 # https://www.plex.tv/downloads/#getdownload
 # https://plex.tv/api/downloads/1.json
-ENV PLEX_VERSION 1.13.8.5395-10d48da0d
-ENV PLEX_URL https://downloads.plex.tv/plex-media-server/1.13.8.5395-10d48da0d/plexmediaserver_1.13.8.5395-10d48da0d_amd64.deb
-ENV PLEX_SHA1 4efd35c9d3308b072e6daa8096f2a57bc3c67d42
+ENV PLEX_VERSION 1.13.9.5456-ecd600442
+ENV PLEX_URL https://downloads.plex.tv/plex-media-server/1.13.9.5456-ecd600442/plexmediaserver_1.13.9.5456-ecd600442_amd64.deb
+ENV PLEX_SHA1 98e0c2dbd688910c78d0f39b5e5433ac67bbcd44
 
 RUN set -eux; \
 	wget -O /tmp/plex.deb "$PLEX_URL"; \
