@@ -4,6 +4,7 @@ RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		ca-certificates \
 		git \
+		openssh-client \
 		vim-nox \
 		wget \
 	&& rm -rf /var/lib/apt/lists/*
@@ -13,7 +14,7 @@ ENV LANG C.UTF-8
 WORKDIR /opt/hub
 ENV PATH /opt/hub/bin:$PATH
 
-ENV GITHUB_HUB_VERSION 2.2.9
+ENV GITHUB_HUB_VERSION 2.6.0
 
 RUN set -ex; \
 	\
