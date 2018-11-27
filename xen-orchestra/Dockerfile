@@ -19,6 +19,8 @@ RUN set -eux; \
 
 RUN set -eux; \
 	cd /usr/src/xo; \
+# https://github.com/yarnpkg/yarn/issues/6312 -- error https://registry.yarnpkg.com/flatmap-stream/-/flatmap-stream-0.1.1.tgz: Extracting tar content of undefined failed, the file appears to be corrupt: "Unexpected end of data"
+	rm yarn.lock; \
 	yarn; \
 	yarn build
 
