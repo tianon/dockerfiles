@@ -4,6 +4,7 @@ RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		ca-certificates \
 		git \
+		openssh-client \
 		vim-nox \
 		wget \
 	&& rm -rf /var/lib/apt/lists/*
