@@ -18,7 +18,7 @@ ENV GF_PATHS_CONFIG="/etc/grafana/grafana.ini" \
 ENV PATH $GF_PATHS_HOME/bin:$PATH
 
 # https://github.com/grafana/grafana/releases
-ENV GRAFANA_VERSION 5.3.4
+ENV GRAFANA_VERSION 5.4.0
 # https://github.com/grafana/grafana/blob/master/packaging/docker/Dockerfile
 
 RUN set -eux; \
