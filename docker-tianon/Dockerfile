@@ -24,6 +24,7 @@ RUN set -eux; \
 		\
 		aufs-tools \
 		iproute2 \
+		pigz \
 		psmisc \
 		xz-utils \
 	; \
