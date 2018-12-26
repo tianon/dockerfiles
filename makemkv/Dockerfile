@@ -1,5 +1,7 @@
 FROM debian:stretch-slim
 
+# TODO find some way to include ccextractor (currently buster-only)
+
 # FPL_MainFeature detection only seemed to work with OpenJDK 9 (8 was insufficient)
 RUN echo 'deb http://deb.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list
 
