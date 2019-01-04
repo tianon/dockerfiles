@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		nbtscan \
 		net-tools \
 		netcat-openbsd \
+		nmap \
 		openssh-client \
 		procps \
 		rsync \

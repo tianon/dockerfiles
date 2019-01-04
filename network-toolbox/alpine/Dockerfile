@@ -12,6 +12,7 @@ RUN apk add --no-cache \
 		iputils \
 		libressl \
 		net-tools \
+		nmap \
 		openssh-client \
 		rsync \
 		socat \
