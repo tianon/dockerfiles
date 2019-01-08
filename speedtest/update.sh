@@ -1,5 +1,5 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
+set -Eeuo pipefail
 
 current="$(curl -sSL 'https://pypi.python.org/pypi/speedtest-cli/json' | awk -F '"' '$2 == "version" { print $4 }')"
 

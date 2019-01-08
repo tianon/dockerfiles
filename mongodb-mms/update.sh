@@ -1,5 +1,5 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
+set -Eeuo pipefail
 
 current="$(HEAD -E 'https://cloud.mongodb.com/download/agent/monitoring/mongodb-mms-monitoring-agent_latest_amd64.ubuntu1604.deb' | grep '^Location:' | tail -n1 | cut -d_ -f2)"
 
