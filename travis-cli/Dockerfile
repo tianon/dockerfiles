@@ -14,4 +14,6 @@ RUN set -ex; \
 	gem install travis -v "$TRAVIS_CLI_VERSION"; \
 	apk del .build-deps
 
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["travis"]
