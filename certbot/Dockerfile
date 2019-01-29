@@ -3,7 +3,7 @@ FROM python:2-alpine
 # Executable not found: can't find the executable for the dialog-like program
 RUN apk add --no-cache dialog
 
-ENV CERTBOT_VERSION 0.9.3
+ENV CERTBOT_VERSION 0.30.2
 
 RUN set -ex; \
 	\
