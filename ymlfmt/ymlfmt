@@ -4,10 +4,33 @@
 
 import argparse, os, pathlib, subprocess, sys, tempfile
 
-from ruamel.yaml import YAML
+import ruamel.yaml
 
-yaml = YAML(typ='rt')
+# monkey patch a few functions so we can have YAML 1.1 (like docker-compose uses) without the "%YAML 1.1\n---\n" header on it
+def _write_version_directive(self, version_text):
+    return
+real_write_indicator = ruamel.yaml.emitter.Emitter.write_version_directive
+def _write_indicator(self, indicator, need_whitespace, whitespace=False, indention=False):
+    # type: (Any, Any, bool, bool) -> None
+    if indicator == '---':
+        return
+    if self.whitespace or not need_whitespace:
+        data = indicator
+    else:
+        data = u' ' + indicator
+    self.whitespace = whitespace
+    self.indention = self.indention and indention
+    self.column += len(data)
+    self.open_ended = False
+    if bool(self.encoding):
+        data = data.encode(self.encoding)
+    self.stream.write(data)
+ruamel.yaml.emitter.Emitter.write_version_directive = _write_version_directive
+ruamel.yaml.emitter.Emitter.write_indicator = _write_indicator
+
+yaml = ruamel.yaml.YAML(typ='rt')
 yaml.indent(mapping=2, sequence=4, offset=2)
+yaml.version = (1, 1)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('file', metavar='file.yml', help='files to parse (defaults to stdin)', nargs='*', default='-')
