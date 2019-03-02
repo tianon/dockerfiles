@@ -9,8 +9,7 @@ RUN mkdir -p /torrents/session \
 	&& chown -R user:user /torrents
 VOLUME /torrents
 
-COPY rtorrent.rc /home/user/.rtorrent.rc
-RUN chown -R user:user /home/user
+COPY --chown=user:user rtorrent.rc /home/user/.rtorrent.rc
 
 USER user
 CMD ["rtorrent"]

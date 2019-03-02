@@ -5,10 +5,6 @@ RUN groupadd -g 1000 user \
 
 RUN apt-get update && apt-get install -y signing-party ssmtp
 
-# TODO move this down when COPY adheres to USER (and remove chown)
-COPY caffrc /home/user/.caffrc
-RUN chown -R user:user /home/user/.caffrc
-
 USER user
 ENV HOME /home/user
 WORKDIR /home/user
@@ -21,6 +17,8 @@ RUN mkdir -p .caff/gnupghome \
 		echo 'default-preference-list SHA512 SHA384 SHA256 SHA224 AES256 AES192 AES CAST5 ZLIB BZIP2 ZIP Uncompressed'; \
 		echo 'keyid-format long'; \
 	} > .caff/gnupghome/gpg.conf
+
+COPY --chown=user:user caffrc /home/user/.caffrc
 
 ENTRYPOINT ["caff"]
 CMD []
