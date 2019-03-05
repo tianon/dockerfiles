@@ -9,7 +9,6 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends \
 		make \
 		gcc \
-		libgmp-dev \
 		g++ \
 		patch \
 	; \
