@@ -9,7 +9,7 @@ RUN set -eux; \
 WORKDIR /usr/src/xo/packages/xo-server
 
 # https://github.com/vatesfr/xen-orchestra/releases
-ENV XO_VERSION xo-server-v5.30.1
+ENV XO_VERSION xo-server-v5.36.2
 
 RUN set -eux; \
 	cd /usr/src/xo; \
@@ -19,19 +19,17 @@ RUN set -eux; \
 
 RUN set -eux; \
 	cd /usr/src/xo; \
-# https://github.com/yarnpkg/yarn/issues/6312 -- error https://registry.yarnpkg.com/flatmap-stream/-/flatmap-stream-0.1.1.tgz: Extracting tar content of undefined failed, the file appears to be corrupt: "Unexpected end of data"
-	rm yarn.lock; \
 	yarn; \
 	yarn build
 
 RUN set -eux; \
 	sed \
-		-e "s!#'/': '/path/to/xo-web/dist/'!'/': '../xo-web/dist/'!" \
-		-e "s!#uri: redis://.*!uri: 'redis://redis:6379'!" \
-		sample.config.yaml > .xo-server.yaml \
+		-e "s!#'/' = '/path/to/xo-web/dist/'!'/' = '../xo-web/dist/'!" \
+		-e "s!#uri = 'redis://.*'!uri = 'redis://redis:6379'!" \
+		sample.config.toml > .xo-server.toml \
 	; \
-	grep -q '../xo-web/dist/' .xo-server.yaml; \
-	grep -q 'redis:6379' .xo-server.yaml
+	grep '../xo-web/dist/' .xo-server.toml; \
+	grep 'redis:6379' .xo-server.toml
 
 EXPOSE 80
 CMD ["yarn", "start"]
