@@ -1,7 +1,11 @@
 FROM debian:stretch-slim
 
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends \
-		wine64 \
+RUN set -eux; \
+	dpkg --add-architecture i386; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
 		wine \
-	&& rm -rf /var/lib/apt/lists/*
+		wine32 \
+		wine64 \
+	; \
+	rm -rf /var/lib/apt/lists/*
