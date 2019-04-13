@@ -7,11 +7,11 @@ cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 json="$(curl -fsSL 'https://plex.tv/api/downloads/1.json' | jq '.computer.Linux')"
 
-version="$(echo "$json" | jq -r '.version')"
+version="$(jq -r '.version' <<<"$json")"
 
-ubuntuRelease="$(echo "$json" | jq '.releases[] | select(.distro == "ubuntu" and .build == "linux-ubuntu-x86_64")')"
-url="$(echo "$ubuntuRelease" | jq -r '.url')"
-sha1="$(echo "$ubuntuRelease" | jq -r '.checksum')"
+ubuntuRelease="$(jq '.releases[] | select(.distro == "debian" and .build == "linux-x86_64")' <<<"$json")"
+url="$(jq -r '.url' <<<"$ubuntuRelease")"
+sha1="$(jq -r '.checksum' <<<"$ubuntuRelease")"
 
 set -x
 sed -ri \
