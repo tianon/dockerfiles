@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.9
 
 RUN apk add --no-cache \
 		bash \
@@ -7,10 +7,12 @@ RUN apk add --no-cache \
 		ca-certificates \
 		curl \
 		gnupg \
+		ipcalc \
 		iperf \
 		iptables \
 		iputils \
 		libressl \
+		mtr \
 		net-tools \
 		nmap \
 		openssh-client \
@@ -18,6 +20,6 @@ RUN apk add --no-cache \
 		socat \
 		tshark \
 		wget
-# TODO add "nbtscan" when we get to Alpine 3.9 (if it makes it out of edge for 3.9)
+# TODO add "nbtscan" when we get to Alpine 3.10 (if it makes it out of edge for 3.10)
 
 CMD ["bash", "--login", "-i"]

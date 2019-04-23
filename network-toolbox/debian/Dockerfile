@@ -7,9 +7,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		dnsutils \
 		gnupg dirmngr \
 		inetutils-ping \
+		ipcalc \
 		iperf \
 		iproute2 \
 		iptables \
+		mtr-tiny \
 		nbtscan \
 		net-tools \
 		netcat-openbsd \
