@@ -1,6 +1,10 @@
 FROM debian:stretch-slim
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN set -eux; \
+# dangit, wireshark-common!  *shakes fist*
+	export DEBIAN_FRONTEND='noninteractive'; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
 		bash-completion \
 		ca-certificates \
 		curl \
@@ -23,6 +27,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		traceroute \
 		tshark \
 		wget \
-	&& rm -rf /var/lib/apt/lists/*
+	; \
+	rm -rf /var/lib/apt/lists/*
 
 CMD ["bash", "--login", "-i"]
