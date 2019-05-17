@@ -19,7 +19,8 @@ RUN apk add --no-cache \
 		rsync \
 		socat \
 		tshark \
-		wget
+		wget \
+		whois
 # TODO add "nbtscan" when we get to Alpine 3.10 (if it makes it out of edge for 3.10)
 
 CMD ["bash", "--login", "-i"]

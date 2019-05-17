@@ -27,6 +27,7 @@ RUN set -eux; \
 		traceroute \
 		tshark \
 		wget \
+		whois \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
