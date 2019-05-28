@@ -1,16 +1,11 @@
 FROM openjdk:8-jre
 
-# "java.awt.AWTError: Assistive Technology not found: org.GNOME.Accessibility.AtkWrapper"
-# https://askubuntu.com/a/723503
-# https://bugs.debian.org/798794
-RUN sed -i 's/^assistive_technologies=/#&/' /etc/java-8-openjdk/accessibility.properties
-
 # https://ehour.nl/download/downloadfile.php?get=ehour-latest-standalone-unix.sh
 # https://ehour.nl/download/downloadfile.php?get=ehour-1.4.3-standalone-unix.sh
 ENV EHOUR_VERSION 1.4.3
 ENV EHOUR_URL https://ehour.nl/download/downloadfile.php?get=ehour-${EHOUR_VERSION}-standalone-unix.sh
 
-RUN wget -O ehour.sh "$EHOUR_URL" \
+RUN wget -O ehour.sh "$EHOUR_URL" --progress=dot:giga \
 	&& chmod +x ehour.sh
 
 RUN { echo 'o'; echo ''; } | ./ehour.sh
@@ -20,7 +15,7 @@ WORKDIR /usr/local/ehour
 ENV EHOUR_RELEASE_TAG 20150227-RELEASE-1.4.3
 
 RUN set -xe \
-	&& wget -O ehour.tar.gz "https://github.com/te-con/ehour/archive/$EHOUR_RELEASE_TAG.tar.gz" \
+	&& wget -O ehour.tar.gz "https://github.com/te-con/ehour/archive/$EHOUR_RELEASE_TAG.tar.gz" --progress=dot:giga \
 	&& mkdir -p temp-tar \
 	&& tar -xf ehour.tar.gz -C temp-tar --strip-components=1 \
 	&& rm ehour.tar.gz \
