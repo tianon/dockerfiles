@@ -9,6 +9,9 @@ json="$(curl -fsSL 'https://plex.tv/api/downloads/1.json' | jq '.computer.Linux'
 
 version="$(jq -r '.version' <<<"$json")"
 
+# TODO multiarch template!
+# linux-aarch64, linux-armv7hf_neon, linux-x86 (all available for Debian)
+
 ubuntuRelease="$(jq '.releases[] | select(.distro == "debian" and .build == "linux-x86_64")' <<<"$json")"
 url="$(jq -r '.url' <<<"$ubuntuRelease")"
 sha1="$(jq -r '.checksum' <<<"$ubuntuRelease")"
