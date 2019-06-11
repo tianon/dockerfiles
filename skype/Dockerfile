@@ -40,7 +40,7 @@ RUN set -ex; \
 
 RUN echo 'deb [arch=amd64] https://repo.skype.com/deb stable main' > /etc/apt/sources.list.d/skype-stable.list
 
-ENV SKYPE_VERSION 8.32.0.44
+ENV SKYPE_VERSION 8.47.0.59
 
 RUN apt-get update \
 	&& apt-get install -y \
