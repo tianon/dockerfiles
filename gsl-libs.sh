@@ -1,6 +1,8 @@
 #!/bin/bash
 set -Eeuo pipefail
 
+: "${dockerfile:=Dockerfile}"
+
 # get the most recent commit which modified any of "$@"
 fileCommit() {
 	git log -1 --format='format:%H' HEAD -- "$@"
@@ -12,8 +14,8 @@ dirCommit() {
 	(
 		cd "$dir"
 		fileCommit \
-			Dockerfile \
-			$(git show HEAD:./Dockerfile | awk '
+			"$dockerfile" \
+			$(git show HEAD:"./$dockerfile" | awk '
 				toupper($1) == "COPY" {
 					for (i = 2; i < NF; i++) {
 						print $i
@@ -47,8 +49,13 @@ tagsEntry() {
 
 		Tags: $(join ', ' "${tags[@]}")
 		GitCommit: $commit
-		Directory: $dir
 	EOE
+	if [ "$dir" != '.' ]; then
+		echo "Directory: $dir"
+	fi
+	if [ "$dockerfile" != 'Dockerfile' ]; then
+		echo "File: $dockerfile"
+	fi
 }
 
 _versionAliasesHelper() {
@@ -85,7 +92,7 @@ _versionEnvHelper() {
 	local fullVersionEnv="$1"; shift
 
 	local commit="$(dirCommit "$dir")"
-	local fullVersion="$(git -C "$dir" show "$commit":./Dockerfile  | awk '$1 == "ENV" && $2 == "'"$fullVersionEnv"'" { print $3; exit }')"
+	local fullVersion="$(git -C "$dir" show "$commit":"./$dockerfile"  | awk '$1 == "ENV" && $2 == "'"$fullVersionEnv"'" { print $3; exit }')"
 	[ -n "$fullVersion" ]
 
 	echo "$fullVersion"
