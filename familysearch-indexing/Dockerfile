@@ -1,4 +1,5 @@
-FROM i386/debian:wheezy-slim
+# docker-manifest.sh debian/eol:wheezy-slim | jq -r '.manifests[] | select(.platform.architecture == "386") | .digest'
+FROM debian/eol:wheezy-slim@sha256:99eb1c086c149d873da87848363f1c45ba956751f7bc7e431f7712417e0e8ae9
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		ca-certificates \
