@@ -1,209 +1,209 @@
-# echo 'strategy:'; echo '  matrix:'; for dir in $(git ls-files '*/Dockerfile' | xargs -n1 dirname | sort -u); do tag="${dir//'/'/-}"; echo "    $tag:"; echo "      azureImage: 'ubuntu-16.04'"; echo "      buildContext: '$dir'"; done
+# echo 'strategy:'; echo '  matrix:'; for dir in $(git ls-files '*/Dockerfile' | xargs -n1 dirname | sort -u); do tag="${dir//'/'/-}"; echo "    $tag:"; echo "      azureImage: 'ubuntu-latest'"; echo "      buildContext: '$dir'"; done
 strategy:
   matrix:
     apt-cacher-ng:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'apt-cacher-ng'
     backblaze-b2:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'backblaze-b2'
     beets:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'beets'
     byzanz:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'byzanz'
     caff:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'caff'
     certbot:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'certbot'
     debian-devel:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'debian/devel'
     debian-experimental:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'debian/experimental'
     debian-frankendebian:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'debian/frankendebian'
     debian-rc-buggy:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'debian/rc-buggy'
     debian-ubuntu-devel:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'debian/ubuntu-devel'
     dell-netextender:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'dell-netextender'
     dell-netextender-gui:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'dell-netextender/gui'
     diffoscope:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'diffoscope'
     docker-master:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'docker-master'
     docker-master-dind:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'docker-master/dind'
     docker-master-git:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'docker-master/git'
     docker-tianon:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'docker-tianon'
     duplicity:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'duplicity'
     ehour:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'ehour'
     exim4:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'exim4'
     familysearch-indexing:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'familysearch-indexing'
     github-hub:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'github-hub'
     github-pages:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'github-pages'
     glxgears:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'glxgears'
     gmpydl:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'gmpydl'
     gmvault:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'gmvault'
     google-cloud-print-connector:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'google-cloud-print-connector'
     google-musicmanager:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'google-musicmanager'
     grafana:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'grafana'
     haproxy-sks:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'haproxy-sks'
     jenkins:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'jenkins'
     jenkins-slave:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'jenkins/slave'
     jenkins-slave-debian:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'jenkins/slave/debian'
     kafka:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'kafka'
     kgb-bot:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'kgb-bot'
     latex:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'latex'
     makemkv:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'makemkv'
     mojo:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'mojo'
     mongodb-mms:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'mongodb-mms'
     mutt-gmail:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'mutt-gmail'
     network-toolbox-alpine:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'network-toolbox/alpine'
     network-toolbox-debian:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'network-toolbox/debian'
     nylas-n1:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'nylas/n1'
     nylas-sync-engine:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'nylas/sync-engine'
     perl:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'perl'
     phpmyadmin:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'phpmyadmin'
     plex-media-server:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'plex/media-server'
     prometheus:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'prometheus'
     prometheus-blackbox-exporter:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'prometheus/blackbox-exporter'
     prometheus-node-exporter:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'prometheus/node-exporter'
     robomongo:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'robomongo'
     rtorrent:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'rtorrent'
     ruby-passenger:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'ruby-passenger'
     ruby-unicorn:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'ruby-unicorn'
     ruby-unicorn-nginx:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'ruby-unicorn-nginx'
     sbuild:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'sbuild'
     skype:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'skype'
     slack:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'slack'
     sleeping-beauty:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'sleeping-beauty'
     speedtest:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'speedtest'
     steam:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'steam'
     travis-cli:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'travis-cli'
     true:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'true'
     wine-32:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'wine/32'
     wine-64:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'wine/64'
     xen-orchestra:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'xen-orchestra'
     ymlfmt:
-      azureImage: 'ubuntu-16.04'
+      azureImage: 'ubuntu-latest'
       buildContext: 'ymlfmt'
 
 pool:
