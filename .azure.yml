@@ -1,3 +1,7 @@
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/build/triggers
+trigger:
+  batch: true
+
 # echo 'strategy:'; echo '  matrix:'; for dir in $(git ls-files '*/Dockerfile' | xargs -n1 dirname | sort -u); do tag="${dir//'/'/-}"; echo "    $tag:"; echo "      azureImage: 'ubuntu-latest'"; echo "      buildContext: '$dir'"; done
 strategy:
   matrix:
