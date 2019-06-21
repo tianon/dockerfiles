@@ -29,6 +29,7 @@ RUN set -x \
 	&& export GNUPGHOME="$(mktemp -d)" \
 	&& gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys 6380DC428747F6C393FEACA59A84159D7001A4E5 \
 	&& gpg --batch --verify /usr/local/bin/tini.asc /usr/local/bin/tini \
+	&& gpgconf --kill all \
 	&& rm -r "$GNUPGHOME" /usr/local/bin/tini.asc \
 	&& chmod +x /usr/local/bin/tini \
 	&& tini -h
@@ -39,6 +40,7 @@ ENV JENKINS_GPG_KEY 150FDE3F7787E7D11EF4E12A9B7D32F2D50582E6
 RUN export GNUPGHOME="$(mktemp -d)" \
 	&& gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$JENKINS_GPG_KEY" \
 	&& gpg --batch --export --armor "$JENKINS_GPG_KEY" > /etc/apt/trusted.gpg.d/jenkins.gpg.asc \
+	&& gpgconf --kill all \
 	&& rm -r "$GNUPGHOME" \
 	&& apt-key list
 RUN echo 'deb https://pkg.jenkins.io/debian binary/' > /etc/apt/sources.list.d/jenkins.list

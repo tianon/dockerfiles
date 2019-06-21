@@ -31,7 +31,8 @@ RUN set -ex; \
 	for key in $SKYPE_REPO_GPG; do \
 		gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
 	done; \
-	gpg --batch --export $GPG_KEYS > /etc/apt/trusted.gpg.d/skype.gpg; \
+	gpg --batch --export --armor $GPG_KEYS > /etc/apt/trusted.gpg.d/skype.gpg.asc; \
+	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME"; \
 	apt-key list; \
 	apt-mark auto '.*' > /dev/null; \

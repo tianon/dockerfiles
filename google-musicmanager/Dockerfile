@@ -29,9 +29,8 @@ RUN set -eux; \
 	for key in $GPG_KEYS; do \
 		gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
 	done; \
-# only stretch+ supports --armor in trusted.gpg.asc
-#	gpg --batch --export --armor $GPG_KEYS | tee /etc/apt/trusted.gpg.d/google.gpg.asc; \
-	gpg --batch --export $GPG_KEYS > /etc/apt/trusted.gpg.d/google.gpg; \
+	gpg --batch --export --armor $GPG_KEYS | tee /etc/apt/trusted.gpg.d/google.gpg.asc; \
+	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME"; \
 	\
 	apt-mark auto '.*' > /dev/null; \

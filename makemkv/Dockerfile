@@ -47,6 +47,7 @@ RUN set -ex; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys 2ECF23305F1FC0B32001673394E3083A18042697; \
 	gpg --batch --decrypt --output sha256sums.txt sha256sums.txt.sig; \
+	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME" sha256sums.txt.sig; \
 	\
 	export PREFIX='/usr/local'; \

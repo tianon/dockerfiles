@@ -30,6 +30,7 @@ RUN set -eux; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$SLACK_GPG_KEY"; \
 	gpg --batch --export --armor "$SLACK_GPG_KEY" > /etc/apt/trusted.gpg.d/slack.gpg.asc; \
+	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME"; \
 	apt-key list; \
 	\
