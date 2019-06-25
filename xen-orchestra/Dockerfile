@@ -2,14 +2,15 @@
 
 FROM node:8-slim
 
+# https://github.com/nodejs/node-gyp/releases
 RUN set -eux; \
-	yarn global add node-gyp@3.5; \
+	yarn global add node-gyp@5.0.1; \
 	node-gyp --version
 
 WORKDIR /usr/src/xo/packages/xo-server
 
 # https://github.com/vatesfr/xen-orchestra/releases
-ENV XO_VERSION xo-server-v5.36.2
+ENV XO_VERSION xo-server-v5.43.0
 
 RUN set -eux; \
 	cd /usr/src/xo; \
@@ -23,13 +24,14 @@ RUN set -eux; \
 	yarn build
 
 RUN set -eux; \
+	mkdir /etc/xo-server; \
 	sed \
-		-e "s!#'/' = '/path/to/xo-web/dist/'!'/' = '../xo-web/dist/'!" \
+#		-e "s!#'/' = '/path/to/xo-web/dist/'!'/' = '../xo-web/dist/'!" \
 		-e "s!#uri = 'redis://.*'!uri = 'redis://redis:6379'!" \
-		sample.config.toml > .xo-server.toml \
+		sample.config.toml > /etc/xo-server/config.toml \
 	; \
-	grep '../xo-web/dist/' .xo-server.toml; \
-	grep 'redis:6379' .xo-server.toml
+	grep -vE '^#' config.toml | grep '../xo-web/dist'; \
+	grep 'redis:6379' /etc/xo-server/config.toml
 
 EXPOSE 80
 CMD ["yarn", "start"]
