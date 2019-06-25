@@ -125,9 +125,6 @@ strategy:
     mojo:
       azureImage: 'ubuntu-latest'
       buildContext: 'mojo'
-    mongodb-mms:
-      azureImage: 'ubuntu-latest'
-      buildContext: 'mongodb-mms'
     mutt-gmail:
       azureImage: 'ubuntu-latest'
       buildContext: 'mutt-gmail'
@@ -137,12 +134,6 @@ strategy:
     network-toolbox-debian:
       azureImage: 'ubuntu-latest'
       buildContext: 'network-toolbox/debian'
-    nylas-n1:
-      azureImage: 'ubuntu-latest'
-      buildContext: 'nylas/n1'
-    nylas-sync-engine:
-      azureImage: 'ubuntu-latest'
-      buildContext: 'nylas/sync-engine'
     perl:
       azureImage: 'ubuntu-latest'
       buildContext: 'perl'
@@ -161,9 +152,6 @@ strategy:
     prometheus-node-exporter:
       azureImage: 'ubuntu-latest'
       buildContext: 'prometheus/node-exporter'
-    robomongo:
-      azureImage: 'ubuntu-latest'
-      buildContext: 'robomongo'
     rtorrent:
       azureImage: 'ubuntu-latest'
       buildContext: 'rtorrent'
