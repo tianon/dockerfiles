@@ -1,4 +1,6 @@
-FROM alpine:3.8
+FROM alpine:3.10
+
+RUN apk add --no-cache ca-certificates
 
 WORKDIR /opt/blackbox-exporter
 ENV PATH /opt/blackbox-exporter:$PATH

@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.10
 
 WORKDIR /opt/node-exporter
 ENV PATH /opt/node-exporter:$PATH
@@ -6,11 +6,6 @@ ENV PATH /opt/node-exporter:$PATH
 ENV NODE_EXPORTER_VERSION 0.16.0
 
 RUN set -ex; \
-	\
-	apk add --no-cache --virtual .fetch-deps \
-		ca-certificates \
-		libressl \
-	; \
 	\
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
@@ -30,9 +25,7 @@ RUN set -ex; \
 	; \
 	rm /tmp/node-exporter.tar.gz; \
 	\
-	node_exporter --version; \
-	\
-	apk del .fetch-deps
+	node_exporter --version
 
 VOLUME /opt/node-exporter/data
 

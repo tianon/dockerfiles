@@ -1,4 +1,6 @@
-FROM alpine:3.8
+FROM alpine:3.10
+
+RUN apk add --no-cache ca-certificates
 
 WORKDIR /opt/prometheus
 ENV PATH /opt/prometheus:$PATH
@@ -7,11 +9,6 @@ ENV PATH /opt/prometheus:$PATH
 ENV PROMETHEUS_VERSION 2.3.2
 
 RUN set -ex; \
-	\
-	apk add --no-cache --virtual .fetch-deps \
-		ca-certificates \
-		libressl \
-	; \
 	\
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
@@ -33,9 +30,7 @@ RUN set -ex; \
 	; \
 	rm /tmp/prom.tar.gz; \
 	\
-	prometheus --version; \
-	\
-	apk del .fetch-deps
+	prometheus --version
 
 VOLUME /opt/prometheus/data
 
