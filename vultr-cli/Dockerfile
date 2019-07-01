@@ -1,5 +1,7 @@
 FROM alpine:3.10
 
+RUN apk add --no-cache ca-certificates
+
 # https://github.com/vultr/vultr-cli/releases
 ENV VULTR_CLI_VERSION 0.1.0
 
