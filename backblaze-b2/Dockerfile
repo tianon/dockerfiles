@@ -1,4 +1,4 @@
-FROM python:3.6-alpine3.8
+FROM python:3.7-alpine
 
 ENV BACKBLAZE_B2_VERSION 1.4.0
 
