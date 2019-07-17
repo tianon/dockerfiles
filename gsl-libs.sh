@@ -92,7 +92,7 @@ _versionEnvHelper() {
 	local fullVersionEnv="$1"; shift
 
 	local commit="$(dirCommit "$dir")"
-	local fullVersion="$(git -C "$dir" show "$commit":"./$dockerfile"  | awk '$1 == "ENV" && $2 == "'"$fullVersionEnv"'" { print $3; exit }')"
+	local fullVersion="$(git -C "$dir" show "$commit":"./$dockerfile" | awk '$1 == "ENV" && $2 == "'"$fullVersionEnv"'" { print $3; exit }')"
 	[ -n "$fullVersion" ]
 
 	echo "$fullVersion"
