@@ -11,7 +11,7 @@ masterCommit="$(git ls-remote https://github.com/docker/docker.git refs/heads/ma
 
 version="$(curl -fsSL 'https://master.dockerproject.org/version')"
 url='https://master.dockerproject.org/linux/x86_64/docker.tgz'
-sha256="$(curl -fsSL "${url%.tgz}.sha256" | cut -d' ' -f1)"
+sha256="$(curl -fsSL "$url" | sha256sum | cut -d' ' -f1)"
 
 (
 	set -x
