@@ -71,9 +71,6 @@ strategy:
     exim4:
       azureImage: 'ubuntu-latest'
       buildContext: 'exim4'
-    familysearch-indexing:
-      azureImage: 'ubuntu-latest'
-      buildContext: 'familysearch-indexing'
     github-hub:
       azureImage: 'ubuntu-latest'
       buildContext: 'github-hub'
