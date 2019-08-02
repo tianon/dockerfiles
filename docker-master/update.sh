@@ -1,17 +1,30 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
+dir="$(readlink -f "$BASH_SOURCE")"
+dir="$(dirname "$dir")"
+cd "$dir"
 
 # "tac|tac" for http://stackoverflow.com/a/28879552/433558
-dindLatest="$(curl -fsSL 'https://github.com/docker/docker/commits/master/hack/dind.atom'| tac|tac | awk -F ' *[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
+dindLatest="$(
+	wget -qO- 'https://github.com/docker/docker/commits/master/hack/dind.atom' \
+		| tac|tac \
+		| awk -F ' *[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }'
+)"
 
-#masterCommit="$(curl -fsSL 'https://master.dockerproject.org/commit')"
-masterCommit="$(git ls-remote https://github.com/docker/docker.git refs/heads/master | cut -d$'\t' -f1)"
+masterCommit="$(git ls-remote https://github.com/docker/docker-ce.git refs/heads/master | cut -d$'\t' -f1)"
 
-version="$(curl -fsSL 'https://master.dockerproject.org/version')"
-url='https://master.dockerproject.org/linux/x86_64/docker.tgz'
-sha256="$(curl -fsSL "$url" | sha256sum | cut -d' ' -f1)"
+# TODO multiarch?
+baseUrl='https://download.docker.com/linux/static/nightly/x86_64'
+tarball="$(
+	wget -qO- "$baseUrl" \
+		| grep -oE '"docker-[0-9.-]+(-[0-9a-f]+)?[.]tgz"' \
+		| tail -1 | cut -d'"' -f2
+)"
+version="${tarball#docker-}"
+version="${version%.tgz}"
+url="$baseUrl/$tarball"
+sha256="$(wget -qO- "$url" | sha256sum | cut -d' ' -f1)"
 
 (
 	set -x
