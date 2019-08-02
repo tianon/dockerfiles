@@ -12,6 +12,7 @@ RUN set -eux; \
 
 RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://doi-janky.infosiftr.net/job/tianon/job/docker-deb/job/repo/lastSuccessfulBuild/artifact stretch main' > /etc/apt/sources.list.d/docker-tianon.list
 
+# https://doi-janky.infosiftr.net/job/tianon/job/docker-deb/job/repo/lastSuccessfulBuild/artifact/pool/stretch/main/amd64/
 ENV DOCKER_VERSION 18.06.1-0~tianon1~stretch0
 
 RUN set -eux; \
