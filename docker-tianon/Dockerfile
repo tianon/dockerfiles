@@ -5,6 +5,8 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends \
 		apt-transport-https \
 		ca-certificates \
+		iproute2 \
+		kmod \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
