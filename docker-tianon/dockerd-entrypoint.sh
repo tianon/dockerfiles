@@ -92,16 +92,20 @@ _tls_generate_certs() {
 # no arguments passed
 # or first arg is `-f` or `--some-option`
 if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
-	# set DOCKER_HOST to the default "--host" value (for both standard or rootless)
+	# set "dockerSocket" to the default "--host" *unix socket* value (for both standard or rootless)
 	uid="$(id -u)"
 	if [ "$uid" = '0' ]; then
-		: "${DOCKER_HOST:=unix:///var/run/docker.sock}"
+		dockerSocket='unix:///var/run/docker.sock'
 	else
 		# if we're not root, we must be trying to run rootless
 		: "${XDG_RUNTIME_DIR:=/run/user/$uid}"
-		: "${DOCKER_HOST:=unix://$XDG_RUNTIME_DIR/docker.sock}"
+		dockerSocket="unix://$XDG_RUNTIME_DIR/docker.sock"
 	fi
-	export DOCKER_HOST
+	case "${DOCKER_HOST:-}" in
+		unix://*)
+			dockerSocket="$DOCKER_HOST"
+			;;
+	esac
 
 	# add our default arguments
 	if [ -n "${DOCKER_TLS_CERTDIR:-}" ] \
@@ -112,7 +116,7 @@ if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
 	; then
 		# generate certs and use TLS if requested/possible (default in 19.03+)
 		set -- dockerd \
-			--host="$DOCKER_HOST" \
+			--host="$dockerSocket" \
 			--host=tcp://0.0.0.0:2376 \
 			--tlsverify \
 			--tlscacert "$DOCKER_TLS_CERTDIR/server/ca.pem" \
@@ -123,7 +127,7 @@ if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
 	else
 		# TLS disabled (-e DOCKER_TLS_CERTDIR='') or missing certs
 		set -- dockerd \
-			--host="$DOCKER_HOST" \
+			--host="$dockerSocket" \
 			--host=tcp://0.0.0.0:2375 \
 			"$@"
 		DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS="${DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS:-} -p 0.0.0.0:2375:2375/tcp"
@@ -131,11 +135,6 @@ if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
 fi
 
 if [ "$1" = 'dockerd' ]; then
-	if [ -x '/usr/local/bin/dind' ]; then
-		# if we have the (mostly defunct now) Docker-in-Docker wrapper script, use it
-		set -- '/usr/local/bin/dind' "$@"
-	fi
-
 	# explicitly remove Docker's default PID file to ensure that it can start properly if it was stopped uncleanly (and thus didn't clean up the PID file)
 	find /run /var/run -iname 'docker*.pid' -delete || :
 
@@ -174,6 +173,9 @@ if [ "$1" = 'dockerd' ]; then
 			--copy-up=/etc --copy-up=/run \
 			${DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS:-} \
 			"$@" --userland-proxy-path=rootlesskit-docker-proxy
+	elif [ -x '/usr/local/bin/dind' ]; then
+		# if we have the (mostly defunct now) Docker-in-Docker wrapper script, use it
+		set -- '/usr/local/bin/dind' "$@"
 	fi
 else
 	# if it isn't `dockerd` we're trying to run, pass it through `docker-entrypoint.sh` so it gets `DOCKER_HOST` set appropriately too
