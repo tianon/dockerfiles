@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # for "diffoscope --progress"
 RUN pip install progressbar33==2.4
 
-ENV DIFFOSCOPE_VERSION 115
+ENV DIFFOSCOPE_VERSION 120
 
 RUN pip install diffoscope==$DIFFOSCOPE_VERSION
 
