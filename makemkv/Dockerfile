@@ -12,6 +12,11 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
+# Unable to execute external program 'ccextractor' as its path is not set in preferences
+# Failed to execute external program 'ccextractor' from location '/usr/local/bin/mmccextr'
+# (but it doesn't exist in the perferences dialog...)
+RUN ln -svT "$(which ccextractor)" /usr/local/bin/mmccextr
+
 # http://www.makemkv.com/forum2/viewtopic.php?f=3&t=224
 ENV MAKEMKV_VERSION 1.14.4
 
