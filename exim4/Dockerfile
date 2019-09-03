@@ -1,4 +1,4 @@
-FROM debian:stretch-slim
+FROM debian:buster-slim
 
 # grab tini for signal processing and zombie killing
 ENV TINI_VERSION v0.16.1
