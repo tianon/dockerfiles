@@ -18,7 +18,7 @@ RUN set -eux; \
 RUN ln -svT "$(which ccextractor)" /usr/local/bin/mmccextr
 
 # http://www.makemkv.com/forum2/viewtopic.php?f=3&t=224
-ENV MAKEMKV_VERSION 1.14.4
+ENV MAKEMKV_VERSION 1.14.5
 
 # beta code: http://www.makemkv.com/forum2/viewtopic.php?f=5&t=1053
 RUN set -ex; \
@@ -54,7 +54,7 @@ RUN set -ex; \
 	\
 	export PREFIX='/usr/local'; \
 	for ball in makemkv-oss makemkv-bin; do \
-		wget -O "$ball.tgz" "http://www.makemkv.com/download/${ball}-${MAKEMKV_VERSION}.tar.gz"; \
+		wget -O "$ball.tgz" "https://www.makemkv.com/download/${ball}-${MAKEMKV_VERSION}.tar.gz"; \
 		sha256="$(grep "  $ball-${MAKEMKV_VERSION}[.]tar[.]gz\$" sha256sums.txt)"; \
 		sha256="${sha256%% *}"; \
 		[ -n "$sha256" ]; \
