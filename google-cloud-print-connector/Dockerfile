@@ -1,4 +1,4 @@
-FROM golang:1.10-alpine
+FROM golang:1.12-alpine3.10
 
 # fetch dependencies
 # format: import-path=strip-components=tarball-url
