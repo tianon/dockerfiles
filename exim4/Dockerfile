@@ -45,4 +45,4 @@ COPY set-exim4-update-conf docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 25
-CMD ["tini", "--", "exim", "-bd", "-v"]
+CMD ["exim", "-bd", "-v"]

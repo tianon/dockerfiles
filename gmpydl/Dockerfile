@@ -20,4 +20,4 @@ RUN set -eux; \
 	wget -O /usr/local/bin/gmpydl "https://github.com/stevenewbs/gmpydl/raw/$GMPYDL_COMMIT/gmpydl.py"; \
 	chmod +x /usr/local/bin/gmpydl
 
-ENTRYPOINT ["gmpydl"]
+CMD ["gmpydl"]

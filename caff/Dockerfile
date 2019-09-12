@@ -20,5 +20,4 @@ RUN mkdir -p .caff/gnupghome \
 
 COPY --chown=user:user caffrc /home/user/.caffrc
 
-ENTRYPOINT ["caff"]
-CMD []
+CMD ["caff"]

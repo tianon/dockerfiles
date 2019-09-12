@@ -30,4 +30,4 @@ RUN set -ex; \
 VOLUME /var/lib/letsencrypt
 #VOLUME /var/log/letsencrypt
 
-ENTRYPOINT ["certbot"]
+CMD ["certbot"]
