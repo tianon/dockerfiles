@@ -152,15 +152,6 @@ strategy:
     rtorrent:
       azureImage: 'ubuntu-latest'
       buildContext: 'rtorrent'
-    ruby-passenger:
-      azureImage: 'ubuntu-latest'
-      buildContext: 'ruby-passenger'
-    ruby-unicorn:
-      azureImage: 'ubuntu-latest'
-      buildContext: 'ruby-unicorn'
-    ruby-unicorn-nginx:
-      azureImage: 'ubuntu-latest'
-      buildContext: 'ruby-unicorn-nginx'
     sbuild:
       azureImage: 'ubuntu-latest'
       buildContext: 'sbuild'
