@@ -43,7 +43,7 @@ tagsEntry() {
 	local dir="$1"; shift
 	local tags=( "$@" )
 
-	local commit="$(dirCommit "$dir")"
+	local commit; commit="$(dirCommit "$dir")"
 
 	cat <<-EOE
 
@@ -103,7 +103,7 @@ versionedEnvTagsEntry() {
 	local fullVersionEnv="$1"; shift
 	local aliases=( "$@" )
 
-	local fullVersion="$(_versionEnvHelper "$dir" "$fullVersionEnv")"
+	local fullVersion; fullVersion="$(_versionEnvHelper "$dir" "$fullVersionEnv")"
 	[ -n "$fullVersion" ]
 
 	versionedTagsEntry "$dir" "$fullVersion" "${aliases[@]}"
@@ -141,7 +141,7 @@ versionedEnvVariantEntry() {
 	local fullVersionEnv="$1"; shift
 	local aliases=( "$@" )
 
-	local fullVersion="$(_versionEnvHelper "$dir" "$fullVersionEnv")"
+	local fullVersion; fullVersion="$(_versionEnvHelper "$dir" "$fullVersionEnv")"
 	[ -n "$fullVersion" ]
 
 	versionedVariantEntry "$dir" "$variant" "$fullVersion" "${aliases[@]}"
@@ -154,7 +154,7 @@ versionedEnvSubvariantEntry() {
 	local variant="$1"; shift
 	local aliases=( "$@" )
 
-	local fullVersion="$(_versionEnvHelper "$dir" "$fullVersionEnv")"
+	local fullVersion; fullVersion="$(_versionEnvHelper "$dir" "$fullVersionEnv")"
 	[ -n "$fullVersion" ]
 
 	versionedSubvariantEntry "$dir" "$fullVersion" "$variant" "${aliases[@]}"
