@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-current="$(curl -sSL 'https://pypi.python.org/pypi/speedtest-cli/json' | awk -F '"' '$2 == "version" { print $4 }')"
+current="$(curl -fsSL 'https://pypi.python.org/pypi/speedtest-cli/json' | jq -r '.info.version')"
 
 set -x
-sed -ri 's/^(ENV SPEEDTEST_CLI_VERSION) .*/\1 '"$current"'/' Dockerfile
+sed -ri 's/^(ENV SPEEDTEST_VERSION) .*/\1 '"$current"'/' Dockerfile
