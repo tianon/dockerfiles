@@ -11,9 +11,9 @@ RUN apt-get update \
 
 # https://www.plex.tv/downloads/#getdownload
 # https://plex.tv/api/downloads/1.json
-ENV PLEX_VERSION 1.16.5.1554-1e5ff713d
-ENV PLEX_URL https://downloads.plex.tv/plex-media-server-new/1.16.5.1554-1e5ff713d/debian/plexmediaserver_1.16.5.1554-1e5ff713d_amd64.deb
-ENV PLEX_SHA1 0e971b02cadbeb35ff6a1a5dcbb26a01d9093ddd
+ENV PLEX_VERSION 1.17.0.1841-d42cfa161
+ENV PLEX_URL https://downloads.plex.tv/plex-media-server-new/1.17.0.1841-d42cfa161/debian/plexmediaserver_1.17.0.1841-d42cfa161_amd64.deb
+ENV PLEX_SHA1 dcfb6bc5964d460e23876a5bea1de3c803503672
 
 RUN set -eux; \
 	wget -O /tmp/plex.deb "$PLEX_URL" --progress=dot:giga; \
