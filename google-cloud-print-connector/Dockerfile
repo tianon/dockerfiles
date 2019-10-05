@@ -74,3 +74,7 @@ RUN set -ex; \
 	apk del .build-deps; \
 	\
 	gcp-cups-connector --version
+
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["gcp-cups-connector", "--log-to-console"]
