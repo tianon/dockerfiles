@@ -1,0 +1,65 @@
+version: '3.7'
+
+networks:
+  default:
+    name: mfs
+    driver: overlay
+    attachable: true
+    internal: true
+
+services:
+
+  master:
+    image: tianon/moosefs:3
+    command: mfsmaster -fun -a
+    networks: { default: { aliases: [ 'mfsmaster' ] } }
+    deploy: { mode: replicated, replicas: 1, endpoint_mode: dnsrr }
+    user: 9400:9400
+    hostname: '{{ .Service.Name }}'
+    volumes:
+      - type: bind
+        source: /mnt/mfs/master
+        target: /mnt/mfs/master
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
+    environment:
+      MFSMASTER_DATA_PATH: /mnt/mfs/master/var-lib-mfs
+      MFSMASTER_CHANGELOG_SAVE_MODE: '1'
+      MFSMASTER_CHUNKS_UNIQUE_MODE: '1'
+      MFSMASTER_ACCEPTABLE_PERCENTAGE_DIFFERENCE: '10.0'
+    stop_grace_period: 2m
+
+  metalogger:
+    image: tianon/moosefs:3
+    command: mfsmetalogger -fun
+    deploy: { mode: global, endpoint_mode: dnsrr }
+    user: 9400:9400
+    hostname: '{{ .Service.Name }}.{{ .Node.Hostname }}'
+    volumes:
+      - type: bind
+        source: /mnt/mfs/master
+        target: /mnt/mfs/master
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
+    environment:
+      MFSMETALOGGER_DATA_PATH: /mnt/mfs/master/var-lib-mfs
+    stop_grace_period: 2m
+
+  cgiserv:
+    image: tianon/moosefs:3
+    command: mfscgiserv -fv
+    user: 9400:9400
+    # TODO how to expose 9425 without publishing it?? likely a second "public" network with some kind of reverse proxy to add some authentication on it
+    # ("docker service update --publish-add 9425:9425 mfs_cgiserv" for poor-man solution)
+    volumes:
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
+    init: true
+
+# vim::set tw=2 sw=2:
