@@ -19,4 +19,9 @@ $ mountpoint /mnt/mfs/fs
 /mnt/mfs/fs is a mountpoint
 
 $ # ready to use!
+
+$ # optional:
+$ sudo ln -sT "$PWD/cli.sh" /usr/local/bin/mfscli
+$ sudo ln -sT "$PWD/tools.sh" /usr/local/bin/mfstools
+$ # TODO make these smart with "$0" (since they are 99% identical as-is), would also allow more clever mfstools usage like symlinks to mfsgetgoal etc directly
 ```
