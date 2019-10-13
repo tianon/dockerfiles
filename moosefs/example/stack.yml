@@ -11,7 +11,7 @@ services:
 
   master:
     image: tianon/moosefs:3
-    command: mfsmaster -fun -a
+    command: mfsmaster -fun
     networks: { default: { aliases: [ 'mfsmaster' ] } }
     deploy: { mode: replicated, replicas: 1, endpoint_mode: dnsrr }
     user: 9400:9400
