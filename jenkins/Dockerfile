@@ -46,7 +46,7 @@ RUN set -eux; \
 
 RUN echo 'deb https://pkg.jenkins.io/debian binary/' > /etc/apt/sources.list.d/jenkins.list
 
-ENV JENKINS_VERSION 2.199
+ENV JENKINS_VERSION 2.200
 
 RUN set -ex; \
 # update-alternatives: error: error creating symbolic link '/usr/share/man/man1/rmid.1.gz.dpkg-tmp': No such file or directory
