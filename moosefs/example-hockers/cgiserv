@@ -1,0 +1,34 @@
+#!/usr/bin/env hocker
+# vim:set ft=sh:
+
+hocker_network_create mfs \
+	--driver overlay \
+	--internal \
+	--attachable
+
+component="${scriptName#mfs-}"
+containerName="mfs-$component"
+args=(
+	--name "$containerName"
+
+	tianon/moosefs:3
+
+	--hostname "$containerName"
+	--mount 'type=bind,source=/etc/localtime,target=/etc/localtime,readonly'
+	--network mfs
+	--security-opt no-new-privileges
+	--user 9400:9400
+)
+
+# cgiserv-specific
+args+=(
+	--expose 9425
+	--init
+	# TODO volumes?
+)
+
+hocker_run "${args[@]}" \
+	-- mfscgiserv -f
+
+# for rawdns to make "http://mfs-cgiserv.docker:9425" functional:
+hocker_network_connect --container "$containerName" bridge

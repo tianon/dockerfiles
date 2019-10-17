@@ -1,0 +1,44 @@
+#!/usr/bin/env hocker
+# vim:set ft=sh:
+
+hocker_network_create mfs \
+	--driver overlay \
+	--internal \
+	--attachable
+
+component="${scriptName#mfs-}"
+containerName="mfs-$component"
+if [ "$component" = 'chunkserver' ]; then
+	# it is useful for plain chunkservers to have unique names
+	hostname="$(hostname -s)"
+	containerName+="-$hostname"
+fi
+args=(
+	--name "$containerName"
+
+	tianon/moosefs:3
+
+	--hostname "$containerName"
+	--mount 'type=bind,source=/etc/localtime,target=/etc/localtime,readonly'
+	--network mfs
+	--security-opt no-new-privileges
+	--user "$(id -u):$(id -g)"
+)
+
+# chunkserver-specific
+base="$HOME/mfs/$component"
+mkdir -p "$base/var-lib-mfs"
+touch "$base/mfshdd.cfg"
+if [ ! -s "$base/mfshdd.cfg" ] && [ -d "$base/chunks" ]; then
+	echo "$base/chunks" > "$base/mfshdd.cfg"
+fi
+args+=(
+	--env MFSCHUNKSERVER_DATA_PATH="$base/var-lib-mfs"
+	--env MFSCHUNKSERVER_HDD_CONF_FILENAME="$base/mfshdd.cfg"
+	--mount "type=bind,source=$base,target=$base,bind-propagation=rslave"
+	--mount 'type=bind,source=/mnt,target=/mnt,bind-propagation=rslave'
+	--stop-timeout 120
+)
+
+hocker_run "${args[@]}" \
+	-- mfschunkserver -fun

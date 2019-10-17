@@ -1,0 +1,33 @@
+#!/usr/bin/env hocker
+# vim:set ft=sh:
+
+hocker_network_create mfs \
+	--driver overlay \
+	--internal \
+	--attachable
+
+component="${scriptName#mfs-}"
+containerName="mfs-$component"
+args=(
+	--name "$containerName"
+
+	tianon/moosefs:3
+
+	--hostname "$containerName"
+	--mount 'type=bind,source=/etc/localtime,target=/etc/localtime,readonly'
+	--network mfs
+	--security-opt no-new-privileges
+	--user "$(id -u):$(id -g)"
+)
+
+# metalogger-specific
+base="$HOME/mfs/$component"
+mkdir -p "$base/var-lib-mfs"
+args+=(
+	--env MFSMETALOGGER_DATA_PATH="$base/var-lib-mfs"
+	--mount "type=bind,source=$base,target=$base,bind-propagation=rslave"
+	--stop-timeout 120
+)
+
+hocker_run "${args[@]}" \
+	-- mfsmetalogger -fun
