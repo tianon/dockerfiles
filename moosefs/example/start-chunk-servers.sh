@@ -8,13 +8,13 @@ fi
 
 for d in /mnt/mfs/chunks/*/; do
 	d="${d%/}"
+	base="$(basename "$d")"
+	d="$(cd "$d" && pwd -P)"
 
 	if [ ! -s "$d/mfshdd.cfg" ] && [ -d "$d/chunks" ]; then
 		echo "$d/chunks" > "$d/mfshdd.cfg"
 		chown 9400:9400 "$d/mfshdd.cfg"
 	fi
-
-	base="$(basename "$d")"
 
 	if [ -s "$d/mfshdd.cfg" ] && [ -d "$d/var-lib-mfs" ]; then
 		name="mfs-chunkserver-$base"
