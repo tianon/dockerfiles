@@ -8,7 +8,9 @@ RUN set -eux; \
 # mfsmount needs "fusermount"
 		fuse \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/*; \
+# allow running mfsmount as non-root
+	sed -ri 's/^#user_allow_other$/user_allow_other/' /etc/fuse.conf
 
 RUN set -eux; \
 	groupadd \
