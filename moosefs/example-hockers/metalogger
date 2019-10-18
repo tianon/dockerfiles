@@ -23,6 +23,7 @@ args=(
 # metalogger-specific
 base="$HOME/mfs/$component"
 mkdir -p "$base/var-lib-mfs"
+base="$(cd "$base" && pwd -P)"
 args+=(
 	--env MFSMETALOGGER_DATA_PATH="$base/var-lib-mfs"
 	--mount "type=bind,source=$base,target=$base,bind-propagation=rslave"

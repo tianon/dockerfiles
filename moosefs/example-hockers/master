@@ -23,6 +23,7 @@ args=(
 # master-specific
 base="$HOME/mfs/$component"
 mkdir -p "$base/var-lib-mfs"
+base="$(cd "$base" && pwd -P)"
 echo -n 'MFSM NEW' > "$base/var-lib-mfs/metadata.mfs.empty"
 args+=(
 	--env MFSMASTER_ACCEPTABLE_PERCENTAGE_DIFFERENCE='10.0'
