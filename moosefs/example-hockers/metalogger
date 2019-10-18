@@ -8,6 +8,11 @@ hocker_network_create mfs \
 
 component="${scriptName#mfs-}"
 containerName="mfs-$component"
+if [ "$component" = 'metalogger' ]; then
+	# it is useful for plain metaloggers to have unique names
+	hostname="$(hostname -s)"
+	containerName+="-$hostname"
+fi
 args=(
 	--name "$containerName"
 
