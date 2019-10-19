@@ -44,7 +44,7 @@ mfsmountArgs=(
 	-f # foreground operation
 	-o auto_unmount # auto unmount on process termination
 	-o mfsflattrash # use flat trash structure in meta
-	-o mfstimeout=5 # define maximum timeout in seconds before I/O error is returned
+	-o mfstimeout=30 # define maximum timeout in seconds before I/O error is returned
 )
 case "$component" in
 	*meta*)
