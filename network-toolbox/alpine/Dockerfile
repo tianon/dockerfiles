@@ -7,6 +7,7 @@ RUN apk add --no-cache \
 		ca-certificates \
 		curl \
 		gnupg \
+		iftop \
 		ipcalc \
 		iperf \
 		iptables \
