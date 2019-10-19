@@ -1,0 +1,56 @@
+#!/usr/bin/env hocker
+# vim:set ft=sh:
+
+hocker_network_create mfs \
+	--driver overlay \
+	--internal \
+	--attachable
+
+component="${scriptName#mfs-}"
+containerName="mfs-$component"
+if [ "$component" = 'mount-fs' ] || [ "$component" = 'mount-meta' ]; then
+	# it is useful for plain clients to have unique names
+	hostname="$(hostname -s)"
+	containerName+="-$hostname"
+fi
+args=(
+	--name "$containerName"
+
+	tianon/moosefs:3
+
+	--hostname "$containerName"
+	--mount 'type=bind,source=/etc/localtime,target=/etc/localtime,readonly'
+	--network mfs
+	#--security-opt no-new-privileges # this breaks fusermount ...
+	--user "$(id -u):$(id -g)"
+)
+
+# mount-specific
+base="$HOME/mfs/mnt/${component#mount-}"
+mkdir -p "$base"
+base="$(cd "$base" && pwd -P)"
+args+=(
+	--init
+	--mount "type=bind,source=$base,target=$base,bind-propagation=rshared" \
+	--stop-timeout 30
+
+	# fuse bits
+	--cap-add SYS_ADMIN
+	--device /dev/fuse
+	--mount 'type=bind,source=/etc/passwd,target=/etc/passwd,readonly' # "fusermount: could not determine username"
+	--security-opt apparmor=unconfined
+)
+mfsmountArgs=(
+	-f # foreground operation
+	-o auto_unmount # auto unmount on process termination
+	-o mfsflattrash # use flat trash structure in meta
+	-o mfstimeout=5 # define maximum timeout in seconds before I/O error is returned
+)
+case "$component" in
+	*meta*)
+		mfsmountArgs+=( -o mfsmeta )
+		;;
+esac
+
+hocker_run "${args[@]}" \
+	-- mfsmount "${mfsmountArgs[@]}" "$base"
