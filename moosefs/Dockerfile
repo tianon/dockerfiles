@@ -116,6 +116,9 @@ RUN set -eux; \
 	mkdir /mnt/mfs; \
 	chown mfs:mfs /mnt/mfs
 
+# without this, the Python-based mfscli "-f" flag refuses to use UTF-8 box-drawing characters
+ENV LANG=C.UTF-8
+
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["bash"]
