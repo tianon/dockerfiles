@@ -14,7 +14,7 @@ if [ "$1" = 'exim' ]; then
 			dc_eximconfig_configtype 'smarthost'
 			dc_smarthost 'smtp.gmail.com::587'
 		)
-		echo "*.google.com:$GMAIL_USER:$GMAIL_PASSWORD" > /etc/exim4/passwd.client
+		echo "smtp.gmail.com:$GMAIL_USER:$GMAIL_PASSWORD" > /etc/exim4/passwd.client
 	else
 		opts+=(
 			dc_eximconfig_configtype 'internet'
