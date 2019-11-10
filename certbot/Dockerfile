@@ -1,4 +1,4 @@
-FROM python:2-alpine
+FROM python:3.7-alpine
 
 # Executable not found: can't find the executable for the dialog-like program
 RUN apk add --no-cache dialog
