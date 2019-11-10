@@ -1,20 +1,32 @@
-FROM python:2-slim
-
-RUN set -eux; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
-		wget \
-	; \
-	rm -rf /var/lib/apt/lists/*
+FROM python:2-alpine
 
 # https://pypi.org/project/gmusicapi/
-ENV GMUSICAPI_VERSION 11.0.2
+ENV GMUSICAPI_VERSION 12.1.1
 
-RUN pip install --no-cache-dir "gmusicapi == $GMUSICAPI_VERSION"
+RUN set -ex; \
+	\
+	apk add --no-cache --virtual .build-deps \
+		gcc \
+		libxml2-dev \
+		libxslt-dev \
+		musl-dev \
+	; \
+	\
+	pip install --no-cache-dir "gmusicapi == $GMUSICAPI_VERSION"; \
+	\
+	runDeps="$( \
+		scanelf --needed --nobanner --recursive /usr/local \
+			| awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+			| sort -u \
+			| xargs -r apk info --installed \
+			| sort -u \
+	)"; \
+	apk add --virtual .gmusicapi-rundeps $runDeps; \
+	apk del .build-deps
 
 # https://github.com/stevenewbs/gmpydl/commits/master
 # https://github.com/stevenewbs/gmpydl/releases
-ENV GMPYDL_COMMIT f61972859729bd35d1f0d27e9a4a13e455b371d9
+ENV GMPYDL_COMMIT 3022a6613547e1b08ea884a9323d6f0e2cf91a43
 
 RUN set -eux; \
 	wget -O /usr/local/bin/gmpydl "https://github.com/stevenewbs/gmpydl/raw/$GMPYDL_COMMIT/gmpydl.py"; \
