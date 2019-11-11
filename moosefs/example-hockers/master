@@ -28,6 +28,7 @@ echo -n 'MFSM NEW' > "$base/var-lib-mfs/metadata.mfs.empty"
 args+=(
 	--env MFSMASTER_ACCEPTABLE_PERCENTAGE_DIFFERENCE='10.0'
 	--env MFSMASTER_CHANGELOG_SAVE_MODE='1'
+	--env MFSMASTER_CS_DAYS_TO_REMOVE_UNUSED='1'
 	--env MFSMASTER_DATA_PATH="$base/var-lib-mfs"
 	--mount "type=bind,source=$base,target=$base,bind-propagation=rslave"
 	--network-alias mfsmaster
