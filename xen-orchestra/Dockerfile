@@ -4,13 +4,13 @@ FROM node:8-slim
 
 # https://github.com/nodejs/node-gyp/releases
 RUN set -eux; \
-	yarn global add node-gyp@5.0.1; \
+	yarn global add node-gyp@6.0.1; \
 	node-gyp --version
 
 WORKDIR /usr/src/xo/packages/xo-server
 
 # https://github.com/vatesfr/xen-orchestra/releases
-ENV XO_VERSION xo-server-v5.43.0
+ENV XO_VERSION xo-server-v5.51.0
 
 RUN set -eux; \
 	cd /usr/src/xo; \
