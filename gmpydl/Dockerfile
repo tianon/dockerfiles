@@ -1,4 +1,4 @@
-FROM python:2-alpine
+FROM python:2-alpine3.10
 
 # https://pypi.org/project/gmusicapi/
 ENV GMUSICAPI_VERSION 12.1.1
