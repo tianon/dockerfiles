@@ -1,4 +1,6 @@
-FROM python:2-slim
+FROM alpine:3.10
+
+RUN apk add --no-cache bash py2-pip
 
 ENV GMVAULT_VERSION 1.9.1
 
