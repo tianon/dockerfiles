@@ -1,24 +1,20 @@
 # https://pages.github.com/versions/
-FROM ruby:2.5-slim
+FROM ruby:2.5-alpine3.10
 
-ENV GITHUB_PAGES_VERSION 197
+ENV GITHUB_PAGES_VERSION 202
 
 RUN set -eux; \
-	savedAptMark="$(apt-mark showmanual)"; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
+	\
+	apk add --no-cache --virtual .build-deps \
 		make \
 		gcc \
 		g++ \
 		patch \
 	; \
-	rm -rf /var/lib/apt/lists/*; \
 	\
 	gem install github-pages -v "$GITHUB_PAGES_VERSION"; \
 	\
-	apt-mark auto '.*' > /dev/null; \
-	apt-mark manual $savedAptMark > /dev/null; \
-	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	apk del .build-deps; \
 	\
 	jekyll serve --help > /dev/null
 
