@@ -3,8 +3,8 @@ FROM alpine:3.10
 RUN apk add --no-cache ca-certificates
 
 # https://github.com/vultr/vultr-cli/releases
-ENV VULTR_CLI_VERSION 0.1.9
-ENV VULTR_CLI_SHA256 df67caefc3773aeed632b3321e68d88a9f5a71a8adbaba7bdb8d693d50de3097
+ENV VULTR_CLI_VERSION 0.1.10
+ENV VULTR_CLI_SHA256 f33208bd75cba33d60d4da2e688ba6cb293ddab9a615b99303d3fd126b8646ea
 
 RUN set -eux; \
 	wget -O vultr.tgz "https://github.com/vultr/vultr-cli/releases/download/v$VULTR_CLI_VERSION/vultr-cli_${VULTR_CLI_VERSION}_linux_64-bit.tar.gz"; \
