@@ -14,7 +14,7 @@ RUN set -ex; \
 		openssl-dev \
 	; \
 	\
-	pip install certbot==$CERTBOT_VERSION; \
+	pip install --no-cache-dir certbot==$CERTBOT_VERSION; \
 	\
 	runDeps="$( \
 		scanelf --needed --nobanner --recursive /usr/local \
