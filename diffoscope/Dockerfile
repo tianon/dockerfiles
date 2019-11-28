@@ -12,10 +12,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
 
 # for "diffoscope --progress"
-RUN pip install progressbar33==2.4
+RUN pip install --no-cache-dir progressbar33==2.4
 
 ENV DIFFOSCOPE_VERSION 132
 
-RUN pip install diffoscope==$DIFFOSCOPE_VERSION
+RUN pip install --no-cache-dir diffoscope==$DIFFOSCOPE_VERSION
 
 CMD ["diffoscope"]
