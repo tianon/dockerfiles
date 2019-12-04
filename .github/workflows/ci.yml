@@ -74,8 +74,7 @@ jobs:
           - 'travis-cli'
           - 'true'
           - 'vultr-cli'
-          - 'wine/32'
-          - 'wine/64'
+          - 'wine'
           - 'xen-orchestra'
           - 'ymlfmt'
 
