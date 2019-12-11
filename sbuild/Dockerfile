@@ -1,6 +1,6 @@
 # run with "--cap-add SYS_ADMIN" so that sbuild can "mount" in the chroots it creates
 
-FROM debian:stretch-slim
+FROM debian:buster-slim
 
 RUN set -ex; \
 	apt-get update; \
