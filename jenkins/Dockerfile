@@ -28,7 +28,7 @@ RUN set -eux; \
 	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys 6380DC428747F6C393FEACA59A84159D7001A4E5; \
 	gpg --batch --verify /usr/local/bin/tini.asc /usr/local/bin/tini; \
 	gpgconf --kill all; \
-	rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc /usr/local/bin/tini.asc; \
+	rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc /usr/local/bin/tini.asc; \
 	\
 	chmod +x /usr/local/bin/gosu /usr/local/bin/tini; \
 	gosu --version; \
