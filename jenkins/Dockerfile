@@ -41,7 +41,7 @@ RUN set -eux; \
 	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$JENKINS_GPG_KEY"; \
 	gpg --batch --export --armor "$JENKINS_GPG_KEY" > /etc/apt/trusted.gpg.d/jenkins.gpg.asc; \
 	gpgconf --kill all; \
-	rm -r "$GNUPGHOME"; \
+	rm -rf "$GNUPGHOME"; \
 	apt-key list
 
 RUN echo 'deb https://pkg.jenkins.io/debian binary/' > /etc/apt/sources.list.d/jenkins.list
