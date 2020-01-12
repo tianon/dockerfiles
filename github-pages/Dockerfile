@@ -1,5 +1,5 @@
 # https://pages.github.com/versions/
-FROM ruby:2.5-alpine3.10
+FROM ruby:2.5-alpine3.11
 
 ENV GITHUB_PAGES_VERSION 202
 

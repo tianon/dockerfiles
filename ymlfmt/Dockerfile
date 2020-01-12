@@ -1,4 +1,4 @@
-FROM python:3.8-alpine3.10
+FROM python:3.8-alpine3.11
 
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps gcc libc-dev; \

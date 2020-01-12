@@ -1,4 +1,4 @@
-FROM python:3.8-alpine3.10
+FROM python:3.8-alpine3.11
 
 ENV BEETS_VERSION 1.4.9
 
