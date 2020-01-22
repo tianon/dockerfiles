@@ -24,7 +24,7 @@ RUN set -eux; \
 	suite="$(awk '$1 == "deb" { print $3; exit }' /etc/apt/sources.list)"; \
 	echo "deb https://dl.winehq.org/wine-builds/debian $suite main" > /etc/apt/sources.list.d/winehq.list
 
-ENV WINE_VERSION 4.0.3
+ENV WINE_VERSION 5.0.0
 
 RUN set -eux; \
 	apt-get update; \
