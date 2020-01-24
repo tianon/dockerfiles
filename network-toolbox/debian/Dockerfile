@@ -20,6 +20,7 @@ RUN set -eux; \
 		net-tools \
 		netcat-openbsd \
 		nmap \
+		ntpdate \
 		openssh-client \
 		procps \
 		rsync \
