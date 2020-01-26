@@ -40,7 +40,6 @@ jobs:
           - 'gmpydl'
           - 'gmvault'
           - 'google-cloud-print-connector'
-          - 'google-musicmanager'
           - 'grafana'
           - 'haproxy-sks'
           - 'jenkins'
