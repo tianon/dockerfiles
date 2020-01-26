@@ -17,14 +17,14 @@ RUN set -ex; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-# https://gist.github.com/tianon/a0080cbca558e4b907fe
-# (useful sbuild-related scripts)
+# https://github.com/tianon/debian-bin
+# useful debian-related (esp. sbuild) scripts
 RUN set -ex; \
-	wget -O /tmp/sbuild-bins.tgz 'https://gist.github.com/tianon/a0080cbca558e4b907fe/archive/05d13124573c1f51f2ad40041444643abeab9935.tar.gz'; \
-	mkdir /tianon-sbuild-bins; \
-	tar -xvf /tmp/sbuild-bins.tgz -C /tianon-sbuild-bins --strip-components=1; \
-	rm /tmp/sbuild-bins.tgz
-ENV PATH $PATH:/tianon-sbuild-bins
+	wget -O /tmp/debian-bin.tgz 'https://github.com/tianon/debian-bin/archive/5c1870c78d0f9a54de3dfdc5e43291da4196a8c8.tar.gz'; \
+	mkdir /tianon-debian-bin; \
+	tar -xvf /tmp/debian-bin.tgz -C /tianon-debian-bin --strip-components=1; \
+	rm /tmp/debian-bin.tgz
+ENV PATH $PATH:/tianon-debian-bin/generic
 
 # usage: download-debuerreotype-tarball.sh suite [arch]
 #    ie: download-debuerreotype-tarball.sh stretch
