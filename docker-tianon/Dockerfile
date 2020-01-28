@@ -1,19 +1,18 @@
-FROM debian:stretch-slim
+FROM debian:buster-slim
 
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		apt-transport-https \
 		ca-certificates \
 		iproute2 \
 		kmod \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://doi-janky.infosiftr.net/job/tianon/job/docker-deb/job/repo/lastSuccessfulBuild/artifact stretch main' > /etc/apt/sources.list.d/docker-tianon.list
+RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://doi-janky.infosiftr.net/job/tianon/job/docker-deb/job/repo/lastSuccessfulBuild/artifact buster main' > /etc/apt/sources.list.d/docker-tianon.list
 
-# https://doi-janky.infosiftr.net/job/tianon/job/docker-deb/job/repo/lastSuccessfulBuild/artifact/pool/stretch/main/amd64/
-ENV DOCKER_VERSION 18.06.1-0~tianon1~stretch0
+# https://doi-janky.infosiftr.net/job/tianon/job/docker-deb/job/repo/lastSuccessfulBuild/artifact/pool/buster/main/amd64/
+ENV DOCKER_VERSION 18.09.7-0~tianon1~buster0
 
 RUN set -eux; \
 	apt-get update; \
