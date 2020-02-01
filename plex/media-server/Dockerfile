@@ -1,13 +1,15 @@
-FROM debian:stretch-slim
+FROM debian:buster-slim
 
 # /var/lib/dpkg/info/plexmediaserver.postinst: 39: /var/lib/dpkg/info/plexmediaserver.postinst: start: not found
-RUN ln -s /bin/true /usr/local/bin/start
+#RUN ln -s /bin/true /usr/local/bin/start
 
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends \
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
 		ca-certificates \
 		wget \
-	&& rm -rf /var/lib/apt/lists/*
+	; \
+	rm -rf /var/lib/apt/lists/*
 
 # https://www.plex.tv/downloads/#getdownload
 # https://plex.tv/api/downloads/1.json
@@ -34,7 +36,10 @@ ENV PLEX_MEDIA_SERVER_TMPDIR /tmp
 ENV LD_LIBRARY_PATH /usr/lib/plexmediaserver
 ENV LANG C.UTF-8
 
-RUN mkdir -p "$PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR" && chmod -R a+rwX "$PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR"
+RUN set -eux; \
+	[ ! -d "$PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR" ]; \
+	mkdir -p "$PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR"; \
+	chmod -R a+rwX "$PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR"
 VOLUME $PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR
 
 COPY docker-entrypoint.sh /
