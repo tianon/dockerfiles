@@ -1,8 +1,5 @@
 FROM debian:buster-slim
 
-# /var/lib/dpkg/info/plexmediaserver.postinst: 39: /var/lib/dpkg/info/plexmediaserver.postinst: start: not found
-#RUN ln -s /bin/true /usr/local/bin/start
-
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
