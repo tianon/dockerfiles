@@ -10,16 +10,19 @@ RUN set -eux; \
 
 # https://www.plex.tv/downloads/#getdownload
 # https://plex.tv/api/downloads/1.json
-ENV PLEX_VERSION 1.18.4.2171-ac2afe5f8
-ENV PLEX_URL https://downloads.plex.tv/plex-media-server-new/1.18.4.2171-ac2afe5f8/debian/plexmediaserver_1.18.4.2171-ac2afe5f8_amd64.deb
-ENV PLEX_SHA1 1ca3e97d72c7a2c9f1b7babb3adbc533380a28df
+ENV PLEX_VERSION 1.18.5.2309-f5213a238
+ENV PLEX_URL https://downloads.plex.tv/plex-media-server-new/1.18.5.2309-f5213a238/debian/plexmediaserver_1.18.5.2309-f5213a238_amd64.deb
+ENV PLEX_SHA1 83b6084f2aab5e74340296e529dabc39b6a93e54
 
 RUN set -eux; \
 	wget -O /tmp/plex.deb "$PLEX_URL" --progress=dot:giga; \
 	echo "$PLEX_SHA1 */tmp/plex.deb" | sha1sum -c -; \
-	apt-get update; \
-	apt-get install /tmp/plex.deb; \
-	rm -rf /var/lib/apt/lists/*; \
+# the published deb has pre/post-inst scripts that don't really apply to Docker (so we'll skip "install" entirely)
+# (as of 1.18.5.2309, they have bugs around Docker detection, which is mostly for avoiding init behavior)
+	dpkg-deb --vextract /tmp/plex.deb /; \
+#	apt-get update; \
+#	apt-get install /tmp/plex.deb; \
+#	rm -rf /var/lib/apt/lists/*; \
 	rm /tmp/plex.deb
 
 # https://github.com/plexinc/pms-docker/blob/7529befa25c89a67731129f71ee73c22a3a647d6/root/etc/services.d/plex/run
@@ -30,7 +33,8 @@ ENV PLEX_MEDIA_SERVER_HOME /usr/lib/plexmediaserver
 ENV PLEX_MEDIA_SERVER_INFO_DEVICE docker
 ENV PLEX_MEDIA_SERVER_MAX_PLUGIN_PROCS 6
 ENV PLEX_MEDIA_SERVER_TMPDIR /tmp
-ENV LD_LIBRARY_PATH /usr/lib/plexmediaserver
+ENV LD_LIBRARY_PATH $PLEX_MEDIA_SERVER_HOME
+ENV PATH $PLEX_MEDIA_SERVER_HOME:$PATH
 ENV LANG C.UTF-8
 
 RUN set -eux; \
@@ -39,8 +43,8 @@ RUN set -eux; \
 	chmod -R a+rwX "$PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR"
 VOLUME $PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR
 
-COPY docker-entrypoint.sh /
+COPY docker-entrypoint.sh /usr/local/bin/
 
 EXPOSE 32400
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/usr/lib/plexmediaserver/Plex Media Server"]
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["Plex Media Server"]
