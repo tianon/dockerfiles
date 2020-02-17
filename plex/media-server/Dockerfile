@@ -10,9 +10,9 @@ RUN set -eux; \
 
 # https://www.plex.tv/downloads/#getdownload
 # https://plex.tv/api/downloads/1.json
-ENV PLEX_VERSION 1.18.5.2309-f5213a238
-ENV PLEX_URL https://downloads.plex.tv/plex-media-server-new/1.18.5.2309-f5213a238/debian/plexmediaserver_1.18.5.2309-f5213a238_amd64.deb
-ENV PLEX_SHA1 83b6084f2aab5e74340296e529dabc39b6a93e54
+ENV PLEX_VERSION 1.18.6.2368-97add474d
+ENV PLEX_URL https://downloads.plex.tv/plex-media-server-new/1.18.6.2368-97add474d/debian/plexmediaserver_1.18.6.2368-97add474d_amd64.deb
+ENV PLEX_SHA1 fec3e8866cca3513971a384d4aad96d49cdf523b
 
 RUN set -eux; \
 	wget -O /tmp/plex.deb "$PLEX_URL" --progress=dot:giga; \
