@@ -32,7 +32,7 @@ RUN set -eux; \
 	id mfs
 
 # https://github.com/moosefs/moosefs/releases
-ENV MOOSEFS_VERSION 3.0.110
+ENV MOOSEFS_VERSION 3.0.111
 
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
