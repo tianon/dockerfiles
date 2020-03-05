@@ -33,10 +33,10 @@ RUN set -ex; \
 		gnupg dirmngr \
 		libavcodec-dev \
 		libexpat-dev \
-		libqt4-dev \
 		libssl-dev \
 		make \
 		pkg-config \
+		qtbase5-dev \
 		wget \
 		zlib1g-dev \
 	; \
