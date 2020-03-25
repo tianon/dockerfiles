@@ -1,9 +1,8 @@
-FROM debian:stretch-slim
+FROM debian:buster-slim
 
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		apt-transport-https \
 		ca-certificates \
 	; \
 	rm -rf /var/lib/apt/lists/*
