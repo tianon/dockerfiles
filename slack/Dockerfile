@@ -52,6 +52,10 @@ RUN set -eux; \
 		libasound2 \
 # 3.3.3: slack: error while loading shared libraries: libgtk-3.so.0: cannot open shared object file: No such file or directory
 		libgtk-3-0 \
+# 4.4.0: Error: libxkbfile.so.1: cannot open shared object file: No such file or directory
+		libxkbfile1 \
+# 4.4.0: libGL error: failed to load driver: (i915_dri.so, i194, i965, swrast_dir.so, swrast)
+		libgl1-mesa-dri \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
