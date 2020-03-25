@@ -48,35 +48,63 @@ trap 'end_session 0' ABRT ALRM INT KILL PIPE QUIT STOP TERM USR1 USR2
 trap 'end_session 1' ERR
 trap 'hup_all' HUP
 
-port='9422'
+# backwards compatibility
+for cfg in */mfshdd.cfg; do
+	[ -f "$cfg" ] || continue
+	dir="$(dirname "$cfg")"
+	new="$dir-mfshdd.cfg"
+	if [ ! -f "$new" ]; then
+		mv -vT "$cfg" "$new"
+	fi
+done
 
-for dir in */; do
-	dir="${dir%/}"
-	name="$(basename "$dir")"
-	dir="$(cd "$dir" && pwd -P)"
-	if [ ! -s "$dir/mfshdd.cfg" ] && [ -d "$dir/chunks" ]; then
-		echo "$dir/chunks" >> "$dir/mfshdd.cfg"
+# auto-detect and prepare new chunkservers
+for chunks in */chunks/; do
+	chunks="${chunks%/}"
+	[ -d "$chunks" ] || continue
+	dir="$(dirname "$chunks")"
+	cfg="$dir-mfshdd.cfg"
+	if [ ! -s "$cfg" ]; then
+		readlink -f "$chunks" >> "$cfg"
 	fi
-	if [ ! -s "$dir/mfshdd.cfg" ]; then
-		echo >&2
-		echo >&2 "error: $dir missing mfshdd.cfg (or chunks directory); is it mounted properly?"
-		echo >&2
-		end_session 1
+done
+
+port='9422'
+for cfg in *-mfshdd.cfg; do
+	[ -f "$cfg" ] || continue
+
+	base="${cfg%-mfshdd.cfg}"
+	name="$(basename "$base")"
+	dir="$(dirname "$base")"
+
+	var="$dir/.var-lib-mfs-$name"
+	if [ ! -d "$var" ]; then
+		if [ -d "$dir/$name/var-lib-mfs" ]; then
+			# backwards compatibility
+			mv -vT "$dir/$name/var-lib-mfs" "$var"
+		else
+			# pre-seed our new state directory with the standard "empty" contents
+			cp -aT /var/lib/mfs "$var"
+			chmod 755 "$var" || :
+		fi
 	fi
-	if [ ! -d "$dir/var-lib-mfs" ]; then
-		cp -aT /var/lib/mfs "$dir/var-lib-mfs"
-	fi
+
 	copy_etc "$temp/$name"
+
 	sed -r "s!/etc/mfs!$temp/$name!g" /usr/local/bin/docker-entrypoint.sh > "$temp/$name/entrypoint.sh"
 	chmod +x "$temp/$name/entrypoint.sh"
+
+	cfg="$(readlink -f "$cfg")"
+	var="$(readlink -f "$var")"
 	MFSCHUNKSERVER_CSSERV_LISTEN_PORT="$port" \
 		MFSCHUNKSERVER_SYSLOG_IDENT="$name" \
-		MFSCHUNKSERVER_HDD_CONF_FILENAME="$dir/mfshdd.cfg" \
-		MFSCHUNKSERVER_DATA_PATH="$dir/var-lib-mfs" \
+		MFSCHUNKSERVER_HDD_CONF_FILENAME="$cfg" \
+		MFSCHUNKSERVER_DATA_PATH="$var" \
 		"$temp/$name/entrypoint.sh" \
 		mfschunkserver -func "$temp/$name/mfschunkserver.cfg" &
 	pid="$!"
-	pids[$name]="$pid"
+	pids["$name"]="$pid"
+
 	(( port++ )) || :
 	all_still_up || end_session 1
 done
