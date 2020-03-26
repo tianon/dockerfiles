@@ -9,4 +9,11 @@ if [ "$uid" = 0 ]; then
 fi
 
 # if we're not root, let's adjust all the "uid" and "gid" parameters of the config to whatever our current user is (so we avoid "chown" permission errors)
-exec containerd --config <(containerd config dump | awk -v uid="$(id -u)" -v gid="$(id -g)" '$1 == "uid" { gsub(/=.+$/, "= " uid) } $1 == "gid" { gsub(/=.+$/, "= " gid) } { print }') "$@"
+exec containerd --config <(
+	containerd config dump \
+		| awk -v uid="$uid" -v gid="$gid" '
+			$1 == "uid" { gsub(/=.+$/, "= " uid) }
+			$1 == "gid" { gsub(/=.+$/, "= " gid) }
+			{ print }
+		'
+) "$@"
