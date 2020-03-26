@@ -7,6 +7,8 @@ $ docker run -it --rm \
 	--user "$(id -u):$(id -g)" \
 	--group-add wheel \
 	--mount type=bind,src=/etc/passwd,dst=/etc/passwd,ro \
+	--mount type=bind,src=/etc/localtime,dst=/etc/localtime,ro \
+	--mount type=bind,src=/etc/timezone,dst=/etc/timezone,ro \
 	--device-cgroup-rule 'a 8:* rwm' \
 	--mount type=bind,src=/dev,dst=/hostdev,ro,bind-propagation=rslave \
 	--cap-add SYS_ADMIN \
