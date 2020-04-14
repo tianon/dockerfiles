@@ -20,9 +20,14 @@ $ docker run -it --rm \
 
 Useful extra packages (for me / my PinePhone, running `xfce4`):
 
+- `alsa-utils` (`amixer`, `alsamixer`)
+- `bash-completion`
 - `coreutils` ?
+- `matchbox-keyboard` (on-screen keyboard; `corekeyboard` is another alternative)
 - `tzdata` (https://wiki.alpinelinux.org/wiki/Setting_the_timezone)
 - `vim`
+- `x11vnc` (for controlling X11 remotely, esp. via SSH)
+- `xdotool` (for simulating input to X11, esp. via SSH)
 - `xinput` (`xinput map-to-output 'pointer:Goodix Capacitive TouchScreen' 'DSI-1'`)
 - `xrandr`
 - `xset`
