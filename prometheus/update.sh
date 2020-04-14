@@ -5,7 +5,17 @@ latest="$(git ls-remote --tags https://github.com/prometheus/prometheus.git | cu
 latest="${latest#v}"
 
 dir="$(dirname "$BASH_SOURCE")"
-set -x
-sed -ri \
-	-e 's/^(ENV PROMETHEUS_VERSION) .*/\1 '"$latest"'/' \
-	"$dir/Dockerfile"
+(
+	set -x
+	sed -ri \
+		-e 's/^(ENV PROMETHEUS_VERSION) .*/\1 '"$latest"'/' \
+		"$dir/Dockerfile"
+)
+
+for up in "$dir"/*/update.sh; do
+	(
+		set -x
+		cd "$(dirname "$up")"
+		./update.sh
+	)
+done
