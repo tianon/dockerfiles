@@ -8,10 +8,11 @@ hostArch="$(dpkg --print-architecture)"
 arch="${1:-$hostArch}"
 
 case "$arch" in
-	amd64|i386|s390x) bashbrewArch="$arch" ;;
+	amd64 | i386 | s390x) bashbrewArch="$arch" ;;
 	arm64) bashbrewArch='arm64v8' ;;
 	armel) bashbrewArch='arm32v5' ;;
 	armhf) bashbrewArch='arm32v7' ;;
+	mips64el) bashbrewArch='mips64le' ;;
 	ppc64el) bashbrewArch='ppc64le' ;;
 	*) echo >&2 "error: unknown bashbrew arch for dpkg arch '$arch'"; exit 1 ;;
 esac
