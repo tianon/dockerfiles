@@ -3,7 +3,7 @@ set -eu
 
 _tls_ensure_private() {
 	local f="$1"; shift
-	[ -s "$f" ] || openssl genrsa -out "$f" 4196
+	[ -s "$f" ] || openssl genrsa -out "$f" 4096
 }
 _tls_san() {
 	{
@@ -170,7 +170,8 @@ if [ "$1" = 'dockerd' ]; then
 			--mtu="${DOCKERD_ROOTLESS_ROOTLESSKIT_MTU:-1500}" \
 			--disable-host-loopback \
 			--port-driver=builtin \
-			--copy-up=/etc --copy-up=/run \
+			--copy-up=/etc \
+			--copy-up=/run \
 			${DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS:-} \
 			"$@" --userland-proxy-path=rootlesskit-docker-proxy
 	elif [ -x '/usr/local/bin/dind' ]; then

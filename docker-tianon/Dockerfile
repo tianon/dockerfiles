@@ -6,18 +6,27 @@ RUN set -eux; \
 		ca-certificates \
 		iproute2 \
 		kmod \
+# DOCKER_HOST=ssh://... -- https://github.com/docker/cli/pull/1014
+		openssh-client \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
 RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://doi-janky.infosiftr.net/job/tianon/job/docker-deb/job/repo/lastSuccessfulBuild/artifact buster main' > /etc/apt/sources.list.d/docker-tianon.list
 
 # https://doi-janky.infosiftr.net/job/tianon/job/docker-deb/job/repo/lastSuccessfulBuild/artifact/pool/buster/main/amd64/
-ENV DOCKER_VERSION 18.09.7-0~tianon1~buster0
+ENV DOCKER_VERSION 19.03.8-0~tianon1~buster0
 
 RUN set -eux; \
+	\
 	apt-get update; \
 	apt-get install -y --no-install-recommends "docker-tianon=$DOCKER_VERSION"; \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/*; \
+	\
+	dockerd --version; \
+	docker --version
+
+COPY modprobe.sh /usr/local/bin/modprobe
+COPY docker-entrypoint.sh /usr/local/bin/
 
 # https://github.com/docker-library/docker/pull/166
 #   dockerd-entrypoint.sh uses DOCKER_TLS_CERTDIR for auto-generating TLS certificates
@@ -28,20 +37,19 @@ ENV DOCKER_TLS_CERTDIR=
 RUN mkdir /certs /certs/client && chmod 1777 /certs /certs/client
 # (doing both /certs and /certs/client so that if Docker does a "copy-up" into a volume defined on /certs/client, it will "do the right thing" by default in a way that still works for rootless users)
 
-COPY modprobe.sh /usr/local/bin/modprobe
-COPY docker-entrypoint.sh /usr/local/bin/
-
 # dind
 
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		aufs-tools \
 		iproute2 \
-		pigz \
+		iptables \
+		openssl \
 		procps \
 		psmisc \
 		xz-utils \
+# pigz: https://github.com/moby/moby/pull/35697 (faster gzip implementation)
+		pigz \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
@@ -51,6 +59,13 @@ RUN set -eux; \
 	adduser --system --ingroup dockremap dockremap; \
 	echo 'dockremap:165536:65536' >> /etc/subuid; \
 	echo 'dockremap:165536:65536' >> /etc/subgid
+
+# https://github.com/docker/docker/tree/master/hack/dind
+#ENV DIND_COMMIT 130b0bc6032cc675d064e1cc62626cacc9c07a57
+
+#RUN set -eux; \
+#	wget -O /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; \
+#	chmod +x /usr/local/bin/dind
 
 COPY dockerd-entrypoint.sh /usr/local/bin/
 
