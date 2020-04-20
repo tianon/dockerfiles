@@ -35,7 +35,7 @@ RUN set -eux; \
 	gosu nobody true; \
 	tini -h
 
-ENV JENKINS_GPG_KEY 150FDE3F7787E7D11EF4E12A9B7D32F2D50582E6
+ENV JENKINS_GPG_KEY 62A9756BFD780C377CF24BA8FCEF32E745F2C3D5
 RUN set -eux; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$JENKINS_GPG_KEY"; \
@@ -46,7 +46,7 @@ RUN set -eux; \
 
 RUN echo 'deb https://pkg.jenkins.io/debian binary/' > /etc/apt/sources.list.d/jenkins.list
 
-ENV JENKINS_VERSION 2.231
+ENV JENKINS_VERSION 2.232
 
 RUN set -ex; \
 # update-alternatives: error: error creating symbolic link '/usr/share/man/man1/rmid.1.gz.dpkg-tmp': No such file or directory
