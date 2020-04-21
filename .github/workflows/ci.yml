@@ -9,70 +9,29 @@ on:
   schedule:
     - cron: 0 0 * * 0
 
+defaults:
+  run:
+    shell: 'bash -Eeuo pipefail -x {0}'
+
 jobs:
+
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v1
+      - id: set-matrix
+        run: |
+          jsonMatrix="$(git ls-files '*/Dockerfile' | xargs -n1 dirname | sort -u | jq -csR 'rtrimstr("\n") | split("\n") | { "dir": . }')"
+          echo "::set-output name=matrix::$jsonMatrix"
 
   build-test:
 
-    # echo '    strategy:'; echo '      fail-fast: false'; echo '      matrix:'; echo '        dir:'; for dir in $(git ls-files '*/Dockerfile' | xargs -n1 dirname | sort -u); do echo "          - '$dir'"; done
+    needs: generate-matrix
     strategy:
       fail-fast: false
-      matrix:
-        dir:
-          - 'apt-cacher-ng'
-          - 'backblaze-b2'
-          - 'beets'
-          - 'byzanz'
-          - 'caff'
-          - 'certbot'
-          - 'containerd'
-          - 'dell-netextender'
-          - 'dell-netextender/gui'
-          - 'diffoscope'
-          - 'docker-master'
-          - 'docker-master/dind'
-          - 'docker-master/git'
-          - 'docker-tianon'
-          - 'duplicity'
-          - 'ehour'
-          - 'exim4'
-          - 'github-hub'
-          - 'github-pages'
-          - 'glxgears'
-          - 'gmpydl'
-          - 'gmvault'
-          - 'google-cloud-print-connector'
-          - 'grafana'
-          - 'haproxy-sks'
-          - 'jenkins'
-          - 'kafka'
-          - 'kgb-bot'
-          - 'latex'
-          - 'makemkv'
-          - 'mojo'
-          - 'mutt-gmail'
-          - 'network-toolbox/alpine'
-          - 'network-toolbox/debian'
-          - 'perl'
-          - 'phpmyadmin'
-          - 'plex/media-server'
-          - 'pmbootstrap'
-          - 'prometheus'
-          - 'prometheus/blackbox-exporter'
-          - 'prometheus/node-exporter'
-          - 'rtorrent'
-          - 'sbuild'
-          - 'skype'
-          - 'slack'
-          - 'sleeping-beauty'
-          - 'speedtest'
-          - 'steam'
-          - 'tinygo'
-          - 'travis-cli'
-          - 'true'
-          - 'vultr-cli'
-          - 'wine'
-          - 'xen-orchestra'
-          - 'ymlfmt'
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
 
     runs-on: ubuntu-latest
 
@@ -89,7 +48,6 @@ jobs:
         env:
           DIR: ${{ matrix.dir }}
         run: |
-          set -Eeuo pipefail -x
           IMG="${DIR//\//-}"
           docker build -t "$IMG" "$DIR"
 
@@ -97,7 +55,6 @@ jobs:
         env:
           DIR: ${{ matrix.dir }}
         run: |
-          set -Eeuo pipefail -x
           case "$DIR" in
             # tests fail on single-binary images :D
             sleeping-beauty | true) exit 0 ;;
