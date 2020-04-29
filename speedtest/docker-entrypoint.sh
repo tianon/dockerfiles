@@ -1,8 +1,8 @@
 #!/bin/sh
-set -e
+set -eu
 
 if [ "${1:0:1}" = '-' ]; then
-	set -- speedtest-cli "$@"
+	set -- speedtest "$@"
 fi
 
 exec "$@"
