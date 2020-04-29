@@ -5,7 +5,7 @@ ENV PATH /usr/local/tinygo/bin:$PATH
 # https://tinygo.org/getting-started/linux/
 
 # https://github.com/tinygo-org/tinygo/releases
-ENV TINYGO_VERSION 0.13.0
+ENV TINYGO_VERSION 0.13.1
 
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
