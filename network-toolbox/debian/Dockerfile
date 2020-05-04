@@ -9,6 +9,7 @@ RUN set -eux; \
 		ca-certificates \
 		curl \
 		dnsutils \
+		fio \
 		gnupg dirmngr \
 		inetutils-ping \
 		ipcalc \
