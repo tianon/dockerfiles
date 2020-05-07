@@ -1,4 +1,4 @@
-FROM debian:stretch-slim
+FROM debian:buster-slim
 
 RUN set -eux; \
 	apt-get update; \
@@ -16,7 +16,7 @@ RUN set -eux; \
 
 RUN set -eux; \
 	wget -O netextender.tgz 'https://sslvpn.demo.sonicwall.com/NetExtender.x86_64.tgz'; \
-	echo '773849f159db917db6a89b7593849eec9af0f0fc08ba57ccf6db45b07aad3daf *netextender.tgz' | sha256sum --check --strict; \
+	echo 'a890cf5cae2173bc1d92b9ac01922db32c42eb00ba714d949cc52cf71122bee0 *netextender.tgz' | sha256sum --check --strict; \
 	tar -xvf netextender.tgz -C /opt/; \
 	rm netextender.tgz; \
 	( \
