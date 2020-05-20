@@ -1,8 +1,0 @@
-#!/bin/bash
-set -e
-
-# this is based off /usr/bin/skypeforlinux
-
-SKYPE_PATH='/usr/share/skypeforlinux/skypeforlinux'
-
-exec "$SKYPE_PATH" --executed-from="$PWD" --pid="$$" "$@"
