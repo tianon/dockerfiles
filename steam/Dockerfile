@@ -19,6 +19,12 @@ RUN set -eux; \
 RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV LANG en_US.utf8
 
+# create a default "steam" user for running the container without root privileges
+RUN set -eux; \
+	adduser --disabled-password --gecos 'Steam' steam; \
+	adduser steam video
+ENV HOME /home/steam
+
 # https://github.com/ValveSoftware/steam-for-linux#getting-started
 # http://media.steampowered.com/client/installer/steam.deb redirects to https://repo.steampowered.com/steam/archive/precise/steam_latest.deb
 # https://repo.steampowered.com/steam/archive/precise/?C=M&O=D
@@ -47,11 +53,6 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-RUN adduser --disabled-password --gecos 'Steam' steam && \
-	adduser steam video
-USER steam
-ENV HOME /home/steam
-
 # useful when using "--env DEBUGGER=gdb" or "--env DEBUGGER=strace" to debug steam startup issues
 #RUN set -eux; \
 #	apt-get update; \
@@ -61,4 +62,5 @@ ENV HOME /home/steam
 #	; \
 #	rm -rf /var/lib/apt/lists/*
 
+USER steam
 CMD ["steam"]
