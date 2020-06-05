@@ -6,7 +6,7 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends apt-transport-https ca-certificates; \
 	savedAptMark="$(apt-mark showmanual)"; \
-	apt-get install -y --no-install-recommends gnupg2 dirmngr; \
+	apt-get install -y --no-install-recommends gnupg dirmngr; \
 	rm -rf /var/lib/apt/lists/*; \
 	\
 	export GNUPGHOME="$(mktemp -d)"; \
@@ -17,18 +17,20 @@ RUN set -eux; \
 	apt-key list | grep 'WineHQ'; \
 	\
 	apt-mark auto '.*' > /dev/null; \
-	[ -z "$savedAptMark" ] || apt-mark manual $savedAptMark > /dev/null; \
+	apt-mark manual $savedAptMark > /dev/null; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	\
 	dpkg --add-architecture i386; \
 	suite="$(awk '$1 == "deb" { print $3; exit }' /etc/apt/sources.list)"; \
 	echo "deb https://dl.winehq.org/wine-builds/debian $suite main" > /etc/apt/sources.list.d/winehq.list
 
-ENV WINE_VERSION 5.0.0
+# https://dl.winehq.org/wine-builds/debian/dists/buster/main/binary-amd64/?C=N;O=D
+# https://www.winehq.org/news/
+ENV WINE_VERSION 5.9
 
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		"winehq-stable=$WINE_VERSION*" \
+		"winehq-staging=$WINE_VERSION~*" \
 	; \
 	rm -rf /var/lib/apt/lists/*
