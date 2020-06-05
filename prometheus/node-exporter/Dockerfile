@@ -3,7 +3,7 @@ FROM alpine:3.11
 WORKDIR /opt/node-exporter
 ENV PATH /opt/node-exporter:$PATH
 
-ENV NODE_EXPORTER_VERSION 0.18.1
+ENV NODE_EXPORTER_VERSION 1.0.0
 
 RUN set -ex; \
 	\
