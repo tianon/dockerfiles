@@ -24,7 +24,7 @@ RUN set -eux; \
 	echo "deb https://dl.winehq.org/wine-builds/ubuntu $suite main" > /etc/apt/sources.list.d/winehq.list
 # https://dl.winehq.org/wine-builds/ubuntu/dists/focal/main/binary-amd64/?C=N;O=D
 # https://www.winehq.org/news/
-ENV WINE_VERSION 5.9~focal
+ENV WINE_VERSION 5.10~focal
 RUN set -eux; \
 # "Add SDL2 Backports PPA (for Faudio package):"
 	add-apt-repository ppa:cybermax-dexter/sdl2-backport; \
