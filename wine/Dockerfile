@@ -26,7 +26,7 @@ RUN set -eux; \
 
 # https://dl.winehq.org/wine-builds/debian/dists/buster/main/binary-amd64/?C=N;O=D
 # https://www.winehq.org/news/
-ENV WINE_VERSION 5.9
+ENV WINE_VERSION 5.10
 
 RUN set -eux; \
 	apt-get update; \
