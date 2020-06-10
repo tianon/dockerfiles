@@ -15,7 +15,7 @@ RUN set -eux; \
 		pigz \
 	; \
 # only install zfs if it's available for the current architecture
-# https://git.alpinelinux.org/cgit/aports/tree/main/zfs/APKBUILD?h=3.6-stable#n9 ("all !armhf !ppc64le" as of 2017-11-01)
+# https://git.alpinelinux.org/aports/tree/main/zfs/APKBUILD?h=3.12-stable#n8 ("all !armhf !armv7" as of 2020-06-10)
 # "apk info XYZ" exits with a zero exit code but no output when the package exists but not for this arch
 	if zfs="$(apk info --no-cache --quiet zfs)" && [ -n "$zfs" ]; then \
 		apk add --no-cache zfs; \
