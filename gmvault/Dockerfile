@@ -1,4 +1,5 @@
-FROM alpine:3.12
+# for Python 2
+FROM alpine:3.11
 
 RUN apk add --no-cache bash py2-pip
 
