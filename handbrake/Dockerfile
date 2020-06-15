@@ -20,8 +20,8 @@ RUN set -eux; \
 	suite="$(awk '$1 == "deb" { print $3; exit }' /etc/apt/sources.list)"; \
 	echo "deb http://ppa.launchpad.net/stebbins/handbrake-releases/ubuntu $suite main" > /etc/apt/sources.list.d/handbrake.list
 
-ENV HANDBRAKE_VERSION 1.3.2
-ENV HANDBRAKE_PPA_VERSION 1:1.3.2-zhb-1ppa1~focal1
+ENV HANDBRAKE_VERSION 1.3.3.1
+ENV HANDBRAKE_PPA_VERSION 1:1.3.3.1-zhb-1ppa1~focal1
 
 RUN set -eux; \
 	apt-get update; \
