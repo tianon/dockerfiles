@@ -10,6 +10,8 @@ version="$(gawk -F ':[[:space:]]+' '$1 == "Package" { pkg = $2 } pkg == "steam-l
 sha256="$(gawk -F ':[[:space:]]+' '$1 == "Package" { pkg = $2 } pkg == "steam-launcher" && $1 == "SHA256" { print $2; exit }' <<<"$packages")"
 [ -n "$sha256" ]
 
+version="${version##*:}"
+
 echo "steam: $version ($sha256)"
 
 sed -ri \
