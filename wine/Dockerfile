@@ -29,6 +29,11 @@ RUN set -eux; \
 ENV WINE_VERSION 5.10
 
 RUN set -eux; \
+	{ \
+		echo 'Package: *wine* *wine*:i386'; \
+		echo "Pin: version $WINE_VERSION~*"; \
+		echo 'Pin-Priority: 1001'; \
+	} > /etc/apt/preferences.d/winehq.pref; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		"winehq-staging=$WINE_VERSION~*" \

@@ -26,6 +26,11 @@ RUN set -eux; \
 # https://www.winehq.org/news/
 ENV WINE_VERSION 5.10~focal
 RUN set -eux; \
+	{ \
+		echo 'Package: *wine* *wine*:i386'; \
+		echo "Pin: version $WINE_VERSION"; \
+		echo 'Pin-Priority: 1001'; \
+	} > /etc/apt/preferences.d/winehq.pref; \
 # "Add SDL2 Backports PPA (for Faudio package):"
 	add-apt-repository ppa:cybermax-dexter/sdl2-backport; \
 	apt-get update; \
