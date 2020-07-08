@@ -52,7 +52,7 @@ RUN set -eux; \
 	winetricks --version
 
 # https://launchpad.net/~lutris-team/+archive/ubuntu/lutris?field.series_filter=focal
-ENV LUTRIS_VERSION 0.5.6
+ENV LUTRIS_VERSION 0.5.7
 
 RUN set -eux; \
 	add-apt-repository ppa:lutris-team/lutris; \
