@@ -52,13 +52,14 @@ RUN set -eux; \
 	winetricks --version
 
 # https://launchpad.net/~lutris-team/+archive/ubuntu/lutris?field.series_filter=focal
-ENV LUTRIS_VERSION 0.5.7
+ENV LUTRIS_VERSION 0.5.7.1-202007191015
+ENV LUTRIS_PPA_VERSION 0.5.7.1-202007191015~ubuntu20.04.1
 
 RUN set -eux; \
 	add-apt-repository ppa:lutris-team/lutris; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		lutris="$LUTRIS_VERSION" \
+		lutris="$LUTRIS_PPA_VERSION" \
 # https://github.com/lutris/docs/blob/f2bf5ca14f280e3c58d2306581294d57650c0cc2/InstallingDrivers.md
 		libvulkan1 libvulkan1:i386 \
 		libgl1-mesa-dri:i386 \
