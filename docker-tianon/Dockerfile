@@ -14,7 +14,7 @@ RUN set -eux; \
 RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://doi-janky.infosiftr.net/job/tianon/job/docker-deb/job/repo/lastSuccessfulBuild/artifact buster main' > /etc/apt/sources.list.d/docker-tianon.list
 
 # https://doi-janky.infosiftr.net/job/tianon/job/docker-deb/job/repo/lastSuccessfulBuild/artifact/pool/buster/main/amd64/
-ENV DOCKER_VERSION 19.03.8-0~tianon1~buster0
+ENV DOCKER_VERSION 19.03.12-0~tianon1~buster0
 
 RUN set -eux; \
 	\
