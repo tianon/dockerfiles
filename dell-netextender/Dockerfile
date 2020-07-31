@@ -16,7 +16,7 @@ RUN set -eux; \
 
 RUN set -eux; \
 	wget -O netextender.tgz 'https://sslvpn.demo.sonicwall.com/NetExtender.x86_64.tgz'; \
-	echo 'a890cf5cae2173bc1d92b9ac01922db32c42eb00ba714d949cc52cf71122bee0 *netextender.tgz' | sha256sum --check --strict; \
+	echo '3878834f6a6b74512a67c6feafb951a353c00d10d37b0701323657add0cada69 *netextender.tgz' | sha256sum --check --strict; \
 	tar -xvf netextender.tgz -C /opt/; \
 	rm netextender.tgz; \
 	( \
