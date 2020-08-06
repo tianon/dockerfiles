@@ -2,6 +2,7 @@
 set -Eeuo pipefail
 
 : "${dockerfile:=Dockerfile}"
+: "${variantAppendOrder:=postfix}" # "postfix" or "prefix" ("tianon/foo:1.2.3-bar" vs "tianon/foo:bar-1.2.3")
 
 # get the most recent commit which modified any of "$@"
 fileCommit() {
@@ -120,7 +121,12 @@ versionedVariantEntry() {
 	local aliases=( "$@" )
 
 	_versionAliasesHelper "$fullVersion"
-	variantAliases=( "${versionAliases[@]/%/-$variant}" )
+
+	if [ "$variantAppendOrder" = 'postfix' ]; then
+		variantAliases=( "${versionAliases[@]/%/-$variant}" )
+	else
+		variantAliases=( "${versionAliases[@]/#/$variant-}" )
+	fi
 	#variantAliases=( "${variantAliases[@]//latest-/}" )
 	variantAliases+=( "${aliases[@]}" )
 
