@@ -1,11 +1,9 @@
-FROM python:3-alpine3.11
+FROM python:3-alpine3.12
 
 RUN apk add --no-cache coreutils git openssl sudo
 
 RUN set -eux; \
 	echo '%wheel ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers.d/wheel; \
-# https://gitlab.alpinelinux.org/alpine/aports/issues/11122
-	echo 'Set disable_coredump false' >> /etc/sudo.conf; \
 # verify there are no errors/warnings
 	out="$(sudo true 2>&1)"; \
 	[ -z "$out" ]
