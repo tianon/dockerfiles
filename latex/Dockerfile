@@ -5,4 +5,5 @@ RUN apt-get update && apt-get install -y \
 		latexmk \
 		make \
 		texlive-full \
+		python-pygments\
 	&& rm -rf /var/lib/apt/lists/*
