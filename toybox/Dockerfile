@@ -22,9 +22,8 @@ RUN set -eux; \
 	tar -xf toybox.tgz --strip-components=1; \
 	rm toybox.tgz
 
-# TODO set "TARGET" appropriately based on "apk --print-arch" to avoid "uname -m" detection
 RUN make root BUILTIN=1
-# (we set "BUILTIN=1" to avoid cpio / initramfs creation)
+# (we set "BUILTIN=1" to avoid cpio / initramfs creation because we aren't building / don't need a kernel)
 
 FROM scratch
 COPY --from=build /toybox/root/host/fs/ /
