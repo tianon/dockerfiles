@@ -7,10 +7,10 @@ RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
 		x86_64 | aarch64 | armhf) ooklaArch="$apkArch" ;; \
-# TODO verify that ookla's "armhf" really is armv6
-		armv7) ooklaArch='armhf' ;; \
 		x86) ooklaArch='i386' ;; \
-# TODO figure out what ookla means by their bare "arm" arch
+# Ookla's "armhf" is armv6 (just like Alpine's), which is fair game for ARMv7 devices
+		armv7) ooklaArch='armhf' ;; \
+# Ookla's bare "arm" arch is armv5, which Alpine doesn't support :(
 		*) echo >&2 "error: unknown/unsupported architecture: $apkArch (see https://www.speedtest.net/apps/cli#download)"; exit 1 ;; \
 	esac; \
 	wget -O speedtest.tgz "https://bintray.com/ookla/download/download_file?file_path=ookla-speedtest-$SPEEDTEST_VERSION-$ooklaArch-linux.tgz"; \
