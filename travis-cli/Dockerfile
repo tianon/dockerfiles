@@ -3,7 +3,7 @@ FROM ruby:2.6-alpine3.12
 RUN apk add --no-cache \
 		git
 
-ENV TRAVIS_CLI_VERSION 1.9.1
+ENV TRAVIS_CLI_VERSION 1.10.0
 
 RUN set -ex; \
 	apk add --no-cache --virtual .build-deps \
