@@ -1,6 +1,6 @@
 FROM python:3.7-alpine
 
-ENV BACKBLAZE_B2_VERSION 1.4.2
+ENV BACKBLAZE_B2_VERSION 2.0.2
 
 RUN set -eux; \
 	pip install --no-cache-dir "b2 == $BACKBLAZE_B2_VERSION"
