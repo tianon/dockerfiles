@@ -5,7 +5,7 @@ RUN apk add --no-cache ca-certificates
 WORKDIR /opt/blackbox-exporter
 ENV PATH /opt/blackbox-exporter:$PATH
 
-ENV BLACKBOX_EXPORTER_VERSION 0.17.0
+ENV BLACKBOX_EXPORTER_VERSION 0.18.0
 
 RUN set -ex; \
 	\
