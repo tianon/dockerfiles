@@ -1,11 +1,22 @@
 FROM debian:buster-slim
 
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		ca-certificates \
+		fonts-dejavu \
+		fonts-noto-color-emoji \
+		libgl1 \
+		libgl1-mesa-dri \
+		libpulse0 \
+	; \
+	rm -rf /var/lib/apt/lists/*
+
 # https://www.microsoftedgeinsider.com/en-us/download/?platform=linux-deb
 
 RUN set -eux; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends ca-certificates; \
 	savedAptMark="$(apt-mark showmanual)"; \
+	apt-get update; \
 	apt-get install -y --no-install-recommends gnupg dirmngr; \
 	rm -rf /var/lib/apt/lists/*; \
 	export GNUPGHOME="$(mktemp -d)"; \
@@ -30,11 +41,6 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		"microsoft-edge-dev=$EDGE_VERSION" \
-		fonts-dejavu \
-		fonts-noto-color-emoji \
-		libgl1 \
-		libgl1-mesa-dri \
-		libpulse0 \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
