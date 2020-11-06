@@ -1,16 +1,7 @@
 FROM debian:buster-slim
 
 RUN set -eux; \
-	echo 'deb http://deb.debian.org/debian bullseye main' > /etc/apt/sources.list.d/backports.list; \
-	{ \
-		echo 'Package: *'; \
-		echo 'Pin: release n=bullseye*'; \
-		echo 'Pin-Priority: -1'; \
-		echo; \
-		echo 'Package: libseccomp2'; \
-		echo 'Pin: release n=bullseye*'; \
-		echo 'Pin-Priority: 400'; \
-	} > /etc/apt/preferences.d/bullseye.pref; \
+	echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/backports.list; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		ca-certificates \
@@ -18,8 +9,9 @@ RUN set -eux; \
 		kmod \
 # DOCKER_HOST=ssh://... -- https://github.com/docker/cli/pull/1014
 		openssh-client \
-# https://github.com/debuerreotype/docker-debian-artifacts/issues/97#issuecomment-658469709
-		libseccomp2/bullseye \
+# https://github.com/debuerreotype/docker-debian-artifacts/issues/97#issuecomment-658469709 (2.4.2+)
+# https://github.com/seccomp/libseccomp/issues/234 (2.4.4+)
+		libseccomp2/buster-backports \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
