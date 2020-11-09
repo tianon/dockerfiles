@@ -1,13 +1,15 @@
-FROM debian:stretch-slim
+FROM debian:buster-slim
 
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends \
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
 		ca-certificates \
 		git \
 		openssh-client \
 		vim-nox \
 		wget \
-	&& rm -rf /var/lib/apt/lists/*
+	; \
+	rm -rf /var/lib/apt/lists/*
 
 ENV LANG C.UTF-8
 
@@ -15,7 +17,7 @@ WORKDIR /opt/hub
 ENV PATH /opt/hub/bin:$PATH
 
 # https://github.com/github/hub/releases
-ENV GITHUB_HUB_VERSION 2.6.0
+ENV GITHUB_HUB_VERSION 2.14.2
 
 RUN set -ex; \
 	\
@@ -28,8 +30,8 @@ RUN set -ex; \
 		*) echo >&2 "error: unknown architecture '$dpkgArch'"; exit 1 ;; \
 	esac; \
 	wget -O hub.tgz "https://github.com/github/hub/releases/download/v${GITHUB_HUB_VERSION}/hub-linux-${arch}-${GITHUB_HUB_VERSION}.tgz"; \
-	tar -xvf hub.tgz --strip-components 1 -C /usr/local; \
-	rm -v hub.tgz; \
+	tar -xf hub.tgz --strip-components 1 -C /usr/local; \
+	rm hub.tgz; \
 	\
 	hub --version
 
