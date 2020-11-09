@@ -1,10 +1,12 @@
-FROM debian:stretch-slim
+FROM debian:buster-slim
 
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends \
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
 		kgb-bot \
-	&& rm -rf /var/lib/apt/lists/* \
-	&& cp -v /etc/kgb-bot/kgb.conf /etc/kgb-bot/kgb.conf.orig
+	; \
+	rm -rf /var/lib/apt/lists/*; \
+	cp -v /etc/kgb-bot/kgb.conf /etc/kgb-bot/kgb.conf.orig
 
 COPY kgb.conf /etc/kgb-bot/kgb.conf
 # "/etc/kgb-bot/kgb.conf is world-readable" :'(
