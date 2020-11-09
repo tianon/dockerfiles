@@ -1,11 +1,13 @@
-FROM debian:stretch-slim
+FROM debian:buster-slim
 
 RUN groupadd -g 1000 user \
 	&& useradd --create-home -d /home/user -g user -u 1000 user
 
 RUN echo 'path-include /usr/share/doc/mutt/examples/*' >> /etc/dpkg/dpkg.cfg.d/mutt
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
 		ca-certificates \
 		mutt \
 # a browser is necessary!
@@ -16,7 +18,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		libsasl2-modules \
 # "GPGME: CMS protocol not available"
 		gpgsm \
-	&& rm -rf /var/lib/apt/lists/*
+	; \
+	rm -rf /var/lib/apt/lists/*
 
 ENV BROWSER lynx
 
