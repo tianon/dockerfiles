@@ -1,7 +1,10 @@
-FROM debian:stretch-slim
+FROM debian:buster-slim
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
 		byzanz \
-	&& rm -rf /var/lib/apt/lists/*
+	; \
+	rm -rf /var/lib/apt/lists/*
 
 CMD ["byzanz-record"]
