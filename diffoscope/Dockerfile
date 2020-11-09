@@ -1,6 +1,8 @@
-FROM python:3.7-slim-buster
+FROM python:3.8-slim-buster
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
 		libarchive13 \
 		libmagic1 \
 		unzip \
@@ -9,7 +11,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		vim-common \
 # readelf ('readelf' not available in path. Falling back to binary comparison.)
 		binutils-multiarch \
-	&& rm -rf /var/lib/apt/lists/*
+	; \
+	rm -rf /var/lib/apt/lists/*
 
 # for "diffoscope --progress"
 RUN pip install --no-cache-dir progressbar33==2.4
