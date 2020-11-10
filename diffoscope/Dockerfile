@@ -15,8 +15,10 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # for "diffoscope --progress"
+# https://pypi.org/project/progressbar33/
 RUN pip install --no-cache-dir progressbar33==2.4
 
+# https://pypi.org/project/diffoscope/
 ENV DIFFOSCOPE_VERSION 161
 
 RUN pip install --no-cache-dir diffoscope==$DIFFOSCOPE_VERSION
