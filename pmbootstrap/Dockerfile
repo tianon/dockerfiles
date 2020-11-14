@@ -9,7 +9,7 @@ RUN set -eux; \
 	[ -z "$out" ]
 
 # https://pypi.org/project/pmbootstrap/
-ENV PMBOOTSTRAP_VERSION 1.23.0
+ENV PMBOOTSTRAP_VERSION 1.24.0
 
 RUN pip install "pmbootstrap == $PMBOOTSTRAP_VERSION"
 
