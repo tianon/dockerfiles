@@ -30,3 +30,5 @@ RUN set -eux; \
 		"handbrake-gtk=$HANDBRAKE_PPA_VERSION" \
 	; \
 	rm -rf /var/lib/apt/lists/*
+
+CMD ["ghb"]
