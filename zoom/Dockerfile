@@ -8,6 +8,8 @@ RUN set -eux; \
 		pulseaudio-utils \
 # "sh: 1: ps: not found"
 		procps \
+# Cannot load library /opt/zoom/platforms/libqxcb.so: (libxkbcommon-x11.so.0: cannot open shared object file: No such file or directory)
+		libxkbcommon-x11-0 \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
