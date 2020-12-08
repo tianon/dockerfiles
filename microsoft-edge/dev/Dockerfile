@@ -35,13 +35,14 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-dev/
-ENV EDGE_VERSION 88.0.705.9-1
+ENV EDGE_VERSION 88.0.705.15-1
 
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		"microsoft-edge-dev=$EDGE_VERSION" \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/*; \
+	microsoft-edge-dev --version
 
 CMD ["microsoft-edge"]
