@@ -54,11 +54,18 @@ RUN set -ex; \
 	\
 	export PREFIX='/usr/local'; \
 	for ball in makemkv-oss makemkv-bin; do \
+# https://www.makemkv.com/forum/viewtopic.php?f=3&t=23933
+		if [ "$ball" != 'makemkv-oss' ]; then \
 		wget -O "$ball.tgz" "https://www.makemkv.com/download/${ball}-${MAKEMKV_VERSION}.tar.gz"; \
 		sha256="$(grep "  $ball-${MAKEMKV_VERSION}[.]tar[.]gz\$" sha256sums.txt)"; \
 		sha256="${sha256%% *}"; \
 		[ -n "$sha256" ]; \
 		echo "$sha256 *$ball.tgz" | sha256sum -c -; \
+# https://www.makemkv.com/forum/viewtopic.php?f=3&t=23933
+# "Bug bug bug... Please use oss part from 1.15.3 for now, sticky updated."
+		else \
+		wget -O "$ball.tgz" "https://www.makemkv.com/download/old/${ball}-1.15.3.tar.gz"; \
+		fi; \
 		\
 		mkdir -p "$ball"; \
 		tar -xvf "$ball.tgz" -C "$ball" --strip-components=1; \
