@@ -28,7 +28,7 @@ if [ "$1" = 'mutt' ]; then
 	if [ -d "$HOME/.gnupg" ]; then
 		{
 			echo
-			echo 'source /usr/share/doc/mutt/examples/gpg.rc'
+			#echo 'source /usr/share/doc/mutt/examples/gpg.rc'
 			echo 'set pgp_use_gpg_agent = yes'
 			if [ "$GPG_ID" ]; then
 				echo "set pgp_sign_as = $GPG_ID"
