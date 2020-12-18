@@ -30,10 +30,10 @@ RUN mkdir -p $HOME/.mutt/cache/headers $HOME/.mutt/cache/bodies \
 
 ENV LANG C.UTF-8
 
-ADD muttrc $HOME/.muttrc
-ADD vimrc $HOME/.vimrc
+COPY muttrc $HOME/.muttrc
+COPY vimrc $HOME/.vimrc
 
-ADD entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["mutt"]

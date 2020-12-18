@@ -14,18 +14,18 @@ dirCommit() {
 	local dir="$1"; shift
 	(
 		cd "$dir"
-		fileCommit \
-			"$dockerfile" \
-			$(git show HEAD:"./$dockerfile" | awk '
-				toupper($1) == "COPY" {
-					for (i = 2; i < NF; i++) {
-						if ($i ~ /^--from=/) {
-							next
-						}
-						print $i
+		local files
+		files="$(git show HEAD:"./$dockerfile" | awk '
+			toupper($1) == "COPY" {
+				for (i = 2; i < NF; i++) {
+					if ($i ~ /^--from=/) {
+						next
 					}
+					print $i
 				}
-			')
+			}
+		')"
+		fileCommit "$dockerfile" $files
 	)
 }
 
