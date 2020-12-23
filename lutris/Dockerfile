@@ -68,6 +68,8 @@ RUN set -eux; \
 		dbus-x11 \
 # /lutris-home/games/battle.net/state-cache-merge/state-cache-update.sh: line 8: zenity: command not found
 		zenity \
+# python3-evdev not installed, controller support not available
+		python3-evdev \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
