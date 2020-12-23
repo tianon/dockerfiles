@@ -70,6 +70,8 @@ RUN set -eux; \
 		zenity \
 # python3-evdev not installed, controller support not available
 		python3-evdev \
+# lspci is not available. List of graphics cards not available
+		pciutils \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
