@@ -1,1 +1,0 @@
-See [`Dockerfile`](https://github.com/tianon/dockerfiles/blob/master/haproxy-sks/Dockerfile) and [example `run.sh` script](https://github.com/tianon/dockerfiles/blob/master/haproxy-sks/run.sh) for usage.

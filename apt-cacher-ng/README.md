@@ -1,1 +1,0 @@
-See [`Dockerfile`](https://github.com/tianon/dockerfiles/blob/master/apt-cacher-ng/Dockerfile) and [example `run.sh` script](https://github.com/tianon/dockerfiles/blob/master/apt-cacher-ng/run.sh) for usage.
