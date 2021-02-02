@@ -35,7 +35,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-dev/
-ENV EDGE_VERSION 89.0.774.8-1
+ENV EDGE_VERSION 89.0.774.14-1
 
 RUN set -eux; \
 	apt-get update; \
