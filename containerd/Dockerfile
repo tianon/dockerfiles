@@ -10,7 +10,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # https://github.com/opencontainers/runc/releases
-ENV RUNC_VERSION 1.0.0-rc92
+ENV RUNC_VERSION 1.0.0-rc93
 
 RUN set -eux; \
 	wget -O /usr/local/bin/runc "https://github.com/opencontainers/runc/releases/download/v${RUNC_VERSION}/runc.amd64" --progress=dot:giga; \
