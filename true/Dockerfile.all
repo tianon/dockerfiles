@@ -1,0 +1,41 @@
+FROM buildpack-deps:bullseye AS base
+
+WORKDIR /true
+COPY Makefile true.* ./
+RUN make clean # just to be sure
+
+FROM base AS asm
+RUN apt-get update && apt-get install -y --no-install-recommends nasm && rm -rf /var/lib/apt/lists/*
+RUN make -C /true true-asm
+
+FROM base AS c
+RUN make -C /true true-c
+
+FROM golang AS go
+COPY --from=base /true /true
+RUN make -C /true true-go
+
+FROM rust:alpine AS rust
+RUN apk add --no-cache make
+COPY --from=base /true /true
+RUN make -C /true true-rust
+
+FROM tianon/tinygo AS tinygo
+COPY --from=base /true /true
+RUN make -C /true true-tinygo
+
+FROM golang:alpine AS alpinego
+RUN apk add --no-cache make
+COPY --from=base /true /true
+RUN make -C /true true-go && mv /true/true-go /true/true-alpinego
+
+FROM base
+
+COPY --from=asm /true/true-asm ./
+COPY --from=c /true/true-c ./
+COPY --from=go /true/true-go ./
+COPY --from=rust /true/true-rust ./
+COPY --from=tinygo /true/true-tinygo ./
+COPY --from=alpinego /true/true-alpinego ./
+
+RUN ls -lAFh true-*
