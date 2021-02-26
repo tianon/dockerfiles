@@ -19,7 +19,7 @@ RUN set -eux; \
 RUN pip install --no-cache-dir progressbar33==2.4
 
 # https://pypi.org/project/diffoscope/
-ENV DIFFOSCOPE_VERSION 166
+ENV DIFFOSCOPE_VERSION 167
 
 RUN pip install --no-cache-dir diffoscope==$DIFFOSCOPE_VERSION
 
