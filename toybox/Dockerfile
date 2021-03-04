@@ -1,6 +1,6 @@
 # ideally, we'd use official static binary releases from http://landley.net/toybox/downloads/binaries/ but they don't include the (pending) "sh" implementation so they're not quite enough for a full system yet
 
-FROM alpine:3.12 AS build
+FROM alpine:3.13 AS build
 
 RUN set -eux; \
 	apk add --no-cache \
