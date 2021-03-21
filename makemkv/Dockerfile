@@ -6,16 +6,10 @@ RUN set -eux; \
 	mkdir -p /usr/share/man/man1; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		ccextractor \
 # FPL_MainFeature detection only seemed to work with OpenJDK 9 (8 was insufficient)
 		openjdk-11-jre-headless \
 	; \
 	rm -rf /var/lib/apt/lists/*
-
-# Unable to execute external program 'ccextractor' as its path is not set in preferences
-# Failed to execute external program 'ccextractor' from location '/usr/local/bin/mmccextr'
-# (but it doesn't exist in the perferences dialog...)
-RUN ln -svT "$(which ccextractor)" /usr/local/bin/mmccextr
 
 # http://www.makemkv.com/forum2/viewtopic.php?f=3&t=224
 ENV MAKEMKV_VERSION 1.16.3
