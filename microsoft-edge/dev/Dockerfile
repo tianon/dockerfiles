@@ -21,7 +21,8 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys BC528686B50D79E339D3721CEB3E94ADBE1229CF; \
-	gpg --batch --export --armor BC528686B50D79E339D3721CEB3E94ADBE1229CF > /etc/apt/trusted.gpg.d/microsoft.gpg.asc; \
+	mkdir -p /etc/apt/untrusted.gpg.d; \
+	gpg --batch --export --armor BC528686B50D79E339D3721CEB3E94ADBE1229CF > /etc/apt/untrusted.gpg.d/microsoft.gpg.asc; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME"; \
 	apt-mark auto '.*' > /dev/null; \
@@ -30,9 +31,16 @@ RUN set -eux; \
 	\
 # TODO non-amd64? 👀
 # https://packages.microsoft.com/repos/edge/dists/stable/main/
-	echo 'deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main' > /etc/apt/sources.list.d/microsoft-edge.list; \
+	echo 'deb [ arch=amd64 signed-by=/etc/apt/untrusted.gpg.d/microsoft.gpg.asc ] https://packages.microsoft.com/repos/edge stable main' > /etc/apt/sources.list.d/microsoft-edge.list; \
 	apt-get update; \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/*; \
+	\
+# disable/exclude some key auto-update behavior
+	echo 'path-exclude /etc/cron*/microsoft-edge*' | tee /etc/dpkg/dpkg.cfg.d/microsoft-edge; \
+	{ \
+		echo 'repo_add_once="false"'; \
+		echo 'repo_reenable_on_distupgrade="false"'; \
+	} | tee /etc/default/microsoft-edge-dev
 
 # https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-dev/
 ENV EDGE_VERSION 91.0.838.3-1
