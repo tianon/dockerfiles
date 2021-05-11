@@ -11,6 +11,10 @@ for gsl in */gsl.sh; do
 	img="$(basename "$dir")"
 	img="$BASHBREW_NAMESPACE/$img"
 	newStrategy="$(GENERATE_STACKBREW_LIBRARY="$gsl" GITHUB_REPOSITORY="$img" "$bashbrewDir/scripts/github-actions/generate.sh")"
+	if [ "$img" = 'tianon/cygwin' ]; then
+		# remove tags that Windows on GitHub Actions can't test
+		newStrategy="$(jq -c 'del(.matrix.include[] | select(.os == "invalid-or-unknown"))' <<<"$newStrategy")"
+	fi
 	newStrategy="$(jq -c --arg img "$img" '.matrix.include = [ .matrix.include[] | .name = $img + ": " + .name ]' <<<"$newStrategy")"
 	jq -c . <<<"$newStrategy" > /dev/null # sanity check
 	strategy="$(jq -c --argjson strategy "$strategy" '.matrix.include = ($strategy.matrix.include // []) + .matrix.include' <<<"$newStrategy")"
@@ -18,7 +22,7 @@ done
 jq -c . <<<"$strategy" > /dev/null # sanity check
 
 # now that we have a list of legit images with generate scripts, look for dangling Dockerfiles
-strategyDockerfiles="$(jq -c '[ .matrix.include[].meta.dockerfiles[] ]' <<<"$strategy")"
+strategyDockerfiles="$(jq -c '[ .matrix.include[].meta.dockerfiles[], "cygwin/Dockerfile" ]' <<<"$strategy")"
 allDockerfiles="$(git ls-files '*/Dockerfile' | jq -Rsc 'rtrimstr("\n") | split("\n")')"
 danglingDockerfiles="$(jq -cn "$allDockerfiles - $strategyDockerfiles")"
 

@@ -1,0 +1,6 @@
+image: tianon/cygwin:latest
+manifests:
+  - image: tianon/cygwin:win20H2
+  - image: tianon/cygwin:win2004
+  - image: tianon/cygwin:win1909
+  - image: tianon/cygwin:win1809

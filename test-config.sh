@@ -25,3 +25,9 @@ globalExcludeTests+=(
 	[tianon/docker-master_docker-registry-push-pull]=1
 	[tianon/docker-tianon_docker-registry-push-pull]=1
 )
+
+# Cygwin looks like Unix, but fails in cute ways (host timezone instead of "UTC" because Windows, can't scrape "/etc/passwd" because --user)
+globalExcludeTests+=(
+	[tianon/cygwin_no-hard-coded-passwords]=1
+	[tianon/cygwin_utc]=1
+)
