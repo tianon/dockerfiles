@@ -13,7 +13,7 @@ RUN set -eux; \
 # Ookla's bare "arm" arch is armv5, which Alpine doesn't support :(
 		*) echo >&2 "error: unknown/unsupported architecture: $apkArch (see https://www.speedtest.net/apps/cli#download)"; exit 1 ;; \
 	esac; \
-	wget -O speedtest.tgz "https://bintray.com/ookla/download/download_file?file_path=ookla-speedtest-$SPEEDTEST_VERSION-$ooklaArch-linux.tgz"; \
+	wget -O speedtest.tgz "https://install.speedtest.net/app/cli/ookla-speedtest-$SPEEDTEST_VERSION-$ooklaArch-linux.tgz"; \
 	tar -xvf speedtest.tgz -C /usr/local/bin speedtest; \
 	rm speedtest.tgz; \
 	speedtest --version
