@@ -24,7 +24,7 @@ RUN set -eux; \
 	apt-get update; \
 	rm -rf /var/lib/apt/lists/*
 
-ENV SIGNAL_DESKTOP_VERSION 5.0.0
+ENV SIGNAL_DESKTOP_VERSION 5.1.0
 
 RUN set -eux; \
 	apt-get update; \
