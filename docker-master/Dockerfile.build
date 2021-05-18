@@ -23,7 +23,7 @@ ENV DOCKER_BUILDTAGS \
 # we cannot support devicemapper properly in a fully-static binary
 		exclude_graphdriver_devicemapper
 
-ENV DOCKER_GITCOMMIT 7d937c7d3f98e15af4492bb11708f51297ca3000
+ENV DOCKER_GITCOMMIT 2b92e37d653cd255992be5a514be1c0924952dc8
 
 WORKDIR /docker-ce
 RUN set -ex; \
