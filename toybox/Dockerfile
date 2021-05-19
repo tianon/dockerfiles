@@ -15,7 +15,7 @@ WORKDIR /toybox
 
 # https://landley.net/toybox/downloads/?C=M;O=D
 # https://github.com/landley/toybox/releases
-ENV TOYBOX_VERSION 0.8.4
+ENV TOYBOX_VERSION 0.8.5
 
 RUN set -eux; \
 	wget -O toybox.tgz "https://landley.net/toybox/downloads/toybox-$TOYBOX_VERSION.tar.gz"; \
