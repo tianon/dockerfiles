@@ -37,7 +37,11 @@ RUN set -eux; \
 		libgbm1 \
 		libgtk-3-0 \
 		libx11-xcb1 \
+		libxshmfence1 \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/*; \
+	signal="$(which signal-desktop)"; \
+	signal="$(readlink -e "$signal")"; \
+	! { ldd "$signal" | grep 'not found'; }
 
 CMD ["signal-desktop"]
