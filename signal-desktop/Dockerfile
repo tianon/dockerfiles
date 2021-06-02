@@ -24,7 +24,8 @@ RUN set -eux; \
 	apt-get update; \
 	rm -rf /var/lib/apt/lists/*
 
-ENV SIGNAL_DESKTOP_VERSION 5.2.1
+# https://github.com/signalapp/Signal-Desktop/releases
+ENV SIGNAL_DESKTOP_VERSION 5.2.0
 
 RUN set -eux; \
 	apt-get update; \
