@@ -1,4 +1,4 @@
-FROM alpine:3.13
+FROM alpine:3.14
 
 # https://www.speedtest.net/apps/cli#download
 ENV SPEEDTEST_VERSION 1.0.0
