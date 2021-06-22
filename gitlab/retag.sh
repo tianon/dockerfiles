@@ -37,7 +37,7 @@ for tag in $tags; do
 
 	# ignore older versions
 	case "$major" in
-		8 | 9 | 10 | 11) continue ;;
+		8 | 9 | 10 | 11 | 12) continue ;;
 	esac
 
 	if [ -z "${latest[latest]:-}" ]; then
