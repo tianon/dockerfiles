@@ -6,7 +6,7 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends gnupg dirmngr; \
 	rm -rf /var/lib/apt/lists/*; \
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys 43D3A9F60C58A7169778E6FB8771ADB0816950D8; \
+	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys 43D3A9F60C58A7169778E6FB8771ADB0816950D8; \
 	gpg --batch --export --armor 43D3A9F60C58A7169778E6FB8771ADB0816950D8 > /etc/apt/trusted.gpg.d/handbrake.gpg.asc; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME"; \

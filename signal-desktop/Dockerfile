@@ -10,7 +10,7 @@ RUN set -eux; \
 	key='DBA3 6B51 81D0 C816 F630  E889 D980 A174 57F6 FB06'; \
 	\
 	GNUPGHOME="$(mktemp -d)"; export GNUPGHOME; \
-	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$key"; \
 	mkdir -p /usr/local/share/keyrings; \
 	gpg --batch --export "$key" > /usr/local/share/keyrings/signal-desktop.gpg; \
 	rm -rf "$GNUPGHOME"; \

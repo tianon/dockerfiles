@@ -20,7 +20,7 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends gnupg dirmngr; \
 	rm -rf /var/lib/apt/lists/*; \
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys BC528686B50D79E339D3721CEB3E94ADBE1229CF; \
+	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys BC528686B50D79E339D3721CEB3E94ADBE1229CF; \
 	mkdir -p /etc/apt/untrusted.gpg.d; \
 	gpg --batch --export --armor BC528686B50D79E339D3721CEB3E94ADBE1229CF > /etc/apt/untrusted.gpg.d/microsoft.gpg.asc; \
 	gpgconf --kill all; \

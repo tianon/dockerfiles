@@ -10,7 +10,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*; \
 	\
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys D43F640145369C51D786DDEA76F1A20FF987672F; \
+	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys D43F640145369C51D786DDEA76F1A20FF987672F; \
 	gpg --batch --export --armor D43F640145369C51D786DDEA76F1A20FF987672F > /etc/apt/trusted.gpg.d/winehq.gpg.asc; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME"; \

@@ -15,7 +15,7 @@ RUN set -eux; \
 ENV JENKINS_GPG_KEY 62A9756BFD780C377CF24BA8FCEF32E745F2C3D5
 RUN set -eux; \
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$JENKINS_GPG_KEY"; \
+	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$JENKINS_GPG_KEY"; \
 	gpg --batch --export --armor "$JENKINS_GPG_KEY" > /etc/apt/trusted.gpg.d/jenkins.gpg.asc; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME"; \

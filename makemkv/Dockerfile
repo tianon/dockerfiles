@@ -41,7 +41,7 @@ RUN set -ex; \
 #       2ECF 2330 5F1F C0B3 2001  6733 94E3 083A 1804 2697
 # uid           [ unknown] MakeMKV (signature) <support@makemkv.com>
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys 2ECF23305F1FC0B32001673394E3083A18042697; \
+	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys 2ECF23305F1FC0B32001673394E3083A18042697; \
 	gpg --batch --decrypt --output sha256sums.txt sha256sums.txt.sig; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME" sha256sums.txt.sig; \
