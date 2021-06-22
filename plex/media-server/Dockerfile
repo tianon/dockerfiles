@@ -22,9 +22,9 @@ ENV LANG C.UTF-8
 
 # https://www.plex.tv/downloads/#getdownload
 # https://plex.tv/api/downloads/1.json
-ENV PLEX_VERSION 1.23.2.4656-85f0adf5b
-ENV PLEX_URL https://downloads.plex.tv/plex-media-server-new/1.23.2.4656-85f0adf5b/debian/plexmediaserver_1.23.2.4656-85f0adf5b_amd64.deb
-ENV PLEX_SHA1 2cb8d86733c590af343bfcc054efc7a25598ffe8
+ENV PLEX_VERSION 1.23.3.4707-ebb5fe9f3
+ENV PLEX_URL https://downloads.plex.tv/plex-media-server-new/1.23.3.4707-ebb5fe9f3/debian/plexmediaserver_1.23.3.4707-ebb5fe9f3_amd64.deb
+ENV PLEX_SHA1 7f512cfe3f4374ae0b3bf8f883e7ed361899ea61
 
 RUN set -eux; \
 	wget -O /tmp/plex.deb "$PLEX_URL" --progress=dot:giga; \
