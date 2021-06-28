@@ -33,7 +33,7 @@ RUN set -ex; \
 
 RUN set -eux; \
 	cd components/engine; \
-	for comp in containerd proxy runc tini; do \
+	for comp in containerd runc tini; do \
 		hack/dockerfile/install/install.sh "$comp"; \
 	done; \
 	ldd /usr/local/bin/* || :
@@ -51,10 +51,14 @@ RUN set -eux; \
 	cd components/engine; \
 	echo 'module github.com/docker/docker' > go.mod; \
 	sed -ri '/^[[:space:]]*copy_binaries /d' hack/make/binary-daemon; \
-	GOFLAGS='-mod=vendor' hack/make.sh binary-daemon; \
-	cp -avlL bundles/binary-daemon/dockerd /usr/local/bin/; \
+	GOFLAGS='-mod=vendor' hack/make.sh binary; \
+	cp -avlL \
+		bundles/binary-daemon/dockerd \
+		bundles/binary-daemon/docker-proxy \
+		/usr/local/bin/ \
+	; \
 	dockerd --version; \
-	ldd /usr/local/bin/dockerd || :
+	ldd /usr/local/bin/dockerd /usr/local/bin/docker-proxy || :
 
 # copy all our binaries to a simple fixed location
 RUN set -ex; \
