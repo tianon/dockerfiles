@@ -1,7 +1,6 @@
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 RUN set -eux; \
-	echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/backports.list; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		ca-certificates \
@@ -9,22 +8,19 @@ RUN set -eux; \
 		kmod \
 # DOCKER_HOST=ssh://... -- https://github.com/docker/cli/pull/1014
 		openssh-client \
-# https://github.com/debuerreotype/docker-debian-artifacts/issues/97#issuecomment-658469709 (2.4.2+)
-# https://github.com/seccomp/libseccomp/issues/234 (2.4.4+)
-		libseccomp2/buster-backports \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://apt.infosiftr.com/moby debian-buster stable' > /etc/apt/sources.list.d/moby.list
+RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://apt.infosiftr.com/moby debian-bullseye stable' > /etc/apt/sources.list.d/moby.list
 
-# http://apt.infosiftr.com/moby/pool/debian-buster/stable/moby-cli/
-ENV MOBY_CLI_VERSION 20.10.7-0~deb10u0
-# http://apt.infosiftr.com/moby/pool/debian-buster/stable/moby-engine/
-ENV MOBY_ENGINE_VERSION 20.10.7-0~deb10u0
-# http://apt.infosiftr.com/moby/pool/debian-buster/stable/moby-containerd/
-ENV MOBY_CONTAINERD_VERSION 1.5.2-0~deb10u0
-# http://apt.infosiftr.com/moby/pool/debian-buster/stable/moby-runc/
-ENV MOBY_RUNC_VERSION 1.0.0~rc95-0~deb10u0
+# http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-cli/
+ENV MOBY_CLI_VERSION 20.10.7-0~deb11u0
+# http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-engine/
+ENV MOBY_ENGINE_VERSION 20.10.7-0~deb11u0
+# http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-containerd/
+ENV MOBY_CONTAINERD_VERSION 1.5.2-0~deb11u0
+# http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-runc/
+ENV MOBY_RUNC_VERSION 1.0.0~rc95-0~deb11u0
 
 RUN set -eux; \
 	\
