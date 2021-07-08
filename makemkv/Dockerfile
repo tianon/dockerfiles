@@ -12,7 +12,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # http://www.makemkv.com/forum2/viewtopic.php?f=3&t=224
-ENV MAKEMKV_VERSION 1.16.3
+ENV MAKEMKV_VERSION 1.16.4
 
 # beta code: http://www.makemkv.com/forum2/viewtopic.php?f=5&t=1053
 RUN set -ex; \
@@ -51,12 +51,6 @@ RUN set -ex; \
 		wget -O "$ball.tgz" "https://www.makemkv.com/download/${ball}-${MAKEMKV_VERSION}.tar.gz"; \
 		sha256="$(grep "  $ball-${MAKEMKV_VERSION}[.]tar[.]gz\$" sha256sums.txt)"; \
 		sha256="${sha256%% *}"; \
-		if [ "$ball" = 'makemkv-oss' ]; then \
-# https://forum.makemkv.com/forum/viewtopic.php?p=106871&sid=1f9aa1422b12be5dc2737f1bc6317dea#p106871
-			[ "$sha256" = '1fcbcb5875b92d198548ec95699ee5c1f0f98925f7bdeb06d025894e73f348dc' ]; \
-			sha256='6141a8ccff41eaf9964385b172d49b7b3ceefb4c8b25734a424f53c27405f05d'; \
-# TODO remove this...
-		fi; \
 		[ -n "$sha256" ]; \
 		echo "$sha256 *$ball.tgz" | sha256sum -c -; \
 		\
