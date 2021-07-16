@@ -43,7 +43,7 @@ RUN set -eux; \
 	} | tee /etc/default/microsoft-edge-beta
 
 # https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-beta/
-ENV EDGE_VERSION 92.0.902.45-1
+ENV EDGE_VERSION 92.0.902.49-1
 
 RUN set -eux; \
 	apt-get update; \
