@@ -3,7 +3,7 @@ set -eu
 
 _tls_ensure_private() {
 	local f="$1"; shift
-	[ -s "$f" ] || openssl genrsa -out "$f" 4196
+	[ -s "$f" ] || openssl genrsa -out "$f" 4096
 }
 _tls_san() {
 	{
@@ -138,6 +138,11 @@ if [ "$1" = 'dockerd' ]; then
 	# explicitly remove Docker's default PID file to ensure that it can start properly if it was stopped uncleanly (and thus didn't clean up the PID file)
 	find /run /var/run -iname 'docker*.pid' -delete || :
 
+	if dockerd --version | grep -qF ' 20.10.'; then
+		# XXX inject "docker-init" (tini) as pid1 to workaround https://github.com/docker-library/docker/issues/318 (zombie container-shim processes)
+		set -- docker-init -- "$@"
+	fi
+
 	uid="$(id -u)"
 	if [ "$uid" != '0' ]; then
 		# if we're not root, we must be trying to run rootless
@@ -156,11 +161,11 @@ if [ "$1" = 'dockerd' ]; then
 			echo >&2 "error: attempting to run rootless dockerd but need writable HOME ($HOME) and XDG_RUNTIME_DIR ($XDG_RUNTIME_DIR) for user $uid"
 			exit 1
 		fi
-		if ! unprivClone="$(cat /proc/sys/kernel/unprivileged_userns_clone || :)" || [ "$unprivClone" != '1' ]; then
+		if [ -f /proc/sys/kernel/unprivileged_userns_clone ] && unprivClone="$(cat /proc/sys/kernel/unprivileged_userns_clone)" && [ "$unprivClone" != '1' ]; then
 			echo >&2 "error: attempting to run rootless dockerd but need 'kernel.unprivileged_userns_clone' (/proc/sys/kernel/unprivileged_userns_clone) set to 1"
 			exit 1
 		fi
-		if ! maxUserns="$(cat /proc/sys/user/max_user_namespaces || :)" || [ "$maxUserns" = '0' ]; then
+		if [ -f /proc/sys/user/max_user_namespaces ] && maxUserns="$(cat /proc/sys/user/max_user_namespaces)" && [ "$maxUserns" = '0' ]; then
 			echo >&2 "error: attempting to run rootless dockerd but need 'user.max_user_namespaces' (/proc/sys/user/max_user_namespaces) set to a sufficiently large value"
 			exit 1
 		fi
@@ -170,9 +175,10 @@ if [ "$1" = 'dockerd' ]; then
 			--mtu="${DOCKERD_ROOTLESS_ROOTLESSKIT_MTU:-1500}" \
 			--disable-host-loopback \
 			--port-driver=builtin \
-			--copy-up=/etc --copy-up=/run \
+			--copy-up=/etc \
+			--copy-up=/run \
 			${DOCKERD_ROOTLESS_ROOTLESSKIT_FLAGS:-} \
-			"$@" --userland-proxy-path=rootlesskit-docker-proxy
+			"$@"
 	elif [ -x '/usr/local/bin/dind' ]; then
 		# if we have the (mostly defunct now) Docker-in-Docker wrapper script, use it
 		set -- '/usr/local/bin/dind' "$@"
