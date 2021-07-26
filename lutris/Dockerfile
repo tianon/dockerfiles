@@ -52,8 +52,8 @@ RUN set -eux; \
 	winetricks --version
 
 # https://launchpad.net/~lutris-team/+archive/ubuntu/lutris?field.series_filter=focal
-ENV LUTRIS_VERSION 0.5.8.3
-ENV LUTRIS_PPA_VERSION 0.5.8.3~ubuntu20.04.1
+ENV LUTRIS_VERSION 0.5.8.4-202107241529
+ENV LUTRIS_PPA_VERSION 0.5.8.4-202107241529~ubuntu20.04.1
 
 RUN set -eux; \
 	add-apt-repository ppa:lutris-team/lutris; \
