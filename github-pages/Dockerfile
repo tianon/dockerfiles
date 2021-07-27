@@ -1,7 +1,7 @@
 # https://pages.github.com/versions/
-FROM ruby:2.5-alpine3.13
+FROM ruby:2.7-alpine3.14
 
-ENV GITHUB_PAGES_VERSION 202
+ENV GITHUB_PAGES_VERSION 215
 
 RUN set -eux; \
 	\
