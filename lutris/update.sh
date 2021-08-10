@@ -4,6 +4,7 @@ set -Eeuo pipefail
 suite="$(gawk -F '[[:space:]:]+' '$1 == "FROM" { print $3; exit }' Dockerfile)"
 
 ppaVersion="$(
+	# https://launchpad.net/~lutris-team/+archive/ubuntu/lutris
 	wget -qO- "http://ppa.launchpad.net/lutris-team/lutris/ubuntu/dists/$suite/main/binary-amd64/Packages.xz" \
 		| xz -d \
 		| tac|tac \

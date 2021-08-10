@@ -4,6 +4,7 @@ set -Eeuo pipefail
 suite="$(gawk -F '[[:space:]:]+' '$1 == "FROM" { print $3; exit }' Dockerfile)"
 
 version="$(
+	# https://launchpad.net/~stebbins/+archive/ubuntu/handbrake-releases
 	wget -qO- "http://ppa.launchpad.net/stebbins/handbrake-releases/ubuntu/dists/$suite/main/binary-amd64/Packages.xz" \
 		| xz -d \
 		| tac|tac \
