@@ -57,7 +57,6 @@ _start:
 	;mov	rdi, 0           ; return 0 (success)
 	; even smaller hax thanks to @tiborvass:
 	mov	al, 60	; sys_exit
-	cdq			; Sign-extend eax into edi to return 0 (success)
 	syscall
 
 ;	message:
