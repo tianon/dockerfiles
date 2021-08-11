@@ -4,7 +4,7 @@ set -Eeuo pipefail
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 url="$(
-	curl -fsSL 'https://www.makemkv.com/forum/viewtopic.php?f=3&t=224' \
+	curl -fsSL 'https://forum.makemkv.com/forum/viewtopic.php?f=3&t=224' \
 		| grep -oE 'href="https?://[^"]+/makemkv-bin-[^"]+.tar.gz"' \
 		| cut -d'"' -f2
 )"
