@@ -2,7 +2,7 @@
 #   $ docker build -t some-name - < Dockerfile.build
 #   $ docker run --rm some-name tar -cC /artifacts . | tar -xvC target-directory
 
-FROM golang:1.13-buster
+FROM golang:1.16-buster
 
 RUN set -ex; \
 	apt-get update; \
@@ -33,9 +33,18 @@ RUN set -ex; \
 
 RUN set -eux; \
 	cd components/engine; \
+	export TMP_GOPATH=/tmp/gopath; \
 	for comp in containerd runc tini; do \
 		hack/dockerfile/install/install.sh "$comp"; \
 	done; \
+# https://github.com/containerd/containerd/issues/5824
+	( \
+		set -eu; \
+		cd "$TMP_GOPATH/src/github.com/containerd/containerd"; \
+		sed -ri -e '/buildmode=pie/d' Makefile.linux; \
+		make bin/ctr EXTRA_LDFLAGS='-extldflags "-static"'; \
+		cp -vf bin/ctr /usr/local/bin/; \
+	); \
 	ldd /usr/local/bin/* || :
 
 RUN set -eux; \
