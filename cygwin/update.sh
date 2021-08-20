@@ -7,6 +7,7 @@ sed -ri -e 's/^(ENV CYGWIN_SETUP_SHA512) .*/\1 '"$sha512"'/' Dockerfile
 
 versions=(
 	# https://hub.docker.com/r/microsoft/windowsservercore
+	ltsc2022
 	20H2
 	2004
 	1909
