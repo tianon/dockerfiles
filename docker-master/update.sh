@@ -7,12 +7,13 @@ cd "$dir"
 
 # "tac|tac" for http://stackoverflow.com/a/28879552/433558
 dindLatest="$(
-	wget -qO- 'https://github.com/docker/docker/commits/master/hack/dind.atom' \
+	wget -qO- 'https://github.com/moby/moby/commits/master/hack/dind.atom' \
 		| tac|tac \
 		| awk -F ' *[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }'
 )"
 
-masterCommit="$(git ls-remote https://github.com/docker/docker-ce.git refs/heads/master | cut -d$'\t' -f1)"
+mobyCommit="$(git ls-remote https://github.com/moby/moby.git refs/heads/master | cut -d$'\t' -f1)"
+cliCommit="$(git ls-remote https://github.com/docker/cli.git refs/heads/master | cut -d$'\t' -f1)"
 
 # TODO multiarch?
 baseUrl='https://download.docker.com/linux/static/nightly/x86_64'
@@ -35,6 +36,7 @@ sha256="$(wget -qO- "$url" | sha256sum | cut -d' ' -f1)"
 		s/^(ENV DIND_COMMIT) .*/\1 '"$dindLatest"'/;
 	' Dockerfile */Dockerfile
 	sed -ri \
-		-e 's!^(ENV DOCKER_GITCOMMIT) .*!\1 '"$masterCommit"'!' \
+		-e 's!^(ENV MOBY_GITCOMMIT) .*!\1 '"$mobyCommit"'!' \
+		-e 's!^(ENV CLI_GITCOMMIT) .*!\1 '"$cliCommit"'!' \
 		Dockerfile.build
 )
