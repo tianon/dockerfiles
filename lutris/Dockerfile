@@ -24,28 +24,23 @@ RUN set -eux; \
 	echo "deb https://dl.winehq.org/wine-builds/ubuntu $suite main" > /etc/apt/sources.list.d/winehq.list
 # https://dl.winehq.org/wine-builds/ubuntu/dists/focal/main/binary-amd64/?C=N;O=D
 # https://www.winehq.org/news/
-ENV WINE_VERSION 5.10~focal
+ENV WINE_VERSION 6.0.1~focal-1
 RUN set -eux; \
 	{ \
-		echo 'Package: *wine* *wine*:i386'; \
+		echo 'Package: src:wine* src:wine*:i386'; \
 		echo "Pin: version $WINE_VERSION"; \
 		echo 'Pin-Priority: 1001'; \
-	} > /etc/apt/preferences.d/winehq.pref; \
-# "Add SDL2 Backports PPA (for Faudio package):"
-	add-apt-repository ppa:cybermax-dexter/sdl2-backport; \
+	} > /etc/apt/preferences.d/winehq.pref
+RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		winehq-staging="$WINE_VERSION" \
+		winehq-stable="$WINE_VERSION" \
 # "For compatibility reasons, install these additional libraries:"
 		libgnutls30:i386 libldap-2.4-2:i386 libgpg-error0:i386 libxml2:i386 libasound2-plugins:i386 libsdl2-2.0-0:i386 libfreetype6:i386 libdbus-1-3:i386 libsqlite3-0:i386 \
 	; \
 	rm -rf /var/lib/apt/lists/*
-RUN set -eux; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends wget; \
-	rm -rf /var/lib/apt/lists/*
 # https://github.com/Winetricks/winetricks/releases
-ENV WINETRICKS_VERSION 20200412
+ENV WINETRICKS_VERSION 20210825
 RUN set -eux; \
 	wget -O /usr/local/bin/winetricks "https://github.com/Winetricks/winetricks/raw/$WINETRICKS_VERSION/src/winetricks"; \
 	chmod +x /usr/local/bin/winetricks; \
