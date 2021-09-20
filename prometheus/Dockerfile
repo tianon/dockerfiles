@@ -6,7 +6,7 @@ WORKDIR /opt/prometheus
 ENV PATH /opt/prometheus:$PATH
 
 # https://github.com/prometheus/prometheus/releases
-ENV PROMETHEUS_VERSION 2.29.2
+ENV PROMETHEUS_VERSION 2.30.0
 
 RUN set -ex; \
 	\
