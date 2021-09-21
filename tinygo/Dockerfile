@@ -1,11 +1,11 @@
-FROM golang:1.16-buster
+FROM golang:1.17-bullseye
 
 # the .deb (as of 0.6.0) installs to /usr/local/tinygo but doesn't add "tinygo" to PATH
 ENV PATH /usr/local/tinygo/bin:$PATH
 # https://tinygo.org/getting-started/linux/
 
 # https://github.com/tinygo-org/tinygo/releases
-ENV TINYGO_VERSION 0.19.0
+ENV TINYGO_VERSION 0.20.0
 
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
