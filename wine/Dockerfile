@@ -39,4 +39,5 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends \
 		"winehq-stable=$WINE_DEB_VERSION" \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/*; \
+	wine --version
