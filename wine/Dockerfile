@@ -1,4 +1,4 @@
-FROM debian:stretch-slim
+FROM debian:bullseye-slim
 
 # https://wiki.winehq.org/Debian
 
@@ -24,18 +24,19 @@ RUN set -eux; \
 	suite="$(awk '$1 == "deb" { print $3; exit }' /etc/apt/sources.list)"; \
 	echo "deb https://dl.winehq.org/wine-builds/debian $suite main" > /etc/apt/sources.list.d/winehq.list
 
-# https://dl.winehq.org/wine-builds/debian/dists/buster/main/binary-amd64/?C=N;O=D
+# https://dl.winehq.org/wine-builds/debian/dists/bullseye/main/binary-amd64/?C=N;O=D
 # https://www.winehq.org/news/
-ENV WINE_VERSION 5.10
+ENV WINE_VERSION 6.0.1
+ENV WINE_DEB_VERSION 6.0.1~bullseye-1
 
 RUN set -eux; \
 	{ \
-		echo 'Package: *wine* *wine*:i386'; \
-		echo "Pin: version $WINE_VERSION~*"; \
+		echo 'Package: src:*wine* src:*wine*:i386'; \
+		echo "Pin: version $WINE_DEB_VERSION"; \
 		echo 'Pin-Priority: 1001'; \
 	} > /etc/apt/preferences.d/winehq.pref; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		"winehq-staging=$WINE_VERSION~*" \
+		"winehq-stable=$WINE_DEB_VERSION" \
 	; \
 	rm -rf /var/lib/apt/lists/*
