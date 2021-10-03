@@ -1,5 +1,5 @@
 # https://bugs.launchpad.net/bugs/1440372 (python3)
-FROM python:3.7-alpine
+FROM python:3.7-alpine3.14
 
 RUN apk add --no-cache gnupg
 
