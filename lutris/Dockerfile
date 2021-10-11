@@ -8,15 +8,22 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-# https://github.com/Winetricks/winetricks/releases
-ENV WINETRICKS_VERSION 20210825
+# CONSOLE ERROR RangeError: invalid language tag: C
 RUN set -eux; \
-	wget -O /usr/local/bin/winetricks "https://github.com/Winetricks/winetricks/raw/$WINETRICKS_VERSION/src/winetricks"; \
-	chmod +x /usr/local/bin/winetricks; \
-	winetricks --version
+	if [ -f /etc/dpkg/dpkg.cfg.d/docker ]; then \
+# if this file exists, we're likely in "debian:xxx-slim", and locales are thus being excluded so we need to remove that exclusion (since we need locales)
+		grep -q '/usr/share/locale' /etc/dpkg/dpkg.cfg.d/docker; \
+		sed -ri '/\/usr\/share\/locale/d' /etc/dpkg/dpkg.cfg.d/docker; \
+		! grep -q '/usr/share/locale' /etc/dpkg/dpkg.cfg.d/docker; \
+	fi; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends locales; \
+	rm -rf /var/lib/apt/lists/*; \
+	localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+ENV LANG en_US.UTF-8
 
 # https://github.com/lutris/lutris/releases
-ENV LUTRIS_VERSION 0.5.8.4
+ENV LUTRIS_VERSION 0.5.9
 
 RUN set -eux; \
 	wget -O lutris.deb "https://github.com/lutris/lutris/releases/download/v${LUTRIS_VERSION}/lutris_${LUTRIS_VERSION}_all.deb"; \
