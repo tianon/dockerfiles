@@ -42,6 +42,10 @@ RUN set -eux; \
 		python3-evdev \
 # lspci is not available. List of graphics cards not available
 		pciutils \
+# Couldn't find a terminal emulator.
+		xterm \
+# dark theme support
+		gnome-themes-extra \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
