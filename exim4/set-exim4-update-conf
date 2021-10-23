@@ -1,23 +1,28 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
+set -Eeuo pipefail
 
 conf='/etc/exim4/update-exim4.conf.conf'
 
-sedExpr=''
-while [ $# -gt 0 ]; do
+args=()
+while [ "$#" -gt 0 ]; do
 	key="$1"
 	value="$2"
 	shift 2
-	
+
 	if ! grep -qE "^#?${key}=" "$conf"; then
 		echo >&2 "error: '$key' not found in '$conf'"
 		exit 1
 	fi
-	
-	sed_escaped_value="$(echo "$value" | sed 's/[\/&]/\\&/g')"
-	sedExpr+=$'\n\t'"s/^#?(${key})=.*/\1='${sed_escaped_value}'/;"
+
+	sed_escaped_value="$(sed -e 's/[\/&]/\\&/g' <<<"$value")"
+	args+=( -e "s/^#?(${key})=.*/\1='${sed_escaped_value}'/" )
 done
 
+if [ "${#args[@]}" -eq 0 ]; then
+	echo >&2 "error: nothing to do?"
+	exit 1
+fi
+
 set -x
-sed -ri "$sedExpr"$'\n' "$conf"
+sed -ri "${args[@]}" "$conf"
 update-exim4.conf -v
