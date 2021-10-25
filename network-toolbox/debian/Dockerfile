@@ -16,6 +16,7 @@ RUN set -eux; \
 		iperf \
 		iproute2 \
 		iptables \
+		libfcgi-bin \
 		mtr-tiny \
 		nbtscan \
 		net-tools \

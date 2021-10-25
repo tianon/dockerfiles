@@ -6,6 +6,7 @@ RUN apk add --no-cache \
 		bind-tools \
 		ca-certificates \
 		curl \
+		fcgi \
 		fio \
 		gnupg \
 		iftop \
