@@ -3,6 +3,9 @@ set -Eeuo pipefail
 
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
+# "deb https://downloads.plex.tv/repo/deb public main" ("/etc/apt/sources.list.d/plexmediaserver.list")
+# signed by https://downloads.plex.tv/plex-keys/PlexSign.key
+
 #version="$(curl -fsSL 'https://plex.tv/downloads/details/1?build=linux-ubuntu-x86_64&channel=16&distro=ubuntu' | sed -n 's/.*Release.*version="\([^"]*\)".*/\1/p')"
 
 json="$(curl -fsSL 'https://plex.tv/api/downloads/1.json' | jq '.computer.Linux')"
