@@ -9,5 +9,6 @@ source gsl-libs.sh
 
 globalEntry
 
+versionedEnvVariantEntry "$dir/stable" stable 'EDGE_VERSION' stable
 versionedEnvVariantEntry "$dir/beta" beta 'EDGE_VERSION' beta
 versionedEnvVariantEntry "$dir/dev" dev 'EDGE_VERSION' dev
