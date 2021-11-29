@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM alpine:3.15
 
 RUN apk add --no-cache \
 		bash \
@@ -24,7 +24,7 @@ RUN apk add --no-cache \
 		tshark \
 		wget \
 		whois
-# TODO add "nbtscan" when we get to Alpine 3.15 (if it makes it out of edge)
+# TODO add "nbtscan" when we get to Alpine 3.16 (if it makes it out of edge)
 # https://pkgs.alpinelinux.org/packages?name=nbtscan&branch=edge&arch=x86_64
 
 CMD ["bash", "--login", "-i"]
