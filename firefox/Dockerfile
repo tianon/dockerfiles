@@ -54,4 +54,10 @@ RUN set -eux; \
 	\
 	firefox --version
 
+# disable automated updates
+# https://github.com/mozilla/policy-templates/blob/v3.3/README.md
+RUN set -eux; \
+	mkdir /opt/firefox/distribution; \
+	echo '{"policies":{"AppAutoUpdate":false}}' > /opt/firefox/distribution/policies.json
+
 CMD ["firefox"]
