@@ -23,7 +23,7 @@ RUN set -eux; \
 ENV LANG en_US.UTF-8
 
 # https://github.com/lutris/lutris/releases
-ENV LUTRIS_VERSION 0.5.9
+ENV LUTRIS_VERSION 0.5.9.1
 
 RUN set -eux; \
 	wget -O lutris.deb "https://github.com/lutris/lutris/releases/download/v${LUTRIS_VERSION}/lutris_${LUTRIS_VERSION}_all.deb"; \
