@@ -10,7 +10,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # https://github.com/opencontainers/runc/releases
-ENV RUNC_VERSION 1.0.2
+ENV RUNC_VERSION 1.0.3
 
 RUN set -eux; \
 	wget -O /usr/local/bin/runc "https://github.com/opencontainers/runc/releases/download/v${RUNC_VERSION}/runc.amd64" --progress=dot:giga; \
@@ -19,7 +19,7 @@ RUN set -eux; \
 	runc --version
 
 # https://github.com/containerd/containerd/releases
-ENV CONTAINERD_VERSION 1.5.5
+ENV CONTAINERD_VERSION 1.5.8
 
 RUN set -eux; \
 	wget -O containerd.tar.gz "https://github.com/containerd/containerd/releases/download/v${CONTAINERD_VERSION}/containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz" --progress=dot:giga; \
