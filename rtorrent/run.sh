@@ -8,7 +8,9 @@ touch "$torrents/.rtorrent.rc"
 set -x
 exec docker run -it --rm \
 	--name rtorrent \
-	-v "$torrents:/torrents" \
-	-e TERM \
-	-u "$(id -u):$(id -g)" \
+	--hostname rtorrent \
+	--mount "type=bind,src=$torrents,dst=/torrents" \
+	--env TERM \
+	--user "$(id -u):$(id -g)" \
+	--read-only \
 	tianon/rtorrent "$@"
