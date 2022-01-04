@@ -31,7 +31,7 @@ ENV WINE_DEB_VERSION 6.0.2~bullseye-1
 
 RUN set -eux; \
 	{ \
-		echo 'Package: src:*wine* src:*wine*:i386'; \
+		echo 'Package: src:*wine*:any'; \
 		echo "Pin: version $WINE_DEB_VERSION"; \
 		echo 'Pin-Priority: 1001'; \
 	} > /etc/apt/preferences.d/winehq.pref; \
