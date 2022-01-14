@@ -1,34 +1,107 @@
-FROM ubuntu:focal
+FROM debian:bullseye-slim
+
+# https://github.com/HandBrake/HandBrake/releases
+ENV HANDBRAKE_VERSION 1.5.1
 
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
-	apt-get install -y --no-install-recommends gnupg dirmngr; \
+	apt-get install -y --no-install-recommends \
+		bzip2 \
+		ca-certificates \
+		gnupg dirmngr \
+		wget \
+		\
+		autoconf \
+		automake \
+		autopoint \
+		binutils \
+		cmake \
+		g++ \
+		gcc \
+		gettext \
+		libass-dev \
+		libbz2-dev \
+		libc6-dev \
+		libdrm-dev \
+		libgtk-3-dev \
+		libjansson-dev \
+		liblzma-dev \
+		libmp3lame-dev \
+		libnuma-dev \
+		libopus-dev \
+		libspeex-dev \
+		libtheora-dev \
+		libtool-bin \
+		libturbojpeg-dev \
+		libva-dev \
+		libvorbis-dev \
+		libvpx-dev \
+		libx264-dev \
+		libxml2-dev \
+		make \
+		meson \
+		nasm \
+		patch \
+		pkg-config \
+		python3 \
+	; \
 	rm -rf /var/lib/apt/lists/*; \
-	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys 43D3A9F60C58A7169778E6FB8771ADB0816950D8; \
-	gpg --batch --export --armor 43D3A9F60C58A7169778E6FB8771ADB0816950D8 > /etc/apt/trusted.gpg.d/handbrake.gpg.asc; \
-	gpgconf --kill all; \
-	rm -rf "$GNUPGHOME"; \
+	\
+	wget -O handbrake.tar.bz2.sig "https://github.com/HandBrake/HandBrake/releases/download/$HANDBRAKE_VERSION/HandBrake-$HANDBRAKE_VERSION-source.tar.bz2.sig"; \
+	wget -O handbrake.tar.bz2 "https://github.com/HandBrake/HandBrake/releases/download/$HANDBRAKE_VERSION/HandBrake-$HANDBRAKE_VERSION-source.tar.bz2"; \
+	\
+# https://handbrake.fr/openpgp.php or https://github.com/HandBrake/HandBrake/wiki/OpenPGP
+	GNUPGHOME="$(mktemp -d)"; export GNUPGHOME; \
+	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys '1629 C061 B3DD E7EB 4AE3  4B81 021D B8B4 4E4A 8645'; \
+	gpg --batch --verify handbrake.tar.bz2.sig handbrake.tar.bz2; \
+	rm -rf "$GNUPGHOME" handbrake.tar.bz2.sig; \
+	\
+	mkdir -p /tmp/handbrake; \
+	tar --extract \
+		--file handbrake.tar.bz2 \
+		--directory /tmp/handbrake \
+		--strip-components 1 \
+		"HandBrake-$HANDBRAKE_VERSION" \
+	; \
+	rm handbrake.tar.bz2; \
+	\
+	cd /tmp/handbrake; \
+	./configure \
+# TODO --arch [MODE]         select architecture mode: x86_64
+		--build build \
+		--disable-gtk-update-checks \
+		--enable-fdk-aac \
+		--enable-numa \
+		--enable-nvenc \
+		--enable-qsv \
+		--enable-vce \
+		--enable-x265 \
+	; \
+	\
+	nproc="$(nproc)"; \
+	make -C build -j "$nproc"; \
+	make -C build install; \
+	\
+	cd /; \
+	rm -rf /tmp/handbrake; \
+	\
 	apt-mark auto '.*' > /dev/null; \
 	[ -z "$savedAptMark" ] || apt-mark manual $savedAptMark > /dev/null; \
-	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
-
-# https://handbrake.fr/downloads.php
-# https://launchpad.net/~stebbins/+archive/ubuntu/handbrake-releases
-RUN set -eux; \
-	suite="$(awk '$1 == "deb" { print $3; exit }' /etc/apt/sources.list)"; \
-	echo "deb http://ppa.launchpad.net/stebbins/handbrake-releases/ubuntu $suite main" > /etc/apt/sources.list.d/handbrake.list
-
-ENV HANDBRAKE_VERSION 1.3.3.1
-ENV HANDBRAKE_PPA_VERSION 1:1.3.3.1-zhb-1ppa1~focal1
-
-RUN set -eux; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
-		"handbrake-cli=$HANDBRAKE_PPA_VERSION" \
-		"handbrake-gtk=$HANDBRAKE_PPA_VERSION" \
+	find /usr/local \
+		-type f \
+		\( -executable -o -name '*.so' \) \
+		-exec ldd '{}' ';' \
+		| awk '/=>/ { print $(NF-1) }' \
+		| sort -u \
+		| xargs -r dpkg-query --search \
+		| cut -d: -f1 \
+		| sort -u \
+		| xargs -r apt-mark manual \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	\
+	HandBrakeCLI --version; \
+	ghb --help
 
 CMD ["ghb"]
