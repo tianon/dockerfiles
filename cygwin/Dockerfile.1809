@@ -15,7 +15,7 @@ ENV CYGWIN winsymlinks:lnk
 # https://cygwin.com/install.html
 # https://cygwin.com/sha512.sum
 ENV CYGWIN_SETUP_URL https://cygwin.com/setup-x86_64.exe
-ENV CYGWIN_SETUP_SHA512 29776f62df416ddb39d53bf7a5fd7c1ef5cf3497544335b4168c4b039353a9e15403b0774bbc8f4d73fa89cdc2db6f0708bb91789532389386c851500db3f345
+ENV CYGWIN_SETUP_SHA512 7897f5ad1aa7c2d3b5767ec1bfe23f945dbc0ad6e4e0fa68cfadc115a2f8c9ec73f5d40b227cbd869546da8696a2692d2b317c96d30b0d0045e23f0a5372ff72
 # https://cygwin.com/git/gitweb.cgi?p=cygwin-apps/setup.git;a=summary (useful "setup" changelog)
 
 RUN Write-Host ('Downloading {0}' -f $env:CYGWIN_SETUP_URL); \
@@ -45,8 +45,6 @@ RUN $exitCode = (Start-Process cygwin-setup.exe -Wait -NoNewWindow -PassThru -Ar
 		--quiet-mode \
 		--root . \
 		--site http://mirrors.kernel.org/sourceware/cygwin \
-# https://www.mail-archive.com/cygwin-apps@cygwin.com/msg38116.html
-		--symlink-type sys \
 	').ExitCode; \
 	if ($exitCode -ne 0) { \
 		Write-Host ('Installing cygwin failed with exit code: {0}' -f $exitCode); \
