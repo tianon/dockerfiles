@@ -23,6 +23,7 @@ COPY set-exim4-update-conf docker-entrypoint.sh /usr/local/bin/
 RUN set -eux; \
 	set-exim4-update-conf \
 		dc_eximconfig_configtype 'internet' \
+		dc_hide_mailname 'true' \
 		dc_local_interfaces '0.0.0.0 ; ::0' \
 		dc_other_hostnames '' \
 		dc_relay_nets '0.0.0.0/0' \
