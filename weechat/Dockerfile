@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 RUN set -eux; \
 	apt-get update; \
@@ -38,7 +38,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # https://weechat.org/download/stable/
-# https://weechat.org/download/debian/active/#debian_buster
+# https://weechat.org/download/debian/active/#debian_bullseye
 ENV WEECHAT_VERSION 3.4-1
 
 RUN set -eux; \
