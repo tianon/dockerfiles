@@ -9,14 +9,14 @@ versions=(
 	# https://hub.docker.com/r/microsoft/windowsservercore
 	ltsc2022
 	20H2
-	2004
-	1909
 	1809
 
 	# EOL
-	#1903
-	#1803
 	#1709
+	#1803
+	#1903
+	#1909
+	#2004
 
 	# ltsc2016...  too big/slow to bother anymore
 	#1607
