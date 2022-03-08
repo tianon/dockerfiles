@@ -6,9 +6,11 @@ RUN set -eux; \
 		ca-certificates \
 		\
 # needed for "firefox --version" to succeed
+		libasound2 \
 		libdbus-glib-1-2 \
 		libgtk-3-0 \
 		libx11-xcb1 \
+		libxtst6 \
 		\
 # needed for "glxtest" to succeed (at runtime)
 		libegl1 \
@@ -22,7 +24,7 @@ ENV PATH /opt/firefox:$PATH
 # https://archive.mozilla.org/pub/firefox/releases/
 # https://download-installer.cdn.mozilla.net/pub/firefox/releases/
 # https://www.mozilla.org/en-US/firefox/all/#product-desktop-release
-ENV FIREFOX_VERSION 95.0.2
+ENV FIREFOX_VERSION 98.0
 
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
