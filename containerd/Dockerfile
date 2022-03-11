@@ -1,3 +1,9 @@
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
 FROM debian:bullseye-slim
 
 # runtime deps
@@ -13,11 +19,13 @@ RUN set -eux; \
 ENV DIND_COMMIT 42b1175eda071c0e9121e1d64345928384a93df1
 RUN set -eux; \
 	wget -O /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; \
+	sh -n /usr/local/bin/dind; \
 	chmod +x /usr/local/bin/dind
 
 # https://github.com/opencontainers/runc/releases
 ENV RUNC_VERSION 1.1.0
 RUN set -eux; \
+# TODO multiple architectures
 	wget -O /usr/local/bin/runc "https://github.com/opencontainers/runc/releases/download/v${RUNC_VERSION}/runc.amd64" --progress=dot:giga; \
 # TODO .asc / .sha256sum
 	chmod +x /usr/local/bin/runc; \
@@ -26,7 +34,9 @@ RUN set -eux; \
 # https://github.com/containerd/containerd/releases
 ENV CONTAINERD_VERSION 1.6.2
 RUN set -eux; \
+# TODO multiple architectures
 	wget -O containerd.tar.gz "https://github.com/containerd/containerd/releases/download/v${CONTAINERD_VERSION}/containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz" --progress=dot:giga; \
+# TODO .sha256sum
 	tar -xvf containerd.tar.gz -C /usr/local/; \
 	rm containerd.tar.gz; \
 	containerd --version

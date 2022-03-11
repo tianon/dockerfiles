@@ -8,6 +8,4 @@ cd ..
 source gsl-libs.sh
 
 globalEntry
-tagsEntry "$dir" latest master
-tagsEntry "$dir/dind" dind master-dind
-tagsEntry "$dir/git" git master-git
+tagsEntry "$dir" latest dind

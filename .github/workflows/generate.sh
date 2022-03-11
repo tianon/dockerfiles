@@ -22,9 +22,8 @@ done
 jq -c . <<<"$strategy" > /dev/null # sanity check
 
 # now that we have a list of legit images with generate scripts, look for dangling Dockerfiles
-strategyDockerfiles="$(jq -c '[ .matrix.include[].meta.dockerfiles[], "cygwin/Dockerfile" ]' <<<"$strategy")"
 allDockerfiles="$(git ls-files '*/Dockerfile' | jq -Rsc 'rtrimstr("\n") | split("\n")')"
-danglingDockerfiles="$(jq -cn "$allDockerfiles - $strategyDockerfiles")"
+danglingDockerfiles="$(jq <<<"$strategy" -c --argjson allDockerfiles "$allDockerfiles" '$allDockerfiles - [ .matrix.include[].meta.dockerfiles[] ]')"
 
 strategy="$(jq -c --argjson danglingDockerfiles "$danglingDockerfiles" '.matrix.include[0] as $first | .matrix.include += [
 	$danglingDockerfiles[]

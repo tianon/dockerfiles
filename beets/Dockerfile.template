@@ -1,0 +1,9 @@
+FROM python:{{ .python.version }}-alpine3.15
+
+ENV BEETS_VERSION {{ .version }}
+
+RUN set -eux; \
+	pip install --no-cache-dir "beets == $BEETS_VERSION"; \
+	beet --version
+
+CMD ["beet"]

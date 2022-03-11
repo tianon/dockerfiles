@@ -1,3 +1,9 @@
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
 FROM alpine:3.15
 
 RUN apk add --no-cache ca-certificates
@@ -14,6 +20,7 @@ RUN set -ex; \
 	case "$apkArch" in \
 		aarch64) promArch='arm64'   ;; \
 		armhf)   promArch='armv6'   ;; \
+		armv7)   promArch='armv7'   ;; \
 		ppc64le) promArch='ppc64le' ;; \
 		s390x)   promArch='s390x'   ;; \
 		x86)     promArch='386'     ;; \
@@ -22,6 +29,7 @@ RUN set -ex; \
 	esac; \
 	\
 	wget -O /tmp/prom.tar.gz "https://github.com/prometheus/prometheus/releases/download/v${PROMETHEUS_VERSION}/prometheus-${PROMETHEUS_VERSION}.linux-${promArch}.tar.gz"; \
+# TODO sha256sums.txt
 	tar \
 		--extract \
 		--file /tmp/prom.tar.gz \

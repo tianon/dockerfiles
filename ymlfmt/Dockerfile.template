@@ -1,0 +1,17 @@
+FROM python:{{ .python.version }}-alpine3.15
+
+RUN set -eux; \
+	apk add --no-cache --virtual .build-deps gcc libc-dev; \
+# https://pypi.org/project/ruamel.yaml/
+	pip install --no-cache-dir {{ "ruamel.yaml == " + .version | @sh }}; \
+	apk del --no-network .build-deps
+
+COPY ymlfmt /usr/local/bin/
+
+COPY test-*.yml /tmp/
+RUN set -eux; \
+	diff="$(ymlfmt -d '/tmp/test-out.yml')"; \
+	[ -z "$diff" ]; \
+	in="$(ymlfmt '/tmp/test-in.yml')"; \
+	out="$(cat '/tmp/test-out.yml')"; \
+	[ "$in" = "$out" ]

@@ -1,3 +1,9 @@
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
 FROM debian:bullseye-slim
 
 RUN set -eux; \
@@ -58,6 +64,7 @@ RUN set -eux; \
 		openssl \
 		procps \
 		psmisc \
+		wget \
 		xz-utils \
 # pigz: https://github.com/moby/moby/pull/35697 (faster gzip implementation)
 		pigz \
@@ -72,11 +79,10 @@ RUN set -eux; \
 	echo 'dockremap:165536:65536' >> /etc/subgid
 
 # https://github.com/docker/docker/tree/master/hack/dind
-#ENV DIND_COMMIT 130b0bc6032cc675d064e1cc62626cacc9c07a57
-
-#RUN set -eux; \
-#	wget -O /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; \
-#	chmod +x /usr/local/bin/dind
+ENV DIND_COMMIT 42b1175eda071c0e9121e1d64345928384a93df1
+RUN set -eux; \
+	wget -O /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; \
+	chmod +x /usr/local/bin/dind
 
 COPY dockerd-entrypoint.sh /usr/local/bin/
 

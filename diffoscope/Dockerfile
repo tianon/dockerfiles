@@ -1,4 +1,10 @@
-FROM python:3.8-slim-buster
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
+FROM python:3.10-slim-bullseye
 
 RUN set -eux; \
 	apt-get update; \
@@ -14,15 +20,11 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-# for "diffoscope --progress"
-# https://pypi.org/project/progressbar33/
-RUN pip install --no-cache-dir progressbar33==2.4
-
 # https://pypi.org/project/diffoscope/
 ENV DIFFOSCOPE_VERSION 207
 
 RUN set -eux; \
-	pip install --no-cache-dir "diffoscope == $DIFFOSCOPE_VERSION"; \
+	pip install --no-cache-dir "diffoscope[distro_detection,cmdline] == $DIFFOSCOPE_VERSION"; \
 	diffoscope --version
 
 CMD ["diffoscope"]

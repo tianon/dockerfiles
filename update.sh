@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
+dir="$(readlink -ve "$BASH_SOURCE")"
+dir="$(dirname "$dir")"
 
-for up in */update.sh; do
-	dir="$(dirname "$up")"
-	( set -x && cd "$dir" && ./update.sh )
-done
+"$dir/versions.sh" "$@"
+"$dir/apply-templates.sh" "$@"
