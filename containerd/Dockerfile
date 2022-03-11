@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 # runtime deps
 RUN set -eux; \
@@ -9,9 +9,14 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-# https://github.com/opencontainers/runc/releases
-ENV RUNC_VERSION 1.0.3
+# https://github.com/docker/docker/tree/master/hack/dind
+ENV DIND_COMMIT 42b1175eda071c0e9121e1d64345928384a93df1
+RUN set -eux; \
+	wget -O /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; \
+	chmod +x /usr/local/bin/dind
 
+# https://github.com/opencontainers/runc/releases
+ENV RUNC_VERSION 1.1.0
 RUN set -eux; \
 	wget -O /usr/local/bin/runc "https://github.com/opencontainers/runc/releases/download/v${RUNC_VERSION}/runc.amd64" --progress=dot:giga; \
 # TODO .asc / .sha256sum
@@ -19,8 +24,7 @@ RUN set -eux; \
 	runc --version
 
 # https://github.com/containerd/containerd/releases
-ENV CONTAINERD_VERSION 1.5.9
-
+ENV CONTAINERD_VERSION 1.6.1
 RUN set -eux; \
 	wget -O containerd.tar.gz "https://github.com/containerd/containerd/releases/download/v${CONTAINERD_VERSION}/containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz" --progress=dot:giga; \
 	tar -xvf containerd.tar.gz -C /usr/local/; \
@@ -34,3 +38,5 @@ RUN set -eux; \
 COPY non-root-containerd.sh /usr/local/bin/
 
 CMD ["non-root-containerd.sh"]
+
+# use "dind containerd" if you want to run real containers (with "--privileged" and an appropriate volume at "/var/lib/containerd")
