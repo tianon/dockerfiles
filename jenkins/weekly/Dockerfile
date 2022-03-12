@@ -26,14 +26,13 @@ RUN echo 'deb https://pkg.jenkins.io/debian binary/' > /etc/apt/sources.list.d/j
 ENV JENKINS_VERSION 2.338
 
 RUN set -ex; \
-# update-alternatives: error: error creating symbolic link '/usr/share/man/man1/rmid.1.gz.dpkg-tmp': No such file or directory
-	mkdir -p /usr/share/man/man1; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		jenkins="$JENKINS_VERSION" \
 		default-jre-headless \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/*; \
+	java -jar /usr/share/java/jenkins.war --version
 
 ENV JENKINS_HOME /var/lib/jenkins
 RUN mkdir -p "$JENKINS_HOME" && chown -R jenkins:jenkins "$JENKINS_HOME"
@@ -42,4 +41,4 @@ VOLUME $JENKINS_HOME
 EXPOSE 8080
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["java", "-jar", "/usr/share/jenkins/jenkins.war"]
+CMD ["java", "-jar", "/usr/share/java/jenkins.war"]
