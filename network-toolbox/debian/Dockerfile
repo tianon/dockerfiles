@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 RUN set -eux; \
 # dangit, wireshark-common!  *shakes fist*
