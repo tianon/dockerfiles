@@ -23,7 +23,7 @@ RUN set -eux; \
 
 RUN echo 'deb https://pkg.jenkins.io/debian binary/' > /etc/apt/sources.list.d/jenkins.list
 
-ENV JENKINS_VERSION 2.339
+ENV JENKINS_VERSION 2.340
 
 RUN set -ex; \
 	apt-get update; \
