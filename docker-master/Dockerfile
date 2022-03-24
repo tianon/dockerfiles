@@ -1,46 +1,164 @@
-FROM alpine:3.15
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
 
-RUN apk add --no-cache \
-		ca-certificates
+# usage:
+#   $ docker build --tag tianon/docker-master:build --target build - < Dockerfile
+#   $ docker run --rm tianon/docker-master:build tar -cC /artifacts . | tar -xvC target-directory
+#
+#   $ docker run -d --name dind --privileged --volume dind:/var/lib/docker tianon/docker-master
 
-# set up nsswitch.conf for Go's "netgo" implementation (which Docker explicitly uses)
-# - https://github.com/docker/docker-ce/blob/v17.09.0-ce/components/engine/hack/make.sh#L149
-# - https://github.com/golang/go/blob/go1.9.1/src/net/conf.go#L194-L275
-# - docker run --rm debian:stretch grep '^hosts:' /etc/nsswitch.conf
-RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
+FROM golang:1.16-bullseye AS build
 
-ENV DOCKER_VERSION 0.0.0-20190727010531-15bdbd7
-ENV DOCKER_URL https://download.docker.com/linux/static/nightly/x86_64/docker-0.0.0-20190727010531-15bdbd7.tgz
-ENV DOCKER_SHA256 5a238805367890fbfb6808a4f363b038688ee1510ea5c4fbd3de8c5d883a04f0
-# (no SHA file artifacts on download.docker.com yet as of 2017-06-07)
+RUN set -ex; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		cmake \
+		libapparmor-dev \
+		libseccomp-dev \
+		\
+		libbtrfs-dev \
+	; \
+	rm -rf /var/lib/apt/lists/*
+
+ENV DOCKER_BUILDTAGS \
+		apparmor \
+		pkcs11 \
+		seccomp \
+		selinux \
+# we cannot support devicemapper properly in a fully-static binary
+		exclude_graphdriver_devicemapper
+
+WORKDIR /moby
+
+ENV CLI_GITCOMMIT 0e3c9b282e877c87cd06b4c8c8661d8463f412b6
+
+RUN set -ex; \
+	mkdir cli; \
+	cd cli; \
+	wget -O /tmp/cli.tgz "https://github.com/docker/cli/archive/$CLI_GITCOMMIT.tar.gz"; \
+	tar -xvf /tmp/cli.tgz --strip-components=1; \
+	rm /tmp/cli.tgz
 
 RUN set -eux; \
-	\
-	wget -O docker.tgz "$DOCKER_URL"; \
-	\
-	echo "$DOCKER_SHA256 *docker.tgz"; \
-	\
-	tar --extract \
-		--file docker.tgz \
-		--strip-components 1 \
-		--directory /usr/local/bin/ \
+	cd cli; \
+	echo 'module github.com/docker/cli' > go.mod; \
+# "go: inconsistent vendoring in /moby/cli:" -> "X@vY: is marked as explicit in vendor/modules.txt, but not explicitly required in go.mod"
+	rm vendor/modules.txt; \
+# can't use the Makefile anymore thanks to https://github.com/docker/cli/pull/2993 ...
+	GOFLAGS='-mod=vendor' CGO_ENABLED=0 GITCOMMIT="$CLI_GITCOMMIT" ./scripts/build/binary; \
+	cp -avlL build/docker /usr/local/bin/; \
+	docker --version; \
+	ldd /usr/local/bin/docker || :
+
+ENV MOBY_GITCOMMIT 56ea5881fe46c48e981fb7a1a228a0bf9bf8503a
+
+RUN set -ex; \
+	mkdir engine; \
+	cd engine; \
+	wget -O /tmp/docker.tgz "https://github.com/moby/moby/archive/$MOBY_GITCOMMIT.tar.gz"; \
+	tar -xvf /tmp/docker.tgz --strip-components=1; \
+	rm /tmp/docker.tgz
+
+RUN set -eux; \
+	cd engine; \
+	export TMP_GOPATH=/tmp/gopath; \
+	for comp in containerd runc tini; do \
+		hack/dockerfile/install/install.sh "$comp"; \
+	done; \
+# https://github.com/containerd/containerd/issues/5824
+	( \
+		set -eu; \
+		cd "$TMP_GOPATH/src/github.com/containerd/containerd"; \
+		sed -ri -e '/buildmode=pie/d' Makefile.linux; \
+		make bin/ctr EXTRA_LDFLAGS='-extldflags "-static"' BUILDTAGS='netgo osusergo static_build'; \
+		cp -avflL bin/ctr /usr/local/bin/; \
+	); \
+	ldd /usr/local/bin/* || :
+
+RUN set -eux; \
+	cd engine; \
+	echo 'module github.com/docker/docker' > go.mod; \
+# fix "inconsistent vendoring" issue
+	rm vendor/modules.txt; \
+	sed -ri '/^[[:space:]]*copy_binaries /d' hack/make/binary-daemon; \
+	GOFLAGS='-mod=vendor' DOCKER_GITCOMMIT="$MOBY_GITCOMMIT" hack/make.sh binary; \
+	cp -avlL \
+		bundles/binary-daemon/dockerd \
+		bundles/binary-daemon/docker-proxy \
+		hack/dind \
+		/usr/local/bin/ \
 	; \
-	rm docker.tgz; \
-	\
 	dockerd --version; \
-	docker --version
+	ldd /usr/local/bin/dockerd /usr/local/bin/docker-proxy || :
 
-COPY modprobe.sh /usr/local/bin/modprobe
-COPY docker-entrypoint.sh /usr/local/bin/
+# copy all our binaries to a simple fixed location (so they can be easily extracted, if desired)
+RUN set -ex; \
+	mkdir -p /artifacts; \
+	cp -avlL \
+		/usr/local/bin/containerd* \
+		/usr/local/bin/ctr \
+		/usr/local/bin/docker* \
+		/usr/local/bin/runc \
+		/artifacts/
 
-# https://github.com/docker-library/docker/pull/166
-#   dockerd-entrypoint.sh uses DOCKER_TLS_CERTDIR for auto-generating TLS certificates
-#   docker-entrypoint.sh uses DOCKER_TLS_CERTDIR for auto-setting DOCKER_TLS_VERIFY and DOCKER_CERT_PATH
-# (For this to work, at least the "client" subdirectory of this path needs to be shared between the client and server containers via a volume, "docker cp", or other means of data sharing.)
+# verify that every binary can run ~standalone
+RUN set -ex; \
+	cd /artifacts; \
+	for bin in *; do \
+		case "$bin" in \
+# flag provided but not defined: -version
+			containerd-shim | docker-proxy) continue ;; \
+			containerd-shim-runc-v2) chroot . "./$bin" -v; continue ;; \
+		esac; \
+		chroot . "./$bin" --version; \
+	done
+
+FROM alpine:3.15
+
+RUN set -eux; \
+	apk add --no-cache \
+		ca-certificates \
+		openssh-client \
+		\
+		ip6tables \
+		iptables \
+		openssl \
+		pigz \
+		shadow-uidmap \
+		xz \
+	;
+
+RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
+
+RUN set -eux; \
+	addgroup -S dockremap; \
+	adduser -S -G dockremap dockremap; \
+	echo 'dockremap:165536:65536' >> /etc/subuid; \
+	echo 'dockremap:165536:65536' >> /etc/subgid
+
 ENV DOCKER_TLS_CERTDIR=/certs
-# also, ensure the directory pre-exists and has wide enough permissions for "dockerd-entrypoint.sh" to create subdirectories, even when run in "rootless" mode
 RUN mkdir /certs /certs/client && chmod 1777 /certs /certs/client
-# (doing both /certs and /certs/client so that if Docker does a "copy-up" into a volume defined on /certs/client, it will "do the right thing" by default in a way that still works for rootless users)
 
-ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["sh"]
+COPY --from=build /artifacts/ /moby/engine/hack/dind /usr/local/bin/
+COPY docker*-entrypoint.sh modprobe.sh /usr/local/bin/
+
+RUN set -eux; \
+	containerd --version; \
+	containerd-shim-runc-v2 -v; \
+	ctr --version; \
+	docker --version; \
+	docker-init --version; \
+	dockerd --version; \
+	runc --version; \
+	for sh in /usr/local/bin/*.sh; do \
+		sh -n "$sh"; \
+	done
+
+VOLUME /var/lib/docker
+EXPOSE 2375 2376
+
+ENTRYPOINT ["dockerd-entrypoint.sh"]
+CMD []

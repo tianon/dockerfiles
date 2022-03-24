@@ -1,4 +1,10 @@
-FROM debian:buster-slim
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
+FROM debian:bullseye-slim
 
 RUN set -eux; \
 	apt-get update; \
@@ -21,11 +27,12 @@ RUN set -eux; \
 	rm -rf "$GNUPGHOME"; \
 	apt-key list
 
+# TODO use signed-by
 RUN echo 'deb https://pkg.jenkins.io/debian binary/' > /etc/apt/sources.list.d/jenkins.list
 
 ENV JENKINS_VERSION 2.340
 
-RUN set -ex; \
+RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		jenkins="$JENKINS_VERSION" \
@@ -41,4 +48,4 @@ VOLUME $JENKINS_HOME
 EXPOSE 8080
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["java", "-jar", "/usr/share/java/jenkins.war"]
+CMD ["java", "-jar", "/usr/share/jenkins/jenkins.war"]

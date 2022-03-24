@@ -1,4 +1,10 @@
-FROM debian:buster-slim
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
+FROM debian:bullseye-slim
 
 RUN set -eux; \
 	apt-get update; \
@@ -41,8 +47,8 @@ RUN set -eux; \
 		libxshmfence1 \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
-	signal="$(which signal-desktop)"; \
-	signal="$(readlink -e "$signal")"; \
+	signal="$(command -v signal-desktop)"; \
+	signal="$(readlink -ev "$signal")"; \
 	! { ldd "$signal" | grep 'not found'; }
 
 CMD ["signal-desktop"]

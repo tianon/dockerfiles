@@ -1,7 +1,13 @@
-# https://pages.github.com/versions/
-FROM ruby:2.7-alpine3.14
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
 
-ENV GITHUB_PAGES_VERSION 215
+# https://pages.github.com/versions/
+FROM ruby:2.7-alpine3.15
+
+ENV GITHUB_PAGES_VERSION 225
 
 RUN set -eux; \
 	\
@@ -14,7 +20,7 @@ RUN set -eux; \
 	\
 	gem install github-pages -v "$GITHUB_PAGES_VERSION"; \
 	\
-	apk del .build-deps; \
+	apk del --no-network .build-deps; \
 	\
 	jekyll serve --help > /dev/null
 

@@ -1,0 +1,68 @@
+FROM mcr.microsoft.com/windows/servercore:{{ env.variant }}
+
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+WORKDIR C:\\cygwin
+RUN New-Item -Path bin -ItemType Directory | Out-Null; \
+	$newPath = ('{0}\bin;{1}' -f (Get-Location), $env:PATH); \
+	Write-Host ('Updating PATH: {0}' -f $newPath); \
+	[Environment]::SetEnvironmentVariable('PATH', $newPath, [EnvironmentVariableTarget]::Machine); \
+	Write-Host 'Complete.'
+
+# Cygwin's default symlinks are based on junctions / reparse points to files that don't exist, which Windows is generally fine with, but hcsshim doesn't like it (infamous "re-exec error: exit status 1: output: hcsshim::ImportLayer - failed failed in Win32: The system cannot find the path specified. (0x3)"), so we tell Cygwin to use .lnk files for symlinks instead, which fixes it
+ENV CYGWIN winsymlinks:lnk
+
+# https://cygwin.com/install.html
+# https://cygwin.com/sha512.sum
+ENV CYGWIN_SETUP_URL https://cygwin.com/setup-x86_64.exe
+ENV CYGWIN_SETUP_SHA512 {{ .sha512 }}
+# https://cygwin.com/git/gitweb.cgi?p=cygwin-apps/setup.git;a=summary (useful "setup" changelog)
+
+RUN Write-Host ('Downloading {0}' -f $env:CYGWIN_SETUP_URL); \
+	Invoke-WebRequest -Uri $env:CYGWIN_SETUP_URL -OutFile bin\cygwin-setup.exe; \
+	\
+	Write-Host ('Verifying sha512 ({0}) ...' -f $env:CYGWIN_SETUP_SHA512); \
+	if ((Get-FileHash bin\cygwin-setup.exe -Algorithm sha512).Hash -ne $env:CYGWIN_SETUP_SHA512) { \
+		Write-Host 'FAILED!'; \
+		exit 1; \
+	}; \
+	\
+	Write-Host 'Verifying (cygwin-setup --version) ...'; \
+	$exitCode = (Start-Process cygwin-setup.exe -Wait -NoNewWindow -PassThru -ArgumentList '--version').ExitCode; \
+	if ($exitCode -ne 0) { \
+		Write-Host ('Failed with exit code: {0}' -f $exitCode); \
+		exit $exitCode; \
+	}; \
+	\
+	Write-Host 'Complete.'
+
+# https://cygwin.com/faq/faq.html#faq.setup.cli
+RUN $exitCode = (Start-Process cygwin-setup.exe -Wait -NoNewWindow -PassThru -ArgumentList ' \
+		--delete-orphans \
+		--local-package-dir C:\cygwin-temp \
+		--no-admin \
+		--no-shortcuts \
+		--quiet-mode \
+		--root . \
+		--site http://mirrors.kernel.org/sourceware/cygwin \
+	').ExitCode; \
+	if ($exitCode -ne 0) { \
+		Write-Host ('Installing cygwin failed with exit code: {0}' -f $exitCode); \
+		exit $exitCode; \
+	}; \
+	\
+	Write-Host 'Removing uninteresting cygwin directories ...'; \
+	Remove-Item -Path usr/share/doc -Recurse -Force; \
+	Remove-Item -Path usr/share/groff -Recurse -Force; \
+	Remove-Item -Path usr/share/info -Recurse -Force; \
+	Remove-Item -Path usr/share/man -Recurse -Force; \
+	\
+	Write-Host 'Removing install cache ...'; \
+	Remove-Item -Path C:\cygwin-temp -Recurse -Force; \
+	\
+	Write-Host 'Verifying (bash --version) ...'; \
+	bash --version; \
+	\
+	Write-Host 'Complete.'
+
+CMD ["bash"]

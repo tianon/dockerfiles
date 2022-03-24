@@ -1,3 +1,9 @@
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
 # ideally, we'd use official static binary releases from http://landley.net/toybox/downloads/binaries/ but they don't include the (pending) "sh" implementation so they're not quite enough for a full system yet
 # https://github.com/landley/toybox/commits/master/toys/pending/sh.c
 

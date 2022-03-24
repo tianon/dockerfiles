@@ -1,3 +1,9 @@
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
 FROM golang:1.17-bullseye
 
 # the .deb (as of 0.6.0) installs to /usr/local/tinygo but doesn't add "tinygo" to PATH

@@ -1,3 +1,10 @@
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
+# "slack-desktop : Depends: libappindicator3-1 but it is not installable" 🙃
 FROM debian:buster-slim
 
 RUN set -eux; \
@@ -58,7 +65,10 @@ RUN set -eux; \
 # 4.4.0: libGL error: failed to load driver: (i915_dri.so, i194, i965, swrast_dir.so, swrast)
 		libgl1-mesa-dri \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/*; \
+	slack="$(command -v slack)"; \
+	slack="$(readlink -ev "$slack")"; \
+	! { ldd "$slack" | grep 'not found'; }
 
 COPY browser.sh /usr/local/bin/
 ENV BROWSER /usr/local/bin/browser.sh

@@ -9,5 +9,6 @@ source gsl-libs.sh
 
 globalEntry
 
+# TODO !!!!! switch to File: with the new variants 🙈
 versionedEnvTagsEntry "$dir/weekly" 'JENKINS_VERSION' weekly latest
 versionedEnvVariantEntry "$dir/lts" lts 'JENKINS_VERSION' lts

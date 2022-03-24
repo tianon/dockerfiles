@@ -133,16 +133,6 @@ versionedVariantEntry() {
 	tagsEntry "$dir" "${variantAliases[@]}"
 }
 
-# for variants whose version number comes from the parent Dockerfile (tianon/dell-netextender:gui)
-versionedSubvariantEntry() {
-	local dir="$1"; shift
-	local fullVersion="$1"; shift
-	local variant="$1"; shift
-	local aliases=( "$@" )
-
-	versionedVariantEntry "$dir/$variant" "$variant" "$fullVersion" "${aliases[@]}"
-}
-
 # for variants whose version number comes from the variant Dockerfile (openjdk:alpine)
 versionedEnvVariantEntry() {
 	local dir="$1"; shift
@@ -154,17 +144,4 @@ versionedEnvVariantEntry() {
 	[ -n "$fullVersion" ]
 
 	versionedVariantEntry "$dir" "$variant" "$fullVersion" "${aliases[@]}"
-}
-
-# for variants whose version number comes from the parent Dockerfile (tianon/dell-netextender:gui)
-versionedEnvSubvariantEntry() {
-	local dir="$1"; shift
-	local fullVersionEnv="$1"; shift
-	local variant="$1"; shift
-	local aliases=( "$@" )
-
-	local fullVersion; fullVersion="$(_versionEnvHelper "$dir" "$fullVersionEnv")"
-	[ -n "$fullVersion" ]
-
-	versionedSubvariantEntry "$dir" "$fullVersion" "$variant" "${aliases[@]}"
 }

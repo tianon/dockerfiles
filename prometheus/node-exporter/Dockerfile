@@ -1,8 +1,15 @@
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
 FROM alpine:3.15
 
 WORKDIR /opt/node-exporter
 ENV PATH /opt/node-exporter:$PATH
 
+# https://github.com/prometheus/node_exporter/releases
 ENV NODE_EXPORTER_VERSION 1.3.1
 
 RUN set -ex; \
@@ -11,12 +18,16 @@ RUN set -ex; \
 	case "$apkArch" in \
 		aarch64) promArch='arm64'   ;; \
 		armhf)   promArch='armv6'   ;; \
+		armv7)   promArch='armv7'   ;; \
+		ppc64le) promArch='ppc64le' ;; \
+		s390x)   promArch='s390x'   ;; \
 		x86)     promArch='386'     ;; \
 		x86_64)  promArch='amd64'   ;; \
 		*) echo >&2 "error: unsupported arch: $apkArch"; exit 1 ;; \
 	esac; \
 	\
 	wget -O /tmp/node-exporter.tar.gz "https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.linux-$promArch.tar.gz"; \
+# TODO sha256sums.txt
 	tar \
 		--extract \
 		--file /tmp/node-exporter.tar.gz \

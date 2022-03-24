@@ -1,12 +1,15 @@
-FROM debian:buster-slim
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
+FROM debian:bullseye-slim
 
 # This disc requires Java runtime (JRE), but none was found. Certain functions will fail, please install Java. See http://www.makemkv.com/bdjava/ for details.
 RUN set -eux; \
-# update-alternatives: error: error creating symbolic link '/usr/share/man/man1/rmid.1.gz.dpkg-tmp': No such file or directory
-	mkdir -p /usr/share/man/man1; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-# FPL_MainFeature detection only seemed to work with OpenJDK 9 (8 was insufficient)
 		openjdk-11-jre-headless \
 	; \
 	rm -rf /var/lib/apt/lists/*
@@ -37,6 +40,7 @@ RUN set -ex; \
 	rm -rf /var/lib/apt/lists/*; \
 	\
 	wget -O 'sha256sums.txt.sig' "https://www.makemkv.com/download/makemkv-sha-${MAKEMKV_VERSION}.txt"; \
+# TODO pre-download (in versions.sh)/verify sha256sums
 # pub   dsa2048 2017-05-26 [SC]
 #       2ECF 2330 5F1F C0B3 2001  6733 94E3 083A 1804 2697
 # uid           [ unknown] MakeMKV (signature) <support@makemkv.com>

@@ -1,7 +1,15 @@
-FROM python:3.9-alpine3.14
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
+FROM python:3.9-alpine3.15
 
 ENV BEETS_VERSION 1.6.0
 
-RUN pip install --no-cache-dir beets==$BEETS_VERSION
+RUN set -eux; \
+	pip install --no-cache-dir "beets == $BEETS_VERSION"; \
+	beet --version
 
 CMD ["beet"]
