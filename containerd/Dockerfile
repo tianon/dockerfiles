@@ -24,7 +24,7 @@ RUN set -eux; \
 	runc --version
 
 # https://github.com/containerd/containerd/releases
-ENV CONTAINERD_VERSION 1.6.1
+ENV CONTAINERD_VERSION 1.6.2
 RUN set -eux; \
 	wget -O containerd.tar.gz "https://github.com/containerd/containerd/releases/download/v${CONTAINERD_VERSION}/containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz" --progress=dot:giga; \
 	tar -xvf containerd.tar.gz -C /usr/local/; \
