@@ -57,7 +57,14 @@ jobs:
           git config user.email 'tianon@tianon.xyz'
       - name: Rebase
         run: |
-          git pull --rebase origin "$branch" || :
+          if git fetch origin "$branch"; then
+            cur="$(git rev-parse HEAD)"
+            if git checkout FETCH_HEAD && git rebase "$cur"; then
+              echo 'yay!'
+            else
+              git reset --hard "$cur"
+            fi
+          fi
       - name: Update
         run: |
           version_components() {
@@ -81,5 +88,5 @@ jobs:
           git commit -m "$message" "$dir" || :
           after="$(git rev-parse HEAD)"
           if [ "$before" != "$after" ]; then
-            git push origin HEAD:"$branch"
+            git push -f origin HEAD:"$branch"
           fi
