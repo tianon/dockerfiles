@@ -30,6 +30,7 @@ jobs:
               | jq -rcsR '
                 split("\u0000")
                 | map(ltrimstr("./"))
+                | select(. as $dir | ["docker-master"] | index($dir) | not) # directories to skip creating branches/PRs for
                 | sort
                 | {
                   matrix: { dir: . },
