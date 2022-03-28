@@ -10,11 +10,15 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		ca-certificates \
+# missing Depends:
 # "sh: 1: pactl: not found"
 		pulseaudio-utils \
 # "sh: 1: ps: not found"
 		procps \
-# Cannot load library /opt/zoom/platforms/libqxcb.so: (libxkbcommon-x11.so.0: cannot open shared object file: No such file or directory)
+# Cannot load xxx: (yyy.so.0: cannot open shared object file: No such file or directory)
+		libasound2 \
+		libnspr4 \
+		libnss3 \
 		libxkbcommon-x11-0 \
 	; \
 	rm -rf /var/lib/apt/lists/*
@@ -40,6 +44,9 @@ RUN set -eux; \
 	\
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	rm -rf /var/lib/apt/lists/*; \
+	\
+# check for missing dependencies
+	LD_LIBRARY_PATH='/opt/zoom:/opt/zoom/cef' ldd /opt/zoom/zoom | grep 'not found' && exit 1 || :; \
 	\
 # "zoom --version", "zoom --help", etc don't seem to do anything useful
 	command -v zoom
