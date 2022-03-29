@@ -83,7 +83,7 @@ jobs:
           ./update.sh "$dir"
           after="$(version_components)"
           git diff || :
-          message="$(jq -rn "$after - $before"' | "Update " + env.dir + if length then " to " + join(", ") else "" end')"
+          message="$(jq -rn "$after - $before"' | "Update " + env.dir + if length > 0 then " to " + join(", ") else "" end')"
           before="$(git rev-parse HEAD)"
           git commit -m "$message" "$dir" || :
           after="$(git rev-parse HEAD)"
