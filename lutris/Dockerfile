@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM tianon/wine
+FROM ubuntu:focal
 
 RUN set -eux; \
 	apt-get update; \
@@ -29,10 +29,13 @@ RUN set -eux; \
 ENV LANG en_US.UTF-8
 
 # https://github.com/lutris/lutris/releases
-ENV LUTRIS_VERSION 0.5.9.1
+ENV LUTRIS_VERSION 0.5.10
 
 RUN set -eux; \
-	wget -O lutris.deb "https://github.com/lutris/lutris/releases/download/v${LUTRIS_VERSION}/lutris_${LUTRIS_VERSION}_all.deb"; \
+# turn "0.5.10-beta1" into "0.5.10_beta1" for the deb filename
+	debVer="$(echo "$LUTRIS_VERSION" | tr '-' '_')"; \
+	wget -O lutris.deb "https://github.com/lutris/lutris/releases/download/v${LUTRIS_VERSION}/lutris_${debVer}_all.deb"; \
+	dpkg --add-architecture i386; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		./lutris.deb \
