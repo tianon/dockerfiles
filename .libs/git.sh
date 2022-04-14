@@ -6,11 +6,12 @@ git-tags() {
 	[ -n "$repo" ]
 
 	local tag
+	# prometheus had "2.35.0-retract" 😩
 	tag="$(
 		git ls-remote --tags "$repo" \
 			| cut -d/ -f3 \
 			| cut -d^ -f1 \
-			| grep -vE -- '-(rc|alpha|beta)' \
+			| grep -vE -- '-(rc|alpha|beta|retract)' \
 			| sort -Vu \
 			| tail -1
 	)"
