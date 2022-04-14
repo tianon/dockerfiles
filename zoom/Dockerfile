@@ -10,6 +10,8 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		ca-certificates \
+# used as a fake browser so clicked URLs pop up with a URL + clipboard instead of silently doing nothing
+		zenity xclip \
 # missing Depends:
 # "sh: 1: pactl: not found"
 		pulseaudio-utils \
@@ -51,6 +53,16 @@ RUN set -eux; \
 # "zoom --version", "zoom --help", etc don't seem to do anything useful
 	command -v zoom
 
-# TODO copy/steal "browser.sh" stuff from slack
+COPY browser.sh /usr/local/bin/
+ENV BROWSER /usr/local/bin/browser.sh
+RUN set -eux; \
+	for alt in \
+		gnome-www-browser \
+		www-browser \
+		x-www-browser \
+	; do \
+		update-alternatives --install "/usr/bin/$alt" "$alt" "$BROWSER" 999; \
+	done
+# TODO when "zenity" pops up, if it's a link from the Settings it comes up underneath the settings dialog (since that one is always-on-top)
 
 CMD ["zoom"]
