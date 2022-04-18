@@ -26,6 +26,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # https://zoom.us/download#client_4meeting ("Debian", "64 bit", "8.0+", "Version X.Y.ZZZ.ZZZ")
+# https://support.zoom.us/hc/en-us/articles/205759689-Release-notes-for-Linux
 ENV ZOOM_VERSION 5.10.3.2778
 # curl -fsS --head 'https://zoom.us/client/latest/zoom_amd64.deb' | grep '^location: '
 
