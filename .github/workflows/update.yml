@@ -91,4 +91,9 @@ jobs:
           after="$(git rev-parse HEAD)"
           if [ "$before" != "$after" ]; then
             git push -f origin HEAD:"$branch"
+          else
+            head="$(git rev-parse origin/master)"
+            if [ "$after" = "$head" ]; then
+              git push origin --delete "$branch" || :
+            fi
           fi
