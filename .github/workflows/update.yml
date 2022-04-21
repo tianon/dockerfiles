@@ -41,7 +41,7 @@ jobs:
           jq . <<<"$strategy" # sanity check / debugging aid
           echo "::set-output name=strategy::$strategy"
 
-  test:
+  update:
     needs: generate-jobs
     strategy: ${{ fromJson(needs.generate-jobs.outputs.strategy) }}
     name: ${{ matrix.dir }}
@@ -96,4 +96,34 @@ jobs:
             if [ "$after" = "$head" ]; then
               git push origin --delete "$branch" || :
             fi
+          fi
+
+  single-branch:
+    needs: update
+    if: always()
+    name: 'Create Single Branch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Config
+        run: |
+          git config user.name 'Tianon (automated)'
+          git config user.email 'tianon@tianon.xyz'
+      - name: Create Branch
+        run: |
+          branches="$(git branch --remotes --list 'origin/update/*')"
+          for branch in $branches; do
+            commits="$(git log --format='format:%H' "HEAD..$branch")"
+            for commit in $commits; do
+              git cherry-pick "$commit"
+            done
+          done
+          head="$(git rev-parse origin/master)"
+          cur="$(git rev-parse HEAD)"
+          if [ "$cur" != "$head" ]; then
+            git push -f origin HEAD:update/all
+          else
+            git push origin --delete update/all || :
           fi
