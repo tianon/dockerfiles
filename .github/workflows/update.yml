@@ -103,6 +103,8 @@ jobs:
     if: always()
     name: 'Create Single Branch'
     runs-on: ubuntu-latest
+    env:
+      branch: 'update-versions'
     steps:
       - uses: actions/checkout@v3
         with:
@@ -111,11 +113,21 @@ jobs:
         run: |
           git config user.name 'Tianon (automated)'
           git config user.email 'tianon@tianon.xyz'
+      - name: Rebase
+        run: |
+          if git fetch origin "$branch"; then
+            cur="$(git rev-parse HEAD)"
+            if git checkout FETCH_HEAD && git rebase "$cur"; then
+              echo 'yay!'
+            else
+              git reset --hard "$cur"
+            fi
+          fi
       - name: Create Branch
         run: |
-          branches="$(git branch --remotes --list 'origin/update/*')"
-          for branch in $branches; do
-            commits="$(git log --format='format:%H' "HEAD..$branch")"
+          updateBranches="$(git branch --remotes --list 'origin/update/*')"
+          for updateBranch in $updateBranches; do
+            commits="$(git log --format='format:%H' "HEAD..$updateBranch")"
             for commit in $commits; do
               git cherry-pick "$commit"
             done
@@ -123,7 +135,7 @@ jobs:
           head="$(git rev-parse origin/master)"
           cur="$(git rev-parse HEAD)"
           if [ "$cur" != "$head" ]; then
-            git push -f origin HEAD:update/all
+            git push -f origin HEAD:"$branch"
           else
-            git push origin --delete update/all || :
+            git push origin --delete "$branch" || :
           fi
