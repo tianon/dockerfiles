@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 
 urls="$(
-	wget -qO- 'https://www.speedtest.net/apps/cli' \
+	curl -fsSL --user-agent 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36 Edg/101.0.1210.26' 'https://www.speedtest.net/apps/cli' \
 		| grep -oE '"https?://[^"]+/ookla-speedtest-[^"/]+-linux-[^"/]+[.]tgz"' \
 		| cut -d'"' -f2
 )"
