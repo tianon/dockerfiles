@@ -16,25 +16,18 @@ RUN set -eux; \
 		linux-headers \
 		make \
 		musl-dev \
-		patch \
 	;
 
 WORKDIR /toybox
 
 # https://landley.net/toybox/downloads/?C=M;O=D
 # https://github.com/landley/toybox/releases
-ENV TOYBOX_VERSION 0.8.6
+ENV TOYBOX_VERSION 0.8.7
 
 RUN set -eux; \
 	wget -O toybox.tgz "https://landley.net/toybox/downloads/toybox-$TOYBOX_VERSION.tar.gz"; \
 	tar -xf toybox.tgz --strip-components=1; \
 	rm toybox.tgz
-
-# workaround for bug in scripts/mkroot.sh that exits 1 when BUILTIN=1; https://github.com/landley/toybox/issues/305
-RUN set -eux; \
-	wget -O builtin-fix.patch 'https://github.com/landley/toybox/commit/ea4748a7cbfa5e2f3ef188f917d4e5aeac70dd0f.patch'; \
-	patch -p1 --input=builtin-fix.patch; \
-	rm builtin-fix.patch
 
 RUN make root BUILTIN=1
 # (we set "BUILTIN=1" to avoid cpio / initramfs creation because we aren't building / don't need a kernel)
