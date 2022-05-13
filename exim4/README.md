@@ -1,6 +1,6 @@
 # How To Use
 
-You probably want to bind-mount in some kind of `/etc/mailname` that actually makes sense.  Probably also worth setting `-h` to the same value.  Something like `-v /etc/mailname:/etc/mailname:ro -h "$(cat /etc/mailname)"` might be reasonable.
+You will want to set a reasonable hostname of some kind (`--hostname`), since that's symlinked to `/etc/mailname` inside the image and used for outgoing mail metadata.
 
 ## sSMTP
 
