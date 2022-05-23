@@ -110,7 +110,7 @@ RUN set -ex; \
 		chroot . "./$bin" --version; \
 	done
 
-FROM alpine:3.15
+FROM alpine:3.16
 
 RUN set -eux; \
 	apk add --no-cache \
