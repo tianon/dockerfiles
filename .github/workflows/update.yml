@@ -2,7 +2,8 @@ name: Auto-Update
 
 on:
   schedule:
-    - cron: 0 0 * * *
+    # roughly 4:23pm PDT (3:23pm PST)
+    - cron: 20 23 * * *
   workflow_dispatch:
 
 defaults:
