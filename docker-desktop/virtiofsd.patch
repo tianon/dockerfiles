@@ -1,0 +1,55 @@
+diff --git a/src/main.rs b/src/main.rs
+index 2049eda..400dcb6 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -453,7 +453,7 @@ struct Opt {
+     xattrmap: Option<XattrMap>,
+ 
+     /// Sandbox mechanism to isolate the daemon process (namespace, chroot, none)
+-    #[structopt(long, default_value = "namespace")]
++    #[structopt(long, default_value = "none")]
+     sandbox: SandboxMode,
+ 
+     /// Action to take when seccomp finds a not allowed syscall (none, kill, log, trap)
+@@ -684,7 +684,7 @@ fn drop_child_capabilities(inode_file_handles: InodeFileHandlesMode) {
+     }
+     if let Err(e) = capng::apply(capng::Set::BOTH) {
+         error!("can't apply the child capabilities: {}", e);
+-        process::exit(1);
++        //process::exit(1);
+     }
+ }
+ 
+diff --git a/src/sandbox.rs b/src/sandbox.rs
+index f769003..52d3cc5 100644
+--- a/src/sandbox.rs
++++ b/src/sandbox.rs
+@@ -454,9 +454,10 @@ impl Sandbox {
+         } else if ngroups != 0 {
+             let ret = unsafe { libc::setgroups(0, std::ptr::null()) };
+             if ret != 0 {
+-                return Err(Error::DropSupplementalGroups(
+-                    std::io::Error::last_os_error(),
+-                ));
++                error!("can't drop supplemental groups: {}", std::io::Error::last_os_error());
++                //return Err(Error::DropSupplementalGroups(
++                //    std::io::Error::last_os_error(),
++                //));
+             }
+         }
+ 
+@@ -468,10 +469,10 @@ impl Sandbox {
+     /// On success, the returned value will be the PID of the child for the parent and `None` for
+     /// the child itself, with the latter running isolated in `self.shared_dir`.
+     pub fn enter(&mut self) -> Result<Option<i32>, Error> {
+-        let uid = unsafe { libc::geteuid() };
+-        if uid != 0 && self.sandbox_mode != SandboxMode::Namespace {
+-            return Err(Error::SandboxModeInvalidUID);
+-        }
++        //let uid = unsafe { libc::geteuid() };
++        //if uid != 0 && self.sandbox_mode != SandboxMode::Namespace {
++        //    return Err(Error::SandboxModeInvalidUID);
++        //}
+ 
+         // Unconditionally drop supplemental groups for every sandbox mode.
+         self.drop_supplemental_groups()?;

@@ -1,0 +1,98 @@
+#
+# HUGE CAVEAT:
+#
+#   This is nowhere near a supported way to run Docker Desktop.
+#   This is a huge ugly hack that barely works for the way I play with it.
+#
+
+FROM rust:1.61-slim-bullseye AS virtiofsd
+
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		libcap-ng-dev \
+		libseccomp-dev \
+		patch \
+		wget ca-certificates \
+	; \
+	rm -rf /var/lib/apt/lists/*
+
+WORKDIR /virtiofsd
+
+# see the end of this Dockerfile -- this version needs to match what's shipped with the relevant version of Docker Desktop
+ENV VIRTIOFS_VERSION 1.1.0
+# https://gitlab.com/virtio-fs/virtiofsd/-/tags
+
+RUN set -eux; \
+	wget -O virtiofsd.tar.gz "https://gitlab.com/virtio-fs/virtiofsd/-/archive/v${VIRTIOFS_VERSION}/virtiofsd-v${VIRTIOFS_VERSION}.tar.gz"; \
+	tar -xvf virtiofsd.tar.gz --strip-components=1; \
+	rm virtiofsd.tar.gz
+
+COPY virtiofsd.patch ./
+RUN patch --strip=1 --input=virtiofsd.patch
+
+RUN cargo build --release
+
+# https://docs.docker.com/desktop/linux/
+FROM debian:bullseye-slim
+
+# https://docs.docker.com/desktop/release-notes/
+# https://docs.docker.com/desktop/linux/install/
+ENV DOCKER_DESKTOP_URL https://desktop.docker.com/linux/main/amd64/docker-desktop-4.8.2-amd64.deb
+ENV DOCKER_DESKTOP_SHA256 fbd617cdad908c2693ac045535c29a0c11606bb9b5ee91c974539607bd39c9f4
+
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		ca-certificates \
+# https://docs.docker.com/desktop/linux/#credentials-management
+		pass \
+	; \
+	savedAptMark="$(apt-mark showmanual)"; \
+	apt-get install -y --no-install-recommends \
+		gnupg dirmngr \
+		wget \
+	; \
+	apt-mark auto '.*' > /dev/null; \
+	apt-mark manual $savedAptMark > /dev/null; \
+	\
+	GNUPGHOME="$(mktemp -d)"; export GNUPGHOME; \
+	gpg --keyserver keyserver.ubuntu.com --recv-keys 9DC858229FC7DD38854AE2D88D81803C0EBFCD88; \
+	mkdir -p /usr/local/share/keyrings; \
+	gpg --export --armor 9DC858229FC7DD38854AE2D88D81803C0EBFCD88 > /usr/local/share/keyrings/docker-archive.gpg.asc; \
+	rm -rf "$GNUPGHOME"; \
+	\
+	. /etc/os-release; \
+	echo "deb [ arch=amd64 signed-by=/usr/local/share/keyrings/docker-archive.gpg.asc ] https://download.docker.com/linux/debian $VERSION_CODENAME stable" > /etc/apt/sources.list.d/docker.list; \
+	\
+	apt-get update; \
+	\
+	wget -O docker-desktop.deb --progress=dot:giga "$DOCKER_DESKTOP_URL"; \
+	echo "$DOCKER_DESKTOP_SHA256 *docker-desktop.deb" | sha256sum --strict --check -; \
+	\
+	apt-get install -y --no-install-recommends ./docker-desktop.deb; \
+	rm docker-desktop.deb; \
+	\
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	rm -rf /var/lib/apt/lists/*
+# smoke test
+RUN set -eux; \
+	find /opt/docker-desktop -type f -executable -exec bash -Eeuo pipefail -xc 'ldd "$@" || :' -- '{}' + > /tmp/ldd.txt; \
+	! grep 'not found' /tmp/ldd.txt; \
+	rm /tmp/ldd.txt
+
+ENV PATH /opt/docker-desktop/bin:$PATH
+
+# virtiofsd defaults to "--sandbox=namespace" (which doesn't work well in a container) and "--sandbox=chroot" or "--sandbox=none" are only allowed for root, so I provide a patched build of virtiofsd (matching the version that ships with Docker Desktop)
+COPY --from=virtiofsd /virtiofsd/target/release/virtiofsd /opt/docker-desktop/bin/virtiofsd.tianon
+RUN set -eux; \
+	before="$(virtiofsd --version 2>&1)"; \
+	dpkg-divert --add --rename --divert /opt/docker-desktop/bin/virtiofsd.orig /opt/docker-desktop/bin/virtiofsd; \
+	ln -svfT virtiofsd.tianon /opt/docker-desktop/bin/virtiofsd; \
+	after="$(virtiofsd --version 2>&1)"; \
+	[ "$before" = "$after" ]; \
+# divert (unused?) "virtiofsd-v1.0.0" to make sure it doesn't get used accidentally 😅
+	dpkg-divert --add --rename --divert /opt/docker-desktop/bin/virtiofsd-v1.0.0-unused /opt/docker-desktop/bin/virtiofsd-v1.0.0
+
+#CMD ["docker-desktop"]
+CMD ["com.docker.backend", "--with-frontend"]
