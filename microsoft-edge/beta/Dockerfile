@@ -49,7 +49,7 @@ RUN set -eux; \
 	} | tee /etc/default/microsoft-edge-beta
 
 # https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-beta/
-ENV EDGE_VERSION 102.0.1245.25-1
+ENV EDGE_VERSION 103.0.1264.13-1
 
 RUN set -eux; \
 	apt-get update; \
