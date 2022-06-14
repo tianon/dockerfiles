@@ -25,6 +25,7 @@ jq -c . <<<"$strategy" > /dev/null # sanity check
 allDockerfiles="$(git ls-files '*/Dockerfile' | jq -Rsc 'rtrimstr("\n") | split("\n")')"
 danglingDockerfiles="$(jq <<<"$strategy" -c --argjson allDockerfiles "$allDockerfiles" '$allDockerfiles - [ .matrix.include[].meta.dockerfiles[] ]')"
 
+# TODO this could probably be implemented via some crafted "GENERATE_STACKBREW_LIBRARY" expressions that output a fake GSL file 🤔
 strategy="$(jq -c --argjson danglingDockerfiles "$danglingDockerfiles" '.matrix.include[0] as $first | .matrix.include += [
 	$danglingDockerfiles[]
 	| sub("/Dockerfile$"; "") as $dir
@@ -36,19 +37,11 @@ strategy="$(jq -c --argjson danglingDockerfiles "$danglingDockerfiles" '.matrix.
 				prepare: $first.runs.prepare,
 				build: ("docker build -t " + ($img | @sh) + " " + ($dir | @sh)),
 				history: ("docker history " + ($img | @sh)),
-				test: ("~/oi/test/run.sh " + ($img | @sh)),
+				test: ("~/oi/test/run.sh --config ~/oi/test/config.sh --config .test/config.sh " + ($img | @sh)),
 				images: $first.runs.images,
 			},
 	}
 ]' <<<"$strategy")"
-
-# edit all instances of running the test suite to include my test suite config
-strategy="$(jq -c '
-	.matrix.include = [
-		.matrix.include[]
-		| .runs.test |= gsub("(?<run>(?<path>[^\n\t ]+)/run[.]sh) "; "\(.run) --config \(.path)/config.sh --config ./test-config.sh ")
-	]
-' <<<"$strategy")"
 
 if [ -t 1 ]; then
 	jq <<<"$strategy"
