@@ -36,7 +36,7 @@ deb-repo() {
 	)"
 	version="$(head -1 <<<"$versions")" # TODO some way to get *not* the latest version?
 	if [ -z "$version" ]; then
-		echo >&2 "error: failed to find a version for '$package' in '$uri' (suite '$suite', comp '$component', arch '$arch')"
+		echo >&2 "error: failed to find a version for '$package' in '$uri' (suite '$suite'${component:+, comp '$component'}, arch '$arch')"
 		return 1
 	fi
 	local sha256="${version##* }"
