@@ -38,8 +38,8 @@ FROM debian:bullseye-slim
 
 # https://docs.docker.com/desktop/release-notes/
 # https://docs.docker.com/desktop/linux/install/
-ENV DOCKER_DESKTOP_URL https://desktop.docker.com/linux/main/amd64/docker-desktop-4.8.2-amd64.deb
-ENV DOCKER_DESKTOP_SHA256 fbd617cdad908c2693ac045535c29a0c11606bb9b5ee91c974539607bd39c9f4
+ENV DOCKER_DESKTOP_URL https://desktop.docker.com/linux/main/amd64/docker-desktop-4.11.0-amd64.deb
+ENV DOCKER_DESKTOP_SHA256 a0dc8ac97cc21e5a13a9e316cac11d85b7c248fd0c166b22a2ab239d17d43d9f
 
 RUN set -eux; \
 	apt-get update; \
@@ -93,6 +93,15 @@ RUN set -eux; \
 	[ "$before" = "$after" ]; \
 # divert (unused?) "virtiofsd-v1.0.0" to make sure it doesn't get used accidentally 😅
 	dpkg-divert --add --rename --divert /opt/docker-desktop/bin/virtiofsd-v1.0.0-unused /opt/docker-desktop/bin/virtiofsd-v1.0.0
+
+RUN set -eux; \
+# setting up ID maps for virtiofsd namespace: retrieving subordinate UID range: no range for <USER> found in /etc/subuid
+	echo '1000:100000:65536' > /etc/subuid; \
+	echo '1000:100000:65536' > /etc/subgid; \
+# newuidmap: write to uid_map failed: Operation not permitted
+	ln -svfT /bin/true /usr/local/bin/newuidmap; \
+	ln -svfT /bin/true /usr/local/bin/newgidmap
+# TODO come up with something less ... hacky?
 
 #CMD ["docker-desktop"]
 CMD ["com.docker.backend", "--with-frontend"]
