@@ -12,7 +12,7 @@ WORKDIR /opt/blackbox-exporter
 ENV PATH /opt/blackbox-exporter:$PATH
 
 # https://github.com/prometheus/blackbox_exporter/releases
-ENV BLACKBOX_EXPORTER_VERSION 0.21.1
+ENV BLACKBOX_EXPORTER_VERSION 0.22.0
 
 RUN set -ex; \
 	\
