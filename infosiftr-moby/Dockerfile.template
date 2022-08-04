@@ -22,6 +22,9 @@ ENV MOBY_CONTAINERD_VERSION {{ .containerd.version }}
 # http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-runc/
 ENV MOBY_RUNC_VERSION {{ .runc.version }}
 
+# http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-buildx/
+ENV MOBY_BUILDX_VERSION {{ .["cli-plugin-buildx"].version }}
+
 RUN set -eux; \
 	\
 	apt-get update; \
@@ -30,6 +33,8 @@ RUN set -eux; \
 		"moby-engine=$MOBY_ENGINE_VERSION" \
 		"moby-containerd=$MOBY_CONTAINERD_VERSION" \
 		"moby-runc=$MOBY_RUNC_VERSION" \
+		\
+		"moby-cli-plugin-buildx=$MOBY_BUILDX_VERSION" \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
 	\

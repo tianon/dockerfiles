@@ -9,7 +9,13 @@ source "$dir/../.libs/deb-repo.sh"
 source "$dir/../.libs/git.sh"
 
 json='{}'
-for comp in cli engine containerd runc; do
+for comp in \
+	cli \
+	cli-plugin-buildx \
+	containerd \
+	engine \
+	runc \
+; do
 	cjson="$(
 		uri='https://apt.infosiftr.com/moby'
 		suite='debian-bullseye'
