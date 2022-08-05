@@ -1,0 +1,84 @@
+FROM debian:bullseye-slim
+
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		iptables \
+	; \
+	rm -rf /var/lib/apt/lists/*
+
+# https://pkgs.tailscale.com/stable/#static
+ENV TAILSCALE_VERSION 1.28.0
+
+RUN set -eux; \
+	dpkgArch="$(dpkg --print-architecture)"; \
+	case "$dpkgArch" in \
+		amd64)    tsArch='amd64' ;; \
+		arm64)    tsArch='arm64' ;; \
+		i386)     tsArch='386' ;; \
+		mips64el) tsArch='mips64le' ;; \
+		riscv64)  tsArch='riscv64' ;; \
+# TODO which arm is tailscale's "arm" ?
+		*)        tsArch='src' ;; \
+	esac; \
+	if [ "$tsArch" != 'src' ]; then \
+		tsUrl="https://pkgs.tailscale.com/stable/tailscale_${TAILSCALE_VERSION}_${tsArch}.tgz"; \
+	else \
+		tsUrl="https://github.com/tailscale/tailscale/archive/refs/tags/v${TAILSCALE_VERSION}.tar.gz"; \
+	fi; \
+	\
+	savedAptMark="$(apt-mark showmanual)"; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends ca-certificates wget; \
+	if [ "$tsArch" = 'src' ]; then \
+		( \
+			. /etc/os-release; \
+			if [ -n "${VERSION_CODENAME}" ]; then \
+				echo "deb https://deb.debian.org/debian $VERSION_CODENAME-backports main" > /etc/apt/sources.list.d/backports.list; \
+				apt-get update; \
+				apt-get install -y --no-install-recommends -t "$VERSION_CODENAME-backports" golang-go; \
+			else \
+# must be ports/unstable, so probably new enough Go as-is
+				apt-get install -y --no-install-recommends golang-go; \
+			fi; \
+		); \
+	fi; \
+	\
+	wget -O tailscale.tgz "$tsUrl"; \
+	\
+	mkdir -p /opt/tailscale; \
+	tar -xvf tailscale.tgz -C /opt/tailscale --strip-components=1; \
+	rm tailscale.tgz; \
+	\
+	if [ "$tsArch" = 'src' ]; then \
+		mv /opt/tailscale /tmp/tailscale; \
+		( \
+			mkdir -p /opt/tailscale; \
+			export GOBIN=/opt/tailscale GOCACHE=/tmp/tailscale/.gocache GOPATH=/tmp/tailscale/.gopath; \
+			cd /tmp/tailscale; \
+# we didn't "git clone" so let's reimplement "build_dist.sh" to the best of our ability
+			version="$(cat VERSION.txt)"; \
+			go install \
+				-ldflags " \
+					-X tailscale.com/version.Long=$version \
+					-X tailscale.com/version.Short=$version \
+				" \
+				./cmd/tailscale \
+				./cmd/tailscaled \
+			; \
+		); \
+		rm -rf /tmp/tailscale; \
+	fi; \
+	\
+	apt-mark auto '.*' > /dev/null; \
+	apt-mark manual $savedAptMark > /dev/null; \
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	rm -rf /var/lib/apt/lists/*; \
+	\
+	ln -sv /opt/tailscale/tailscale* /usr/local/bin/; \
+	tailscaled --version; \
+	tailscale --version
+
+VOLUME /var/lib/tailscale
+
+CMD ["tailscaled"]
