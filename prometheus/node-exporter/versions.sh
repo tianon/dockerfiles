@@ -9,4 +9,8 @@ source "$dir/../../.libs/git.sh"
 
 json="$(git-tags 'https://github.com/prometheus/node_exporter.git')"
 
+version="$(jq <<<"$json" -r '.version')"
+sha256="$(wget -qO- "https://github.com/prometheus/node_exporter/releases/download/v${version}/sha256sums.txt")"
+# TODO parse result, put into versions.json
+
 jq <<<"$json" -S 'del(.tag)' > versions.json
