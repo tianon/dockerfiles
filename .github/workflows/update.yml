@@ -31,7 +31,12 @@ jobs:
               | jq -rcsR '
                 split("\u0000")
                 | map(ltrimstr("./"))
-                - [ "docker-master" ] # directories to skip creating branches/PRs for
+                - [
+                  # directories to skip creating branches/PRs for
+                  "docker-desktop", # no "versions.sh" (yet?)
+                  "docker-master",
+                  empty # trailing comma
+                ]
                 | sort
                 | {
                   matrix: { dir: . },
