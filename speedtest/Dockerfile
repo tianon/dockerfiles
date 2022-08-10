@@ -7,7 +7,7 @@
 FROM alpine:3.16
 
 # https://www.speedtest.net/apps/cli#download
-ENV SPEEDTEST_VERSION 1.1.1
+ENV SPEEDTEST_VERSION 1.2.0
 
 RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
