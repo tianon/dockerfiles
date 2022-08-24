@@ -6,6 +6,9 @@ dockerfiles=( $(ls -1 Dockerfile.* | tac) )
 images=()
 for df in "${dockerfiles[@]}"; do
 	version="${df#Dockerfile.}"
+	if [ "$version" = 'template' ]; then
+		continue
+	fi
 	image="tianon/cygwin:win$version"
 	( set -x; docker build --tag "tianon/cygwin:win$version" --pull --file "$df" . )
 	images+=( "$image" )
