@@ -19,24 +19,24 @@ ENV TAILSCALE_VERSION 1.28.0
 RUN set -eux; \
 	dpkgArch="$(dpkg --print-architecture)"; \
 	case "$dpkgArch" in \
-		amd64)    tsArch='amd64' ;; \
-		arm64)    tsArch='arm64' ;; \
-		i386)     tsArch='386' ;; \
-		mips64el) tsArch='mips64le' ;; \
-		riscv64)  tsArch='riscv64' ;; \
+		amd64)    arch='amd64' ;; \
+		arm64)    arch='arm64' ;; \
+		i386)     arch='386' ;; \
+		mips64el) arch='mips64le' ;; \
+		riscv64)  arch='riscv64' ;; \
 # TODO which arm is tailscale's "arm" ?
-		*)        tsArch='src' ;; \
+		*)        arch='src' ;; \
 	esac; \
-	if [ "$tsArch" != 'src' ]; then \
-		tsUrl="https://pkgs.tailscale.com/stable/tailscale_${TAILSCALE_VERSION}_${tsArch}.tgz"; \
+	if [ "$arch" != 'src' ]; then \
+		url="https://pkgs.tailscale.com/stable/tailscale_${TAILSCALE_VERSION}_${arch}.tgz"; \
 	else \
-		tsUrl="https://github.com/tailscale/tailscale/archive/refs/tags/v${TAILSCALE_VERSION}.tar.gz"; \
+		url="https://github.com/tailscale/tailscale/archive/refs/tags/v${TAILSCALE_VERSION}.tar.gz"; \
 	fi; \
 	\
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends ca-certificates wget; \
-	if [ "$tsArch" = 'src' ]; then \
+	if [ "$arch" = 'src' ]; then \
 		( \
 			. /etc/os-release; \
 			if [ -n "${VERSION_CODENAME}" ]; then \
@@ -50,18 +50,24 @@ RUN set -eux; \
 		); \
 	fi; \
 	\
-	wget -O tailscale.tgz "$tsUrl"; \
+	wget -O tailscale.tgz "$url"; \
 	\
 	mkdir -p /opt/tailscale; \
-	tar -xvf tailscale.tgz -C /opt/tailscale --strip-components=1; \
+	tar \
+		--extract \
+		--file tailscale.tgz \
+		--directory /opt/tailscale \
+		--strip-components 1 \
+		--verbose \
+	; \
 	rm tailscale.tgz; \
 	\
-	if [ "$tsArch" = 'src' ]; then \
-		mv /opt/tailscale /tmp/tailscale; \
+	if [ "$arch" = 'src' ]; then \
+		mv /opt/tailscale /tmp/src; \
 		( \
 			mkdir -p /opt/tailscale; \
-			export GOBIN=/opt/tailscale GOCACHE=/tmp/tailscale/.gocache GOPATH=/tmp/tailscale/.gopath; \
-			cd /tmp/tailscale; \
+			cd /tmp/src; \
+			export GOBIN=/opt/tailscale GOCACHE="$PWD/.gocache" GOPATH="$PWD/.gopath"; \
 # we didn't "git clone" so let's reimplement "build_dist.sh" to the best of our ability
 			version="$(cat VERSION.txt)"; \
 			go install \
@@ -73,7 +79,7 @@ RUN set -eux; \
 				./cmd/tailscaled \
 			; \
 		); \
-		rm -rf /tmp/tailscale; \
+		rm -rf /tmp/src; \
 	fi; \
 	\
 	apt-mark auto '.*' > /dev/null; \
