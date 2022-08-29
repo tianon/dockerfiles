@@ -15,10 +15,12 @@ RUN set -eux; \
 	case "$dpkgArch" in \
 		amd64)    arch='amd64' ;; \
 		arm64)    arch='arm64' ;; \
+# Tailscale's "arm" is GOARM=5 (https://github.com/tailscale/tailscale/issues/5482)
+		armel)    arch='arm' ;; \
+		armhf)    arch='arm' ;; \
 		i386)     arch='386' ;; \
 		mips64el) arch='mips64le' ;; \
 		riscv64)  arch='riscv64' ;; \
-# TODO which arm is tailscale's "arm" ?
 		*)        arch='src' ;; \
 	esac; \
 	if [ "$arch" != 'src' ]; then \
