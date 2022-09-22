@@ -10,7 +10,7 @@
 #
 #   $ docker run -d --name dind --privileged --volume dind:/var/lib/docker tianon/docker-master
 
-FROM golang:1.16-bullseye AS build
+FROM golang:1.18-bullseye AS build
 
 RUN set -ex; \
 	apt-get update; \
