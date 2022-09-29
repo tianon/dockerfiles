@@ -4,13 +4,13 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM python:3.9-alpine3.15
+FROM python:3.10-alpine3.15
 
 RUN apk add --no-cache gnupg librsync
 
 # https://pypi.org/project/duplicity/
 # https://duplicity.gitlab.io/
-ENV DUPLICITY_VERSION 0.8.23
+ENV DUPLICITY_VERSION 1.0.0
 # https://gitlab.com/duplicity/duplicity
 
 RUN set -eux; \
