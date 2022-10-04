@@ -1,11 +1,11 @@
 {
   "arches": {
     "amd64": {
-      "sha256": "14e9bf2ba9bbf88aae24bd165fd72ad20711b90da837aa3aa07b4b537fe69564"
+      "sha256": "9acc33a93a23c2d28f3c6284a1db02476d9b52861d792d89aacb964f64f0fbfc"
     },
     "arm64v8": {
-      "sha256": "4617bf54fa3645cfe87b10243794598eded94ed7f5be7a74f0d765c62480ae6c"
+      "sha256": "0df586a1672c7bb758cfb08af03c3246ada29a2a343b54f7f00ce64c47b7de45"
     }
   },
-  "version": "2.14.2"
+  "version": "2.15.0"
 }

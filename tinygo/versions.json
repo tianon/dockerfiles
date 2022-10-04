@@ -1,6 +1,6 @@
 {
   "go": {
-    "version": "1.16"
+    "version": "1.18"
   },
-  "version": "0.25.0"
+  "version": "0.26.0"
 }
