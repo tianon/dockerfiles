@@ -27,7 +27,7 @@ RUN set -eux; \
 
 # https://zoom.us/download#client_4meeting ("Debian", "64 bit", "8.0+", "Version X.Y.ZZZ.ZZZ")
 # https://support.zoom.us/hc/en-us/articles/205759689-Release-notes-for-Linux
-ENV ZOOM_VERSION 5.12.0.4682
+ENV ZOOM_VERSION 5.12.2.4816
 # curl -fsS --head 'https://zoom.us/client/latest/zoom_amd64.deb' | grep '^location: '
 
 RUN set -eux; \
