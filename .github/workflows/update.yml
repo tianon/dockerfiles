@@ -44,8 +44,8 @@ jobs:
                 }
               '
           )"
+          echo "strategy=$strategy" >> "$GITHUB_OUTPUT"
           jq . <<<"$strategy" # sanity check / debugging aid
-          echo "::set-output name=strategy::$strategy"
 
   update:
     needs: generate-jobs

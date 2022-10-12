@@ -28,8 +28,8 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/docker-library/bashbrew.git -b master ~/bashbrew
           strategy="$(.github/workflows/generate.sh ~/bashbrew)"
+          echo "strategy=$strategy" >> "$GITHUB_OUTPUT"
           jq . <<<"$strategy" # sanity check / debugging aid
-          echo "::set-output name=strategy::$strategy"
 
   test:
     needs: generate-jobs
