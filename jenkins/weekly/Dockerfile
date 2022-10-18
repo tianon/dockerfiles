@@ -30,7 +30,7 @@ RUN set -eux; \
 # TODO use signed-by
 RUN echo 'deb https://pkg.jenkins.io/debian binary/' > /etc/apt/sources.list.d/jenkins.list
 
-ENV JENKINS_VERSION 2.373
+ENV JENKINS_VERSION 2.374
 
 RUN set -eux; \
 	apt-get update; \
