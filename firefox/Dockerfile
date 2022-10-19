@@ -30,7 +30,7 @@ ENV PATH /opt/firefox:$PATH
 # https://archive.mozilla.org/pub/firefox/releases/
 # https://download-installer.cdn.mozilla.net/pub/firefox/releases/
 # https://www.mozilla.org/en-US/firefox/all/#product-desktop-release
-ENV FIREFOX_VERSION 105.0.3
+ENV FIREFOX_VERSION 106.0
 
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
