@@ -125,8 +125,6 @@ RUN set -eux; \
 		xz \
 	;
 
-RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
-
 RUN set -eux; \
 	addgroup -S dockremap; \
 	adduser -S -G dockremap dockremap; \
