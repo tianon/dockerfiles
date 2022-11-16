@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-bashbrewDir="$1"
+[ -d "$BASHBREW_SCRIPTS/github-actions" ]
 
 export BASHBREW_NAMESPACE='tianon'
 
@@ -10,7 +10,7 @@ for gsl in */gsl.sh; do
 	dir="$(dirname "$gsl")"
 	img="$(basename "$dir")"
 	img="$BASHBREW_NAMESPACE/$img"
-	newStrategy="$(GENERATE_STACKBREW_LIBRARY="$gsl" GITHUB_REPOSITORY="$img" "$bashbrewDir/scripts/github-actions/generate.sh")"
+	newStrategy="$(GENERATE_STACKBREW_LIBRARY="$gsl" GITHUB_REPOSITORY="$img" "$BASHBREW_SCRIPTS/github-actions/generate.sh")"
 	if [ "$img" = 'tianon/cygwin' ]; then
 		# remove tags that Windows on GitHub Actions can't test
 		newStrategy="$(jq -c 'del(.matrix.include[] | select(.os == "invalid-or-unknown"))' <<<"$newStrategy")"
