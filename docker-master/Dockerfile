@@ -33,7 +33,7 @@ ENV DOCKER_BUILDTAGS \
 
 WORKDIR /moby
 
-ENV CLI_GITCOMMIT cbf052252bf51a9cef088b6dbaa80ce4d4ed1765
+ENV CLI_GITCOMMIT 8b1cbfd769d50ffbd9a135a771e7efbe07355ede
 
 RUN set -ex; \
 	mkdir cli; \
