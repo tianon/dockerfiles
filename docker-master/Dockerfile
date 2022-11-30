@@ -44,7 +44,7 @@ RUN set -ex; \
 
 RUN set -eux; \
 	cd cli; \
-	echo 'module github.com/docker/cli' > go.mod; \
+	{ echo 'module github.com/docker/cli'; echo 'go 1.18'; } > go.mod; \
 # "go: inconsistent vendoring in /moby/cli:" -> "X@vY: is marked as explicit in vendor/modules.txt, but not explicitly required in go.mod"
 	rm vendor/modules.txt; \
 # can't use the Makefile anymore thanks to https://github.com/docker/cli/pull/2993 ...
@@ -53,7 +53,7 @@ RUN set -eux; \
 	docker --version; \
 	ldd /usr/local/bin/docker || :
 
-ENV MOBY_GITCOMMIT 9e7ed25c64607c5008270858ca5d0e947f34e68a
+ENV MOBY_GITCOMMIT 36a2dd36a078685c9f9c7ef7c5828ed382921ce9
 
 RUN set -ex; \
 	mkdir engine; \
@@ -80,7 +80,7 @@ RUN set -eux; \
 
 RUN set -eux; \
 	cd engine; \
-	echo 'module github.com/docker/docker' > go.mod; \
+	{ echo 'module github.com/docker/docker'; echo 'go 1.18'; } > go.mod; \
 # fix "inconsistent vendoring" issue
 	rm vendor/modules.txt; \
 	sed -ri '/^[[:space:]]*copy_binaries /d' hack/make/binary-daemon; \
