@@ -1,5 +1,5 @@
 # https://pages.github.com/versions/
-FROM ruby:{{ .ruby.version }}-alpine3.15
+FROM ruby:{{ .ruby.version }}-alpine3.16
 
 ENV GITHUB_PAGES_VERSION {{ .version }}
 

@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM python:3.10-alpine3.15
+FROM python:3.10-alpine3.16
 
 RUN apk add --no-cache gnupg librsync
 

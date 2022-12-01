@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM python:3.9-alpine3.15
+FROM python:3.9-alpine3.16
 
 ENV BEETS_VERSION 1.6.0
 
