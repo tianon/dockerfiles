@@ -31,7 +31,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # https://github.com/signalapp/Signal-Desktop/releases
-ENV SIGNAL_DESKTOP_VERSION 5.63.1
+ENV SIGNAL_DESKTOP_VERSION 6.0.0
 
 RUN set -eux; \
 	apt-get update; \
