@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3.17
 
 RUN apk add --no-cache \
 		bash \
@@ -14,7 +14,7 @@ RUN apk add --no-cache \
 		iperf \
 		iptables \
 		iputils \
-		libressl \
+		openssl \
 		mtr \
 		net-tools \
 		nmap \
@@ -24,7 +24,7 @@ RUN apk add --no-cache \
 		tshark \
 		wget \
 		whois
-# TODO add "nbtscan" when we get to Alpine 3.17 (if it makes it out of edge)
+# TODO add "nbtscan" when we get to Alpine 3.18 (if it makes it out of testing)
 # https://pkgs.alpinelinux.org/packages?name=nbtscan&branch=edge&arch=x86_64
 
 CMD ["bash", "--login", "-i"]
