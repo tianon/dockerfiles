@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM python:3.10-alpine3.16
+FROM python:3.10-alpine3.17
 
 # https://pypi.org/project/b2/
 ENV BACKBLAZE_B2_VERSION 3.6.0
