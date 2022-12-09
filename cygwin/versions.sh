@@ -14,7 +14,6 @@ jq -nS '
 		variants: [
 			# https://hub.docker.com/r/microsoft/windowsservercore (minus EOL versions)
 			"ltsc2022",
-			"20H2",
 			"1809",
 			empty # trailing comma
 		],

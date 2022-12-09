@@ -2,7 +2,6 @@
   "sha512": "cddb07f40bb43ff90e5ef32aea835a63dc4885d8eed5bfde34f5702289846f6405e319bb9d5c18750b3bd43702daa723e97c6f0fe9badfb02761dbc0be135bda",
   "variants": [
     "ltsc2022",
-    "20H2",
     "1809"
   ]
 }
