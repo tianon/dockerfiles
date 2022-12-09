@@ -4,8 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-# "slack-desktop : Depends: libappindicator3-1 but it is not installable" 🙃
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 RUN set -eux; \
 	apt-get update; \
