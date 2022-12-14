@@ -26,6 +26,7 @@ RUN set -eux; \
 		openssh-client \
 		procps \
 		rsync \
+		siege \
 		socat \
 		traceroute \
 		tshark \
