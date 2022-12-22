@@ -6,7 +6,7 @@
 
 FROM alpine:3.17
 
-RUN apk add --no-cache ca-certificates
+RUN apk add --no-cache bash ca-certificates
 
 WORKDIR /opt/prometheus
 ENV PATH /opt/prometheus:$PATH
@@ -41,6 +41,8 @@ RUN set -ex; \
 	prometheus --version
 
 VOLUME /opt/prometheus/data
-
 EXPOSE 9090
-CMD ["prometheus", "--config.file=/opt/prometheus/prometheus.yml", "--storage.tsdb.path=/opt/prometheus/data", "--web.console.libraries=/opt/prometheus/console_libraries", "--web.console.templates=/opt/prometheus/consoles"]
+
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD []
