@@ -45,7 +45,7 @@ RUN set -eux; \
 
 # https://weechat.org/download/stable/
 # https://weechat.org/download/debian/active/#debian_bullseye
-ENV WEECHAT_VERSION 3.7.1-1
+ENV WEECHAT_VERSION 3.8-1
 
 RUN set -eux; \
 	apt-get update; \
