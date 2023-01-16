@@ -30,6 +30,7 @@ RUN set -ex; \
 	\
 	wget -O /tmp/prom.tar.gz "https://github.com/prometheus/prometheus/releases/download/v${PROMETHEUS_VERSION}/prometheus-${PROMETHEUS_VERSION}.linux-${promArch}.tar.gz"; \
 # TODO sha256sums.txt
+	\
 	tar \
 		--extract \
 		--file /tmp/prom.tar.gz \

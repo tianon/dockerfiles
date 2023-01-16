@@ -1,14 +1,20 @@
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
 FROM alpine:3.17
 
 RUN apk add --no-cache bash ca-certificates
 
-WORKDIR /opt/prometheus
-ENV PATH /opt/prometheus:$PATH
+WORKDIR /opt/alertmanager
+ENV PATH /opt/alertmanager:$PATH
 
-# https://github.com/prometheus/prometheus/releases
-ENV PROMETHEUS_VERSION {{ .version }}
+# https://github.com/prometheus/alertmanager/releases
+ENV ALERTMANAGER_VERSION 0.25.0
 
-RUN set -ex; \
+RUN set -eux; \
 	\
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
@@ -22,21 +28,23 @@ RUN set -ex; \
 		*) echo >&2 "error: unsupported arch: $apkArch"; exit 1 ;; \
 	esac; \
 	\
-	wget -O /tmp/prom.tar.gz "https://github.com/prometheus/prometheus/releases/download/v${PROMETHEUS_VERSION}/prometheus-${PROMETHEUS_VERSION}.linux-${promArch}.tar.gz"; \
+	wget -O /tmp/alertmanager.tar.gz "https://github.com/prometheus/alertmanager/releases/download/v${ALERTMANAGER_VERSION}/alertmanager-${ALERTMANAGER_VERSION}.linux-${promArch}.tar.gz"; \
 # TODO sha256sums.txt
 	\
 	tar \
 		--extract \
-		--file /tmp/prom.tar.gz \
+		--file /tmp/alertmanager.tar.gz \
 		--strip-components 1 \
 		--verbose \
 	; \
-	rm /tmp/prom.tar.gz; \
+	rm /tmp/alertmanager.tar.gz; \
 	\
-	prometheus --version
+	mkdir data; \
+	\
+	alertmanager --version
 
-VOLUME /opt/prometheus/data
-EXPOSE 9090
+VOLUME /opt/alertmanager/data
+EXPOSE 9093 9094
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
