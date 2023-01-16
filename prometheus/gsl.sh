@@ -12,8 +12,7 @@ env="${dir^^}_VERSION"
 env="${env//-/_}"
 versionedEnvTagsEntry "$dir" "$env" latest
 
-# TODO add version tags for alertmanager / exporters
 variantAppendOrder='prefix'
 versionedEnvVariantEntry "$dir/alertmanager" alertmanager ALERTMANAGER_VERSION alertmanager
-tagsEntry "$dir/blackbox-exporter" blackbox-exporter
-tagsEntry "$dir/node-exporter" node-exporter
+versionedEnvVariantEntry "$dir/blackbox-exporter" blackbox-exporter BLACKBOX_EXPORTER_VERSION blackbox-exporter
+versionedEnvVariantEntry "$dir/node-exporter" node-exporter NODE_EXPORTER_VERSION node-exporter
