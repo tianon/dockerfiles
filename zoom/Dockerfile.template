@@ -15,6 +15,16 @@ RUN set -eux; \
 		libasound2 \
 		libnspr4 \
 		libnss3 \
+		libqt5core5a \
+		libqt5dbus5 \
+		libqt5gui5 \
+		libqt5network5 \
+		libqt5qml5 \
+		libqt5quick5 \
+		libqt5quickwidgets5 \
+		libqt5widgets5 \
+		libqt5x11extras5 \
+# TODO test whether this one's still necessary
 		libxkbcommon-x11-0 \
 	; \
 	rm -rf /var/lib/apt/lists/*
