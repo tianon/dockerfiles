@@ -32,8 +32,8 @@ RUN set -eux; \
 
 # https://dl.winehq.org/wine-builds/debian/dists/bullseye/main/binary-amd64/?C=N;O=D
 # https://www.winehq.org/news/
-ENV WINE_VERSION 7.0.1
-ENV WINE_DEB_VERSION 7.0.1~bullseye-1
+ENV WINE_VERSION 8.0.0.0
+ENV WINE_DEB_VERSION 8.0.0.0~bullseye-1
 
 RUN set -eux; \
 	{ \
