@@ -11,6 +11,7 @@ RUN set -eux; \
 		dnsutils \
 		fio \
 		gnupg dirmngr \
+		iftop \
 		inetutils-ping \
 		ipcalc \
 		iperf \
