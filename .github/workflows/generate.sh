@@ -11,10 +11,30 @@ for gsl in */gsl.sh; do
 	img="$(basename "$dir")"
 	img="$BASHBREW_NAMESPACE/$img"
 	newStrategy="$(GENERATE_STACKBREW_LIBRARY="$gsl" GITHUB_REPOSITORY="$img" "$BASHBREW_SCRIPTS/github-actions/generate.sh")"
-	if [ "$img" = 'tianon/cygwin' ]; then
-		# remove tags that Windows on GitHub Actions can't test
-		newStrategy="$(jq -c 'del(.matrix.include[] | select(.os == "invalid-or-unknown"))' <<<"$newStrategy")"
-	fi
+	case "$img" in
+		'tianon/cygwin')
+			# remove tags that Windows on GitHub Actions can't test
+			newStrategy="$(jq -c 'del(.matrix.include[] | select(.os == "invalid-or-unknown"))' <<<"$newStrategy")"
+			;;
+
+		'tianon/true')
+			# make sure our "true" binary is correctly compiled
+			newStrategy="$(jq -c '
+				.matrix.include[].runs.build |= (
+					[
+						"[ -s true/true-asm ]",
+						"rm true/true-asm",
+						"docker build --pull --tag tianon/true:builder --target asm --file true/Dockerfile.all true",
+						"docker run --rm tianon/true:builder tar -cC /true true-asm | tar -xvC true",
+						"git diff --exit-code true",
+						"[ -s true/true-asm ]",
+						"true/true-asm",
+						.
+					] | join("\n")
+				)
+			' <<<"$newStrategy")"
+			;;
+	esac
 	newStrategy="$(jq -c --arg img "$img" '.matrix.include = [ .matrix.include[] | .name = $img + ": " + .name ]' <<<"$newStrategy")"
 	jq -c . <<<"$newStrategy" > /dev/null # sanity check
 	strategy="$(jq -c --argjson strategy "$strategy" '.matrix.include = ($strategy.matrix.include // []) + .matrix.include' <<<"$newStrategy")"

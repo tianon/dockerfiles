@@ -2,6 +2,10 @@
 
 # https://github.com/docker-library/official-images/blob/3e27b6eb7a12bc15e5e2dde52d2477c818863ce3/test/config.sh
 
+imageTests+=(
+	[tianon/true]='true'
+)
+
 # single-binary images
 globalExcludeTests+=(
 	[tianon/sleeping-beauty_no-hard-coded-passwords]=1
