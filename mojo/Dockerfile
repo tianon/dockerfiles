@@ -5,7 +5,8 @@ RUN cpanm Mojolicious && rm -rf ~/.cpanm
 
 # TODO pin versions
 RUN cpanm EV && rm -rf ~/.cpanm
-RUN cpanm IO::Socket::IP && rm -rf ~/.cpanm
+RUN cpanm --notest IO::Socket::IP && rm -rf ~/.cpanm
+# the tests for IO::Socket::IP hit some internet resources ("Failed test 'defined $socket for cpanidx.org:80'", "error was Name or service not known")
 RUN cpanm --notest IO::Socket::SSL && rm -rf ~/.cpanm
 # the tests for IO::Socket::SSL like to hang... :(
 
