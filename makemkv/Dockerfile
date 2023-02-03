@@ -15,7 +15,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # http://www.makemkv.com/forum2/viewtopic.php?f=3&t=224
-ENV MAKEMKV_VERSION 1.17.2
+ENV MAKEMKV_VERSION 1.17.3
 
 # beta code: http://www.makemkv.com/forum2/viewtopic.php?f=5&t=1053
 RUN set -ex; \
