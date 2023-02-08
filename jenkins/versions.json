@@ -1,8 +1,8 @@
 {
   "lts": {
     "repo": "https://pkg.jenkins.io/debian-stable",
-    "sha256": "6e30e1083aa49becbb2c6e6882e863bb3f408cb3870994a249be89acedef6318",
-    "version": "2.375.2"
+    "sha256": "76b2b68c29799de159ba63378110bb89635398eaf729e534556f6413af492aa2",
+    "version": "2.375.3"
   },
   "variants": [
     "weekly",
