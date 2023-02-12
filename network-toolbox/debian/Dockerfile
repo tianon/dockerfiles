@@ -29,6 +29,7 @@ RUN set -eux; \
 		rsync \
 		siege \
 		socat \
+		ssh-audit \
 		traceroute \
 		tshark \
 		wget \

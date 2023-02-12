@@ -14,13 +14,14 @@ RUN apk add --no-cache \
 		iperf \
 		iptables \
 		iputils \
-		openssl \
 		mtr \
 		net-tools \
 		nmap \
 		openssh-client \
+		openssl \
 		rsync \
 		socat \
+		ssh-audit \
 		tshark \
 		wget \
 		whois
