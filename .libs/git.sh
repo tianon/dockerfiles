@@ -11,7 +11,7 @@ git-tags() {
 		git ls-remote --tags "$repo" \
 			| cut -d/ -f3 \
 			| cut -d^ -f1 \
-			| grep -vE -- '-(rc|alpha|beta|retract)' \
+			| grep -vE -- '-(rc|alpha|beta|retract)|^nightly$' \
 			| sort -Vu \
 			| tail -1
 	)"
