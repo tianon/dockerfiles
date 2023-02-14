@@ -53,7 +53,7 @@ RUN set -eux; \
 	docker --version; \
 	ldd /usr/local/bin/docker || :
 
-ENV MOBY_GITCOMMIT 3ba527d82af53cf752aa6ec39daac14626c41b0f
+ENV MOBY_GITCOMMIT c910e47f5311f2129fb6dc54d4aee739e0a2b5e6
 
 RUN set -ex; \
 	mkdir engine; \
