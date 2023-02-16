@@ -10,7 +10,7 @@
 #
 #   $ docker run -d --name dind --privileged --volume dind:/var/lib/docker tianon/docker-master
 
-FROM golang:1.18-bullseye AS build
+FROM golang:1.19-bullseye AS build
 
 RUN set -ex; \
 	apt-get update; \
@@ -44,7 +44,7 @@ RUN set -ex; \
 
 RUN set -eux; \
 	cd cli; \
-	{ echo 'module github.com/docker/cli'; echo 'go 1.18'; } > go.mod; \
+	{ echo 'module github.com/docker/cli'; echo 'go 1.19'; } > go.mod; \
 # "go: inconsistent vendoring in /moby/cli:" -> "X@vY: is marked as explicit in vendor/modules.txt, but not explicitly required in go.mod"
 	rm vendor/modules.txt; \
 # can't use the Makefile anymore thanks to https://github.com/docker/cli/pull/2993 ...
@@ -80,7 +80,7 @@ RUN set -eux; \
 
 RUN set -eux; \
 	cd engine; \
-	{ echo 'module github.com/docker/docker'; echo 'go 1.18'; } > go.mod; \
+	{ echo 'module github.com/docker/docker'; echo 'go 1.19'; } > go.mod; \
 # fix "inconsistent vendoring" issue
 	rm vendor/modules.txt; \
 	sed -ri '/^[[:space:]]*copy_binaries /d' hack/make/binary-daemon; \

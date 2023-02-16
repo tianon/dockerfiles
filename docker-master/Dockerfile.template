@@ -4,7 +4,7 @@
 #
 #   $ docker run -d --name dind --privileged --volume dind:/var/lib/docker tianon/docker-master
 
-{{ def gover: "1.18" -}}
+{{ def gover: "1.19" -}}
 FROM golang:{{ gover }}-bullseye AS build
 
 RUN set -ex; \
