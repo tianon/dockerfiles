@@ -24,12 +24,12 @@ ENV MOBY_CLI_VERSION 20.10.23-1~deb11u0
 # http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-engine/
 ENV MOBY_ENGINE_VERSION 20.10.23-1~deb11u0
 # http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-containerd/
-ENV MOBY_CONTAINERD_VERSION 1.6.17-1~deb11u0
+ENV MOBY_CONTAINERD_VERSION 1.6.18-1~deb11u0
 # http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-runc/
 ENV MOBY_RUNC_VERSION 1.1.4-1~deb11u0
 
 # http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-buildx/
-ENV MOBY_BUILDX_VERSION 0.10.2-1~deb11u0
+ENV MOBY_BUILDX_VERSION 0.10.3-1~deb11u0
 
 RUN set -eux; \
 	\

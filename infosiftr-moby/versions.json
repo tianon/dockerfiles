@@ -4,12 +4,12 @@
     "version": "20.10.23-1~deb11u0"
   },
   "cli-plugin-buildx": {
-    "sha256": "0efc0d66c4456b5b0d19ada306c8934efb6cef337ded694a23f3eade9ba3bd61",
-    "version": "0.10.2-1~deb11u0"
+    "sha256": "87bb44ddffb090c55d9b247073701ee9da1f27be8d23ebabb65774e2b0cb88c2",
+    "version": "0.10.3-1~deb11u0"
   },
   "containerd": {
-    "sha256": "ba7559c42249c9370245b7445e144cc511b5f88907d2e9539a9b407a1590e5ad",
-    "version": "1.6.17-1~deb11u0"
+    "sha256": "34f68c5777a694f2a116795e7cafb2f8a44ff40bef45af0d28af3dc471c8420d",
+    "version": "1.6.18-1~deb11u0"
   },
   "dind": {
     "version": "1f32e3c95d72a29b3eaacba156ed675dba976cb5"
