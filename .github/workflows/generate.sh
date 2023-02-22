@@ -18,17 +18,18 @@ for gsl in */gsl.sh; do
 			;;
 
 		'tianon/true')
-			# make sure our "true" binary is correctly compiled
+			# make sure our "true" binaries are correctly compiled
 			newStrategy="$(jq -c '
 				.matrix.include[].runs.build |= (
-					[
-						"[ -s true/true-asm ]",
-						"rm true/true-asm",
+					(if contains("yolo") then "true-yolo" else "true-asm" end) as $binary
+					| [
+						"[ -s true/\($binary) ]",
+						"rm -v true/\($binary)",
 						"docker build --pull --tag tianon/true:builder --target asm --file true/Dockerfile.all true",
-						"docker run --rm tianon/true:builder tar -cC /true true-asm | tar -xvC true",
+						"docker run --rm tianon/true:builder tar -cC /true \($binary) | tar -xvC true",
 						"git diff --exit-code true",
-						"[ -s true/true-asm ]",
-						"true/true-asm",
+						"[ -s true/\($binary) ]",
+						"true/\($binary)",
 						.
 					] | join("\n")
 				)

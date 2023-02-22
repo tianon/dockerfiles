@@ -1,15 +1,16 @@
-FROM buildpack-deps:bullseye AS base
-
+FROM debian:bullseye-slim AS base
+RUN apt-get update && apt-get install -y --no-install-recommends make && rm -rf /var/lib/apt/lists/*
 WORKDIR /true
-COPY Makefile true.* ./
+COPY Makefile true*.* ./
 RUN make clean # just to be sure
 
 FROM base AS asm
 RUN apt-get update && apt-get install -y --no-install-recommends nasm && rm -rf /var/lib/apt/lists/*
-RUN make -C /true true-asm
+RUN make -C /true true-asm true-yolo
 
-FROM base AS c
-RUN make -C /true true-c
+FROM gcc AS gcc
+COPY --from=base /true /true
+RUN make -C /true true-gcc
 
 FROM golang AS go
 COPY --from=base /true /true
@@ -31,11 +32,11 @@ RUN make -C /true true-go && mv /true/true-go /true/true-alpinego
 
 FROM base
 
-COPY --from=asm /true/true-asm ./
-COPY --from=c /true/true-c ./
-COPY --from=go /true/true-go ./
-COPY --from=rust /true/true-rust ./
-COPY --from=tinygo /true/true-tinygo ./
-COPY --from=alpinego /true/true-alpinego ./
+COPY --from=asm /true/true-asm* /true/true-yolo* ./
+COPY --from=gcc /true/true-gcc* ./
+COPY --from=go /true/true-go* ./
+COPY --from=rust /true/true-rust* ./
+COPY --from=tinygo /true/true-tinygo* ./
+COPY --from=alpinego /true/true-alpinego* ./
 
 RUN ls -lAFh true-*
