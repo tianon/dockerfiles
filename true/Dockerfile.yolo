@@ -1,0 +1,3 @@
+FROM scratch
+COPY true-yolo /true
+CMD ["/true"]
