@@ -9,8 +9,8 @@ FROM alpine:3.17
 RUN apk add --no-cache ca-certificates
 
 # https://github.com/vultr/vultr-cli/releases
-ENV VULTR_CLI_VERSION 2.15.0
-ENV VULTR_CLI_SHA256 9acc33a93a23c2d28f3c6284a1db02476d9b52861d792d89aacb964f64f0fbfc
+ENV VULTR_CLI_VERSION 2.15.1
+ENV VULTR_CLI_SHA256 7ae3acf818370e91226895a3f2d9d2e6ec24b2d3a5d00fc3217a2bbb1025f164
 # TODO multiple architectures (at least "arm64" is also supported)
 
 RUN set -eux; \
