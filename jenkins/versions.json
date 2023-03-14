@@ -10,7 +10,7 @@
   ],
   "weekly": {
     "repo": "https://pkg.jenkins.io/debian",
-    "sha256": "455dd79f5632129ddd4de5487430bfe7be2add0df4936c7fd721780a96dfe1a8",
-    "version": "2.394"
+    "sha256": "969414eaa4a6a014ae372a293846484e9e742fc0163b52ff8ab05c6543cbebe1",
+    "version": "2.395"
   }
 }
