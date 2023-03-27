@@ -33,7 +33,7 @@ ENV DOCKER_BUILDTAGS \
 
 WORKDIR /moby
 
-ENV CLI_GITCOMMIT 59ec357996ec467275adfd87a9f52a8f543fb291
+ENV CLI_GITCOMMIT 21653863b14a43e7d12caf9798f4effcca4773f9
 
 RUN set -ex; \
 	mkdir cli; \
@@ -53,7 +53,7 @@ RUN set -eux; \
 	docker --version; \
 	ldd /usr/local/bin/docker || :
 
-ENV MOBY_GITCOMMIT 17d94cf3b901f52a70c268c8971b8887baa215e4
+ENV MOBY_GITCOMMIT cba6f2d42698b1d15e031efa18a59843859f2200
 
 RUN set -ex; \
 	mkdir engine; \
