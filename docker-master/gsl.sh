@@ -9,3 +9,4 @@ source gsl-libs.sh
 
 globalEntry
 tagsEntry "$dir" latest dind
+dockerfile='Dockerfile.containerd' tagsEntry "$dir" containerd

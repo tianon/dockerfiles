@@ -1,0 +1,8 @@
+FROM tianon/docker-master:dind
+
+RUN set -eux; \
+	mkdir /etc/docker; \
+	echo '{"features":{"containerd-snapshotter":true}}' > /etc/docker/daemon.json
+
+ENV CONTAINERD_ADDRESS /run/docker/containerd/containerd.sock
+ENV CONTAINERD_NAMESPACE moby
