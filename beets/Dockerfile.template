@@ -1,4 +1,4 @@
-FROM python:{{ .python.version }}-alpine3.17
+FROM python:{{ .python.version }}-slim-bullseye
 
 ENV BEETS_VERSION {{ .version }}
 
