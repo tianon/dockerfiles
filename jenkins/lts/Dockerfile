@@ -17,8 +17,9 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-# https://groups.google.com/d/msg/jenkins-infra/c7m_72vUTXE/37zw9GXhAQAJ
-ENV JENKINS_GPG_KEY 62A9756BFD780C377CF24BA8FCEF32E745F2C3D5
+# https://www.jenkins.io/blog/2023/03/27/repository-signing-keys-changing/
+# https://pkg.jenkins.io/debian/
+ENV JENKINS_GPG_KEY 63667EE74BBA1F0A08A698725BA31D57EF5975CA
 RUN set -eux; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$JENKINS_GPG_KEY"; \
@@ -30,7 +31,7 @@ RUN set -eux; \
 # TODO use signed-by
 RUN echo 'deb https://pkg.jenkins.io/debian-stable binary/' > /etc/apt/sources.list.d/jenkins.list
 
-ENV JENKINS_VERSION 2.387.1
+ENV JENKINS_VERSION 2.387.2
 
 RUN set -eux; \
 	apt-get update; \

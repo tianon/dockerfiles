@@ -11,15 +11,9 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-{{ if .[env.variant].version == "2.387.1" then ( -}}
-{{ # TODO remove this after 2.387.2 is released -}}
-# https://groups.google.com/d/msg/jenkins-infra/c7m_72vUTXE/37zw9GXhAQAJ
-ENV JENKINS_GPG_KEY 62A9756BFD780C377CF24BA8FCEF32E745F2C3D5
-{{ ) else ( -}}
 # https://www.jenkins.io/blog/2023/03/27/repository-signing-keys-changing/
 # https://pkg.jenkins.io/debian/
 ENV JENKINS_GPG_KEY 63667EE74BBA1F0A08A698725BA31D57EF5975CA
-{{ ) end -}}
 RUN set -eux; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$JENKINS_GPG_KEY"; \
