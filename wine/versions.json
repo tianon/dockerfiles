@@ -1,7 +1,7 @@
 {
   "debian": {
-    "sha256": "a25612da6cbc9d69614af4045350a45429cfc4daeec45fc8911d78aaf289f085",
-    "version": "8.0.0.0~bullseye-1"
+    "sha256": "61917d1357ca79cf3984e962baef0c62399e44c2c413a91520286d2cbdfad758",
+    "version": "8.0.1~bullseye-1"
   },
-  "version": "8.0.0.0"
+  "version": "8.0.1"
 }
