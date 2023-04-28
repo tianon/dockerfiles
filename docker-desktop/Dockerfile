@@ -56,7 +56,7 @@ RUN set -eux; \
 	; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get install -y --no-install-recommends \
-		gnupg dirmngr \
+		gnupg \
 		wget \
 	; \
 	apt-mark auto '.*' > /dev/null; \
@@ -66,6 +66,7 @@ RUN set -eux; \
 	gpg --keyserver keyserver.ubuntu.com --recv-keys 9DC858229FC7DD38854AE2D88D81803C0EBFCD88; \
 	mkdir -p /usr/local/share/keyrings; \
 	gpg --export --armor 9DC858229FC7DD38854AE2D88D81803C0EBFCD88 > /usr/local/share/keyrings/docker-archive.gpg.asc; \
+	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME"; \
 	\
 	. /etc/os-release; \

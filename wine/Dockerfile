@@ -12,7 +12,7 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends apt-transport-https ca-certificates; \
 	savedAptMark="$(apt-mark showmanual)"; \
-	apt-get install -y --no-install-recommends gnupg dirmngr; \
+	apt-get install -y --no-install-recommends gnupg; \
 	rm -rf /var/lib/apt/lists/*; \
 	\
 	export GNUPGHOME="$(mktemp -d)"; \

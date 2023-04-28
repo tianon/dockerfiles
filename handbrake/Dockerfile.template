@@ -9,7 +9,7 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends \
 		bzip2 \
 		ca-certificates \
-		gnupg dirmngr \
+		gnupg \
 		wget \
 		\
 		autoconf \
@@ -55,6 +55,7 @@ RUN set -eux; \
 	GNUPGHOME="$(mktemp -d)"; export GNUPGHOME; \
 	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys '1629 C061 B3DD E7EB 4AE3  4B81 021D B8B4 4E4A 8645'; \
 	gpg --batch --verify handbrake.tar.bz2.sig handbrake.tar.bz2; \
+	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME" handbrake.tar.bz2.sig; \
 	\
 	mkdir -p /tmp/handbrake; \

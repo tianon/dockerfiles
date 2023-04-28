@@ -4,7 +4,7 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		ca-certificates curl \
-		gnupg dirmngr \
+		gnupg \
 		gosu tini \
 		\
 		git openssh-client \

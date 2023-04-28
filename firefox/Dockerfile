@@ -37,7 +37,7 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		bzip2 \
-		gnupg dirmngr \
+		gnupg \
 		wget \
 	; \
 	\

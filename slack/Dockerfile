@@ -30,7 +30,7 @@ RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		gnupg dirmngr \
+		gnupg \
 	; \
 	rm -rf /var/lib/apt/lists; \
 	\

@@ -26,11 +26,12 @@ ENV LANG C.UTF-8
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
-	apt-get install -y --no-install-recommends gnupg dirmngr; \
+	apt-get install -y --no-install-recommends gnupg; \
 	\
 	GNUPGHOME="$(mktemp -d)"; export GNUPGHOME; \
 	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys 11E9DE8848F2B65222AA75B8D1820DB22A11534E; \
 	gpg --batch --export --armor 11E9DE8848F2B65222AA75B8D1820DB22A11534E > /usr/local/share/weechat-keyring.gpg.asc; \
+	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME"; unset GNUPGHOME; \
 	\
 	apt-mark auto '.*' > /dev/null; \

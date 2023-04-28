@@ -10,7 +10,7 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		ca-certificates wget \
-		gnupg dirmngr \
+		gnupg \
 	; \
 	rm -rf /var/lib/apt/lists/*
 

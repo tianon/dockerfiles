@@ -4,7 +4,7 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends ca-certificates; \
 	savedAptMark="$(apt-mark showmanual)"; \
-	apt-get install -y --no-install-recommends gnupg dirmngr; \
+	apt-get install -y --no-install-recommends gnupg; \
 	\
 # https://updates.signal.org/desktop/apt/keys.asc
 	key='DBA3 6B51 81D0 C816 F630  E889 D980 A174 57F6 FB06'; \
@@ -13,6 +13,7 @@ RUN set -eux; \
 	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$key"; \
 	mkdir -p /usr/local/share/keyrings; \
 	gpg --batch --export "$key" > /usr/local/share/keyrings/signal-desktop.gpg; \
+	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME"; \
 	\
 	apt-mark auto '.*' > /dev/null; \

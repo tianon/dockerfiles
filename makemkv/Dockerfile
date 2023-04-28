@@ -27,7 +27,7 @@ RUN set -ex; \
 		ca-certificates \
 		g++ \
 		gcc \
-		gnupg dirmngr \
+		gnupg \
 		libavcodec-dev \
 		libexpat-dev \
 		libssl-dev \
