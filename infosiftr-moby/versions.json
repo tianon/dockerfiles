@@ -1,25 +1,25 @@
 {
   "cli": {
-    "sha256": "164fbe94364c9bc089f634f37fa414b49c1c67888dcf817c61e0f5e0a82b34bd",
-    "version": "20.10.23-1~deb11u0"
+    "sha256": "26594888d5f53ea304ed56387c6695d11e928af97baaa43cb60e6545658dbab1",
+    "version": "20.10.24-1~deb11u0"
   },
   "cli-plugin-buildx": {
-    "sha256": "87bb44ddffb090c55d9b247073701ee9da1f27be8d23ebabb65774e2b0cb88c2",
-    "version": "0.10.3-1~deb11u0"
+    "sha256": "40170b0cb30ed4330671fb9eef220c00edc90219481b95af83a18065b540a45f",
+    "version": "0.10.4-1~deb11u0"
   },
   "containerd": {
-    "sha256": "34f68c5777a694f2a116795e7cafb2f8a44ff40bef45af0d28af3dc471c8420d",
-    "version": "1.6.18-1~deb11u0"
+    "sha256": "d2108e98041bc67fd8ab18b7eee1f86d12385d5196f948853a3d14f9ab547b28",
+    "version": "1.6.21-1~deb11u0"
   },
   "dind": {
     "version": "1f32e3c95d72a29b3eaacba156ed675dba976cb5"
   },
   "engine": {
-    "sha256": "7e245ab59bbf99b78250a73ff135ebb2848cd5ea7ceacf0f9b2896c5af72b006",
-    "version": "20.10.23-1~deb11u0"
+    "sha256": "5f1d31267b9ce639010a112da50dd709111216c20766b2984be74ccf8767cb2e",
+    "version": "20.10.24-1~deb11u0"
   },
   "runc": {
-    "sha256": "7f2f981a5d5ddd227fdfd85e47f58e388e888d5001a42e0061be02095e033c88",
-    "version": "1.1.4-1~deb11u0"
+    "sha256": "f02ccf1bfa73f006e5e6be341f879ea42079e6670d442e539e8dc3d47ccabeda",
+    "version": "1.1.7-1~deb11u0"
   }
 }

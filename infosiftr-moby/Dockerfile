@@ -20,16 +20,16 @@ RUN set -eux; \
 RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://apt.infosiftr.com/moby debian-bullseye stable' > /etc/apt/sources.list.d/moby.list
 
 # http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-cli/
-ENV MOBY_CLI_VERSION 20.10.23-1~deb11u0
+ENV MOBY_CLI_VERSION 20.10.24-1~deb11u0
 # http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-engine/
-ENV MOBY_ENGINE_VERSION 20.10.23-1~deb11u0
+ENV MOBY_ENGINE_VERSION 20.10.24-1~deb11u0
 # http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-containerd/
-ENV MOBY_CONTAINERD_VERSION 1.6.18-1~deb11u0
+ENV MOBY_CONTAINERD_VERSION 1.6.21-1~deb11u0
 # http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-runc/
-ENV MOBY_RUNC_VERSION 1.1.4-1~deb11u0
+ENV MOBY_RUNC_VERSION 1.1.7-1~deb11u0
 
 # http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-buildx/
-ENV MOBY_BUILDX_VERSION 0.10.3-1~deb11u0
+ENV MOBY_BUILDX_VERSION 0.10.4-1~deb11u0
 
 RUN set -eux; \
 	\
