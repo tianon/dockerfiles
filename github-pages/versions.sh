@@ -3,6 +3,7 @@ set -Eeuo pipefail
 
 [ -e versions.json ]
 
+# https://pages.github.com/versions/
 json="$(wget -qO- 'https://pages.github.com/versions.json')"
 
 json="$(jq <<<"$json" -c '
