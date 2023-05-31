@@ -1,6 +1,6 @@
 {
   "dind": {
-    "version": "1f32e3c95d72a29b3eaacba156ed675dba976cb5"
+    "version": "d58df1fc6c866447ce2cd129af10e5b507705624"
   },
   "runc": {
     "version": "1.1.7"
