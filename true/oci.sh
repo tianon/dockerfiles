@@ -22,6 +22,7 @@ tar \
 	--group=0 \
 	--mtime=@0 \
 	--numeric-owner \
+	--mode=00555 \
 	--transform 's/-.*$//' \
 	-- "$bin" \
 	| head --bytes=-1024 \
