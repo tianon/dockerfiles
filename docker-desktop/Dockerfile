@@ -44,8 +44,8 @@ FROM debian:bullseye-slim
 
 # https://docs.docker.com/desktop/release-notes/
 # https://docs.docker.com/desktop/linux/install/
-ENV DOCKER_DESKTOP_URL https://desktop.docker.com/linux/main/amd64/docker-desktop-4.21.0-amd64.deb
-ENV DOCKER_DESKTOP_SHA256 8ace2c4dcbb7b25bce5e8ccd1b36bcd9cd44259c8a4beb31680565bd330f1c09
+ENV DOCKER_DESKTOP_URL https://desktop.docker.com/linux/main/amd64/docker-desktop-4.21.1-amd64.deb
+ENV DOCKER_DESKTOP_SHA256 d22a3b0d961cf56c0c2c0cc4e3fa8b8b3b98ec9f1c72c54841bc61d90a014770
 
 RUN set -eux; \
 	apt-get update; \
