@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 RUN set -eux; \
 	apt-get update; \
@@ -17,19 +17,20 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://apt.infosiftr.com/moby debian-bullseye stable' > /etc/apt/sources.list.d/moby.list
+# https://apt.tianon.xyz/moby/dists/bookworm/tianon-moby.sources
+RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://apt.tianon.xyz/moby bookworm main' > /etc/apt/sources.list.d/moby.list
 
-# http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-cli/
-ENV MOBY_CLI_VERSION 20.10.24-1~deb11u0
-# http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-engine/
-ENV MOBY_ENGINE_VERSION 20.10.24-1~deb11u0
-# http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-containerd/
-ENV MOBY_CONTAINERD_VERSION 1.6.21-1~deb11u0
-# http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-runc/
-ENV MOBY_RUNC_VERSION 1.1.7-1~deb11u0
+# http://apt.tianon.xyz/moby/pool/bookworm/main/moby-cli/
+ENV MOBY_CLI_VERSION 20.10.25-1~deb12u0
+# http://apt.tianon.xyz/moby/pool/bookworm/main/moby-engine/
+ENV MOBY_ENGINE_VERSION 20.10.25-1~deb12u0
+# http://apt.tianon.xyz/moby/pool/bookworm/main/moby-containerd/
+ENV MOBY_CONTAINERD_VERSION 1.6.21-2~deb12u0
+# http://apt.tianon.xyz/moby/pool/bookworm/main/moby-runc/
+ENV MOBY_RUNC_VERSION 1.1.8-1~deb12u0
 
-# http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-buildx/
-ENV MOBY_BUILDX_VERSION 0.10.4-1~deb11u0
+# http://apt.tianon.xyz/moby/pool/bookworm/main/moby-buildx/
+ENV MOBY_BUILDX_VERSION 0.11.2-1~deb12u0
 
 RUN set -eux; \
 	\

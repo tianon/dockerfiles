@@ -17,9 +17,9 @@ for comp in \
 	runc \
 ; do
 	cjson="$(
-		uri='https://apt.infosiftr.com/moby'
-		suite='debian-bullseye'
-		component='stable'
+		uri='https://apt.tianon.xyz/moby'
+		suite='bookworm'
+		component='main'
 		package="moby-$comp"
 		deb-repo
 	)"

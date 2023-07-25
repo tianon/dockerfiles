@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 RUN set -eux; \
 	apt-get update; \
@@ -11,18 +11,19 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://apt.infosiftr.com/moby debian-bullseye stable' > /etc/apt/sources.list.d/moby.list
+# https://apt.tianon.xyz/moby/dists/bookworm/tianon-moby.sources
+RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://apt.tianon.xyz/moby bookworm main' > /etc/apt/sources.list.d/moby.list
 
-# http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-cli/
+# http://apt.tianon.xyz/moby/pool/bookworm/main/moby-cli/
 ENV MOBY_CLI_VERSION {{ .cli.version }}
-# http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-engine/
+# http://apt.tianon.xyz/moby/pool/bookworm/main/moby-engine/
 ENV MOBY_ENGINE_VERSION {{ .engine.version }}
-# http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-containerd/
+# http://apt.tianon.xyz/moby/pool/bookworm/main/moby-containerd/
 ENV MOBY_CONTAINERD_VERSION {{ .containerd.version }}
-# http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-runc/
+# http://apt.tianon.xyz/moby/pool/bookworm/main/moby-runc/
 ENV MOBY_RUNC_VERSION {{ .runc.version }}
 
-# http://apt.infosiftr.com/moby/pool/debian-bullseye/stable/moby-buildx/
+# http://apt.tianon.xyz/moby/pool/bookworm/main/moby-buildx/
 ENV MOBY_BUILDX_VERSION {{ .["cli-plugin-buildx"].version }}
 
 RUN set -eux; \
