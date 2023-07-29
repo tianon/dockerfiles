@@ -21,7 +21,7 @@ ENV CYGWIN winsymlinks:lnk
 # https://cygwin.com/install.html
 # https://cygwin.com/sha512.sum
 ENV CYGWIN_SETUP_URL https://cygwin.com/setup-x86_64.exe
-ENV CYGWIN_SETUP_SHA512 4779bead277ba7e682212ed3b1c9c2a56f9b15586dc2db3949556958b683b6f8a11c1c8957e1027d798281fcc98ccf12c418a609911c7e553787c88f8af86152
+ENV CYGWIN_SETUP_SHA512 d202d509bddcef8e3110608fa9506d8364f3edd1b530c642e992355404491a66e6aa7bed44494da0d8edcfb08c1a1fbb8b5d0ae4e71aba7d0bb541ed029e7130
 # https://cygwin.com/git/gitweb.cgi?p=cygwin-apps/setup.git;a=summary (useful "setup" changelog)
 
 RUN Write-Host ('Downloading {0}' -f $env:CYGWIN_SETUP_URL); \
