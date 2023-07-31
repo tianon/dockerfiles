@@ -1,0 +1,22 @@
+diff --git a/snapshot/diffapply_unix.go b/snapshot/diffapply_unix.go
+index c4875000e..1d9d09d8f 100644
+--- a/snapshot/diffapply_unix.go
++++ b/snapshot/diffapply_unix.go
+@@ -128,7 +128,7 @@ func statInode(stat *syscall.Stat_t) inode {
+ 	}
+ 	return inode{
+ 		ino: stat.Ino,
+-		dev: stat.Dev,
++		dev: uint64(stat.Dev), // TODO figure out the "correct" solution for mips64le (where "stat.Dev" is a uint32)
+ 	}
+ }
+ 
+@@ -297,7 +297,7 @@ func (a *applier) applyDelete(ctx context.Context, ca *changeApply) (bool, error
+ 			if ca.srcStat == nil {
+ 				ca.srcStat = &syscall.Stat_t{
+ 					Mode: syscall.S_IFCHR,
+-					Rdev: unix.Mkdev(0, 0),
++					Rdev: 0, // TODO figure out the "correct" solution for mips64le (where "stat.Dev" is a uint32, but "unix.Mkdev" always returns uint64...); https://cs.opensource.google/go/x/sys/+/refs/tags/v0.10.0:unix/dev_linux.go;l=36
+ 				}
+ 				ca.srcPath = ""
+ 			}
