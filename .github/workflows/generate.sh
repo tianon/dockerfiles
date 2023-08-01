@@ -56,7 +56,7 @@ strategy="$(jq -c --argjson danglingDockerfiles "$danglingDockerfiles" '.matrix.
 			os: "ubuntu-latest",
 			runs: {
 				prepare: $first.runs.prepare,
-				build: ("docker buildx build --progress=plain -t " + ($img | @sh) + " " + ($dir | @sh)),
+				build: (if $dir == "buildkit" then "docker buildx build --progress=plain" else "docker build" end + " -t " + ($img | @sh) + " " + ($dir | @sh)),
 				history: ("docker history " + ($img | @sh)),
 				test: ("~/oi/test/run.sh --config ~/oi/test/config.sh --config .test/config.sh " + ($img | @sh)),
 				images: $first.runs.images,
