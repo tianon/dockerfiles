@@ -12,7 +12,7 @@
 
 FROM golang:1.19-bullseye AS build
 
-RUN set -ex; \
+RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		cmake \
@@ -36,10 +36,10 @@ WORKDIR /moby
 ARG CLI_GITCOMMIT=9bd5ec504afd13e82d5e50b60715e7190c1b2aa0
 ENV CLI_GITCOMMIT $CLI_GITCOMMIT
 
-RUN set -ex; \
+RUN set -eux; \
 	mkdir cli; \
 	cd cli; \
-	wget -O /tmp/cli.tgz "https://github.com/docker/cli/archive/$CLI_GITCOMMIT.tar.gz"; \
+	wget -O /tmp/cli.tgz "https://github.com/docker/cli/archive/$CLI_GITCOMMIT.tar.gz" --progress=dot:giga; \
 	tar -xvf /tmp/cli.tgz --strip-components=1; \
 	rm /tmp/cli.tgz
 
@@ -57,10 +57,10 @@ RUN set -eux; \
 ARG MOBY_GITCOMMIT=e0da5cb9291982a4c7b3c6b0642eeced4ba9f8ac
 ENV MOBY_GITCOMMIT $MOBY_GITCOMMIT
 
-RUN set -ex; \
+RUN set -eux; \
 	mkdir engine; \
 	cd engine; \
-	wget -O /tmp/docker.tgz "https://github.com/moby/moby/archive/$MOBY_GITCOMMIT.tar.gz"; \
+	wget -O /tmp/docker.tgz "https://github.com/moby/moby/archive/$MOBY_GITCOMMIT.tar.gz" --progress=dot:giga; \
 	tar -xvf /tmp/docker.tgz --strip-components=1; \
 	rm /tmp/docker.tgz
 
@@ -97,7 +97,7 @@ RUN set -eux; \
 	ldd /usr/local/bin/dockerd /usr/local/bin/docker-proxy || :
 
 # copy all our binaries to a simple fixed location (so they can be easily extracted, if desired)
-RUN set -ex; \
+RUN set -eux; \
 	mkdir -p /artifacts; \
 	cp -avlL \
 		/usr/local/bin/containerd* \
@@ -107,7 +107,7 @@ RUN set -ex; \
 		/artifacts/
 
 # verify that every binary can run ~standalone
-RUN set -ex; \
+RUN set -eux; \
 	cd /artifacts; \
 	for bin in *; do \
 		case "$bin" in \
