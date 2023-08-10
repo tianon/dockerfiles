@@ -171,6 +171,7 @@ RUN set -eux; \
 	docker-init --version; \
 	dockerd --version; \
 	runc --version; \
+	docker buildx version; \
 	for sh in /usr/local/bin/*.sh; do \
 		sh -n "$sh"; \
 	done
