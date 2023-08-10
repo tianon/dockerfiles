@@ -2,6 +2,7 @@
 set -Eeuo pipefail
 
 # TODO https://cygwin.com/setup/?C=M;O=D !!!!
+# (no clear relationship between these and "sha512.sum" - it's somehow generated only for latest)
 
 [ -e versions.json ]
 
