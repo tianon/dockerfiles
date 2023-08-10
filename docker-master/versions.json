@@ -1,4 +1,7 @@
 {
+  "buildx": {
+    "version": "86ae8ea854e639a3267399fdf3f99e9b900f6e09"
+  },
   "cli": {
     "version": "9bd5ec504afd13e82d5e50b60715e7190c1b2aa0"
   },

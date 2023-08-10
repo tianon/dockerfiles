@@ -9,7 +9,11 @@ source "$dir/../.libs/git.sh"
 
 moby="$(git-ref-commit 'https://github.com/moby/moby.git' 'HEAD')"
 cli="$(git-ref-commit 'https://github.com/docker/cli.git' 'HEAD')"
+buildx="$(git-ref-commit 'https://github.com/docker/buildx.git' 'HEAD')"
 
-jq <<<"$moby" --argjson cli "$cli" -S '
-	.cli = $cli
+jq <<<"$moby" --argjson cli "$cli" --argjson buildx "$buildx" -S '
+	. += {
+		cli: $cli,
+		buildx: $buildx,
+	}
 ' > versions.json
