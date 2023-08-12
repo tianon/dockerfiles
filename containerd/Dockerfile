@@ -23,7 +23,7 @@ RUN set -eux; \
 	chmod +x /usr/local/bin/dind
 
 # https://github.com/opencontainers/runc/releases
-ENV RUNC_VERSION 1.1.8
+ENV RUNC_VERSION 1.1.9
 RUN set -eux; \
 # TODO multiple architectures
 	wget -O /usr/local/bin/runc "https://github.com/opencontainers/runc/releases/download/v${RUNC_VERSION}/runc.amd64" --progress=dot:giga; \
