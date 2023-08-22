@@ -7,7 +7,10 @@ dir="$(readlink -ve "$BASH_SOURCE")"
 dir="$(dirname "$dir")"
 source "$dir/../.libs/git.sh"
 
+versions_hooks+=( hook_no-prereleases )
+
 json="$(git-tags 'https://github.com/tinygo-org/tinygo.git')"
+
 tag="$(jq <<<"$json" -r '.tag')"
 go="$(
 	wget -qO- "https://github.com/tinygo-org/tinygo/raw/$tag/go.mod" \
@@ -15,4 +18,6 @@ go="$(
 )"
 echo "tinygo go: $go"
 
-jq <<<"$json" -S --arg go "$go" 'del(.tag) | .go = { version: $go }' > versions.json
+jq <<<"$json" --arg go "$go" '
+	.go = { version: $go }
+' > versions.json

@@ -25,9 +25,25 @@ RUN set -ex; \
 		s390x)    arch='s390x' ;; \
 		*)        arch='src' ;; \
 	esac; \
-# TODO sha256sums.txt
 	if [ "$arch" != 'src' ]; then \
-		url="https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.linux-${arch}.tar.gz"; \
+		filename="node_exporter-${NODE_EXPORTER_VERSION}.linux-${arch}.tar.gz"; \
+		case "$filename" in \
+			'node_exporter-1.6.1.linux-386.tar.gz') sha256='e81a7aeecc2b7dc771b77b999e89884fab83c129818a0631f4a3ecf7279a3612' ;; \
+			'node_exporter-1.6.1.linux-amd64.tar.gz') sha256='ecc41b3b4d53f7b9c16a370419a25a133e48c09dfc49499d63bcc0c5e0cf3d01' ;; \
+			'node_exporter-1.6.1.linux-arm64.tar.gz') sha256='f99ea62cec600bca5c926d300522d7a3bb797592d70dc1bcdc20b57811f1d439' ;; \
+			'node_exporter-1.6.1.linux-armv5.tar.gz') sha256='dbb0a44401d304009af03f437c854a401bfe7597a4b69cb7fc6700793088065b' ;; \
+			'node_exporter-1.6.1.linux-armv6.tar.gz') sha256='7e7999318a165bd2e71e734ec6b86570212bec5078d478c4803d19c96e832197' ;; \
+			'node_exporter-1.6.1.linux-armv7.tar.gz') sha256='9212d3c7b10f7ff904ed2dda038fddf4a4cc2f5cc4ebb4afe83f9159b5bbc5bb' ;; \
+			'node_exporter-1.6.1.linux-mips.tar.gz') sha256='5f3f8a874617b9c2c8c174fef8d46d815f6d384622728eaf13c6ad498af9c9df' ;; \
+			'node_exporter-1.6.1.linux-mips64.tar.gz') sha256='cff89d90b22c6c16723bfa7d5ed1bb5d245f41fd0b1ef7810cf2d606208c0ed7' ;; \
+			'node_exporter-1.6.1.linux-mips64le.tar.gz') sha256='207df09b72d2dbccdabee0154a3d292a140e26925d61ae6e31015716c7868783' ;; \
+			'node_exporter-1.6.1.linux-mipsle.tar.gz') sha256='75e3675ed8286ba8274552f9ea83ae8a70c312ffefd7f1687a1ac88bf0d5d1d3' ;; \
+			'node_exporter-1.6.1.linux-ppc64.tar.gz') sha256='3956593d3bb5b351cb8e415124d0fc40ec9010fb6450dd6e29d7823f2673a02a' ;; \
+			'node_exporter-1.6.1.linux-ppc64le.tar.gz') sha256='f8ef54b6b6c899c9b81ad0150612d897be8d88f8ef17ab70d3a82f7bc36b0dd0' ;; \
+			'node_exporter-1.6.1.linux-s390x.tar.gz') sha256='3c2d3b8f4da2adda2897195257fc5a633795811893ac11208f525bfb75402734' ;; \
+			*) echo >&2 "error: unknown file: $filename"; exit 1 ;; \
+		esac; \
+		url="https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/$filename"; \
 	else \
 		url="https://github.com/prometheus/node_exporter/archive/refs/tags/v${NODE_EXPORTER_VERSION}.tar.gz"; \
 	fi; \
@@ -50,6 +66,9 @@ RUN set -ex; \
 	fi; \
 	\
 	wget -O /tmp/node-exporter.tar.gz "$url"; \
+	if [ "$arch" != 'src' ]; then \
+		echo "$sha256 */tmp/node-exporter.tar.gz" | sha256sum --strict --check -; \
+	fi; \
 	\
 	tar \
 		--extract \

@@ -24,4 +24,4 @@ for variant in weekly lts; do
 	')"
 done
 
-jq <<<"$json" -S . > versions.json
+jq <<<"$json" '.' > versions.json

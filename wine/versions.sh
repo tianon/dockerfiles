@@ -17,7 +17,7 @@ json="$(
 	deb-repo
 )"
 
-jq <<<"$json" -S '
+jq <<<"$json" '
 	{
 		version: (.version | split("~")[0]),
 		debian: .,

@@ -7,6 +7,8 @@ dir="$(readlink -ve "$BASH_SOURCE")"
 dir="$(dirname "$dir")"
 source "$dir/../.libs/pypi.sh"
 
+versions_hooks+=( hook_no-prereleases )
+
 json="$(pypi 'diffoscope')"
 
-jq <<<"$json" -S . > versions.json
+jq <<<"$json" '.' > versions.json

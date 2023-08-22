@@ -9,17 +9,14 @@ json="$(wget -qO- 'https://pages.github.com/versions.json')"
 json="$(jq <<<"$json" -c '
 	{
 		version: ."github-pages",
-		ruby: {
-			version: (
-				.ruby
-				| match("^([0-9]+[.][0-9]+)[.]")
-				| .captures[0].string
-			),
-		},
+		ruby: (
+			.ruby
+			| capture("^(?<version>[0-9]+[.][0-9]+)[.]")
+		),
 	}
 ')"
 
 version="$(jq <<<"$json" -r '.version')"
 echo >&2 "github-pages: $version"
 
-jq <<<"$json" -S . > versions.json
+jq <<<"$json" '.' > versions.json

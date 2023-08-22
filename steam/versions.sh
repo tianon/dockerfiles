@@ -15,4 +15,4 @@ json="$(
 	deb-repo
 )"
 
-jq <<<"$json" -S '.version |= split(":")[1]' > versions.json
+jq <<<"$json" '.version |= split(":")[1]' > versions.json

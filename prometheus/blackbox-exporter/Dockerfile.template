@@ -22,8 +22,16 @@ RUN set -ex; \
 		*) echo >&2 "error: unsupported arch: $apkArch"; exit 1 ;; \
 	esac; \
 	\
-	wget -O /tmp/blackbox-exporter.tar.gz "https://github.com/prometheus/blackbox_exporter/releases/download/v${BLACKBOX_EXPORTER_VERSION}/blackbox_exporter-${BLACKBOX_EXPORTER_VERSION}.linux-$promArch.tar.gz"; \
-# TODO sha256sums.txt
+	filename="blackbox_exporter-${BLACKBOX_EXPORTER_VERSION}.linux-$promArch.tar.gz"; \
+	case "$filename" in \
+{{ .sha256 | to_entries | map(select(.key | startswith("blackbox_exporter-") and contains(".linux-")) | ( -}}
+		{{ .key | @sh }}) sha256={{ .value | @sh }} ;; \
+{{ )) | add -}}
+		*) echo >&2 "error: unknown file: $filename"; exit 1 ;; \
+	esac; \
+	wget -O /tmp/blackbox-exporter.tar.gz "https://github.com/prometheus/blackbox_exporter/releases/download/v${BLACKBOX_EXPORTER_VERSION}/$filename"; \
+	echo "$sha256 */tmp/blackbox-exporter.tar.gz" | sha256sum -c -; \
+	\
 	tar \
 		--extract \
 		--file /tmp/blackbox-exporter.tar.gz \
