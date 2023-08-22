@@ -24,6 +24,7 @@ RUN set -eux; \
 		libqt5quickwidgets5 \
 		libqt5widgets5 \
 		libqt5x11extras5 \
+		libqt5xml5 \
 # TODO test whether this one's still necessary
 		libxkbcommon-x11-0 \
 	; \

@@ -30,6 +30,7 @@ RUN set -eux; \
 		libqt5quickwidgets5 \
 		libqt5widgets5 \
 		libqt5x11extras5 \
+		libqt5xml5 \
 # TODO test whether this one's still necessary
 		libxkbcommon-x11-0 \
 	; \
@@ -37,7 +38,7 @@ RUN set -eux; \
 
 # https://zoom.us/download#client_4meeting ("Debian", "64 bit", "8.0+", "Version X.Y.ZZZ.ZZZ")
 # https://support.zoom.us/hc/en-us/articles/205759689-Release-notes-for-Linux
-ENV ZOOM_VERSION 5.15.7.6521
+ENV ZOOM_VERSION 5.15.10.6882
 # curl -fsS --head 'https://zoom.us/client/latest/zoom_amd64.deb' | grep '^location: '
 
 RUN set -eux; \
