@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+# TODO implement "hooks.sh"
+
 deb-repo() {
 	[ -n "$uri" ]
 	[ -n "$suite" ]

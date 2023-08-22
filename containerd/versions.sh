@@ -7,12 +7,13 @@ dir="$(readlink -ve "$BASH_SOURCE")"
 dir="$(dirname "$dir")"
 source "$dir/../.libs/git.sh"
 
+versions_hooks+=( hook_no-prereleases )
+
 containerd="$(git-tags 'https://github.com/containerd/containerd.git')"
 runc="$(git-tags 'https://github.com/opencontainers/runc.git')"
 dind="$(github-file-commit 'moby/moby' 'HEAD' 'hack/dind')"
 
-jq <<<"$containerd" --argjson runc "$runc" --argjson dind "$dind" -S '
+jq <<<"$containerd" --argjson runc "$runc" --argjson dind "$dind" '
 	.runc = $runc
 	| .dind = $dind
-	| del(.tag, .runc.tag)
 ' > versions.json

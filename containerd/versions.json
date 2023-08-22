@@ -1,9 +1,15 @@
 {
-  "dind": {
-    "version": "d58df1fc6c866447ce2cd129af10e5b507705624"
-  },
+  "commit": "7880925980b188f4c97b462f709d0db8e8962aff",
+  "ref": "refs/tags/v1.7.3^{}",
+  "tag": "v1.7.3",
+  "version": "1.7.3",
   "runc": {
+    "commit": "ccaecfcbc907d70a7aa870a6650887b901b25b82",
+    "ref": "refs/tags/v1.1.9^{}",
+    "tag": "v1.1.9",
     "version": "1.1.9"
   },
-  "version": "1.7.3"
+  "dind": {
+    "version": "d58df1fc6c866447ce2cd129af10e5b507705624"
+  }
 }

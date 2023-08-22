@@ -1,11 +1,18 @@
 {
-  "arches": {
-    "amd64": {
-      "sha256": "a9719d5761112486b13a1a7293b083e665e96c31ea0944303fa67448783bf2b6"
-    },
-    "arm64v8": {
-      "sha256": "47fe224b38aedeb6670a8e0c9f95a5c37c243327a8ff9fc161538b0979b58109"
-    }
-  },
-  "version": "2.17.0"
+  "commit": "23aedfad3d1605fbca72c6ad690118a17099dc90",
+  "ref": "refs/tags/v2.17.0",
+  "tag": "v2.17.0",
+  "version": "2.17.0",
+  "sha256": {
+    "vultr-cli_2.17.0_windows_armv7.zip": "06f857eb7053a08cfd7d0b7a9177d56945025bbbe3231f059aad14e3d707c1be",
+    "vultr-cli_2.17.0_linux_armv7.tar.gz": "3cf74a8327444c698a66d802667997887cb16f54574455968c828a9cb07bd1bc",
+    "vultr-cli_2.17.0_linux_arm64-bit.tar.gz": "47fe224b38aedeb6670a8e0c9f95a5c37c243327a8ff9fc161538b0979b58109",
+    "vultr-cli_2.17.0_linux_armv6.tar.gz": "6410c537503c3d180e81c16032ad6cc110ada6f513bf0ee8a219de8a33e6c9af",
+    "vultr-cli_2.17.0_macOs_64-bit.tar.gz": "73dea4c67a671f8b45ab02b6aa34b3a9392cfc180c386a8802b1dabed09558fd",
+    "vultr-cli_2.17.0_windows_arm64-bit.zip": "97e6ce0a606f6911ec0effd22baf6c3f3fa25ca365cc93cebecf4ad634e6449b",
+    "vultr-cli_2.17.0_linux_64-bit.tar.gz": "a9719d5761112486b13a1a7293b083e665e96c31ea0944303fa67448783bf2b6",
+    "vultr-cli_2.17.0_windows_64-bit.zip": "bab4de51bf54014498528721eca67610d7e508b9f24f8c5b169ee6304f3d9b52",
+    "vultr-cli_2.17.0_windows_armv6.zip": "c6abf999c685e503c6971372a9bfc51f6bf580d9bf5aae11632264092fb4e184",
+    "vultr-cli_2.17.0_macOs_arm64-bit.tar.gz": "d49b13ad4a96912e5332d9059f128332c1af6aa9aca8df995b68de4e3cc63b43"
+  }
 }

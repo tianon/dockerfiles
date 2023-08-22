@@ -22,8 +22,15 @@ RUN set -ex; \
 		*) echo >&2 "error: unsupported arch: $apkArch"; exit 1 ;; \
 	esac; \
 	\
-	wget -O /tmp/prom.tar.gz "https://github.com/prometheus/prometheus/releases/download/v${PROMETHEUS_VERSION}/prometheus-${PROMETHEUS_VERSION}.linux-${promArch}.tar.gz"; \
-# TODO sha256sums.txt
+	filename="prometheus-${PROMETHEUS_VERSION}.linux-${promArch}.tar.gz"; \
+	case "$filename" in \
+{{ .sha256 | to_entries | map(select(.key | startswith("prometheus-") and contains(".linux-")) | ( -}}
+		{{ .key | @sh }}) sha256={{ .value | @sh }} ;; \
+{{ )) | add -}}
+		*) echo >&2 "error: unknown file: $filename"; exit 1 ;; \
+	esac; \
+	wget -O /tmp/prom.tar.gz "https://github.com/prometheus/prometheus/releases/download/v${PROMETHEUS_VERSION}/$filename"; \
+	echo "$sha256 */tmp/prom.tar.gz" | sha256sum -c -; \
 	\
 	tar \
 		--extract \

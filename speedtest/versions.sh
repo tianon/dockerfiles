@@ -43,4 +43,4 @@ json="$(jq <<<"$urls" -Rsc '
 version="$(jq <<<"$json" -r '.version')"
 echo >&2 "speedtest: $version"
 
-jq <<<"$json" -S . > versions.json
+jq <<<"$json" '.' > versions.json

@@ -1,5 +1,9 @@
 {
+  "version": "1.2.0",
   "arches": {
+    "i386": {
+      "url": "https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-i386.tgz"
+    },
     "amd64": {
       "url": "https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-x86_64.tgz"
     },
@@ -11,10 +15,6 @@
     },
     "arm64v8": {
       "url": "https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-aarch64.tgz"
-    },
-    "i386": {
-      "url": "https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-i386.tgz"
     }
-  },
-  "version": "1.2.0"
+  }
 }

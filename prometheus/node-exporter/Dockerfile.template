@@ -19,9 +19,15 @@ RUN set -ex; \
 		s390x)    arch='s390x' ;; \
 		*)        arch='src' ;; \
 	esac; \
-# TODO sha256sums.txt
 	if [ "$arch" != 'src' ]; then \
-		url="https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.linux-${arch}.tar.gz"; \
+		filename="node_exporter-${NODE_EXPORTER_VERSION}.linux-${arch}.tar.gz"; \
+		case "$filename" in \
+{{ .sha256 | to_entries | map(select(.key | startswith("node_exporter-") and contains(".linux-")) | ( -}}
+			{{ .key | @sh }}) sha256={{ .value | @sh }} ;; \
+{{ )) | add -}}
+			*) echo >&2 "error: unknown file: $filename"; exit 1 ;; \
+		esac; \
+		url="https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/$filename"; \
 	else \
 		url="https://github.com/prometheus/node_exporter/archive/refs/tags/v${NODE_EXPORTER_VERSION}.tar.gz"; \
 	fi; \
@@ -44,6 +50,9 @@ RUN set -ex; \
 	fi; \
 	\
 	wget -O /tmp/node-exporter.tar.gz "$url"; \
+	if [ "$arch" != 'src' ]; then \
+		echo "$sha256 */tmp/node-exporter.tar.gz" | sha256sum --strict --check -; \
+	fi; \
 	\
 	tar \
 		--extract \

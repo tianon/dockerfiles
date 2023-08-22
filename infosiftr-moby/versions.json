@@ -11,9 +11,6 @@
     "sha256": "2f7cdd140e8df673cadb0c1fb610eb68e7be500b8ac28980857fb6614c0494cc",
     "version": "1.6.21-2~deb12u0"
   },
-  "dind": {
-    "version": "d58df1fc6c866447ce2cd129af10e5b507705624"
-  },
   "engine": {
     "sha256": "67bfd02c6313c18e482f3ae9c14f9c03e794a2ae07e4b50b774a5fa4a7c89923",
     "version": "20.10.25-1~deb12u0"
@@ -21,5 +18,8 @@
   "runc": {
     "sha256": "f655a7436e0c89db8888c5abe607fa7809eafb7143fb748d5509ec3a27a711c2",
     "version": "1.1.8-1~deb12u0"
+  },
+  "dind": {
+    "version": "d58df1fc6c866447ce2cd129af10e5b507705624"
   }
 }

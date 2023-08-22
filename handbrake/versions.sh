@@ -7,6 +7,8 @@ dir="$(readlink -ve "$BASH_SOURCE")"
 dir="$(dirname "$dir")"
 source "$dir/../.libs/git.sh"
 
+versions_hooks+=( hook_no-prereleases )
+
 json="$(git-tags 'https://github.com/HandBrake/HandBrake.git')"
 
-jq <<<"$json" -S 'del(.tag)' > versions.json
+jq <<<"$json" '.' > versions.json

@@ -28,4 +28,4 @@ done
 
 dind="$(github-file-commit 'moby/moby' 'HEAD' 'hack/dind')"
 
-jq <<<"$json" -S --argjson dind "$dind" '.dind = $dind' > versions.json
+jq <<<"$json" --argjson dind "$dind" '.dind = $dind' > versions.json

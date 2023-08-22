@@ -40,4 +40,5 @@ json="$(jq <<<"$json" -c '
 		),
 	}
 ')"
-jq <<<"$json" -S . > versions.json
+
+jq <<<"$json" '.' > versions.json
