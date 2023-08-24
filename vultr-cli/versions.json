@@ -1,18 +1,18 @@
 {
-  "commit": "23aedfad3d1605fbca72c6ad690118a17099dc90",
-  "ref": "refs/tags/v2.17.0",
-  "tag": "v2.17.0",
-  "version": "2.17.0",
+  "commit": "e7ed88169b42c07894e69752f168abac4c682d7c",
+  "ref": "refs/tags/v2.18.2",
+  "tag": "v2.18.2",
+  "version": "2.18.2",
   "sha256": {
-    "vultr-cli_2.17.0_windows_armv7.zip": "06f857eb7053a08cfd7d0b7a9177d56945025bbbe3231f059aad14e3d707c1be",
-    "vultr-cli_2.17.0_linux_armv7.tar.gz": "3cf74a8327444c698a66d802667997887cb16f54574455968c828a9cb07bd1bc",
-    "vultr-cli_2.17.0_linux_arm64-bit.tar.gz": "47fe224b38aedeb6670a8e0c9f95a5c37c243327a8ff9fc161538b0979b58109",
-    "vultr-cli_2.17.0_linux_armv6.tar.gz": "6410c537503c3d180e81c16032ad6cc110ada6f513bf0ee8a219de8a33e6c9af",
-    "vultr-cli_2.17.0_macOs_64-bit.tar.gz": "73dea4c67a671f8b45ab02b6aa34b3a9392cfc180c386a8802b1dabed09558fd",
-    "vultr-cli_2.17.0_windows_arm64-bit.zip": "97e6ce0a606f6911ec0effd22baf6c3f3fa25ca365cc93cebecf4ad634e6449b",
-    "vultr-cli_2.17.0_linux_64-bit.tar.gz": "a9719d5761112486b13a1a7293b083e665e96c31ea0944303fa67448783bf2b6",
-    "vultr-cli_2.17.0_windows_64-bit.zip": "bab4de51bf54014498528721eca67610d7e508b9f24f8c5b169ee6304f3d9b52",
-    "vultr-cli_2.17.0_windows_armv6.zip": "c6abf999c685e503c6971372a9bfc51f6bf580d9bf5aae11632264092fb4e184",
-    "vultr-cli_2.17.0_macOs_arm64-bit.tar.gz": "d49b13ad4a96912e5332d9059f128332c1af6aa9aca8df995b68de4e3cc63b43"
+    "2.18.2_macOs_amd64.tar.gz": "09b1741b09d1fd984c55336d62c5bee309b46021a2e6eb7d5ef221f5cacfc45d",
+    "2.18.2_windows_arm32-v6.zip": "0a5fa4f25653b1943c184ba7539bad569ead6bd690c1c7d4edcf09bf5258c062",
+    "2.18.2_linux_arm32-v6.tar.gz": "0c990926d7b342d77ad3867a713739302951df1439a92102514bba1215d8fe9c",
+    "2.18.2_macOs_arm64.tar.gz": "0e1f48736e94972508006290c73b483a769e25ba6589a0f016352d16edf50a47",
+    "2.18.2_linux_arm64.tar.gz": "25bb6eba73696a12c9426f9acf4744f61819d638ac09a0668ef9887cc6ab6c30",
+    "2.18.2_linux_arm32-v7.tar.gz": "3a05671aeb8e8a6a8456fec4264174e88393f04e5bcf92b7f094f0d4e0a41f4d",
+    "2.18.2_linux_amd64.tar.gz": "4807964caf2dd34f2a44522b64deac18f1c985422a10d52ea60ba668fae49ed0",
+    "2.18.2_windows_arm32-v7.zip": "7db499123302b85bfc38b47448d8ee870f96dada1b5920f2e2ec73a4d1d1854c",
+    "2.18.2_windows_arm64.zip": "92d739f2a4f6dff50c8c063abc8fb4fdc10ef7c05df8e0893713a4f7ce437659",
+    "2.18.2_windows_amd64.zip": "d219f1e0d8179de6827252d7e7b8fd897728f95d68cb752e62f51fb83ba96a70"
   }
 }

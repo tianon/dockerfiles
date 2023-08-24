@@ -9,16 +9,16 @@ RUN set -eux; \
 	\
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
-		aarch64) vultrArch='arm64-bit' ;; \
-		armhf)   vultrArch='armv6'     ;; \
-		armv7)   vultrArch='armv7'     ;; \
-		x86_64)  vultrArch='64-bit'    ;; \
+		aarch64) vultrArch='arm64'    ;; \
+		armhf)   vultrArch='arm32-v6' ;; \
+		armv7)   vultrArch='arm32-v7' ;; \
+		x86_64)  vultrArch='amd64'    ;; \
 		*) echo >&2 "error: unsupported arch: $apkArch"; exit 1 ;; \
 	esac; \
 	\
-	filename="vultr-cli_${VULTR_CLI_VERSION}_linux_${vultrArch}.tar.gz"; \
+	filename="${VULTR_CLI_VERSION}_linux_${vultrArch}.tar.gz"; \
 	case "$filename" in \
-{{ .sha256 | to_entries | map(select(.key | startswith("vultr-cli_") and contains("_linux_")) | ( -}}
+{{ .sha256 | to_entries | map(select(.key | contains("_linux_")) | ( -}}
 		{{ .key | @sh }}) sha256={{ .value | @sh }} ;; \
 {{ )) | add -}}
 		*) echo >&2 "error: unknown file: $filename"; exit 1 ;; \
