@@ -1,9 +1,9 @@
 {
-  "version": "96686135418922a14f0bf1b69e7954e62370a299",
+  "version": "cfd431d4d57c987353d84f5709af1ec7493278c7",
   "cli": {
     "version": "41183c2c927b9b263e840f7f897205a32f2e9e42"
   },
   "buildx": {
-    "version": "3bd4bca9941389a73f014f5e2e17316a69f74cf8"
+    "version": "da6662975f0de310887ba2f2c748cbd21753e871"
   }
 }
