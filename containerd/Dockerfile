@@ -50,3 +50,4 @@ COPY non-root-containerd.sh /usr/local/bin/
 CMD ["non-root-containerd.sh"]
 
 # use "dind containerd" if you want to run real containers (with "--privileged" and an appropriate volume at "/var/lib/containerd")
+# see also Dockerfile.c8dind (or "tianon/containerd:c8dind")

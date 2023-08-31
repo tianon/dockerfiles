@@ -1,0 +1,4 @@
+FROM tianon/containerd
+VOLUME /var/lib/containerd
+ENTRYPOINT ["dind"]
+CMD ["containerd"]
