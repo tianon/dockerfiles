@@ -43,11 +43,14 @@ RUN set -eux; \
 
 RUN set -eux; \
 	mkdir -p /run/containerd /var/lib/containerd; \
-	chmod 777 /run/containerd /var/lib/containerd
+	chmod 1777 /run/containerd /var/lib/containerd
 
-COPY non-root-containerd.sh /usr/local/bin/
+VOLUME /var/lib/containerd
 
-CMD ["non-root-containerd.sh"]
+# add an entrypoint that does clever things if the container is run as non-root (cannot run containers, but content/image stores should work fine)
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["containerd"]
 
-# use "dind containerd" if you want to run real containers (with "--privileged" and an appropriate volume at "/var/lib/containerd")
+# use "docker run ... dind containerd" if you want to run real containers (with "--privileged")
 # see also Dockerfile.c8dind (or "tianon/containerd:c8dind")

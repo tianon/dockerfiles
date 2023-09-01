@@ -1,4 +1,3 @@
 FROM tianon/containerd
-VOLUME /var/lib/containerd
-ENTRYPOINT ["dind"]
+ENTRYPOINT ["dind", "docker-entrypoint.sh"]
 CMD ["containerd"]
