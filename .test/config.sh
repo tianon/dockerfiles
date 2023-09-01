@@ -2,16 +2,21 @@
 
 # https://github.com/docker-library/official-images/blob/3e27b6eb7a12bc15e5e2dde52d2477c818863ce3/test/config.sh
 
+# TODO add an explicit c8dind test 👀
+
 imageTests+=(
 	[tianon/true]='true'
 )
 
-# single-binary images
 globalExcludeTests+=(
+	# single-binary images
 	[tianon/sleeping-beauty_no-hard-coded-passwords]=1
 	[tianon/sleeping-beauty_utc]=1
 	[tianon/true_no-hard-coded-passwords]=1
 	[tianon/true_utc]=1
+
+	# needs --privileged (by design)
+	[tianon/containerd:c8dind_override-cmd]=1
 )
 
 # ONBUILD
