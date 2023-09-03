@@ -19,18 +19,31 @@ RUN set -eux; \
 # https://github.com/opencontainers/runc/releases
 ENV RUNC_VERSION {{ .runc.version }}
 RUN set -eux; \
-# TODO multiple architectures
-	wget -O /usr/local/bin/runc "https://github.com/opencontainers/runc/releases/download/v${RUNC_VERSION}/runc.amd64" --progress=dot:giga; \
-# TODO .asc / .sha256sum
+	dpkgArch="$(dpkg --print-architecture)"; \
+	case "$dpkgArch" in \
+{{ .runc.arches | map( -}}
+		{{ .dpkgArch // empty | @sh }}) url={{ .url | @sh }}; sha256={{ .sha256 | @sh }} ;; \
+{{ ) | add -}}
+		*) echo >&2 "error: unsupported architecture: '$dpkgArch'"; exit 1 ;; \
+	esac; \
+# TODO $url.asc (see https://github.com/opencontainers/runc/releases)
+	wget -O /usr/local/bin/runc "$url" --progress=dot:giga; \
+	echo "$sha256 */usr/local/bin/runc" | sha256sum --strict --check -; \
 	chmod +x /usr/local/bin/runc; \
 	runc --version
 
 # https://github.com/containerd/containerd/releases
 ENV CONTAINERD_VERSION {{ .version }}
 RUN set -eux; \
-# TODO multiple architectures
-	wget -O containerd.tar.gz "https://github.com/containerd/containerd/releases/download/v${CONTAINERD_VERSION}/containerd-${CONTAINERD_VERSION}-linux-amd64.tar.gz" --progress=dot:giga; \
-# TODO .sha256sum
+	dpkgArch="$(dpkg --print-architecture)"; \
+	case "$dpkgArch" in \
+{{ .arches | map( -}}
+		{{ .dpkgArch // empty | @sh }}) url={{ .url | @sh }}; sha256={{ .sha256 | @sh }} ;; \
+{{ ) | add -}}
+		*) echo >&2 "error: unsupported architecture: '$dpkgArch'"; exit 1 ;; \
+	esac; \
+	wget -O containerd.tar.gz "$url" --progress=dot:giga; \
+	echo "$sha256 *containerd.tar.gz" | sha256sum --strict --check -; \
 	tar -xvf containerd.tar.gz -C /usr/local/; \
 	rm containerd.tar.gz; \
 	containerd --version
