@@ -15,6 +15,7 @@ RUN set -eux; \
 		libgl1 \
 		libgl1-mesa-dri \
 		libpulse0 \
+# TODO mesa-vulkan-drivers ? ("Warning: vkCreateInstance: Found no drivers!") -- adding didn't seem to change anything except remove the warning (still "Disabled" in "about:gpu") 🤷
 	; \
 	rm -rf /var/lib/apt/lists/*
 
