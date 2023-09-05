@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 RUN set -eux; \
 	apt-get update; \
