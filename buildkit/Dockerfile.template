@@ -1,9 +1,3 @@
-#
-# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
-#
-# PLEASE DO NOT EDIT IT DIRECTLY.
-#
-
 # syntax=docker/dockerfile:1.5
 
 FROM --platform=$BUILDPLATFORM golang:1.20 AS build
@@ -21,7 +15,7 @@ ARG TARGETOS TARGETARCH TARGETVARIANT
 ENV GOOS=$TARGETOS GOARCH=$TARGETARCH VARIANT=$TARGETVARIANT
 
 # https://github.com/moby/buildkit/releases
-ENV BUILDKIT_VERSION 0.12.2
+ENV BUILDKIT_VERSION {{ .version }}
 
 # pkg/mod/github.com/moby/buildkit@v0.12.0/snapshot/diffapply_unix.go:131:8: cannot use stat.Dev (variable of type uint32) as uint64 value in struct literal
 # pkg/mod/github.com/moby/buildkit@v0.12.0/snapshot/diffapply_unix.go:300:12: cannot use unix.Mkdev(0, 0) (value of type uint64) as uint32 value in struct literal
