@@ -24,3 +24,17 @@ def deb_arch:
 		s390x: "s390x",
 	}[.]
 ;
+def apk_arch:
+	{
+		# https://dl-cdn.alpinelinux.org/alpine/edge/main/
+		# https://dl-cdn.alpinelinux.org/alpine/latest-stable/main/
+		amd64: "x86_64",
+		arm32v6: "armhf",
+		arm32v7: "armv7",
+		arm64v8: "aarch64",
+		i386: "x86",
+		ppc64le: "ppc64le",
+		riscv64: "riscv64",
+		s390x: "s390x",
+	}[.]
+;
