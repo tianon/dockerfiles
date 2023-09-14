@@ -1,4 +1,4 @@
-FROM python:{{ .python.version }}-alpine3.18
+FROM {{ .python.from }}
 
 # https://pypi.org/project/b2/
 ENV BACKBLAZE_B2_VERSION {{ .version }}

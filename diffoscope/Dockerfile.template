@@ -1,4 +1,4 @@
-FROM python:{{ .python.version }}-slim-bullseye
+FROM {{ .python.from }}
 
 RUN set -eux; \
 	apt-get update; \

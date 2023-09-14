@@ -1,4 +1,4 @@
-FROM python:{{ .python.version }}-alpine3.18
+FROM {{ .python.from }}
 
 RUN apk add --no-cache gnupg librsync
 

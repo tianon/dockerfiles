@@ -29,21 +29,36 @@ pypi() {
 			[ "$yanked" = 'false' ]
 		}
 		hook_pypi-add-python-version() {
-			jq <<<"$pypi" -c '
-				.info.classifiers
-				| map(
-					capture("^(?:Programming Language :: )?Python :: (?<python>[0-9]+[.][0-9]+)$")
-					| .python
-				)
-				| sort_by(
-					split(".")
-					| map(tonumber)
-				)
-				| .[-1] // empty
-				| {
-					python: { version: . },
-				}
-			'
+			local pythons
+			pythons="$(
+				jq <<<"$pypi" -r '
+					.info.classifiers
+					| map(
+						capture("^(?:Programming Language :: )?Python :: (?<python>[0-9]+[.][0-9]+)$")
+						| .python
+					)
+					| sort_by(
+						split(".")
+						| map(tonumber)
+					)
+					| reverse
+					| map(@sh)
+					| join(" ")
+				'
+			)"
+			eval "pythons=( $pythons )"
+			local python pythonTemplate="${TIANON_PYTHON_FROM_TEMPLATE:-python:%%PYTHON%%}"
+			for python in "${pythons[@]}"; do
+				local from="${pythonTemplate//%%PYTHON%%/$python}"
+				local arches
+				if ! arches="$(bashbrew remote arches --json "$from")"; then
+					echo >&2 "skipping $from ..."
+					continue
+				fi
+				jq -nc --arg python "$python" --arg from "$from" --argjson arches "$arches" '{ python: { version: $python, from: $from, arches: ($arches.arches | keys) } }'
+				return 0
+			done
+			return 1 # TODO should this be more lenient of packages missing metadata? (or whose template results in no matching Pythons 😬)
 		}
 		versions_hooks=( hook_pypi-no-yanked hook_pypi-add-python-version "${versions_hooks[@]}" )
 		versions_loop 'pypi' "$package" "${versions[@]}"
