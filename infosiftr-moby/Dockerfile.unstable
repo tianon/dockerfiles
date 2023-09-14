@@ -1,5 +1,10 @@
-{{ def debian: if env.variant != "" then env.variant else .debian.version end -}}
-FROM debian:{{ debian }}-slim
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
+FROM debian:unstable-slim
 
 RUN set -eux; \
 	apt-get update; \
@@ -13,22 +18,21 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # https://apt.tianon.xyz/moby
-# https://apt.tianon.xyz/moby/dists/{{ .debian.version }}/tianon-moby.sources
-RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://apt.tianon.xyz/moby {{ debian }} main' > /etc/apt/sources.list.d/moby.list
+# https://apt.tianon.xyz/moby/dists/bookworm/tianon-moby.sources
+RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://apt.tianon.xyz/moby unstable main' > /etc/apt/sources.list.d/moby.list
 # TODO deb822
 
-{{ def version(comp): .[env.variant // ""]?[comp].version // .[comp].version -}}
-# http://apt.tianon.xyz/moby/pool/{{ debian }}/main/moby-engine/
-ENV MOBY_ENGINE_VERSION {{ version("engine") }}
-# http://apt.tianon.xyz/moby/pool/{{ debian }}/main/moby-containerd/
-ENV MOBY_CONTAINERD_VERSION {{ version("containerd") }}
-# http://apt.tianon.xyz/moby/pool/{{ debian }}/main/moby-runc/
-ENV MOBY_RUNC_VERSION {{ version("runc") }}
+# http://apt.tianon.xyz/moby/pool/unstable/main/moby-engine/
+ENV MOBY_ENGINE_VERSION 20.10.25-1
+# http://apt.tianon.xyz/moby/pool/unstable/main/moby-containerd/
+ENV MOBY_CONTAINERD_VERSION 1.6.21-2
+# http://apt.tianon.xyz/moby/pool/unstable/main/moby-runc/
+ENV MOBY_RUNC_VERSION 1.1.8-1
 
-# http://apt.tianon.xyz/moby/pool/{{ debian }}/main/moby-cli/
-ENV MOBY_CLI_VERSION {{ version("cli") }}
-# http://apt.tianon.xyz/moby/pool/{{ debian }}/main/moby-buildx/
-ENV MOBY_BUILDX_VERSION {{ version("cli-plugin-buildx") }}
+# http://apt.tianon.xyz/moby/pool/unstable/main/moby-cli/
+ENV MOBY_CLI_VERSION 20.10.25-1
+# http://apt.tianon.xyz/moby/pool/unstable/main/moby-buildx/
+ENV MOBY_BUILDX_VERSION 0.11.2-1
 
 RUN set -eux; \
 	\
@@ -87,7 +91,7 @@ RUN set -eux; \
 	echo 'dockremap:165536:65536' >> /etc/subgid
 
 # https://github.com/docker/docker/tree/master/hack/dind
-ENV DIND_COMMIT {{ .dind.version }}
+ENV DIND_COMMIT d58df1fc6c866447ce2cd129af10e5b507705624
 RUN set -eux; \
 	wget -O /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; \
 	chmod +x /usr/local/bin/dind

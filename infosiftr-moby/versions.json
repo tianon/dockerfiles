@@ -1,4 +1,19 @@
 {
+  "debian": {
+    "version": "bookworm"
+  },
+  "engine": {
+    "sha256": "67bfd02c6313c18e482f3ae9c14f9c03e794a2ae07e4b50b774a5fa4a7c89923",
+    "version": "20.10.25-1~deb12u0"
+  },
+  "containerd": {
+    "sha256": "2f7cdd140e8df673cadb0c1fb610eb68e7be500b8ac28980857fb6614c0494cc",
+    "version": "1.6.21-2~deb12u0"
+  },
+  "runc": {
+    "sha256": "f655a7436e0c89db8888c5abe607fa7809eafb7143fb748d5509ec3a27a711c2",
+    "version": "1.1.8-1~deb12u0"
+  },
   "cli": {
     "sha256": "baba9c87506c08de3752e58ade7cf598215dc50d856adcc5bb107ea4dcda98bc",
     "version": "20.10.25-1~deb12u0"
@@ -7,19 +22,34 @@
     "sha256": "7e79b05adf11b11b74f389d280d8c4655f3b9a10b28cba994246a1a9fd82f166",
     "version": "0.11.2-1~deb12u0"
   },
-  "containerd": {
-    "sha256": "2f7cdd140e8df673cadb0c1fb610eb68e7be500b8ac28980857fb6614c0494cc",
-    "version": "1.6.21-2~deb12u0"
-  },
-  "engine": {
-    "sha256": "67bfd02c6313c18e482f3ae9c14f9c03e794a2ae07e4b50b774a5fa4a7c89923",
-    "version": "20.10.25-1~deb12u0"
-  },
-  "runc": {
-    "sha256": "f655a7436e0c89db8888c5abe607fa7809eafb7143fb748d5509ec3a27a711c2",
-    "version": "1.1.8-1~deb12u0"
+  "unstable": {
+    "engine": {
+      "sha256": "96c5a700deb92408e65314509a4be1a4ea931e51fe75edd0214ff07aba5af46d",
+      "version": "20.10.25-1"
+    },
+    "containerd": {
+      "sha256": "31a8d55b34d94abf6a8fc404f83561a5e683d0b1b7dc0f88fa330068a09068ff",
+      "version": "1.6.21-2"
+    },
+    "runc": {
+      "sha256": "51ca16eca26806333961c5ebabeadb257d4ab7866358c8fe75d1f8e8392666b6",
+      "version": "1.1.8-1"
+    },
+    "cli": {
+      "sha256": "d321c0713c8814548170fb2e59768b5e3e4c412ae8fab2a6d033d11a64c6793a",
+      "version": "20.10.25-1"
+    },
+    "cli-plugin-buildx": {
+      "sha256": "7b01cc64cd70bf17892a32c0c25a4f57a63f056a2f59a21a273ebad7b827c451",
+      "version": "0.11.2-1"
+    }
   },
   "dind": {
     "version": "d58df1fc6c866447ce2cd129af10e5b507705624"
-  }
+  },
+  "version": "20.10.25",
+  "variants": [
+    "",
+    "unstable"
+  ]
 }

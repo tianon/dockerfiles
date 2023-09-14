@@ -17,11 +17,11 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
+# https://apt.tianon.xyz/moby
 # https://apt.tianon.xyz/moby/dists/bookworm/tianon-moby.sources
 RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://apt.tianon.xyz/moby bookworm main' > /etc/apt/sources.list.d/moby.list
+# TODO deb822
 
-# http://apt.tianon.xyz/moby/pool/bookworm/main/moby-cli/
-ENV MOBY_CLI_VERSION 20.10.25-1~deb12u0
 # http://apt.tianon.xyz/moby/pool/bookworm/main/moby-engine/
 ENV MOBY_ENGINE_VERSION 20.10.25-1~deb12u0
 # http://apt.tianon.xyz/moby/pool/bookworm/main/moby-containerd/
@@ -29,6 +29,8 @@ ENV MOBY_CONTAINERD_VERSION 1.6.21-2~deb12u0
 # http://apt.tianon.xyz/moby/pool/bookworm/main/moby-runc/
 ENV MOBY_RUNC_VERSION 1.1.8-1~deb12u0
 
+# http://apt.tianon.xyz/moby/pool/bookworm/main/moby-cli/
+ENV MOBY_CLI_VERSION 20.10.25-1~deb12u0
 # http://apt.tianon.xyz/moby/pool/bookworm/main/moby-buildx/
 ENV MOBY_BUILDX_VERSION 0.11.2-1~deb12u0
 
@@ -36,17 +38,21 @@ RUN set -eux; \
 	\
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		"moby-cli=$MOBY_CLI_VERSION" \
 		"moby-engine=$MOBY_ENGINE_VERSION" \
 		"moby-containerd=$MOBY_CONTAINERD_VERSION" \
 		"moby-runc=$MOBY_RUNC_VERSION" \
 		\
+		"moby-cli=$MOBY_CLI_VERSION" \
 		"moby-cli-plugin-buildx=$MOBY_BUILDX_VERSION" \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
 	\
 	dockerd --version; \
-	docker --version
+	containerd --version; \
+	runc --version; \
+	\
+	docker --version; \
+	docker buildx version
 
 COPY modprobe.sh /usr/local/bin/modprobe
 COPY docker-entrypoint.sh /usr/local/bin/
