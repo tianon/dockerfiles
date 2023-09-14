@@ -85,13 +85,14 @@ jobs:
           version_components() {
             jq -c '
               [
-                .version // empty,
-                (
-                  to_entries[]
-                  | select(.value | type == "object" and has("version"))
-                  | .key + " " + .value.version
-                )
+                path(.. | select(type == "object" and has("version"))) as $path
+                | [
+                  $path[],
+                  getpath($path).version
+                ]
               ]
+              | sort_by(length != 1)
+              | map(join(" "))
             ' "$dir/versions.json"
           }
           before="$(version_components)"
