@@ -67,17 +67,13 @@ RUN set -eux; \
 RUN set -eux; \
 	cd engine; \
 	export TMP_GOPATH=/tmp/gopath; \
+# https://github.com/containerd/containerd/issues/5824
+# https://github.com/containerd/containerd/commit/00eb74a4ca47d5ad9c7d1171a2929a3da39deee6
+	export STATIC=1; \
+# TODO ^^ figure out why this is still necessary (because it actually shouldn't be 😭)
 	for comp in containerd runc tini; do \
 		hack/dockerfile/install/install.sh "$comp"; \
 	done; \
-# https://github.com/containerd/containerd/issues/5824
-	( \
-		set -eu; \
-		cd "$TMP_GOPATH/src/github.com/containerd/containerd"; \
-		sed -ri -e '/buildmode=pie/d' Makefile.linux; \
-		make bin/ctr EXTRA_LDFLAGS='-extldflags "-static"' BUILDTAGS='netgo osusergo static_build'; \
-		cp -avflL bin/ctr /usr/local/bin/; \
-	); \
 	ldd /usr/local/bin/* || :
 
 RUN set -eux; \
