@@ -2,10 +2,10 @@
 
 # https://github.com/docker-library/official-images/blob/3e27b6eb7a12bc15e5e2dde52d2477c818863ce3/test/config.sh
 
-# TODO add an explicit c8dind test 👀
-
 imageTests+=(
 	[tianon/true]='true'
+
+	[tianon/containerd:c8dind]='c8dind'
 )
 
 globalExcludeTests+=(
