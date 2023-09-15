@@ -4,13 +4,22 @@ set -eo pipefail
 dir="$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 image="$1"
+cmd=( "$image" )
+
+case "$image" in
+	*docker* | *moby*)
+		cmd+=( dind containerd )
+		;;
+esac
 
 cname="containerd-container-$RANDOM-$RANDOM"
 cid="$(
 	docker run -d -it \
 		--privileged \
 		--name "$cname" \
-		"$image"
+		--volume /var/lib/containerd \
+		--tmpfs /run \
+		"${cmd[@]}"
 )"
 trap "docker rm -vf $cid > /dev/null" EXIT
 

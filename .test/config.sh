@@ -5,7 +5,11 @@
 imageTests+=(
 	[tianon/true]='true'
 
+	# run containerd test on containerd-containing images :D
 	[tianon/containerd:c8dind]='c8dind'
+	[tianon/docker-master]='c8dind'
+	[tianon/infosiftr-moby]='c8dind'
+	[infosiftr/moby]='c8dind'
 )
 
 globalExcludeTests+=(
@@ -28,11 +32,13 @@ explicitTests+=(
 testAlias+=(
 	[tianon/docker-master]='docker:dind'
 	[tianon/infosiftr-moby]='docker:dind'
+	[infosiftr/moby]='docker:dind'
 )
 # the "docker-registry-push-pull" test isn't very good at detecting whether our custom image is dind or registry O:)
 globalExcludeTests+=(
 	[tianon/docker-master_docker-registry-push-pull]=1
 	[tianon/infosiftr-moby_docker-registry-push-pull]=1
+	[infosiftr/moby_docker-registry-push-pull]=1
 )
 
 # Cygwin looks like Unix, but fails in cute ways (host timezone instead of "UTC" because Windows, can't scrape "/etc/passwd" because --user)
