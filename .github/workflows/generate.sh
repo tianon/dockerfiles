@@ -12,6 +12,11 @@ for gsl in */gsl.sh; do
 	img="$BASHBREW_NAMESPACE/$img"
 	newStrategy="$(GENERATE_STACKBREW_LIBRARY="$gsl" GITHUB_REPOSITORY="$img" "$BASHBREW_SCRIPTS/github-actions/generate.sh")"
 	case "$img" in
+		'tianon/infosiftr-moby')
+			# remove per-architecture tags for now (temporary workaround for https://github.com/docker-library/bashbrew/pull/81)
+			newStrategy="$(jq -c 'del(.matrix.include[] | select(.meta.entries[].tags | contains(["tianon/infosiftr-moby:latest"]) | not))' <<<"$newStrategy")"
+			;;
+
 		'tianon/cygwin')
 			# remove tags that Windows on GitHub Actions can't test
 			newStrategy="$(jq -c 'del(.matrix.include[] | select(.os == "invalid-or-unknown"))' <<<"$newStrategy")"
