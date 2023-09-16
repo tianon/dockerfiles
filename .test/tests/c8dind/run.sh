@@ -7,8 +7,15 @@ image="$1"
 cmd=( "$image" )
 
 case "$image" in
+	*docker*containerd*) ;;
+
 	*docker* | *moby*)
-		cmd+=( dind containerd )
+		cmd=(
+			--volume /var/lib/containerd
+			--tmpfs /run
+			"${cmd[@]}"
+			dind containerd
+		)
 		;;
 esac
 
@@ -17,8 +24,6 @@ cid="$(
 	docker run -d -it \
 		--privileged \
 		--name "$cname" \
-		--volume /var/lib/containerd \
-		--tmpfs /run \
 		"${cmd[@]}"
 )"
 trap "docker rm -vf $cid > /dev/null" EXIT
