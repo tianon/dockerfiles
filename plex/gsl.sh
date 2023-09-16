@@ -17,7 +17,7 @@ arches="$(jq -r -L "$dir/../.libs" --argjson fromArches "$fromArches" '
 	;
 	[
 		$fromArches,
-		(.arches | keys),
+		(.arches | map_values(select(.dpkgArch)) | keys),
 		empty
 	]
 	| intersection

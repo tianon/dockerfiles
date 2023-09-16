@@ -27,18 +27,8 @@ ENV PLEX_VERSION {{ .version }}
 RUN set -eux; \
 	dpkgArch="$(dpkg --print-architecture)"; \
 	case "$dpkgArch" in \
-{{ [ .arches | to_entries[] | ( -}}
-		{{ {
-			amd64: "amd64",
-			arm32v5: "armel",
-			arm32v7: "armhf",
-			arm64v8: "arm64",
-			i386: "i386",
-			mips64le: "mips64el",
-			ppc64le: "ppc64el",
-			riscv64: "riscv64",
-			s390x: "s390x",
-		}[.key] | @sh }}) url={{ .value.url | @sh }}; sha1={{ .value.sha1 | @sh }} ;; \
+{{ [ .arches[] | ( -}}
+		{{ .dpkgArch | @sh }}) url={{ .url | @sh }}; sha1={{ .sha1 | @sh }} ;; \
 {{ ) ] | add -}}
 		*) echo >&2 "error: unsupported architecture '$dpkgArch'"; exit 1 ;; \
 	esac; \

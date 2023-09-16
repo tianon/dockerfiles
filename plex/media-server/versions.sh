@@ -14,7 +14,9 @@ version="$(jq <<<"$json" -r '.version')"
 
 echo "plex-media-server: $version"
 
-json="$(jq <<<"$json" -c '
+json="$(jq <<<"$json" -c -L../../.libs '
+	include "lib"
+	;
 	{
 		version: .version,
 		arches: (
@@ -33,6 +35,7 @@ json="$(jq <<<"$json" -c '
 					($arch): {
 						url: .url,
 						sha1: .checksum,
+						dpkgArch: ($arch | deb_arch),
 					},
 				}
 			)
