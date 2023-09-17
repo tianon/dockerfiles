@@ -1,6 +1,8 @@
 FROM alpine:3.18
 
-RUN apk add --no-cache \
+RUN set -eux; \
+	apkArch="$(apk --print-arch)"; \
+	apk add --no-cache \
 		bash \
 		bash-completion \
 		bind-tools \
@@ -22,10 +24,12 @@ RUN apk add --no-cache \
 		rsync \
 		socat \
 		ssh-audit \
-		tshark \
 		wget \
-		whois
-# TODO add "nbtscan" when we get to Alpine 3.18 (if it makes it out of testing)
+		whois \
+# tshark isn't available on arm32v6 (Alpine's armhf), for some reason (as of 2023-09-16, Alpine 3.18):
+		$([ "$apkArch" = 'armhf' ] || echo tshark) \
+	;
+# TODO add "nbtscan" in Alpine 3.19 👀 (https://git.alpinelinux.org/aports/commit/community/nbtscan?id=d865781209912eadeb5d000d742fee8b8e97aab0)
 # https://pkgs.alpinelinux.org/packages?name=nbtscan&branch=edge&arch=x86_64
 
 CMD ["bash", "--login", "-i"]
