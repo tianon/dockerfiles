@@ -10,6 +10,9 @@ imageTests+=(
 	[tianon/docker-master]='c8dind'
 	[tianon/infosiftr-moby]='c8dind'
 	[infosiftr/moby]='c8dind'
+
+	# avoid: java.lang.UnsatisfiedLinkError: /opt/java/openjdk/lib/libfontmanager.so: libfreetype.so.6: cannot open shared object file: No such file or directory
+	[tianon/jenkins]='java-uimanager-font'
 )
 
 globalExcludeTests+=(
