@@ -4,9 +4,9 @@
     "version": "1.20"
   },
   "cli": {
-    "version": "162e490623bdd7bbd8754b7bffcebfe994aec5fd",
+    "version": "05bec8dd43d175655b8e9c03e954871c19ff9168",
     "go": {
-      "version": "1.18"
+      "version": "1.19"
     }
   },
   "buildx": {
