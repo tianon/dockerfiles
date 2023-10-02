@@ -1,10 +1,11 @@
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 
 RUN useradd --create-home user
 
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
+		ca-certificates \
 		rtorrent \
 	; \
 	rm -rf /var/lib/apt/lists/*
