@@ -24,7 +24,7 @@ json="$(jq <<<"$json" -c -L../../.libs '
 			| map(
 				select(.distro == "debian")
 				| {
-					# wget -qO- 'https://plex.tv/api/downloads/1.json' | jq '.computer[].releases[].build' | sort -u
+					# wget -qO- "https://plex.tv/api/downloads/1.json" | jq "[ .computer.Linux.releases[].build ] | unique"
 					"linux-aarch64": "arm64v8",
 					"linux-armv7neon": "arm32v7",
 					"linux-x86": "i386",

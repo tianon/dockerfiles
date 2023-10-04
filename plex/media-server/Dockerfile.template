@@ -28,7 +28,7 @@ RUN set -eux; \
 	dpkgArch="$(dpkg --print-architecture)"; \
 	case "$dpkgArch" in \
 {{ [ .arches[] | ( -}}
-		{{ .dpkgArch | @sh }}) url={{ .url | @sh }}; sha1={{ .sha1 | @sh }} ;; \
+		{{ .dpkgArch // empty | @sh }}) url={{ .url | @sh }}; sha1={{ .sha1 | @sh }} ;; \
 {{ ) ] | add -}}
 		*) echo >&2 "error: unsupported architecture '$dpkgArch'"; exit 1 ;; \
 	esac; \
