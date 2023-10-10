@@ -40,6 +40,8 @@ RUN set -eux; \
 		libgtk-3-0 \
 		libx11-xcb1 \
 		libxshmfence1 \
+# LaunchProcess: failed to execvp: xdg-settings
+		xdg-utils \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
 	signal="$(command -v signal-desktop)"; \
