@@ -9,16 +9,16 @@ FROM alpine:3.18
 RUN apk add --no-cache ca-certificates
 
 # https://github.com/vultr/vultr-cli/releases
-ENV VULTR_CLI_VERSION 2.19.0
+ENV VULTR_CLI_VERSION 2.20.0
 
 RUN set -eux; \
 	\
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
-		'x86_64') url='https://github.com/vultr/vultr-cli/releases/download/v2.19.0/vultr-cli_v2.19.0_linux_amd64.tar.gz'; sha256='4b19b64e5dd45c4a6b88692c726ccb6edc162f228f0e7b80acc3a43326e94665' ;; \
-		'armhf') url='https://github.com/vultr/vultr-cli/releases/download/v2.19.0/vultr-cli_v2.19.0_linux_arm32-v6.tar.gz'; sha256='ac5293e8c8ec45569d1d7085d34fa1b5d45a2f983cc85cd63bd07ce872ee2843' ;; \
-		'armv7') url='https://github.com/vultr/vultr-cli/releases/download/v2.19.0/vultr-cli_v2.19.0_linux_arm32-v7.tar.gz'; sha256='d40dad21038f721f4c14f45e4879ff85bcec1b9c19c284ee90c83316a7c641d4' ;; \
-		'aarch64') url='https://github.com/vultr/vultr-cli/releases/download/v2.19.0/vultr-cli_v2.19.0_linux_arm64.tar.gz'; sha256='dfefbd8478626d67d400b9c523ee818ee04c2c0f1c39738358d238ef33a18726' ;; \
+		'x86_64') url='https://github.com/vultr/vultr-cli/releases/download/v2.20.0/vultr-cli_v2.20.0_linux_amd64.tar.gz'; sha256='246b35d4a3ac4797b0653b0f68c87e08bb3226ed69d9d1974c194c3a97913736' ;; \
+		'armhf') url='https://github.com/vultr/vultr-cli/releases/download/v2.20.0/vultr-cli_v2.20.0_linux_arm32-v6.tar.gz'; sha256='4e792b747fcf4e236c524f5e5b4a6d708806c579c30a3c637477baedee1dd9ea' ;; \
+		'aarch64') url='https://github.com/vultr/vultr-cli/releases/download/v2.20.0/vultr-cli_v2.20.0_linux_arm64.tar.gz'; sha256='bf7b2db319f2b9081671d1862e59581d1298a0015f6684acaa531d39995187cf' ;; \
+		'armv7') url='https://github.com/vultr/vultr-cli/releases/download/v2.20.0/vultr-cli_v2.20.0_linux_arm32-v7.tar.gz'; sha256='dd0cb0500ff2b92c4bd9198c0c301f24a7c79696e15d1d3c58dbcd0e6d8a4331' ;; \
 		*) echo >&2 "error: unsupported architecture: '$apkArch'"; exit 1 ;; \
 	esac; \
 	\
