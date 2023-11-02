@@ -56,17 +56,26 @@ runc="$(
 		local sha256 urlBase="https://github.com/opencontainers/runc/releases/download/v$version"
 		sha256="$(wget -qO- "$urlBase/runc.sha256sum")" || return 1
 		local json
-		json="$(jq <<<"$sha256" -csR --arg urlBase "$urlBase" -L"$dir/../.libs" '
+		json="$(jq <<<"$sha256" -csR --arg version "$version" --arg urlBase "$urlBase" -L"$dir/../.libs" '
 			include "lib"
 			;
 			split("\n")
 			| map(
 				capture("^(?<sha256>[0-9a-f]{64}) [ *](?<file>runc.(?<arch>[^.]+))$")
-				| select(.arch != "armel") # https://github.com/opencontainers/runc/blob/8feecba2bb293267c0dee854c86d291852b86388/script/lib.sh#L14-L16 ("arm-linux-gnueabi" + GOARM=6 does not make a ton of sense but also does not map to a Debian arch, so we do not need it)
-				| .arch |= ({
+				| .arch |= {
+					# https://github.com/opencontainers/runc/releases
+					# https://github.com/opencontainers/runc/blob/main/script/lib.sh
+					# explicit in our full supported list here so new things do not bork us (like switching to armvN style names; https://github.com/opencontainers/runc/pull/4034#issuecomment-1738206927)
+					"386": "i386",
+					amd64: "amd64",
 					arm64: "arm64v8",
-					armhf: "arm32v7",
-				}[.] // .)
+					# TODO if version is 1.2 or higher, we should add armel = arm32v5 (https://github.com/opencontainers/runc/pull/4034)
+					armhf: "arm32v7", # in 1.2+, this is _technically_ arm32v6, but that is not a Debian arch which is what this image targets, so we will quietly remap it here
+					ppc64le: "ppc64le",
+					riscv64: "riscv64",
+					s390x: "s390x",
+				}[.]
+				| select(.arch)
 				| { (.arch): {
 					url: ($urlBase + "/" + .file),
 					sha256: .sha256,
