@@ -10,7 +10,7 @@ WORKDIR /opt/node-exporter
 ENV PATH /opt/node-exporter:$PATH
 
 # https://github.com/prometheus/node_exporter/releases
-ENV NODE_EXPORTER_VERSION 1.6.1
+ENV NODE_EXPORTER_VERSION 1.7.0
 
 RUN set -ex; \
 	dpkgArch="$(dpkg --print-architecture)"; \
@@ -28,19 +28,20 @@ RUN set -ex; \
 	if [ "$arch" != 'src' ]; then \
 		filename="node_exporter-${NODE_EXPORTER_VERSION}.linux-${arch}.tar.gz"; \
 		case "$filename" in \
-			'node_exporter-1.6.1.linux-386.tar.gz') sha256='e81a7aeecc2b7dc771b77b999e89884fab83c129818a0631f4a3ecf7279a3612' ;; \
-			'node_exporter-1.6.1.linux-amd64.tar.gz') sha256='ecc41b3b4d53f7b9c16a370419a25a133e48c09dfc49499d63bcc0c5e0cf3d01' ;; \
-			'node_exporter-1.6.1.linux-arm64.tar.gz') sha256='f99ea62cec600bca5c926d300522d7a3bb797592d70dc1bcdc20b57811f1d439' ;; \
-			'node_exporter-1.6.1.linux-armv5.tar.gz') sha256='dbb0a44401d304009af03f437c854a401bfe7597a4b69cb7fc6700793088065b' ;; \
-			'node_exporter-1.6.1.linux-armv6.tar.gz') sha256='7e7999318a165bd2e71e734ec6b86570212bec5078d478c4803d19c96e832197' ;; \
-			'node_exporter-1.6.1.linux-armv7.tar.gz') sha256='9212d3c7b10f7ff904ed2dda038fddf4a4cc2f5cc4ebb4afe83f9159b5bbc5bb' ;; \
-			'node_exporter-1.6.1.linux-mips.tar.gz') sha256='5f3f8a874617b9c2c8c174fef8d46d815f6d384622728eaf13c6ad498af9c9df' ;; \
-			'node_exporter-1.6.1.linux-mips64.tar.gz') sha256='cff89d90b22c6c16723bfa7d5ed1bb5d245f41fd0b1ef7810cf2d606208c0ed7' ;; \
-			'node_exporter-1.6.1.linux-mips64le.tar.gz') sha256='207df09b72d2dbccdabee0154a3d292a140e26925d61ae6e31015716c7868783' ;; \
-			'node_exporter-1.6.1.linux-mipsle.tar.gz') sha256='75e3675ed8286ba8274552f9ea83ae8a70c312ffefd7f1687a1ac88bf0d5d1d3' ;; \
-			'node_exporter-1.6.1.linux-ppc64.tar.gz') sha256='3956593d3bb5b351cb8e415124d0fc40ec9010fb6450dd6e29d7823f2673a02a' ;; \
-			'node_exporter-1.6.1.linux-ppc64le.tar.gz') sha256='f8ef54b6b6c899c9b81ad0150612d897be8d88f8ef17ab70d3a82f7bc36b0dd0' ;; \
-			'node_exporter-1.6.1.linux-s390x.tar.gz') sha256='3c2d3b8f4da2adda2897195257fc5a633795811893ac11208f525bfb75402734' ;; \
+			'node_exporter-1.7.0.linux-386.tar.gz') sha256='fa662462d5bf69895b64a1efaabfab2ce0b6fa8962e960cb6a5277fa394d5c2d' ;; \
+			'node_exporter-1.7.0.linux-amd64.tar.gz') sha256='a550cd5c05f760b7934a2d0afad66d2e92e681482f5f57a917465b1fba3b02a6' ;; \
+			'node_exporter-1.7.0.linux-arm64.tar.gz') sha256='e386c7b53bc130eaf5e74da28efc6b444857b77df8070537be52678aefd34d96' ;; \
+			'node_exporter-1.7.0.linux-armv5.tar.gz') sha256='5745e8f5c24efbefbe8a26a9407e3dbc52558f56f1150d7ea2aa06fc166a08c4' ;; \
+			'node_exporter-1.7.0.linux-armv6.tar.gz') sha256='0a3c5578be8dfca56dc5cce7bc788fb4625c64a8e0209ac779660fae9a6331db' ;; \
+			'node_exporter-1.7.0.linux-armv7.tar.gz') sha256='2f8df32a8926c6368b3e0815fe900eb5cde1096bf0750e3d1e79f2f35b0e274d' ;; \
+			'node_exporter-1.7.0.linux-mips.tar.gz') sha256='73df12e39a4ac1fe52b4967b6895d43d9dd826cf7c8d33857b33d56ae1c5a612' ;; \
+			'node_exporter-1.7.0.linux-mips64.tar.gz') sha256='8908900967a9a3b8380573dadf994ca02abf823b866ed2ae9dbfa030d7b48510' ;; \
+			'node_exporter-1.7.0.linux-mips64le.tar.gz') sha256='4192468c3337f363b928d24ab3505c7ff513eae390c91ad49e1503ba8cd9f948' ;; \
+			'node_exporter-1.7.0.linux-mipsle.tar.gz') sha256='be29eccd784cc489916295f3bbe2c9029c918090c43ee6f0220c401102ac6a4f' ;; \
+			'node_exporter-1.7.0.linux-ppc64.tar.gz') sha256='473ebeb73d73c8982005a3252fd36889230d4ca9b878bd0cd336d5e585e54d1a' ;; \
+			'node_exporter-1.7.0.linux-ppc64le.tar.gz') sha256='c4f8151f7f6c530587c6e5b9879c5765daa195432d822a3531bd2bcadd3393a2' ;; \
+			'node_exporter-1.7.0.linux-riscv64.tar.gz') sha256='ba2d97e9b07d4ba0e5a264b436a2fafcf8aaa9d2fc44e47eb57faf58c2142302' ;; \
+			'node_exporter-1.7.0.linux-s390x.tar.gz') sha256='aeda68884918f10b135b76bbcd4977cb7a1bb3c4c98a8551f8d2183bafdd9264' ;; \
 			*) echo >&2 "error: unknown file: $filename"; exit 1 ;; \
 		esac; \
 		url="https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/$filename"; \
