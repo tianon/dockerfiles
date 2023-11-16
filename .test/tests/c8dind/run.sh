@@ -13,8 +13,9 @@ case "$image" in
 		cmd=(
 			--volume /var/lib/containerd
 			--tmpfs /run
+			--entrypoint dind \
 			"${cmd[@]}"
-			dind containerd
+			containerd
 		)
 		;;
 esac
@@ -24,6 +25,7 @@ cid="$(
 	docker run -d -it \
 		--privileged \
 		--name "$cname" \
+		--env DOCKER_TLS_CERTDIR= \
 		"${cmd[@]}"
 )"
 trap "docker rm -vf $cid > /dev/null" EXIT
