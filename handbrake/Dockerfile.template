@@ -71,7 +71,6 @@ RUN set -eux; \
 	./configure \
 # TODO --arch [MODE]         select architecture mode: x86_64
 		--build build \
-		--disable-gtk-update-checks \
 		--enable-fdk-aac \
 		--enable-numa \
 		--enable-nvenc \
