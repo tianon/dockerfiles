@@ -23,6 +23,7 @@ RUN set -eux; \
 		autopoint \
 		binutils \
 		cmake \
+		desktop-file-utils \
 		g++ \
 		gcc \
 		gettext \
@@ -44,6 +45,7 @@ RUN set -eux; \
 		libvorbis-dev \
 		libvpx-dev \
 		libx264-dev \
+		libx265-dev \
 		libxml2-dev \
 		make \
 		meson \
