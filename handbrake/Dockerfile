@@ -7,7 +7,7 @@
 FROM debian:bullseye-slim
 
 # https://github.com/HandBrake/HandBrake/releases
-ENV HANDBRAKE_VERSION 1.6.1
+ENV HANDBRAKE_VERSION 1.7.0
 
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
@@ -23,6 +23,7 @@ RUN set -eux; \
 		autopoint \
 		binutils \
 		cmake \
+		desktop-file-utils \
 		g++ \
 		gcc \
 		gettext \
@@ -44,6 +45,7 @@ RUN set -eux; \
 		libvorbis-dev \
 		libvpx-dev \
 		libx264-dev \
+		libx265-dev \
 		libxml2-dev \
 		make \
 		meson \
@@ -77,7 +79,6 @@ RUN set -eux; \
 	./configure \
 # TODO --arch [MODE]         select architecture mode: x86_64
 		--build build \
-		--disable-gtk-update-checks \
 		--enable-fdk-aac \
 		--enable-numa \
 		--enable-nvenc \
