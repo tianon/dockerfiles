@@ -3,51 +3,51 @@
     "version": "bookworm"
   },
   "engine": {
-    "sha256": "67bfd02c6313c18e482f3ae9c14f9c03e794a2ae07e4b50b774a5fa4a7c89923",
-    "version": "20.10.25-1~deb12u0"
+    "sha256": "87746e7eacad9d5081a319fb729eceb0dd277f4be503054a2f4fecb10132d0b3",
+    "version": "20.10.26-1~deb12u0"
   },
   "containerd": {
-    "sha256": "2f7cdd140e8df673cadb0c1fb610eb68e7be500b8ac28980857fb6614c0494cc",
-    "version": "1.6.21-2~deb12u0"
+    "sha256": "cf1cf9b9e5d6271d954e6c6c83c93e508d9cbb96556196a0c3271762108539a0",
+    "version": "1.6.25-1~deb12u0"
   },
   "runc": {
-    "sha256": "f655a7436e0c89db8888c5abe607fa7809eafb7143fb748d5509ec3a27a711c2",
-    "version": "1.1.8-1~deb12u0"
+    "sha256": "5223eda279eee8eba0896dad30bf31986a90ca91542b9681a24677258a4fe138",
+    "version": "1.1.10-1~deb12u0"
   },
   "cli": {
-    "sha256": "baba9c87506c08de3752e58ade7cf598215dc50d856adcc5bb107ea4dcda98bc",
-    "version": "20.10.25-1~deb12u0"
+    "sha256": "982ce9e04b617996bfe245afea9b96d667d3cacddca9060ac64cbe1ada748a47",
+    "version": "20.10.26-1~deb12u0"
   },
   "cli-plugin-buildx": {
-    "sha256": "7e79b05adf11b11b74f389d280d8c4655f3b9a10b28cba994246a1a9fd82f166",
-    "version": "0.11.2-1~deb12u0"
+    "sha256": "97c15034b5400d9a7be06b7debf424812cb7a44697b724e5df43a11c817d119f",
+    "version": "0.12.0-1~deb12u0"
   },
   "unstable": {
     "engine": {
-      "sha256": "96c5a700deb92408e65314509a4be1a4ea931e51fe75edd0214ff07aba5af46d",
-      "version": "20.10.25-1"
+      "sha256": "f194a0295a2cc68fd50afd3e4bafa20f898d807d32cd5ec40c63e39a500c5621",
+      "version": "20.10.26-1"
     },
     "containerd": {
       "sha256": "31a8d55b34d94abf6a8fc404f83561a5e683d0b1b7dc0f88fa330068a09068ff",
       "version": "1.6.21-2"
     },
     "runc": {
-      "sha256": "51ca16eca26806333961c5ebabeadb257d4ab7866358c8fe75d1f8e8392666b6",
-      "version": "1.1.8-1"
+      "sha256": "0840bbe1e91b72975cc9d57b234ac59832395d81a0d39a2970d0461c30f7a6a9",
+      "version": "1.1.10-1"
     },
     "cli": {
-      "sha256": "d321c0713c8814548170fb2e59768b5e3e4c412ae8fab2a6d033d11a64c6793a",
-      "version": "20.10.25-1"
+      "sha256": "c9999085046b36217e77910704038ce4be34c0b8dcbd42ed41c97a922a277fb2",
+      "version": "20.10.26-1"
     },
     "cli-plugin-buildx": {
-      "sha256": "7b01cc64cd70bf17892a32c0c25a4f57a63f056a2f59a21a273ebad7b827c451",
-      "version": "0.11.2-1"
+      "sha256": "0d7b197c0eecb4f1d5e5d71fe03b28ea225a34196603a6ef9bb02eb72f01257f",
+      "version": "0.12.0-1"
     }
   },
   "dind": {
     "version": "65cfcc28ab37cb75e1560e4b4738719c07c6618e"
   },
-  "version": "20.10.25",
+  "version": "20.10.26",
   "variants": [
     "",
     "unstable"
