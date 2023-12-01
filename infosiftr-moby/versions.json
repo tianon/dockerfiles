@@ -28,8 +28,8 @@
       "version": "20.10.26-1"
     },
     "containerd": {
-      "sha256": "31a8d55b34d94abf6a8fc404f83561a5e683d0b1b7dc0f88fa330068a09068ff",
-      "version": "1.6.21-2"
+      "sha256": "a2ed415b77fae79d5cd1af0df870da4ebec2b5e6fbadd36233892916138ecb94",
+      "version": "1.6.25-1"
     },
     "runc": {
       "sha256": "0840bbe1e91b72975cc9d57b234ac59832395d81a0d39a2970d0461c30f7a6a9",
