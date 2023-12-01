@@ -43,7 +43,9 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 COPY --from=build --link /buildkitd /buildctl /usr/local/bin/
+COPY buildkitd-entrypoint.sh /usr/local/bin/
 
 VOLUME /var/lib/buildkit
 
-CMD ["buildkitd"]
+ENTRYPOINT ["buildkitd-entrypoint.sh"]
+CMD []
