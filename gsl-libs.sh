@@ -3,6 +3,7 @@ set -Eeuo pipefail
 
 : "${dockerfile:=Dockerfile}"
 : "${variantAppendOrder:=postfix}" # "postfix" or "prefix" ("tianon/foo:1.2.3-bar" vs "tianon/foo:bar-1.2.3")
+declare -a extraCommitFiles
 
 # get the most recent commit which modified any of "$@"
 fileCommit() {
@@ -25,7 +26,7 @@ dirCommit() {
 				}
 			}
 		')"
-		fileCommit "$dockerfile" $files
+		fileCommit "$dockerfile" $files "${extraCommitFiles[@]}"
 	)
 }
 
