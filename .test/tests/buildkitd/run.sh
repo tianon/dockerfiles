@@ -16,6 +16,8 @@ config='
 		gc = false
 '
 
+image="$(docker image inspect --format '{{ .ID }}' "$image")"
+
 args=(
 	--name "$builderName"
 	--node "$builderName"
