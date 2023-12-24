@@ -7,7 +7,7 @@
 FROM debian:bullseye-slim
 
 # https://github.com/HandBrake/HandBrake/releases
-ENV HANDBRAKE_VERSION 1.7.1
+ENV HANDBRAKE_VERSION 1.7.2
 
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
