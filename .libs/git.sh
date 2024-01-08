@@ -65,9 +65,9 @@ github-file-commit() {
 	[ -n "$file" ]
 
 	local atom
-	atom="$(wget -qO- "https://github.com/$repo/commits/$branch/$file.atom")"
+	atom="$(wget -qO- --header 'Accept: application/json' "https://github.com/$repo/commits/$branch/$file.atom")"
 	local commit
-	commit="$(awk <<<"$atom" -F ' *[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
+	commit="$(jq <<<"$atom" -r '.payload | first(.commitGroups[].commits[].oid)')"
 
 	echo >&2 "github $repo - $file: $commit"
 
