@@ -29,11 +29,6 @@ globalExcludeTests+=(
 	[tianon/containerd:c8dind_override-cmd]=1
 )
 
-# ONBUILD
-explicitTests+=(
-	[tianon/github-pages]=1
-)
-
 # run Docker tests on Docker images :D
 testAlias+=(
 	[tianon/docker-master]='docker:dind'
