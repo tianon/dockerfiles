@@ -2,5 +2,8 @@
   "version": "228",
   "ruby": {
     "version": "2.7"
+  },
+  "nokogiri": {
+    "version": "1.15.4"
   }
 }

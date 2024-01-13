@@ -7,6 +7,7 @@
 # https://pages.github.com/versions/
 FROM ruby:2.7-alpine3.16
 # https://www.ruby-lang.org/en/news/2023/03/30/ruby-2-7-8-released/
+# https://github.com/github/pages-gem/issues/752#issuecomment-1563750824 🙈
 
 ENV GITHUB_PAGES_VERSION 228
 
@@ -18,6 +19,9 @@ RUN set -eux; \
 		g++ \
 		patch \
 	; \
+	\
+# The last version of nokogiri (>= 1.13.6, < 2.0) to support your Ruby & RubyGems was 1.15.5. Try installing it with `gem install nokogiri -v 1.15.5` and then running the current command again 🙃
+	gem install nokogiri -v '~> 1.15.4'; \
 	\
 	gem install github-pages -v "$GITHUB_PAGES_VERSION"; \
 	\

@@ -13,6 +13,9 @@ json="$(jq <<<"$json" -c '
 			.ruby
 			| capture("^(?<version>[0-9]+[.][0-9]+)[.]")
 		),
+		nokogiri: {
+			version: .nokogiri,
+		},
 	}
 ')"
 
