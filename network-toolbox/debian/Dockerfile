@@ -17,6 +17,7 @@ RUN set -eux; \
 		iperf \
 		iproute2 \
 		iptables \
+		jq \
 		libfcgi-bin \
 		mtr-tiny \
 		nbtscan \
@@ -34,6 +35,7 @@ RUN set -eux; \
 		tshark \
 		wget \
 		whois \
+# git is large on Debian (~20MiB), so isn't included
 	; \
 	rm -rf /var/lib/apt/lists/*
 
