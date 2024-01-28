@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM python:3.12-alpine3.18
+FROM python:3.12-alpine3.19
 
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps gcc libc-dev; \
