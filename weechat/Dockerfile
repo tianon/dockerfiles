@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 RUN set -eux; \
 	apt-get update; \
@@ -38,14 +38,14 @@ RUN set -eux; \
 	[ -z "$savedAptMark" ] || apt-mark manual $savedAptMark > /dev/null; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	\
-	suite="$(awk '$1 == "deb" { print $3; exit }' /etc/apt/sources.list)"; \
+	suite="$(awk '$1 == "Suites:" { print $2; exit }' /etc/apt/sources.list.d/debian.sources)"; \
 	echo "deb [signed-by=/usr/local/share/weechat-keyring.gpg.asc] https://weechat.org/debian $suite main" > /etc/apt/sources.list.d/weechat.list; \
 	\
 	apt-get update; \
 	rm -rf /var/lib/apt/lists/*
 
 # https://weechat.org/download/stable/
-# https://weechat.org/download/debian/active/#debian_bullseye
+# https://weechat.org/download/debian/active/#debian_bookworm
 ENV WEECHAT_VERSION 4.4.2-1
 
 RUN set -eux; \
