@@ -5,7 +5,7 @@
 #   This is a huge ugly hack that barely works for the way I play with it.
 #
 
-FROM rust:1.61-slim-bullseye AS virtiofsd
+FROM rust:1.67-slim-bullseye AS virtiofsd
 
 RUN set -eux; \
 	apt-get update; \
