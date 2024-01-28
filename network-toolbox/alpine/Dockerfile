@@ -1,4 +1,4 @@
-FROM alpine:3.18
+FROM alpine:3.19
 
 RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
@@ -18,6 +18,7 @@ RUN set -eux; \
 		iputils \
 		jq \
 		mtr \
+		nbtscan \
 		net-tools \
 		nmap \
 		openssh-client \
@@ -32,7 +33,5 @@ RUN set -eux; \
 # "git" is reasonably small on Alpine (adds ~6MiB)
 		git \
 	;
-# TODO add "nbtscan" in Alpine 3.19 👀 (https://git.alpinelinux.org/aports/commit/community/nbtscan?id=d865781209912eadeb5d000d742fee8b8e97aab0)
-# https://pkgs.alpinelinux.org/packages?name=nbtscan&branch=edge&arch=x86_64
 
 CMD ["bash", "--login", "-i"]
