@@ -2,7 +2,7 @@
   "version": "1.6.0",
   "python": {
     "version": "3.9",
-    "from": "python:3.9-slim-bullseye",
+    "from": "python:3.9-slim-bookworm",
     "arches": [
       "amd64",
       "arm32v5",

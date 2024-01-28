@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 # https://wiki.winehq.org/Debian
 
@@ -30,10 +30,10 @@ RUN set -eux; \
 	suite="$(awk '$1 == "deb" { print $3; exit }' /etc/apt/sources.list)"; \
 	echo "deb https://dl.winehq.org/wine-builds/debian $suite main" > /etc/apt/sources.list.d/winehq.list
 
-# https://dl.winehq.org/wine-builds/debian/dists/bullseye/main/binary-amd64/?C=N;O=D
+# https://dl.winehq.org/wine-builds/debian/dists/bookworm/main/binary-amd64/?C=N;O=D
 # https://www.winehq.org/news/
 ENV WINE_VERSION 9.0.0.0
-ENV WINE_DEB_VERSION 9.0.0.0~bullseye-1
+ENV WINE_DEB_VERSION 9.0.0.0~bookworm-1
 
 RUN set -eux; \
 	{ \

@@ -10,7 +10,7 @@
 #
 #   $ docker run -d --name dind --privileged --volume dind:/var/lib/docker tianon/docker-master
 
-FROM golang:1.20-bullseye AS build
+FROM golang:1.20-bookworm AS build
 
 RUN set -eux; \
 	apt-get update; \
@@ -114,7 +114,7 @@ RUN set -eux; \
 		chroot . "./$bin" --version; \
 	done
 
-FROM golang:1.21-bullseye AS buildx
+FROM golang:1.21-bookworm AS buildx
 
 ARG BUILDX_GITCOMMIT=d0c4bed484a738db92860fc4213e00d4e7dad8c3
 ENV BUILDX_GITCOMMIT $BUILDX_GITCOMMIT

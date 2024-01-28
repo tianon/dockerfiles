@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 RUN set -eux; \
 	apt-get update; \
@@ -45,7 +45,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # https://weechat.org/download/stable/
-# https://weechat.org/download/debian/active/#debian_bullseye
+# https://weechat.org/download/debian/active/#debian_bookworm
 ENV WEECHAT_VERSION 4.2.1-1
 
 RUN set -eux; \
