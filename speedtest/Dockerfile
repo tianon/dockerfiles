@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM alpine:3.18
+FROM alpine:3.19
 
 # https://www.speedtest.net/apps/cli#download
 ENV SPEEDTEST_VERSION 1.2.0
