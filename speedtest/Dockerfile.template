@@ -5,7 +5,6 @@ ENV SPEEDTEST_VERSION {{ .version }}
 
 RUN set -eux; \
 	apkArch="$(apk --print-arch)"; \
-{{ # TODO decide whether it's worth turning this into an auto-generated case from .arches -}}
 	case "$apkArch" in \
 {{ [ .arches[] | ( -}}
 		{{ .apkArch // empty | @sh }}) url={{ .url | @sh }} ;; \
