@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 RUN set -eux; \
 # dangit, wireshark-common!  *shakes fist*

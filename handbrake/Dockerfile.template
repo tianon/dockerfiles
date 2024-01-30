@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 # https://github.com/HandBrake/HandBrake/releases
 ENV HANDBRAKE_VERSION {{ .version }}

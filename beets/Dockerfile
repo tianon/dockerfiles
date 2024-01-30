@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM python:3.9-slim-bullseye
+FROM python:3.9-slim-bookworm
 
 ENV BEETS_VERSION 1.6.0
 

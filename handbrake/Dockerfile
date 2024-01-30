@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 # https://github.com/HandBrake/HandBrake/releases
 ENV HANDBRAKE_VERSION 1.7.2
