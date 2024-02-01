@@ -93,13 +93,22 @@ ENV PATH /opt/docker-desktop/bin:$PATH
 # virtiofsd defaults to "--sandbox=namespace" (which doesn't work well in a container) and "--sandbox=chroot" or "--sandbox=none" are only allowed for root, so I provide a patched build of virtiofsd (matching the version that ships with Docker Desktop)
 COPY --from=virtiofsd /virtiofsd/target/release/virtiofsd /opt/docker-desktop/bin/virtiofsd.tianon
 RUN set -eux; \
+	virtiofsd="$(command -v virtiofsd)"; \
+	[ "$virtiofsd" = '/opt/docker-desktop/bin/virtiofsd' ]; \
+	\
 	before="$(virtiofsd --version 2>&1)"; \
 	dpkg-divert --add --rename --divert /opt/docker-desktop/bin/virtiofsd.orig /opt/docker-desktop/bin/virtiofsd; \
 	ln -svfT virtiofsd.tianon /opt/docker-desktop/bin/virtiofsd; \
 	after="$(virtiofsd --version 2>&1)"; \
 	[ "$before" = "$after" ]; \
+	\
 # divert (unused?) "virtiofsd-v1.0.0" to make sure it doesn't get used accidentally 😅
-	dpkg-divert --add --rename --divert /opt/docker-desktop/bin/virtiofsd-v1.0.0-unused /opt/docker-desktop/bin/virtiofsd-v1.0.0
+	[ -s /opt/docker-desktop/bin/virtiofsd-v1.0.0 ]; \
+	dpkg-divert --add --rename --divert /opt/docker-desktop/bin/virtiofsd-v1.0.0-unused /opt/docker-desktop/bin/virtiofsd-v1.0.0; \
+	\
+# also divert QEMU's "virtiofsd" to make sure it doesn't get used accidentally either
+	[ -s /usr/lib/qemu/virtiofsd ]; \
+	dpkg-divert --add --rename --divert /usr/lib/qemu/virtiofsd.orig /usr/lib/qemu/virtiofsd
 
 RUN set -eux; \
 # setting up ID maps for virtiofsd namespace: retrieving subordinate UID range: no range for <USER> found in /etc/subuid
