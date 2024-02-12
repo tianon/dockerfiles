@@ -34,7 +34,7 @@ jobs:
                 - [
                   # directories to skip creating branches/PRs for
                   "docker-desktop", # no "versions.sh" (yet?)
-                  #"docker-master", # while server is out of commission
+                  "docker-master",
                   empty # trailing comma
                 ]
                 | sort
