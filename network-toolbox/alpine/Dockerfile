@@ -28,7 +28,9 @@ RUN set -eux; \
 		ssh-audit \
 		wget \
 		whois \
-# tshark isn't available on arm32v6 (Alpine's armhf), for some reason (as of 2023-09-16, Alpine 3.18):
+		wireguard-tools \
+# tshark isn't available on arm32v6 (Alpine's armhf):
+# https://git.alpinelinux.org/aports/tree/community/wireshark/APKBUILD?h=3.19-stable&id=bb857f3ce0b980f56f6a75f9d9a6fde9f48dfd36#n11
 		$([ "$apkArch" = 'armhf' ] || echo tshark) \
 # "git" is reasonably small on Alpine (adds ~6MiB)
 		git \

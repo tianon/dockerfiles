@@ -35,6 +35,7 @@ RUN set -eux; \
 		tshark \
 		wget \
 		whois \
+		wireguard-tools \
 # git is large on Debian (~20MiB), so isn't included
 	; \
 	rm -rf /var/lib/apt/lists/*
