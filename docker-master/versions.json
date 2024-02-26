@@ -4,13 +4,13 @@
     "version": "1.20"
   },
   "cli": {
-    "version": "dc6bfac81a8b686b8af629ca8a26b7ba14294f0a",
+    "version": "efb9206433fdb9a24e459d0f7b7cfc4e65b9b14b",
     "go": {
       "version": "1.19"
     }
   },
   "buildx": {
-    "version": "79f50ad924f65598c0f0fcf87db12634e600a583",
+    "version": "e5acb010c98142b5ed44b59e1370d82a2d2e125c",
     "go": {
       "version": "1.21"
     }
