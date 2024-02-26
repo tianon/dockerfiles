@@ -26,4 +26,4 @@ source gsl-libs.sh
 globalEntry
 echo "Architectures: $arches"
 
-tagsEntry "$dir" latest "linux-$linux"
+tagsEntry "$dir" "linux-$linux" latest
