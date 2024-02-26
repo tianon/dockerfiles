@@ -1,0 +1,54 @@
+{
+  "linux": {
+    "version": "6.7.6"
+  },
+  "arches": {
+    "amd64": {
+      "nolibc": "x86_64",
+      "dpkg": "amd64",
+      "apk": "x86_64"
+    },
+    "arm32v5": {
+      "nolibc": "arm",
+      "dpkg": "armel"
+    },
+    "arm32v6": {
+      "nolibc": "arm",
+      "apk": "armhf"
+    },
+    "arm32v7": {
+      "nolibc": "arm",
+      "dpkg": "armhf",
+      "apk": "armv7"
+    },
+    "arm64v8": {
+      "nolibc": "arm64",
+      "dpkg": "arm64",
+      "apk": "aarch64"
+    },
+    "i386": {
+      "nolibc": "i386",
+      "dpkg": "i386",
+      "apk": "x86"
+    },
+    "mips64le": {
+      "nolibc": "mips",
+      "dpkg": "mips64el"
+    },
+    "ppc64le": {
+      "nolibc": "powerpc",
+      "dpkg": "ppc64el",
+      "apk": "ppc64le"
+    },
+    "riscv64": {
+      "nolibc": "riscv",
+      "dpkg": "riscv64",
+      "apk": "riscv64"
+    },
+    "s390x": {
+      "nolibc": "s390",
+      "dpkg": "s390x",
+      "apk": "s390x"
+    }
+  }
+}

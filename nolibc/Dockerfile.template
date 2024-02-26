@@ -1,9 +1,3 @@
-#
-# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
-#
-# PLEASE DO NOT EDIT IT DIRECTLY.
-#
-
 # https://lwn.net/Articles/920158/
 # https://github.com/wtarreau/nolibc
 # https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/tools/include/nolibc?h=linux-rolling-stable
@@ -13,7 +7,7 @@ FROM debian:bookworm-slim
 # https://kernel.org/
 # https://kernel.org/releases.json
 # https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Makefile?h=linux-rolling-stable
-ENV LINUX_VERSION 6.7.6
+ENV LINUX_VERSION {{ .linux.version }}
 
 RUN set -eux; \
 	apt-get update; \
@@ -37,15 +31,9 @@ RUN set -eux; \
 # https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/scripts/subarch.include?h=linux-rolling-stable (SUBARCH)
 	dpkgArch="$(dpkg --print-architecture)"; \
 	case "$dpkgArch" in \
-		'amd64') ARCH='x86_64' ;;  \
-		'armel') ARCH='arm' ;;  \
-		'armhf') ARCH='arm' ;;  \
-		'arm64') ARCH='arm64' ;;  \
-		'i386') ARCH='i386' ;;  \
-		'mips64el') ARCH='mips' ;;  \
-		'ppc64el') ARCH='powerpc' ;;  \
-		'riscv64') ARCH='riscv' ;;  \
-		's390x') ARCH='s390' ;;  \
+{{ .arches | map( -}}
+		{{ .dpkg // empty | @sh }}) ARCH={{ .nolibc // empty | @sh }} ;;  \
+{{ ) | add -}}
 		*) echo >&2 "error: unsupported architecture: '$dpkgArch'"; exit 1 ;; \
 	esac; \
 	\
