@@ -77,5 +77,5 @@ ENV CFLAGS -fno-asynchronous-unwind-tables -fno-ident -s -Os -nostdlib -static -
 RUN set -exu; \
 	echo 'int main() { return 0; }' > /tmp/true.c; \
 	gcc $CFLAGS -o /tmp/true /tmp/true.c; \
-	/tmp/true; \
+	chroot /tmp /true; \
 	rm -vf /tmp/true*
