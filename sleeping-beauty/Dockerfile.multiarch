@@ -1,0 +1,20 @@
+FROM tianon/nolibc AS build
+
+WORKDIR /tmp
+COPY sleeping-beauty.c ./
+
+# ugh, I wish we could just get the commit timestamp directly off sleeping-beauty.c instead
+ARG SOURCE_DATE_EPOCH
+RUN set -eux; \
+	mkdir /aurora; \
+	gcc $CFLAGS -o /aurora/sleeping-beauty sleeping-beauty.c; \
+	touch --date="@${SOURCE_DATE_EPOCH:-0}" /aurora/sleeping-beauty /aurora; \
+	ls -lh /aurora; \
+	code="$(set +e; timeout --kill-after=5s 3s chroot /aurora /sleeping-beauty; echo "$?")"; \
+# 124  if COMMAND times out, and --preserve-status is not specified
+	if [ "$code" != '124' ]; then echo >&2 "error: failure!"; exit 1; fi
+
+FROM scratch
+COPY --from=build --link /aurora /
+CMD ["/sleeping-beauty"]
+STOPSIGNAL SIGKILL
