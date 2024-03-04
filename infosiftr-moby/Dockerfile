@@ -101,5 +101,9 @@ COPY dockerd-entrypoint.sh /usr/local/bin/
 VOLUME /var/lib/docker
 EXPOSE 2375 2376
 
+# https://github.com/docker/buildx/issues/484#issuecomment-749352728
+ENV BUILDKIT_STEP_LOG_MAX_SIZE -1
+ENV BUILDKIT_STEP_LOG_MAX_SPEED -1
+
 ENTRYPOINT ["dockerd-entrypoint.sh"]
 CMD []

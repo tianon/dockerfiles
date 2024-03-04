@@ -53,5 +53,9 @@ COPY buildkitd-entrypoint.sh /usr/local/bin/
 
 VOLUME /var/lib/buildkit
 
+# https://github.com/docker/buildx/issues/484#issuecomment-749352728
+ENV BUILDKIT_STEP_LOG_MAX_SIZE -1
+ENV BUILDKIT_STEP_LOG_MAX_SPEED -1
+
 ENTRYPOINT ["buildkitd-entrypoint.sh"]
 CMD []
