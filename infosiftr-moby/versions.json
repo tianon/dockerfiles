@@ -3,8 +3,8 @@
     "version": "bookworm"
   },
   "engine": {
-    "sha256": "de89c9a30deaaa2c62a0c664d1cc603b74657fa7dc4226f4bad238378fb47a52",
-    "version": "20.10.27-1~deb12u0"
+    "sha256": "8841e1a354d5e4de375d623ef0367154093ce20bebf9a4cb898cf748eb6e83a1",
+    "version": "20.10.27-2~deb12u0"
   },
   "containerd": {
     "sha256": "4a53a4d365342dcf2549e190f812fc454921fbf87d256c489e2fd2bcdf705d37",
@@ -24,8 +24,8 @@
   },
   "unstable": {
     "engine": {
-      "sha256": "cdc2b84ac678726b265688501a247cb8639c7deea08c4bb0ca77c7e0269afb09",
-      "version": "20.10.27-1"
+      "sha256": "4d4b0436804dbceab118d7201cf6e409850fad79997e2d177f1c4d16928a25ea",
+      "version": "20.10.27-2"
     },
     "containerd": {
       "sha256": "c7badd041edeaab0aba071c9adac5641c91520aeb5b8108351a70faf2b62ac02",
