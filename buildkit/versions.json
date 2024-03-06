@@ -2,5 +2,8 @@
   "commit": "bac3f2b673f3f9d33e79046008e7a38e856b3dc6",
   "ref": "refs/tags/v0.12.5",
   "tag": "v0.12.5",
-  "version": "0.12.5"
+  "version": "0.12.5",
+  "go": {
+    "version": "1.20"
+  }
 }
