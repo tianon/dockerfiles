@@ -1,10 +1,10 @@
 {
-  "version": "1f539a6e8581ae33f19d7e654404f8f0f74e36e1",
+  "version": "70e46f2c7c2df8d8cc483d9831a907b12efa201b",
   "go": {
     "version": "1.21"
   },
   "cli": {
-    "version": "4e9abfecf569b33ea51da61b6fd3bb7addeb27fb",
+    "version": "38fcd1ca63d8cb44299d0c6e0911f861211cacde",
     "go": {
       "version": "1.19"
     }
