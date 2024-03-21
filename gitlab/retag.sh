@@ -35,8 +35,8 @@ done
 
 for dstTag in "${!latest[@]}"; do
 	srcTag="${latest[$dstTag]}"
-	ctrSrc="docker.io/$src:$srcTag"
-	ctrDst="docker.io/$dst:$dstTag"
+	ctrSrc="$src:$srcTag"
+	ctrDst="$dst:$dstTag"
 	echo
 	(
 		set -x
