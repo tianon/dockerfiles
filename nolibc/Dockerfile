@@ -13,7 +13,7 @@ FROM debian:bookworm-slim
 # https://kernel.org/
 # https://kernel.org/releases.json
 # https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Makefile?h=linux-rolling-stable
-ENV LINUX_VERSION 6.7.11
+ENV LINUX_VERSION 6.7.12
 
 RUN set -eux; \
 	apt-get update; \
