@@ -1,6 +1,6 @@
 {
   "linux": {
-    "version": "6.7.11"
+    "version": "6.7.12"
   },
   "arches": {
     "amd64": {
