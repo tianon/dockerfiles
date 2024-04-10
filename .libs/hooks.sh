@@ -46,3 +46,10 @@ hook_no-prereleases() {
 		*[0-9.-]rc* | *[0-9.-]alpha* | *[0-9.-]beta* | *[0-9.-]rc* | *[0-9.-]dev*) return 1 ;;
 	esac
 }
+
+# usage:
+#   hook_pin_version='1.2.3'
+#   versions_hooks+=( hook_pin-version )
+hook_pin-version() {
+	[ "$3" = "$hook_pin_version" ]
+}
