@@ -29,7 +29,7 @@ RUN set -eux; \
 ENV LANG en_US.UTF-8
 
 # https://github.com/lutris/lutris/releases
-ENV LUTRIS_VERSION 0.5.16
+ENV LUTRIS_VERSION 0.5.17
 
 RUN set -eux; \
 # turn "0.5.10-beta1" into "0.5.10_beta1" for the deb filename
