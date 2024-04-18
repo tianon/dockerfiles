@@ -28,15 +28,15 @@ ENV LANG C.UTF-8
 
 # https://www.plex.tv/downloads/#getdownload
 # https://plex.tv/api/downloads/1.json
-ENV PLEX_VERSION 1.40.1.8227-c0dd5a73e
+ENV PLEX_VERSION 1.40.2.8395-c67dce28e
 
 RUN set -eux; \
 	dpkgArch="$(dpkg --print-architecture)"; \
 	case "$dpkgArch" in \
-		'i386') url='https://downloads.plex.tv/plex-media-server-new/1.40.1.8227-c0dd5a73e/debian/plexmediaserver_1.40.1.8227-c0dd5a73e_i386.deb'; sha1='f5df55ae485858faee3233d87c4217686b693d34' ;; \
-		'amd64') url='https://downloads.plex.tv/plex-media-server-new/1.40.1.8227-c0dd5a73e/debian/plexmediaserver_1.40.1.8227-c0dd5a73e_amd64.deb'; sha1='73ace82400e7449e0f8d74ec5bb477109b5b2edb' ;; \
-		'arm64') url='https://downloads.plex.tv/plex-media-server-new/1.40.1.8227-c0dd5a73e/debian/plexmediaserver_1.40.1.8227-c0dd5a73e_arm64.deb'; sha1='68537f75e1d8644b05d8c2fc80d3e13d33c35bb5' ;; \
-		'armhf') url='https://downloads.plex.tv/plex-media-server-new/1.40.1.8227-c0dd5a73e/debian/plexmediaserver_1.40.1.8227-c0dd5a73e_armhf.deb'; sha1='287efd56cb87fd3a20e1b9daf92581ddde66f492' ;; \
+		'i386') url='https://downloads.plex.tv/plex-media-server-new/1.40.2.8395-c67dce28e/debian/plexmediaserver_1.40.2.8395-c67dce28e_i386.deb'; sha1='db8ff14cce2b9fa15e44fa44c8d5e8ad102e06da' ;; \
+		'amd64') url='https://downloads.plex.tv/plex-media-server-new/1.40.2.8395-c67dce28e/debian/plexmediaserver_1.40.2.8395-c67dce28e_amd64.deb'; sha1='42d5901ea19c56c0e3e0d97eedaebe3ae3b057b0' ;; \
+		'arm64') url='https://downloads.plex.tv/plex-media-server-new/1.40.2.8395-c67dce28e/debian/plexmediaserver_1.40.2.8395-c67dce28e_arm64.deb'; sha1='1e15ebccb1410c80124bb9384cd24bf3ab5f8449' ;; \
+		'armhf') url='https://downloads.plex.tv/plex-media-server-new/1.40.2.8395-c67dce28e/debian/plexmediaserver_1.40.2.8395-c67dce28e_armhf.deb'; sha1='337d2ba07956d4db0e78ce3e7924e4d07437ecd9' ;; \
 		*) echo >&2 "error: unsupported architecture '$dpkgArch'"; exit 1 ;; \
 	esac; \
 	wget -O /tmp/plex.deb "$url" --progress=dot:giga; \
