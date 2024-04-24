@@ -10,7 +10,7 @@ WORKDIR /opt/node-exporter
 ENV PATH /opt/node-exporter:$PATH
 
 # https://github.com/prometheus/node_exporter/releases
-ENV NODE_EXPORTER_VERSION 1.7.0
+ENV NODE_EXPORTER_VERSION 1.8.0
 
 RUN set -ex; \
 	dpkgArch="$(dpkg --print-architecture)"; \
@@ -28,20 +28,20 @@ RUN set -ex; \
 	if [ "$arch" != 'src' ]; then \
 		filename="node_exporter-${NODE_EXPORTER_VERSION}.linux-${arch}.tar.gz"; \
 		case "$filename" in \
-			'node_exporter-1.7.0.linux-386.tar.gz') sha256='fa662462d5bf69895b64a1efaabfab2ce0b6fa8962e960cb6a5277fa394d5c2d' ;; \
-			'node_exporter-1.7.0.linux-amd64.tar.gz') sha256='a550cd5c05f760b7934a2d0afad66d2e92e681482f5f57a917465b1fba3b02a6' ;; \
-			'node_exporter-1.7.0.linux-arm64.tar.gz') sha256='e386c7b53bc130eaf5e74da28efc6b444857b77df8070537be52678aefd34d96' ;; \
-			'node_exporter-1.7.0.linux-armv5.tar.gz') sha256='5745e8f5c24efbefbe8a26a9407e3dbc52558f56f1150d7ea2aa06fc166a08c4' ;; \
-			'node_exporter-1.7.0.linux-armv6.tar.gz') sha256='0a3c5578be8dfca56dc5cce7bc788fb4625c64a8e0209ac779660fae9a6331db' ;; \
-			'node_exporter-1.7.0.linux-armv7.tar.gz') sha256='2f8df32a8926c6368b3e0815fe900eb5cde1096bf0750e3d1e79f2f35b0e274d' ;; \
-			'node_exporter-1.7.0.linux-mips.tar.gz') sha256='73df12e39a4ac1fe52b4967b6895d43d9dd826cf7c8d33857b33d56ae1c5a612' ;; \
-			'node_exporter-1.7.0.linux-mips64.tar.gz') sha256='8908900967a9a3b8380573dadf994ca02abf823b866ed2ae9dbfa030d7b48510' ;; \
-			'node_exporter-1.7.0.linux-mips64le.tar.gz') sha256='4192468c3337f363b928d24ab3505c7ff513eae390c91ad49e1503ba8cd9f948' ;; \
-			'node_exporter-1.7.0.linux-mipsle.tar.gz') sha256='be29eccd784cc489916295f3bbe2c9029c918090c43ee6f0220c401102ac6a4f' ;; \
-			'node_exporter-1.7.0.linux-ppc64.tar.gz') sha256='473ebeb73d73c8982005a3252fd36889230d4ca9b878bd0cd336d5e585e54d1a' ;; \
-			'node_exporter-1.7.0.linux-ppc64le.tar.gz') sha256='c4f8151f7f6c530587c6e5b9879c5765daa195432d822a3531bd2bcadd3393a2' ;; \
-			'node_exporter-1.7.0.linux-riscv64.tar.gz') sha256='ba2d97e9b07d4ba0e5a264b436a2fafcf8aaa9d2fc44e47eb57faf58c2142302' ;; \
-			'node_exporter-1.7.0.linux-s390x.tar.gz') sha256='aeda68884918f10b135b76bbcd4977cb7a1bb3c4c98a8551f8d2183bafdd9264' ;; \
+			'node_exporter-1.8.0.linux-386.tar.gz') sha256='128b4125d26f0927fcd5c14595d683a32b5610826bde55521ad74d5b95da301c' ;; \
+			'node_exporter-1.8.0.linux-amd64.tar.gz') sha256='c184e5dd98d518ac468339a9e073c233f777e0948a18862dd88e3f1bdcdf1438' ;; \
+			'node_exporter-1.8.0.linux-arm64.tar.gz') sha256='a6d1924f6ec46cdacbeeb24b23af6b41fff0f1dd14f5cb19d7c1379c9c822146' ;; \
+			'node_exporter-1.8.0.linux-armv5.tar.gz') sha256='170315589f39f85c6ee827fd6b0cdc7e8f4caff4c59a40113ba6fdf70dcb9ba4' ;; \
+			'node_exporter-1.8.0.linux-armv6.tar.gz') sha256='d8246bf46ffae344bff1ec2563daba802df7a297cc72ed0488bfe0552dccac2a' ;; \
+			'node_exporter-1.8.0.linux-armv7.tar.gz') sha256='5668d6eefbb851f38ee89c3ab0894ef68c35cecea8bb0cb368fa19091518cc01' ;; \
+			'node_exporter-1.8.0.linux-mips.tar.gz') sha256='c95d65ddab70325a26e6cc682e9b7b16d721566c887d464e6c095df24cf4b4e2' ;; \
+			'node_exporter-1.8.0.linux-mips64.tar.gz') sha256='913f3b0035e906547cd1899e9a80eaeb1f8733a435e4093876b2a7a293254d46' ;; \
+			'node_exporter-1.8.0.linux-mips64le.tar.gz') sha256='565645d81a8a73c5427c2a8a356ad7c88edf756e4cee9221211336e7f45ad64d' ;; \
+			'node_exporter-1.8.0.linux-mipsle.tar.gz') sha256='0749b438e58e1e306e109ba05316c26cedc441ebebf2a7a99f9d583395235542' ;; \
+			'node_exporter-1.8.0.linux-ppc64.tar.gz') sha256='9ea578d57197dabc60440acae8d9e17fbb0b6097788b87d73e033f7a637a7f9b' ;; \
+			'node_exporter-1.8.0.linux-ppc64le.tar.gz') sha256='5b6f95973efef99c8767a5bd70d7e6f7a779ea66205a47cbabaec657abb170e6' ;; \
+			'node_exporter-1.8.0.linux-riscv64.tar.gz') sha256='7c3c49a1a033577a32af69250c20d50773d3b32d3c67aab57b00f06f9e48e9f2' ;; \
+			'node_exporter-1.8.0.linux-s390x.tar.gz') sha256='0869b4e5587c7cb84ade6c697d2b42955d34efe916cb70f930037a2e3813bc1a' ;; \
 			*) echo >&2 "error: unknown file: $filename"; exit 1 ;; \
 		esac; \
 		url="https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/$filename"; \
