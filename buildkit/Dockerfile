@@ -21,7 +21,7 @@ ARG TARGETOS TARGETARCH TARGETVARIANT
 ENV GOOS=$TARGETOS GOARCH=$TARGETARCH VARIANT=$TARGETVARIANT
 
 # https://github.com/moby/buildkit/releases
-ENV BUILDKIT_VERSION 0.13.1
+ENV BUILDKIT_VERSION 0.13.2
 
 # pkg/mod/github.com/moby/buildkit@v0.12.0/snapshot/diffapply_unix.go:131:8: cannot use stat.Dev (variable of type uint32) as uint64 value in struct literal
 # pkg/mod/github.com/moby/buildkit@v0.12.0/snapshot/diffapply_unix.go:300:12: cannot use unix.Mkdev(0, 0) (value of type uint64) as uint32 value in struct literal
