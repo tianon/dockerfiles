@@ -11,4 +11,3 @@ globalEntry
 env="${dir^^}_VERSION"
 env="${env//-/_}"
 versionedEnvTagsEntry "$dir" "$env" latest
-echo 'Architectures: amd64, arm64v8' # TODO more?
