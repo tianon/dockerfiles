@@ -9,7 +9,7 @@ dir="$(dirname "$dir")"
 upstream="$(wget -qO- 'https://kernel.org/releases.json')"
 
 # TODO save more interesting data than just version, like .released.timestamp and .source (as url)
-linux="$(jq <<<"$upstream" -r 'first(.releases[].version | select(startswith("6.7."))) // error("failed to scrape linux version!")')" # TODO decide whether we'd be OK to just take ".latest_stable.version" instead
+linux="$(jq <<<"$upstream" -r 'first(.releases[].version | select(startswith("6.8."))) // error("failed to scrape linux version!")')" # TODO decide whether we'd be OK to just take ".latest_stable.version" instead
 export linux
 
 echo >&2 "nolibc linux: $linux"
@@ -25,7 +25,7 @@ jq -n -L"$dir/../.libs" '
 				# https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/tools/include/nolibc?h=linux-rolling-stable (arch-*.h)
 				# https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/tools/include/nolibc/Makefile?h=linux-rolling-stable (ARCH, SUBARCH, nolibc_arch)
 				# https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/scripts/subarch.include?h=linux-rolling-stable (SUBARCH)
-				amd64: { nolibc: "x86_64" },
+				amd64:    { nolibc: "x86_64" },
 				arm32v5:  { nolibc: "arm" },
 				arm32v6:  { nolibc: "arm" },
 				arm32v7:  { nolibc: "arm" },
