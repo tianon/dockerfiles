@@ -1,13 +1,4 @@
-# syntax=docker/dockerfile:1.5
-
 FROM --platform=$BUILDPLATFORM golang:{{ .go.version }} AS build
-
-RUN set -eux; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
-		patch \
-	; \
-	rm -rf /var/lib/apt/lists/*
 
 ENV CGO_ENABLED 0
 
@@ -28,9 +19,9 @@ RUN set -eux; \
 		*) [ -z "$VARIANT" ] ;; \
 	esac; \
 	go env | grep -E 'OS=|ARCH=|ARM=|AMD64='; \
-	git clone -b "v$BUILDKIT_VERSION" --depth 1 'https://github.com/moby/buildkit.git' /app; \
+	git clone --branch "v$BUILDKIT_VERSION" --depth 1 --config advice.detachedHead=false 'https://github.com/moby/buildkit.git' /app; \
 	cd /app; \
-	patch -p1 --input=/tmp/mips64le.patch; \
+	git apply /tmp/mips64le.patch; \
 # TODO https://github.com/moby/buildkit/blob/v0.12.2/Dockerfile#L79
 	go build -o /buildkitd -trimpath -ldflags '-d -w' ./cmd/buildkitd; \
 	go build -o /buildctl -trimpath -ldflags '-d -w' ./cmd/buildctl
