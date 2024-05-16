@@ -1,3 +1,4 @@
+{{ # https://github.com/tianon/bashbrew/commit/823f2c4716e0c697a10a772e46a5d51c386a5dcc (bashbrew ~support for "--platform=$BUILDPLATFORM" specifically for this use case -- applied to Tianon's own local builds) -}}
 FROM --platform=$BUILDPLATFORM golang:{{ .go.version }} AS build
 
 ENV CGO_ENABLED 0
