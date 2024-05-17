@@ -14,5 +14,6 @@ source gsl-libs.sh
 
 globalEntry
 echo "Architectures: $arches"
+echo 'Builder: buildkit' # meta
 
 versionedTagsEntry "$dir" "$version" latest
