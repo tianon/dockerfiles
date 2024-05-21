@@ -4,10 +4,10 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 # https://github.com/HandBrake/HandBrake/releases
-ENV HANDBRAKE_VERSION 1.7.3
+ENV HANDBRAKE_VERSION 1.8.0
 
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
@@ -31,7 +31,7 @@ RUN set -eux; \
 		libbz2-dev \
 		libc6-dev \
 		libdrm-dev \
-		libgtk-3-dev \
+		libgtk-4-dev \
 		libjansson-dev \
 		liblzma-dev \
 		libmp3lame-dev \
@@ -100,7 +100,7 @@ RUN set -eux; \
 		-type f \
 		\( -executable -o -name '*.so' \) \
 		-exec ldd '{}' ';' \
-		| awk '/=>/ { print $(NF-1) }' \
+		| awk '/=>/ { so = $(NF-1); if (index(so, "/usr/local/") == 1) { next }; gsub("^/(usr/)?", "", so); printf "*%s\n", so }' \
 		| sort -u \
 		| xargs -r dpkg-query --search \
 		| cut -d: -f1 \
