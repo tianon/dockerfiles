@@ -1,0 +1,33 @@
+FROM debian:bookworm-slim
+
+# https://github.com/coredns/coredns/releases
+ENV COREDNS_VERSION {{ .version }}
+
+RUN set -eux; \
+	\
+	dpkgArch="$(dpkg --print-architecture)"; \
+	case "$dpkgArch" in \
+{{ .arches | map( -}}
+		{{ .dpkgArch // empty | @sh }}) url={{ .url | @sh }}; sha256={{ .sha256 | @sh }} ;; \
+{{ ) | add -}}
+		*) echo >&2 "error: unsupported architecture '$dpkgArch'"; exit 1 ;; \
+	esac; \
+	\
+	aptMarkManual="$(apt-mark showmanual)"; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends ca-certificates wget; \
+	\
+	wget -O coredns.tgz "$url" --progress=dot:giga; \
+	echo "$sha256 *coredns.tgz" | sha256sum --strict --check -; \
+	tar -xvf coredns.tgz -C /usr/local/bin; \
+	rm coredns.tgz; \
+	\
+	apt-mark auto '.*' > /dev/null; \
+	[ -z "$aptMarkManual" ] || apt-mark manual $aptMarkManual > /dev/null; \
+	apt-get purge -y --auto-remove; \
+	rm -rf /var/lib/apt/lists/*; \
+	\
+	coredns --version
+
+USER nobody:nogroup
+CMD ["coredns"]
