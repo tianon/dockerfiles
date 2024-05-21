@@ -4,15 +4,18 @@ FROM --platform=$BUILDPLATFORM golang:{{ .go.version }} AS build
 # https://github.com/moby/buildkit/releases
 ENV BUILDKIT_VERSION {{ .version }}
 
-# pkg/mod/github.com/moby/buildkit@v0.12.0/snapshot/diffapply_unix.go:131:8: cannot use stat.Dev (variable of type uint32) as uint64 value in struct literal
-# pkg/mod/github.com/moby/buildkit@v0.12.0/snapshot/diffapply_unix.go:300:12: cannot use unix.Mkdev(0, 0) (value of type uint64) as uint32 value in struct literal
-COPY mips64le.patch /tmp/
+COPY \
+	containerd-arm64-v8.patch \
+	mips64le.patch \
+	noclip.patch \
+	/tmp/buildkit-patches/
 
 WORKDIR /app
 
 RUN set -eux; \
 	git clone --branch "v$BUILDKIT_VERSION" --depth 1 --config advice.detachedHead=false 'https://github.com/moby/buildkit.git' .; \
-	git apply /tmp/mips64le.patch
+	git apply /tmp/buildkit-patches/*.patch; \
+	git diff --color
 
 ENV CGO_ENABLED 0
 
