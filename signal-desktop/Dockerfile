@@ -32,7 +32,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # https://github.com/signalapp/Signal-Desktop/releases
-ENV SIGNAL_DESKTOP_VERSION 7.9.0
+ENV SIGNAL_DESKTOP_VERSION 7.10.0
 
 RUN set -eux; \
 	apt-get update; \
