@@ -13,9 +13,10 @@ elif [ "$BASH_SOURCE" -nt "$jqt" ]; then
 fi
 jqt="$(readlink -ve "$jqt")"
 
-dirs="$(find "$@" -type f -name versions.json -exec bash -Eeuo pipefail -c 'for d; do dir="$(dirname "${d#./}")"; printf " %q" "$dir"; done' -- '{}' +)"
-eval "set -- $dirs"
-
+if [ "$#" -eq 0 ]; then
+	dirs="$(find -type f -name versions.json -exec bash -Eeuo pipefail -c 'for d; do dir="$(dirname "${d#./}")"; printf " %q" "$dir"; done' -- '{}' +)"
+	eval "set -- $dirs"
+fi
 if [ "$#" -eq 0 ]; then
 	echo >&2 "error: failed to find any 'versions.json' files!"
 	exit 1
