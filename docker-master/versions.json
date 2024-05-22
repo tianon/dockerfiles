@@ -4,7 +4,7 @@
     "version": "1.21"
   },
   "cli": {
-    "version": "57a1180c52ad7633dcf2fe1515ec2601ffb01944",
+    "version": "421e3b5e91d08e46fb0c3ad93fce24bc4e02b83f",
     "go": {
       "version": "1.21.0"
     }
