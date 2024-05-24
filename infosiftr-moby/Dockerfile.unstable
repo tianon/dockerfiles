@@ -23,16 +23,16 @@ RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://apt.tianon.xyz/moby uns
 # TODO deb822
 
 # http://apt.tianon.xyz/moby/pool/unstable/main/moby-engine/
-ENV MOBY_ENGINE_VERSION 20.10.27-2
+ENV MOBY_ENGINE_VERSION 23.0.11-2
 # http://apt.tianon.xyz/moby/pool/unstable/main/moby-containerd/
-ENV MOBY_CONTAINERD_VERSION 1.6.28-1
+ENV MOBY_CONTAINERD_VERSION 1.6.32-1
 # http://apt.tianon.xyz/moby/pool/unstable/main/moby-runc/
 ENV MOBY_RUNC_VERSION 1.1.12-1
 
 # http://apt.tianon.xyz/moby/pool/unstable/main/moby-cli/
-ENV MOBY_CLI_VERSION 20.10.27-1
+ENV MOBY_CLI_VERSION 23.0.10-1
 # http://apt.tianon.xyz/moby/pool/unstable/main/moby-buildx/
-ENV MOBY_BUILDX_VERSION 0.12.1-1
+ENV MOBY_BUILDX_VERSION 0.14.1-1
 
 RUN set -eux; \
 	\
