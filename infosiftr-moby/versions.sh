@@ -51,12 +51,15 @@ jq <<<"$json" --argjson dind "$dind" '
 		else . end
 		| split("-")[0]
 	;
+	def v(v):
+		v | split(".")
+	;
 	.dind = $dind
 	| (.engine.version | upstream_version) as $eng
 	| (.cli.version | upstream_version) as $cli
 	| (.unstable.engine.version | upstream_version) as $ueng
 	| (.unstable.cli.version | upstream_version) as $ucli
-	| if $eng == $cli and $eng == $ueng and $eng == $ucli then
+	| if v($eng) >= v($cli) and $eng == $ueng and v($eng) >= v($ucli) then
 		.version = $eng
 	else . end
 	| .variants = [ "", "unstable" ] # make sure "apply-templates.sh" creates "Dockerfile.unstable" too
