@@ -7,8 +7,8 @@
     "version": "23.0.11-2~deb12u0"
   },
   "containerd": {
-    "sha256": "2d042cd509bc311eefbe64c0b04be3bba6147879213356b7525b96ded42a5b7c",
-    "version": "1.6.32-1~deb12u0"
+    "sha256": "b8b5427f6afab2aa555dc4960415214f597cb0a51bf2ca734e51e7b64afec25c",
+    "version": "1.6.32-2~deb12u0"
   },
   "runc": {
     "sha256": "5c00c17469da23e9436f4013a78564693b752655c38d46e2d41932fa3ed1f315",
@@ -28,8 +28,8 @@
       "version": "23.0.11-2"
     },
     "containerd": {
-      "sha256": "30092a077292f1ed6b98f8694fb61cf25b24a9b3c7825ef2282b9db66c3a1c66",
-      "version": "1.6.32-1"
+      "sha256": "40ea0b9f8fa82f8d6b1abf341e3752d0145e27536c2192e73bc178e952e8ce6b",
+      "version": "1.6.32-2"
     },
     "runc": {
       "sha256": "8b7088956964f59825e2f856cc58820a754886a17d42bea2be18b54803a18232",

@@ -25,7 +25,7 @@ RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://apt.tianon.xyz/moby boo
 # http://apt.tianon.xyz/moby/pool/bookworm/main/moby-engine/
 ENV MOBY_ENGINE_VERSION 23.0.11-2~deb12u0
 # http://apt.tianon.xyz/moby/pool/bookworm/main/moby-containerd/
-ENV MOBY_CONTAINERD_VERSION 1.6.32-1~deb12u0
+ENV MOBY_CONTAINERD_VERSION 1.6.32-2~deb12u0
 # http://apt.tianon.xyz/moby/pool/bookworm/main/moby-runc/
 ENV MOBY_RUNC_VERSION 1.1.12-1~deb12u0
 
