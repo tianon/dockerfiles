@@ -17,6 +17,16 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
+# see https://github.com/docker-library/official-images/issues/16830
+# esp. https://github.com/docker-library/official-images/issues/16830#issuecomment-2130971029
+# (TLDR: we need libseccomp2 version 2.5.5+ and stable as of 2024-05-25 only has 2.5.4; https://bugs.debian.org/1071822)
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends libseccomp2; \
+	rm -rf /var/lib/apt/lists/*; \
+	v="$(dpkg-query --show --showformat '${Version}\n' libseccomp2)"; \
+	dpkg --compare-versions "$v" '>=' '2.5.5~'
+
 # https://apt.tianon.xyz/moby
 # https://apt.tianon.xyz/moby/dists/bookworm/tianon-moby.sources
 RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://apt.tianon.xyz/moby unstable main' > /etc/apt/sources.list.d/moby.list
