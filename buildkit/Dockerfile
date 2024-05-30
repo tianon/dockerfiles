@@ -39,8 +39,8 @@ RUN set -eux; \
 	pkg='github.com/moby/buildkit'; \
 	ldflags=" \
 		-d -w \
-		-X '$pkg/version.Version=$BUILDKIT_VERSION' \
-		-X '$pkg/version.Revision=tianon' \
+		-X '$pkg/version.Version=$BUILDKIT_VERSION-tianon' \
+		-X '$pkg/version.Revision=v$BUILDKIT_VERSION+tianon-patches' \
 		-X '$pkg/version.Package=$pkg' \
 	"; \
 	go build -o /buildkitd -trimpath -ldflags "$ldflags" ./cmd/buildkitd; \
