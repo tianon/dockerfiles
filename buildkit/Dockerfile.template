@@ -29,9 +29,16 @@ RUN set -eux; \
 		*) [ -z "$VARIANT" ] ;; \
 	esac; \
 	go env | grep -E 'OS=|ARCH=|ARM=|AMD64='; \
-# TODO https://github.com/moby/buildkit/blob/v0.12.2/Dockerfile#L79
-	go build -o /buildkitd -trimpath -ldflags '-d -w' ./cmd/buildkitd; \
-	go build -o /buildctl -trimpath -ldflags '-d -w' ./cmd/buildctl
+# https://github.com/moby/buildkit/blob/v0.13.2/Dockerfile#L93
+	pkg='github.com/moby/buildkit'; \
+	ldflags=" \
+		-d -w \
+		-X '$pkg/version.Version=$BUILDKIT_VERSION' \
+		-X '$pkg/version.Revision=tianon' \
+		-X '$pkg/version.Package=$pkg' \
+	"; \
+	go build -o /buildkitd -trimpath -ldflags "$ldflags" ./cmd/buildkitd; \
+	go build -o /buildctl -trimpath -ldflags "$ldflags" ./cmd/buildctl
 
 FROM --platform=$TARGETPLATFORM infosiftr/moby
 
