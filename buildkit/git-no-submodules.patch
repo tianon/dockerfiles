@@ -1,0 +1,20 @@
+Description: disable recursive cloning of submodules given a Git URL
+Forwarded: https://github.com/moby/buildkit/issues/4974, https://github.com/moby/moby/pull/3463#issuecomment-31778263
+
+diff --git a/source/git/source.go b/source/git/source.go
+index d139942fc..a3e251e41 100644
+--- a/source/git/source.go
++++ b/source/git/source.go
+@@ -619,12 +619,6 @@ func (gs *gitSourceHandler) Snapshot(ctx context.Context, g session.Group) (out
+ 		}
+ 	}
+ 
+-	git = git.New(gitutil.WithWorkTree(checkoutDir), gitutil.WithGitDir(gitDir))
+-	_, err = git.Run(ctx, "submodule", "update", "--init", "--recursive", "--depth=1")
+-	if err != nil {
+-		return nil, errors.Wrapf(err, "failed to update submodules for %s", urlutil.RedactCredentials(gs.src.Remote))
+-	}
+-
+ 	if idmap := mount.IdentityMapping(); idmap != nil {
+ 		u := idmap.RootPair()
+ 		err := filepath.WalkDir(gitDir, func(p string, _ os.DirEntry, _ error) error {
