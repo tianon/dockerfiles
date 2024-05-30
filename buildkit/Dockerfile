@@ -11,6 +11,7 @@ ENV BUILDKIT_VERSION 0.13.2
 
 COPY \
 	containerd-arm64-v8.patch \
+	git-no-submodules.patch \
 	mips64le.patch \
 	noclip.patch \
 	/tmp/buildkit-patches/
