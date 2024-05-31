@@ -1,15 +1,14 @@
 {
-  "version": "1.6.0",
+  "version": "2.0.0",
   "python": {
-    "version": "3.9",
-    "from": "python:3.9-slim-bullseye",
+    "version": "3.10",
+    "from": "python:3.10-slim-bullseye",
     "arches": [
       "amd64",
       "arm32v5",
       "arm32v7",
       "arm64v8",
       "i386",
-      "mips64le",
       "ppc64le",
       "s390x"
     ]
