@@ -35,6 +35,7 @@ RUN set -eux; \
 		*) [ -z "$VARIANT" ] ;; \
 	esac; \
 	go env | grep -E 'OS=|ARCH=|ARM=|AMD64='; \
+	\
 # https://github.com/moby/buildkit/blob/v0.13.2/Dockerfile#L93
 	pkg='github.com/moby/buildkit'; \
 	ldflags=" \
@@ -44,7 +45,17 @@ RUN set -eux; \
 		-X '$pkg/version.Package=$pkg' \
 	"; \
 	go build -o /buildkitd -trimpath -ldflags "$ldflags" ./cmd/buildkitd; \
-	go build -o /buildctl -trimpath -ldflags "$ldflags" ./cmd/buildctl
+	go build -o /buildctl -trimpath -ldflags "$ldflags" ./cmd/buildctl; \
+	\
+# https://github.com/moby/buildkit/blob/v0.14.0/frontend/dockerfile/cmd/dockerfile-frontend/Dockerfile#L21
+	pkg='github.com/moby/buildkit/frontend/dockerfile/cmd/dockerfile-frontend'; \
+	ldflags=" \
+		-d -w \
+		-X '$pkg/version.Version=buildkit-$BUILDKIT_VERSION-tianon' \
+		-X '$pkg/version.Revision=v$BUILDKIT_VERSION+tianon-patches' \
+		-X '$pkg/version.Package=$pkg' \
+	"; \
+	go build -o /dockerfile-frontend -trimpath -ldflags "$ldflags" ./frontend/dockerfile/cmd/dockerfile-frontend
 
 FROM --platform=$TARGETPLATFORM infosiftr/moby
 
@@ -53,7 +64,7 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends git; \
 	rm -rf /var/lib/apt/lists/*
 
-COPY --from=build --link /buildkitd /buildctl /usr/local/bin/
+COPY --from=build --link /buildkitd /buildctl /dockerfile-frontend /usr/local/bin/
 COPY buildkitd-entrypoint.sh /usr/local/bin/
 
 VOLUME /var/lib/buildkit
@@ -61,6 +72,11 @@ VOLUME /var/lib/buildkit
 # https://github.com/docker/buildx/issues/484#issuecomment-749352728
 ENV BUILDKIT_STEP_LOG_MAX_SIZE -1
 ENV BUILDKIT_STEP_LOG_MAX_SPEED -1
+
+# https://github.com/moby/buildkit/blob/v0.14.0/frontend/gateway/gateway.go#L309
+# https://github.com/moby/buildkit/blob/v0.14.0/frontend/dockerfile/cmd/dockerfile-frontend/Dockerfile#L35-L36
+LABEL moby.buildkit.frontend.network.none="true"
+LABEL moby.buildkit.frontend.caps="moby.buildkit.frontend.inputs,moby.buildkit.frontend.subrequests,moby.buildkit.frontend.contexts"
 
 ENTRYPOINT ["buildkitd-entrypoint.sh"]
 CMD []
