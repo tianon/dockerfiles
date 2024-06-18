@@ -7,7 +7,7 @@
 FROM --platform=$BUILDPLATFORM golang:1.21 AS build
 
 # https://github.com/moby/buildkit/releases
-ENV BUILDKIT_VERSION 0.14.0
+ENV BUILDKIT_VERSION 0.14.1
 
 COPY \
 	containerd-arm64-v8.patch \
