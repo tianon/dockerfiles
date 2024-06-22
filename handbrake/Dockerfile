@@ -7,7 +7,7 @@
 FROM debian:bookworm-slim
 
 # https://github.com/HandBrake/HandBrake/releases
-ENV HANDBRAKE_VERSION 1.8.0
+ENV HANDBRAKE_VERSION 1.8.1
 
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
