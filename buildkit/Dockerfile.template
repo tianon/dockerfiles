@@ -17,6 +17,7 @@ COPY \
 	backport-5072-fetch-tags.patch \
 {{ ) else "" end -}}
 	containerd-arm64-v8.patch \
+	git-fetch-by-commit.patch \
 	git-no-submodules.patch \
 	mips64le.patch \
 	noclip.patch \
