@@ -1,0 +1,152 @@
+Description: git: allow cloning commit shas not referenced by branch/tag
+Author: Justin Chadwell <me@jedevc.com> (+ backporting by Tianon Gravi <tianon@debian.org>)
+Applied-Upstream: https://github.com/moby/buildkit/pull/5441; 0.17+
+
+diff --git a/source/git/source.go b/source/git/source.go
+index 63dfa66a8..005907bf3 100644
+--- a/source/git/source.go
++++ b/source/git/source.go
+@@ -36,7 +36,6 @@ import (
+ 	"google.golang.org/grpc/status"
+ )
+ 
+-var validHex = regexp.MustCompile(`^[a-f0-9]{40}$`)
+ var defaultBranch = regexp.MustCompile(`refs/heads/(\S+)`)
+ 
+ type Opt struct {
+@@ -341,7 +340,7 @@ func (gs *gitSourceHandler) CacheKey(ctx context.Context, g session.Group, index
+ 	gs.locker.Lock(remote)
+ 	defer gs.locker.Unlock(remote)
+ 
+-	if ref := gs.src.Ref; ref != "" && isCommitSHA(ref) {
++	if ref := gs.src.Ref; ref != "" && gitutil.IsCommitSHA(ref) {
+ 		cacheKey := gs.shaToCacheKey(ref)
+ 		gs.cacheKey = cacheKey
+ 		return cacheKey, ref, nil, true, nil
+@@ -400,7 +399,7 @@ func (gs *gitSourceHandler) CacheKey(ctx context.Context, g session.Group, index
+ 	if sha == "" {
+ 		return "", "", nil, false, errors.Errorf("repository does not contain ref %s, output: %q", ref, string(buf))
+ 	}
+-	if !isCommitSHA(sha) {
++	if !gitutil.IsCommitSHA(sha) {
+ 		return "", "", nil, false, errors.Errorf("invalid commit sha %q", sha)
+ 	}
+ 
+@@ -458,7 +457,7 @@ func (gs *gitSourceHandler) Snapshot(ctx context.Context, g session.Group) (out
+ 	}
+ 
+ 	doFetch := true
+-	if isCommitSHA(ref) {
++	if gitutil.IsCommitSHA(ref) {
+ 		// skip fetch if commit already exists
+ 		if _, err := git.Run(ctx, "cat-file", "-e", ref+"^{commit}"); err == nil {
+ 			doFetch = false
+@@ -470,7 +469,7 @@ func (gs *gitSourceHandler) Snapshot(ctx context.Context, g session.Group) (out
+ 		os.RemoveAll(filepath.Join(gitDir, "shallow.lock"))
+ 
+ 		args := []string{"fetch"}
+-		if !isCommitSHA(ref) { // TODO: find a branch from ls-remote?
++		if !gitutil.IsCommitSHA(ref) { // TODO: find a branch from ls-remote?
+ 			args = append(args, "--depth=1", "--no-tags")
+ 		} else {
+ 			args = append(args, "--tags")
+@@ -479,11 +478,13 @@ func (gs *gitSourceHandler) Snapshot(ctx context.Context, g session.Group) (out
+ 			}
+ 		}
+ 		args = append(args, "origin")
+-		if !isCommitSHA(ref) {
+-			args = append(args, "--force", ref+":tags/"+ref)
++		if gitutil.IsCommitSHA(ref) {
++			args = append(args, ref)
++		} else {
+ 			// local refs are needed so they would be advertised on next fetches. Force is used
+ 			// in case the ref is a branch and it now points to a different commit sha
+ 			// TODO: is there a better way to do this?
++			args = append(args, "--force", ref+":tags/"+ref)
+ 		}
+ 		if _, err := git.Run(ctx, args...); err != nil {
+ 			return nil, errors.Wrapf(err, "failed to fetch remote %s", urlutil.RedactCredentials(gs.src.Remote))
+@@ -552,7 +553,7 @@ func (gs *gitSourceHandler) Snapshot(ctx context.Context, g session.Group) (out
+ 		pullref := ref
+ 		if isAnnotatedTag {
+ 			pullref += ":refs/tags/" + pullref
+-		} else if isCommitSHA(ref) {
++		} else if gitutil.IsCommitSHA(ref) {
+ 			pullref = "refs/buildkit/" + identity.NewID()
+ 			_, err = git.Run(ctx, "update-ref", pullref, ref)
+ 			if err != nil {
+@@ -713,10 +714,6 @@ func (gs *gitSourceHandler) gitCli(ctx context.Context, g session.Group, opts ..
+ 	return gitCLI(opts...), cleanup, err
+ }
+ 
+-func isCommitSHA(str string) bool {
+-	return validHex.MatchString(str)
+-}
+-
+ func tokenScope(remote string) string {
+ 	// generally we can only use the token for fetching main remote but in case of github.com we do best effort
+ 	// to try reuse same token for all github.com remotes. This is the same behavior actions/checkout uses
+diff --git a/util/gitutil/git_cli.go b/util/gitutil/git_cli.go
+index 67c651458..d212952ba 100644
+--- a/util/gitutil/git_cli.go
++++ b/util/gitutil/git_cli.go
+@@ -209,6 +209,14 @@ func (cli *GitCLI) Run(ctx context.Context, args ...string) (_ []byte, err error
+ 					continue
+ 				}
+ 			}
++			if strings.Contains(errbuf.String(), "not our ref") || strings.Contains(errbuf.String(), "unadvertised object") {
++				// server-side error: https://github.com/git/git/blob/34b6ce9b30747131b6e781ff718a45328aa887d0/upload-pack.c#L811-L812
++				// client-side error: https://github.com/git/git/blob/34b6ce9b30747131b6e781ff718a45328aa887d0/fetch-pack.c#L2250-L2253
++				if newArgs := argsNoCommitRefspec(args); len(args) > len(newArgs) {
++					args = newArgs
++					continue
++				}
++			}
+ 			return buf.Bytes(), errors.Errorf("git error: %s\nstderr:\n%s", err, errbuf.String())
+ 		}
+ 		return buf.Bytes(), nil
+@@ -234,3 +242,19 @@ func argsNoDepth(args []string) []string {
+ 	}
+ 	return out
+ }
++
++func argsNoCommitRefspec(args []string) []string {
++	if len(args) <= 2 {
++		return args
++	}
++	if args[0] != "fetch" {
++		return args
++	}
++
++	// assume the refspec is the last arg
++	if IsCommitSHA(args[len(args)-1]) {
++		return args[:len(args)-1]
++	}
++
++	return args
++}
+diff --git a/util/gitutil/git_commit.go b/util/gitutil/git_commit.go
+new file mode 100644
+index 000000000..8049e7e2d
+--- /dev/null
++++ b/util/gitutil/git_commit.go
+@@ -0,0 +1,19 @@
++package gitutil
++
++func IsCommitSHA(str string) bool {
++	if len(str) != 40 {
++		return false
++	}
++
++	for _, ch := range str {
++		if ch >= '0' && ch <= '9' {
++			continue
++		}
++		if ch >= 'a' && ch <= 'f' {
++			continue
++		}
++		return false
++	}
++
++	return true
++}

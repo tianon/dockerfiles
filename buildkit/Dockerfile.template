@@ -28,6 +28,7 @@ COPY \
 		"backport-5072-fetch-tags.patch": { until: "0.15" },
 		"backport-5096-fix-umask.patch": { until: "0.15" },
 		"backport-5372-sbom-args.patch": { until: "0.17" },
+		"backport-5441-fetch-by-commit.patch": { until: "0.17", older: { "0.16": "backport-5441-fetch-by-commit-0.13.patch" } },
 		"backport-moby-48455-fix-riscv64-seccomp.patch": { until: "0.17" },
 		"containerd-arm64-v8.patch": { older: { "0.15": "containerd-arm64-v8-pre-0.15.patch" } },
 		"git-no-submodules.patch": { },
