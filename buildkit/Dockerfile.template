@@ -5,6 +5,7 @@ FROM --platform=$BUILDPLATFORM golang:{{ .go.version }} AS build
 ENV BUILDKIT_VERSION {{ .version }}
 
 COPY \
+	backport-5072-fetch-tags.patch \
 	containerd-arm64-v8.patch \
 	git-no-submodules.patch \
 	mips64le.patch \
