@@ -1,0 +1,16 @@
+Subject: git: fix pulling commit SHA only referenced from a tag
+Author: Tonis Tiigi <tonistiigi@gmail.com>
+Applied-Upstream: 0.15+; https://github.com/moby/buildkit/pull/5072
+
+diff --git a/source/git/source.go b/source/git/source.go
+index 998ede24ea4e..1b757500d7a3 100644
+--- a/source/git/source.go
++++ b/source/git/source.go
+@@ -470,6 +470,7 @@ func (gs *gitSourceHandler) Snapshot(ctx context.Context, g session.Group) (out
+ 		if !isCommitSHA(ref) { // TODO: find a branch from ls-remote?
+ 			args = append(args, "--depth=1", "--no-tags")
+ 		} else {
++			args = append(args, "--tags")
+ 			if _, err := os.Lstat(filepath.Join(gitDir, "shallow")); err == nil {
+ 				args = append(args, "--unshallow")
+ 			}
