@@ -79,8 +79,12 @@ exec jq -r '
 			}
 		)
 	]
+	| .[0].File as $globalFile
 	| map(
-		to_entries
+		if .File == "Dockerfile" and ($globalFile | not) then
+			del(.File)
+		else . end
+		| to_entries
 		| map(.key + ": " + .value)
 		| join("\n")
 	)
