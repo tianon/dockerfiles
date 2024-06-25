@@ -13,7 +13,8 @@ variants=(
 
 	'0.13'
 
-	'dev'
+	# TODO add this back when I figure out a clean way to do something more akin to a "weekly snapshot" or something so it doesn't have an update every single day
+	#'dev'
 )
 
 json='{}'
