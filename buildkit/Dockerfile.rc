@@ -1,21 +1,16 @@
-{{ if env.variant != "" then .[env.variant] else . end | ( -}}
-{{ # https://github.com/tianon/bashbrew/commit/823f2c4716e0c697a10a772e46a5d51c386a5dcc (bashbrew ~support for "--platform=$BUILDPLATFORM" specifically for this use case -- applied to Tianon's own local builds) -}}
-FROM --platform=$BUILDPLATFORM golang:{{ .go.version }} AS build
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
 
-{{ if env.variant == "dev" then ( -}}
-# https://github.com/moby/buildkit/commits/HEAD
-# https://github.com/moby/buildkit/tree/{{ .version }}
-ARG BUILDKIT_COMMIT={{ .version }}
-ENV BUILDKIT_COMMIT $BUILDKIT_COMMIT
-{{ ) else ( -}}
+FROM --platform=$BUILDPLATFORM golang:1.21 AS build
+
 # https://github.com/moby/buildkit/releases
-ENV BUILDKIT_VERSION {{ .version }}
-{{ ) end -}}
+ENV BUILDKIT_VERSION 0.14.0-rc2
 
 COPY \
-{{ if env.variant != "dev" and (.version | startswith("0.13.") or startswith("0.14.")) then ( -}}
 	backport-5072-fetch-tags.patch \
-{{ ) else "" end -}}
 	containerd-arm64-v8.patch \
 	git-no-submodules.patch \
 	mips64le.patch \
@@ -25,14 +20,7 @@ COPY \
 WORKDIR /app
 
 RUN set -eux; \
-{{ if env.variant == "dev" then ( -}}
-	git init --quiet; \
-	git config advice.detachedHead false; \
-	git fetch --depth 1 'https://github.com/moby/buildkit.git' "$BUILDKIT_COMMIT:"; \
-	git checkout FETCH_HEAD; \
-{{ ) else ( -}}
 	git clone --branch "v$BUILDKIT_VERSION" --depth 1 --config advice.detachedHead=false 'https://github.com/moby/buildkit.git' .; \
-{{ ) end -}}
 	git apply /tmp/buildkit-patches/*.patch; \
 	git diff --color
 
@@ -53,13 +41,8 @@ RUN set -eux; \
 	pkg='github.com/moby/buildkit'; \
 	ldflags=" \
 		-d -w \
-{{ if env.variant == "dev" then ( -}}
-		-X '$pkg/version.Version={{ env.variant }}-tianon' \
-		-X '$pkg/version.Revision=$BUILDKIT_COMMIT+tianon-patches' \
-{{ ) else ( -}}
 		-X '$pkg/version.Version=$BUILDKIT_VERSION-tianon' \
 		-X '$pkg/version.Revision=v$BUILDKIT_VERSION+tianon-patches' \
-{{ ) end -}}
 		-X '$pkg/version.Package=$pkg' \
 	"; \
 	go build -o /buildkitd -trimpath -ldflags "$ldflags" ./cmd/buildkitd; \
@@ -69,13 +52,8 @@ RUN set -eux; \
 	pkg='github.com/moby/buildkit/frontend/dockerfile/cmd/dockerfile-frontend'; \
 	ldflags=" \
 		-d -w \
-{{ if env.variant == "dev" then ( -}}
-		-X '$pkg/version.Version={{ env.variant }}-tianon' \
-		-X '$pkg/version.Revision=$BUILDKIT_COMMIT+tianon-patches' \
-{{ ) else ( -}}
 		-X '$pkg/version.Version=buildkit-$BUILDKIT_VERSION-tianon' \
 		-X '$pkg/version.Revision=v$BUILDKIT_VERSION+tianon-patches' \
-{{ ) end -}}
 		-X '$pkg/version.Package=$pkg' \
 	"; \
 	go build -o /dockerfile-frontend -trimpath -ldflags "$ldflags" ./frontend/dockerfile/cmd/dockerfile-frontend
@@ -103,4 +81,3 @@ LABEL moby.buildkit.frontend.caps="moby.buildkit.frontend.inputs,moby.buildkit.f
 
 ENTRYPOINT ["buildkitd-entrypoint.sh"]
 CMD []
-{{ ) -}}

@@ -5,5 +5,35 @@
   "version": "0.14.1",
   "go": {
     "version": "1.21"
+  },
+  "variants": [
+    "",
+    "rc",
+    "0.13",
+    "dev"
+  ],
+  "rc": {
+    "commit": "aebcc1f0eabcbaeef4be8e948641f653140fe2bf",
+    "ref": "refs/tags/v0.14.0-rc2",
+    "tag": "v0.14.0-rc2",
+    "version": "0.14.0-rc2",
+    "go": {
+      "version": "1.21"
+    }
+  },
+  "0.13": {
+    "commit": "2e18d709fefdcc2db20853ee241c75b058189d39",
+    "ref": "refs/tags/v0.13.2",
+    "tag": "v0.13.2",
+    "version": "0.13.2",
+    "go": {
+      "version": "1.21"
+    }
+  },
+  "dev": {
+    "version": "aaaf86e5470bffbb395f5c15ad4a1c152642ea30",
+    "go": {
+      "version": "1.21"
+    }
   }
 }
