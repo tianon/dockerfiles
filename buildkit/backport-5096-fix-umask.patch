@@ -1,0 +1,34 @@
+Description: git: ensure exec option is propagated to child git clis
+Author: Justin Chadwell <me@jedevc.com>
+Forwarded: https://github.com/moby/buildkit/pull/5096
+
+diff --git a/util/gitutil/git_cli.go b/util/gitutil/git_cli.go
+index 61187184bad9..5c35f9365b73 100644
+--- a/util/gitutil/git_cli.go
++++ b/util/gitutil/git_cli.go
+@@ -119,20 +119,13 @@ func NewGitCLI(opts ...Option) *GitCLI {
+ // New returns a new git client with the same config as the current one, but
+ // with the given options applied on top.
+ func (cli *GitCLI) New(opts ...Option) *GitCLI {
+-	c := &GitCLI{
+-		git:           cli.git,
+-		dir:           cli.dir,
+-		workTree:      cli.workTree,
+-		gitDir:        cli.gitDir,
+-		args:          append([]string{}, cli.args...),
+-		streams:       cli.streams,
+-		sshAuthSock:   cli.sshAuthSock,
+-		sshKnownHosts: cli.sshKnownHosts,
+-	}
++	clone := *cli
++	clone.args = append([]string{}, cli.args...)
++
+ 	for _, opt := range opts {
+-		opt(c)
++		opt(&clone)
+ 	}
+-	return c
++	return &clone
+ }
+ 
+ // Run executes a git command with the given args.
