@@ -1,6 +1,21 @@
 {
   "linux": {
-    "version": "6.8.12"
+    "iseol": false,
+    "version": "6.9.7",
+    "moniker": "stable",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.9.7.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.9.7.tar.sign",
+    "released": {
+      "timestamp": 1719489158,
+      "isodate": "2024-06-27"
+    },
+    "gitweb": "https://git.kernel.org/stable/h/v6.9.7",
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.9.7",
+    "diffview": "https://git.kernel.org/stable/ds/v6.9.7/v6.9.6",
+    "patch": {
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.9.7.xz",
+      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.9.6-7.xz"
+    }
   },
   "arches": {
     "amd64": {

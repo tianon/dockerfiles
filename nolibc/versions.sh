@@ -8,17 +8,19 @@ dir="$(dirname "$dir")"
 
 upstream="$(wget -qO- 'https://kernel.org/releases.json')"
 
-# TODO save more interesting data than just version, like .released.timestamp and .source (as url)
-linux="$(jq <<<"$upstream" -r 'first(.releases[].version | select(startswith("6.8."))) // error("failed to scrape linux version!")')" # TODO decide whether we'd be OK to just take ".latest_stable.version" instead
+linux="$(jq <<<"$upstream" -r 'first(.releases[] | select(.moniker == "stable")) // error("failed to scrape linux version!")')"
 export linux
 
-echo >&2 "nolibc linux: $linux"
+# TODO scrape https://cdn.kernel.org/pub/linux/kernel/v6.x/sha256sums.asc for checksum
+
+version="$(jq <<<"$linux" -r '.version')"
+echo >&2 "nolibc linux: $version"
 
 jq -n -L"$dir/../.libs" '
 	include "lib"
 	;
 	{
-		linux: { version: env.linux },
+		linux: (env.linux | fromjson),
 		arches: (
 			{
 				# TODO auto-detect these somehow?

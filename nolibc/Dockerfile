@@ -10,11 +10,6 @@
 
 FROM debian:bookworm-slim
 
-# https://kernel.org/
-# https://kernel.org/releases.json
-# https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Makefile?h=linux-rolling-stable
-ENV LINUX_VERSION 6.8.12
-
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
@@ -26,11 +21,21 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
+# https://kernel.org/
+# https://kernel.org/releases.json
+# https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Makefile?h=linux-rolling-stable
+# 2024-06-27
+ENV LINUX_VERSION 6.9.7
+ENV LINUX_SOURCE_URL https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.9.7.tar.xz
+# https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/tools/include/nolibc?h=linux-rolling-stable
+# https://github.com/gregkh/linux/commits/linux-rolling-stable/tools/include/nolibc
+# https://github.com/torvalds/linux/commits/master/tools/include/nolibc
+
 RUN set -eux; \
-	wget -O linux.txz "https://cdn.kernel.org/pub/linux/kernel/v${LINUX_VERSION%%.*}.x/linux-${LINUX_VERSION}.tar.xz" --progress=dot:giga; \
+	wget -O 'linux.tar.xz' "$LINUX_SOURCE_URL" --progress=dot:giga; \
 	mkdir -p /tmp/linux; \
-	tar --extract --file linux.txz --directory /tmp/linux --strip-components 1; \
-	rm linux.txz; \
+	tar --extract --file 'linux.tar.xz' --directory /tmp/linux --strip-components 1; \
+	rm 'linux.tar.xz'; \
 	\
 # https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/tools/include/nolibc?h=linux-rolling-stable (arch-*.h)
 # https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/tools/include/nolibc/Makefile?h=linux-rolling-stable (ARCH, SUBARCH, nolibc_arch)
@@ -54,7 +59,8 @@ RUN set -eux; \
 	ln -svfT /usr/local/nolibc /tmp/sysroot; \
 	\
 	apt-get update && apt-get install -y --no-install-recommends libc6-dev rsync; \
-	make -C /tmp/linux/tools/include/nolibc \
+	nproc="$(nproc)"; \
+	make -C /tmp/linux/tools/include/nolibc -j "$nproc" \
 		help \
 		headers_standalone \
 		ARCH="$ARCH" \
@@ -77,5 +83,6 @@ ENV CFLAGS -fno-asynchronous-unwind-tables -fno-ident -s -Os -nostdlib -static -
 RUN set -exu; \
 	echo 'int main() { return 0; }' > /tmp/true.c; \
 	gcc $CFLAGS -o /tmp/true /tmp/true.c; \
+	ls -l /tmp/true; ls -lh /tmp/true; \
 	chroot /tmp /true; \
 	rm -vf /tmp/true*
