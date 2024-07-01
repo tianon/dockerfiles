@@ -21,10 +21,16 @@ _tls_san() {
 _tls_generate_certs() {
 	local dir="$1"; shift
 
+	# if server/{ca,key,cert}.pem && !ca/key.pem, do NOTHING except verify (user likely managing CA themselves)
 	# if ca/key.pem || !ca/cert.pem, generate CA public if necessary
 	# if ca/key.pem, generate server public
 	# if ca/key.pem, generate client public
 	# (regenerating public certs every startup to account for SAN/IP changes and/or expiration)
+
+	if [ -s "$dir/server/ca.pem" ] && [ -s "$dir/server/cert.pem" ] && [ -s "$dir/server/key.pem" ] && [ ! -s "$dir/ca/key.pem" ]; then
+		openssl verify -CAfile "$dir/server/ca.pem" "$dir/server/cert.pem"
+		return 0
+	fi
 
 	# https://github.com/FiloSottile/mkcert/issues/174
 	local certValidDays='825'
@@ -108,12 +114,8 @@ if [ "$#" -eq 0 ] || [ "${1#-}" != "$1" ]; then
 	esac
 
 	# add our default arguments
-	if [ -n "${DOCKER_TLS_CERTDIR:-}" ] \
-		&& _tls_generate_certs "$DOCKER_TLS_CERTDIR" \
-		&& [ -s "$DOCKER_TLS_CERTDIR/server/ca.pem" ] \
-		&& [ -s "$DOCKER_TLS_CERTDIR/server/cert.pem" ] \
-		&& [ -s "$DOCKER_TLS_CERTDIR/server/key.pem" ] \
-	; then
+	if [ -n "${DOCKER_TLS_CERTDIR:-}" ]; then
+		_tls_generate_certs "$DOCKER_TLS_CERTDIR"
 		# generate certs and use TLS if requested/possible (default in 19.03+)
 		set -- dockerd \
 			--host="$dockerSocket" \
@@ -138,17 +140,51 @@ if [ "$1" = 'dockerd' ]; then
 	# explicitly remove Docker's default PID file to ensure that it can start properly if it was stopped uncleanly (and thus didn't clean up the PID file)
 	find /run /var/run -iname 'docker*.pid' -delete || :
 
-	if dockerd --version | grep -qF ' 20.10.'; then
-		# XXX inject "docker-init" (tini) as pid1 to workaround https://github.com/docker-library/docker/issues/318 (zombie container-shim processes)
-		set -- docker-init -- "$@"
-	fi
+	# XXX inject "docker-init" (tini) as pid1 to workaround https://github.com/docker-library/docker/issues/318 (zombie container-shim processes)
+	set -- docker-init -- "$@"
 
-	if ! iptables -nL > /dev/null 2>&1; then
-		# if iptables fails to run, chances are high the necessary kernel modules aren't loaded (perhaps the host is using nftables with the translating "iptables" wrappers, for example)
+	iptablesLegacy=
+	if [ -n "${DOCKER_IPTABLES_LEGACY+x}" ]; then
+		# let users choose explicitly to legacy or not to legacy
+		iptablesLegacy="$DOCKER_IPTABLES_LEGACY"
+		if [ -n "$iptablesLegacy" ]; then
+			modprobe ip_tables || :
+			modprobe ip6_tables || :
+		else
+			modprobe nf_tables || :
+		fi
+	elif (
+		# https://git.netfilter.org/iptables/tree/iptables/nft-shared.c?id=f5cf76626d95d2c491a80288bccc160c53b44e88#n420
+		# https://github.com/docker-library/docker/pull/468#discussion_r1442131459
+		for f in /proc/net/ip_tables_names /proc/net/ip6_tables_names /proc/net/arp_tables_names; do
+			if b="$(cat "$f")" && [ -n "$b" ]; then
+				exit 0
+			fi
+		done
+		exit 1
+	); then
+		# if we already have any "legacy" iptables rules, we should always use legacy
+		iptablesLegacy=1
+	elif ! iptables -nL > /dev/null 2>&1; then
+		# if iptables fails to run, chances are high the necessary kernel modules aren't loaded (perhaps the host is using xtables, for example)
 		# https://github.com/docker-library/docker/issues/350
 		# https://github.com/moby/moby/issues/26824
-		modprobe ip_tables || :
+		# https://github.com/docker-library/docker/pull/437#issuecomment-1854900620
+		modprobe nf_tables || :
+		if ! iptables -nL > /dev/null 2>&1; then
+			# might be host has no nf_tables, but Alpine is all-in now (so let's try a legacy fallback)
+			modprobe ip_tables || :
+			modprobe ip6_tables || :
+			if /usr/local/sbin/.iptables-legacy/iptables -nL > /dev/null 2>&1; then
+				iptablesLegacy=1
+			fi
+		fi
 	fi
+	if [ -n "$iptablesLegacy" ]; then
+		# see https://github.com/docker-library/docker/issues/463 (and the dind Dockerfile where this directory is set up)
+		export PATH="/usr/local/sbin/.iptables-legacy:$PATH"
+	fi
+	iptables --version # so users can see whether it's legacy or not
 
 	uid="$(id -u)"
 	if [ "$uid" != '0' ]; then
