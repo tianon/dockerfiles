@@ -31,12 +31,13 @@ ARG TARGETOS TARGETARCH TARGETVARIANT
 ENV GOOS=$TARGETOS GOARCH=$TARGETARCH VARIANT=$TARGETVARIANT
 
 RUN set -eux; \
-	case "$GOARCH" in \
-		arm) export GOARM="${VARIANT#v}" ;; \
-		amd64) export GOAMD64="$VARIANT" ;; \
+	case "$GOARCH/$VARIANT" in \
+		amd64/*) export GOAMD64="$VARIANT" ;; \
+		arm/*) export GOARM="${VARIANT#v}" ;; \
+		arm64/v8) ;; \
 		*) [ -z "$VARIANT" ] ;; \
 	esac; \
-	go env | grep -E 'OS=|ARCH=|ARM=|AMD64='; \
+	go env | grep -E 'OS=|ARCH=|AMD64=|ARM64=|ARM='; \
 	\
 # https://github.com/moby/buildkit/blob/v0.13.2/Dockerfile#L93
 	pkg='github.com/moby/buildkit'; \
