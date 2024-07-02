@@ -1,0 +1,20 @@
+Description: try fetching by commit, then regular fall back to deeper fetching
+Forwarded: no
+
+diff --git a/source/git/source.go b/source/git/source.go
+index d139942fc..700982bd6 100644
+--- a/source/git/source.go
++++ b/source/git/source.go
+@@ -459,6 +459,12 @@ func (gs *gitSourceHandler) Snapshot(ctx context.Context, g session.Group) (out
+ 		// skip fetch if commit already exists
+ 		if _, err := git.Run(ctx, "cat-file", "-e", ref+"^{commit}"); err == nil {
+ 			doFetch = false
++		} else {
++			// try fetching commit directly
++			// TODO limit to known working git hosts?
++			if _, err := git.Run(ctx, "fetch", "origin", ref+":"); err == nil {
++				doFetch = false
++			}
+ 		}
+ 	}
+ 
