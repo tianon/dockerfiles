@@ -60,7 +60,7 @@ for variant in "${variants[@]}"; do
 
 	commit="$(jq <<<"$bk" -r '.commit // .version')"
 	go="$(wget -qO- "https://github.com/moby/buildkit/raw/$commit/go.mod")"
-	go="$(awk <<<"$go" '$1 == "go" { print $2; exit }')"
+	go="$(awk <<<"$go" '$1 == "go" { if ($2 ~ /^[0-9]+[.][0-9]+[.][0-9]+$/) { sub(/[.][0-9]+$/, "", $2) } print $2; exit }')"
 	echo >&2 "${variant:-stable} go: $go"
 
 	json="$(jq <<<"$json" --argjson bk "$bk" --arg go "$go" '

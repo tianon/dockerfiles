@@ -68,7 +68,7 @@ exec jq -r '
 				)
 			)
 			| reduce to_entries[] as $e ({};
-				.[$e.key] = $e.value - ([ .[][] ])
+				.[$e.key] = $e.value - [ .[][] ]
 			)
 			| to_entries[]
 			| .key as $variant

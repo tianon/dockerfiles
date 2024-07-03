@@ -15,9 +15,13 @@ ENV BUILDKIT_VERSION {{ .version }}
 COPY \
 {{ if env.variant != "dev" and (.version | startswith("0.13.") or startswith("0.14.")) then ( -}}
 	backport-5072-fetch-tags.patch \
-{{ ) else "" end -}}
 	backport-5096-fix-umask.patch \
+{{) else "" end -}}
+{{ if .version | startswith("0.13.") or startswith("0.14.") then ( -}}
+	containerd-arm64-v8-pre-0.15.patch \
+{{ ) else ( -}}
 	containerd-arm64-v8.patch \
+{{ ) end -}}
 	git-no-submodules.patch \
 	mips64le.patch \
 	noclip.patch \

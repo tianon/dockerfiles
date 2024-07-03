@@ -12,7 +12,7 @@ ENV BUILDKIT_VERSION 0.14.1
 COPY \
 	backport-5072-fetch-tags.patch \
 	backport-5096-fix-umask.patch \
-	containerd-arm64-v8.patch \
+	containerd-arm64-v8-pre-0.15.patch \
 	git-no-submodules.patch \
 	mips64le.patch \
 	noclip.patch \
