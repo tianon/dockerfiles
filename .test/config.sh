@@ -6,7 +6,7 @@ imageTests+=(
 	[tianon/true]='true'
 
 	# run containerd test on containerd-containing images :D
-	[tianon/containerd:c8dind]='c8dind'
+	[tianon/containerd]='c8dind'
 	[tianon/docker-master]='c8dind'
 	[tianon/infosiftr-moby]='c8dind'
 	[infosiftr/moby]='c8dind'
@@ -24,9 +24,6 @@ globalExcludeTests+=(
 	[tianon/sleeping-beauty_utc]=1
 	[tianon/true_no-hard-coded-passwords]=1
 	[tianon/true_utc]=1
-
-	# needs --privileged (by design)
-	[tianon/containerd:c8dind_override-cmd]=1
 )
 
 # run Docker tests on Docker images :D

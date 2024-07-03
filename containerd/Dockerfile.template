@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 # runtime deps
 RUN set -eux; \
@@ -33,6 +33,7 @@ RUN set -eux; \
 	runc --version
 
 # https://github.com/containerd/containerd/releases
+{{ if env.variant != "" then .[env.variant] else . end | ( -}}
 ENV CONTAINERD_VERSION {{ .version }}
 RUN set -eux; \
 	dpkgArch="$(dpkg --print-architecture)"; \
@@ -47,6 +48,7 @@ RUN set -eux; \
 	tar -xvf containerd.tar.gz -C /usr/local/; \
 	rm containerd.tar.gz; \
 	containerd --version
+{{ ) -}}
 
 RUN set -eux; \
 	mkdir -p /run/containerd /var/lib/containerd; \
@@ -59,5 +61,5 @@ COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["containerd"]
 
-# use "docker run ... dind containerd" if you want to run real containers (with "--privileged")
-# see also Dockerfile.c8dind (or "tianon/containerd:c8dind")
+# the entrypoint will try to automatically determine intent based on uid/gid (and include the "dind" wrapper automatically)
+# if it does not, use "docker run ... dind containerd" if you want to run real containers (with "--privileged")

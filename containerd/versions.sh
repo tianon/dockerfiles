@@ -7,48 +7,93 @@ dir="$(readlink -ve "$BASH_SOURCE")"
 dir="$(dirname "$dir")"
 source "$dir/../.libs/git.sh"
 
-versions_hooks+=( hook_no-prereleases )
+variants=(
+	''
+	'rc'
 
-containerd="$(
-	# https://github.com/containerd/containerd/releases
-	upstreamArches=(
-		amd64
-		arm64v8
-		ppc64le
-		riscv64
-		s390x
-		windows-amd64
-	)
-	hook_containerd-arches() {
-		local version="$3"
-		local json='{}' arch
-		for arch in "${upstreamArches[@]}"; do
-			local upstreamArch
-			case "$arch" in
-				arm64v8) upstreamArch='linux-arm64' ;;
-				windows-*) upstreamArch="$arch" ;;
-				*) upstreamArch="linux-$arch" ;;
-			esac
-			local sha256 url="https://github.com/containerd/containerd/releases/download/v$version/containerd-$version-$upstreamArch.tar.gz"
-			sha256="$(wget -qO- "$url.sha256sum")" || continue
-			sha256="${sha256%% *}"
-			json="$(jq <<<"$json" -c --arg arch "$arch" --arg url "$url" --arg sha256 "$sha256" -L"$dir/../.libs" '
-				include "lib"
-				;
-				.arches[$arch] = {
-					url: $url,
-					sha256: $sha256,
-					dpkgArch: ($arch | deb_arch),
+	#'1.7' # TODO add this once 2.0 is stable
+	'1.6'
+
+	# TODO add this when I figure out a clean way to do something more akin to a "weekly snapshot" or something so it doesn't have an update every single day (see also "buildkit")
+	#'dev'
+)
+
+json='{}'
+
+# https://github.com/containerd/containerd/releases
+upstreamArches=(
+	amd64
+	arm64v8
+	ppc64le
+	riscv64
+	s390x
+	windows-amd64
+)
+hook_containerd-arches() {
+	local version="$3"
+	local json='{}' arch
+	for arch in "${upstreamArches[@]}"; do
+		local upstreamArch
+		case "$arch" in
+			arm64v8) upstreamArch='linux-arm64' ;;
+			windows-*) upstreamArch="$arch" ;;
+			*) upstreamArch="linux-$arch" ;;
+		esac
+		local sha256 url="https://github.com/containerd/containerd/releases/download/v$version/containerd-$version-$upstreamArch.tar.gz"
+		sha256="$(wget -qO- "$url.sha256sum")" || continue
+		sha256="${sha256%% *}"
+		json="$(jq <<<"$json" -c --arg arch "$arch" --arg url "$url" --arg sha256 "$sha256" -L"$dir/../.libs" '
+			include "lib"
+			;
+			.arches[$arch] = {
+				url: $url,
+				sha256: $sha256,
+				dpkgArch: ($arch | deb_arch),
+			}
+		')"
+	done
+	jq <<<"$json" -e '.arches? | has("amd64") and has("arm64v8")' > /dev/null || return 1
+	[ "$json" = '{}' ] || printf '%s\n' "$json"
+}
+
+for variant in "${variants[@]}"; do
+	export variant
+
+	containerd="$(
+		case "$variant" in
+			rc)
+				hook_prereleases-only() { ! hook_no-prereleases "$@"; }
+				versions_hooks+=( hook_prereleases-only )
+				;;
+
+			[0-9]*.[0-9]*)
+				hook_variant-version() {
+					case "$3" in "$variant" | "$variant".*) return 0 ;; esac
+					return 1
 				}
-			')"
-		done
-		jq <<<"$json" -e '.arches? | has("amd64") and has("arm64v8")' > /dev/null || return 1
-		[ "$json" = '{}' ] || printf '%s\n' "$json"
-	}
-	versions_hooks+=( hook_containerd-arches )
+				versions_hooks+=( hook_no-prereleases hook_variant-version )
+				;;
 
-	git-tags 'https://github.com/containerd/containerd.git'
-)"
+			'')
+				versions_hooks+=( hook_no-prereleases )
+				;;
+
+			*) echo >&2 "error: unknown variant: '$variant'"; exit 1 ;;
+		esac
+
+		# this should always be last since it's really heavy (so we need to pre-filter as much as we can)
+		versions_hooks+=( hook_containerd-arches )
+
+		git-tags 'https://github.com/containerd/containerd.git'
+	)"
+	[ -n "$containerd" ]
+	json="$(jq <<<"$json" --argjson containerd "$containerd" '
+		if env.variant == "" then . else .[env.variant] end += $containerd
+		| .variants += [ env.variant ]
+	')"
+done
+
+versions_hooks+=( hook_no-prereleases )
 
 runc="$(
 	hook_runc-arches() {
@@ -94,7 +139,7 @@ runc="$(
 
 dind="$(github-file-commit 'moby/moby' 'HEAD' 'hack/dind')"
 
-jq <<<"$containerd" --argjson runc "$runc" --argjson dind "$dind" '
+jq <<<"$json" --argjson runc "$runc" --argjson dind "$dind" '
 	.runc = $runc
 	| .dind = $dind
 ' > versions.json
