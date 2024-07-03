@@ -60,13 +60,14 @@ for variant in "${variants[@]}"; do
 	export variant
 
 	containerd="$(
+		# NOTE: this is using the funny () case syntax because there's a bug in the Bash 5.1 in Ubuntu Jammy (that's fixed in the Bash 5.2 in Debian Bookworm) which for some reason fails to parse these subshells correctly otherwise
 		case "$variant" in
-			rc)
+			(rc)
 				hook_prereleases-only() { ! hook_no-prereleases "$@"; }
 				versions_hooks+=( hook_prereleases-only )
 				;;
 
-			[0-9]*.[0-9]*)
+			([0-9]*.[0-9]*)
 				hook_variant-version() {
 					case "$3" in "$variant" | "$variant".*) return 0 ;; esac
 					return 1
@@ -74,11 +75,11 @@ for variant in "${variants[@]}"; do
 				versions_hooks+=( hook_no-prereleases hook_variant-version )
 				;;
 
-			'')
+			('')
 				versions_hooks+=( hook_no-prereleases )
 				;;
 
-			*) echo >&2 "error: unknown variant: '$variant'"; exit 1 ;;
+			(*) echo >&2 "error: unknown variant: '$variant'"; exit 1 ;;
 		esac
 
 		# this should always be last since it's really heavy (so we need to pre-filter as much as we can)
