@@ -114,9 +114,9 @@ RUN set -eux; \
 		chroot . "./$bin" --version; \
 	done
 
-FROM golang:1.21-bullseye AS buildx
+FROM golang:1.21.0-bullseye AS buildx
 
-ARG BUILDX_GITCOMMIT=8535c6b4554c4357b6f230645fd5fb0afd74697d
+ARG BUILDX_GITCOMMIT=b96ad59f64d40873e4959336d294b648bb3937fe
 ENV BUILDX_GITCOMMIT $BUILDX_GITCOMMIT
 
 RUN set -eux; \
