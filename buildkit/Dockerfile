@@ -13,6 +13,7 @@ COPY \
 	backport-5072-fetch-tags.patch \
 	backport-5096-fix-umask.patch \
 	containerd-arm64-v8.patch \
+	git-fetch-by-commit.patch \
 	git-no-submodules.patch \
 	mips64le.patch \
 	noclip.patch \
