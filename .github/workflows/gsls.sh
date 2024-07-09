@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-[ -d "$BASHBREW_SCRIPTS/github-actions" ]
+[ -d "$BASHBREW_LIBRARY" ]
 
-export BASHBREW_NAMESPACE='tianon'
-
-strategy='{}'
 for gsl in */gsl.sh; do
 	dir="$(dirname "$gsl")"
 	img="$(basename "$dir")"
-	img="$BASHBREW_NAMESPACE/$img"
-	newStrategy="$(GENERATE_STACKBREW_LIBRARY="$gsl" GITHUB_REPOSITORY="$img" "$BASHBREW_SCRIPTS/github-actions/generate.sh")"
+	echo "$img"
+	"$gsl" > "$BASHBREW_LIBRARY/$img"
+	if false; then # TODO make sure this stuff is accurately represented in the new world
 	case "$img" in
 		'tianon/infosiftr-moby')
 			# remove per-architecture tags for now (temporary workaround for https://github.com/docker-library/bashbrew/pull/81)
@@ -41,12 +39,10 @@ for gsl in */gsl.sh; do
 			' <<<"$newStrategy")"
 			;;
 	esac
-	newStrategy="$(jq -c --arg img "$img" '.matrix.include = [ .matrix.include[] | .name = $img + ": " + .name ]' <<<"$newStrategy")"
-	jq -c . <<<"$newStrategy" > /dev/null # sanity check
-	strategy="$(jq -c --argjson strategy "$strategy" '.matrix.include = ($strategy.matrix.include // []) + .matrix.include' <<<"$newStrategy")"
+	fi
 done
-jq -c . <<<"$strategy" > /dev/null # sanity check
 
+if false; then # TODO figure out a clean way to account for "dangling" Dockerfiles in the new world
 # now that we have a list of legit images with generate scripts, look for dangling Dockerfiles
 allDockerfiles="$(git ls-files '*/Dockerfile' | jq -Rsc 'rtrimstr("\n") | split("\n")')"
 danglingDockerfiles="$(jq <<<"$strategy" -c --argjson allDockerfiles "$allDockerfiles" '$allDockerfiles - [ .matrix.include[].meta.dockerfiles[] ]')"
@@ -68,9 +64,4 @@ strategy="$(jq -c --argjson danglingDockerfiles "$danglingDockerfiles" '.matrix.
 			},
 	}
 ]' <<<"$strategy")"
-
-if [ -t 1 ]; then
-	jq <<<"$strategy"
-else
-	cat <<<"$strategy"
 fi

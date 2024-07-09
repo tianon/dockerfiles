@@ -20,34 +20,107 @@ jobs:
     name: Generate Jobs
     runs-on: ubuntu-latest
     outputs:
-      strategy: ${{ steps.generate-jobs.outputs.strategy }}
+      strategy: ${{ steps.strategy.outputs.strategy }}
+    env:
+      BASHBREW_NAMESPACE: tianon
     steps:
+      # TODO if it's a pull_request, we want to build only the changed things (generate sources.json before, generate after, only build the RHS/"comm -13" delta)
       - uses: actions/checkout@v4
       - uses: tianon/bashbrew@tianon
-      - id: generate-jobs
-        name: Generate Jobs
+      - name: generate library
         run: |
-          strategy="$(.github/workflows/generate.sh)"
-          echo "strategy=$strategy" >> "$GITHUB_OUTPUT"
-          jq . <<<"$strategy" # sanity check / debugging aid
+          mkdir .library
+          export BASHBREW_LIBRARY="$PWD/.library"
+          printf 'BASHBREW_LIBRARY=%s\n' "$BASHBREW_LIBRARY" >> "$GITHUB_ENV"
+          .github/workflows/gsls.sh
+      - run: bashbrew fetch --all
+      - name: checkout meta-scripts
+        uses: actions/checkout@v4
+        with:
+          repository: tianon/doi-meta-scripts
+          path: .meta-scripts
+      # TODO handle external-pins better (in meta-scripts itself) -- perhaps an environment variable to explicitly opt-out of external-pins?
+      - name: fake .external-pins (to satisfy sources.sh)
+        run: install -D -m 0755 <(echo 'true') .external-pins/list.sh
+      - name: sources.json
+        run: .meta-scripts/sources.sh | tee sources.json
+      - name: builds.json (fake)
+        run: |
+          jq -f .github/workflows/fake-builds.jq sources.json | tee builds.json
+      - name: filter arches
+        run: |
+          # TODO refactor meta-scripts to pull the "arches GitHub Actions supports" list out of "Jenkinsfile.trigger"
+          jq 'del(.[] | select(.build.arch as $arch | [ "amd64", "i386", "windows-amd64" ] | index($arch) | not))' builds.json | tee builds-filtered.json
+          # TODO also calculate Windows GitHub "runs-on" OS values here so we can filter versions GitHub doesn't support here as well (there don't currently exist any of those in our data, so it doesn't matter ATM and we can deal with it later in the process)
+      - name: groups
+        run: |
+          jq -f .github/workflows/group-builds.jq builds-filtered.json | tee groups.json
+      - name: strategy
+        id: strategy
+        run: |
+          jq -L .meta-scripts -f .github/workflows/strategy.jq groups.json | tee strategy.json
+          jq -r '"strategy=\(tojson)"' strategy.json >> "$GITHUB_OUTPUT"
+
+      # upload all the generated JSON files as a job artifact, for easier debugging
+      - uses: actions/upload-artifact@v4
+        with:
+          name: debug meta-scripts generated json
+          path: |
+            *.json
+          if-no-files-found: error
 
   test:
     needs: generate-jobs
     strategy: ${{ fromJson(needs.generate-jobs.outputs.strategy) }}
     name: ${{ matrix.name }}
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runsOn }}
+    env:
+      commands: ${{ matrix.commands }}
+      builds: ${{ toJSON(matrix.builds) }}
     steps:
-      - uses: actions/checkout@v4
-      # TODO something clever with https://github.com/marketplace/actions/changed-files
-      - name: Prepare Environment
-        run: ${{ matrix.runs.prepare }}
-      - name: Pull Dependencies
-        run: ${{ matrix.runs.pull }}
-      - name: Build ${{ matrix.name }}
-        run: ${{ matrix.runs.build }}
-      - name: History ${{ matrix.name }}
-        run: ${{ matrix.runs.history }}
-      - name: Test ${{ matrix.name }}
-        run: ${{ matrix.runs.test }}
-      - name: '"docker images"'
-        run: ${{ matrix.runs.images }}
+      - name: meta
+        run: |
+          jq <<<"$builds" 'map(first(.source.arches[].tags[]) + " " + .build.arch)'
+          cat <<<"$commands"
+          jq <<<"$builds" .
+      - name: prep docker (tianon-moby)
+        uses: tianon/debian-moby-action@HEAD
+        if: runner.os == 'linux' # https://github.com/tianon/dockerfiles/pull/523#issuecomment-1738223851
+      - name: prep buildx
+        run: |
+          docker buildx create --name tianon --driver-opt image=tianon/buildkit --driver-opt network=host --bootstrap # network=host for access to "localhost:5000" (registry below)
+          docker buildx inspect tianon
+          echo 'BUILDX_BUILDER=tianon' >> "$GITHUB_ENV"
+          echo 'BASHBREW_BUILDKIT_SYNTAX=tianon/buildkit' >> "$GITHUB_ENV"
+        if: contains(matrix.commands, ' buildx ')
+      - name: prep registry
+        run: |
+          docker run --rm --detach --name registry -p 5000:5000 registry:2 # TODO windows
+        if: runner.os == 'linux'
+      - name: prep crane
+        env:
+          craneExe: crane${{ runner.os == 'windows' && '.exe' || '' }}
+          craneUrl: https://doi-janky.infosiftr.net/job/wip/job/crane/lastSuccessfulBuild/artifact/crane-${{ runner.os == 'windows' && 'windows-amd64.exe' || 'amd64' }}
+        run: |
+          mkdir .bin
+          wget -O ".bin/$craneExe" "$craneUrl"
+          chmod +x ".bin/$craneExe"
+          ".bin/$craneExe" version
+          echo "$PWD/.bin" >> "$GITHUB_PATH"
+        if: contains(matrix.commands, 'crane ')
+      # TODO use https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#stopping-and-starting-workflow-commands to prevent builds from using workflow commands
+      - name: run
+        run: ${{ matrix.commands }}
+      # TODO play (again) with generating part or all of the "steps" block so this could be dynamic and thus more obvious what's happening ("building tianon/docker-master:dind" + "building tianon/docker-master:containerd")
+#      - name: Prepare Environment
+#        run: ${{ matrix.runs.prepare }}
+#      - name: Pull Dependencies
+#        run: ${{ matrix.runs.pull }}
+#      - name: Build ${{ matrix.name }}
+#        run: ${{ matrix.runs.build }}
+#      - name: History ${{ matrix.name }}
+#        run: ${{ matrix.runs.history }}
+#      - name: Test ${{ matrix.name }}
+#        run: ${{ matrix.runs.test }}
+#      - name: '"docker images"'
+#        run: ${{ matrix.runs.images }}
