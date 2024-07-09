@@ -17,7 +17,7 @@ jobs:
     name: Check For Uncomitted Changes
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Apply Templates
         run: ./parallel.sh apply-templates.sh
       - name: Git Diff (informational)

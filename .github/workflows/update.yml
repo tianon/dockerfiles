@@ -22,7 +22,7 @@ jobs:
     outputs:
       strategy: ${{ steps.generate-jobs.outputs.strategy }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - id: generate-jobs
         name: Generate Jobs
         run: |
@@ -56,7 +56,7 @@ jobs:
       dir: ${{ matrix.dir }}
       branch: update/${{ matrix.dir }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Install Bashbrew
@@ -121,7 +121,7 @@ jobs:
     env:
       branch: 'update-versions'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Config
