@@ -10,7 +10,7 @@
 #
 #   $ docker run -d --name dind --privileged --volume dind:/var/lib/docker tianon/docker-master
 
-FROM golang:1.21-bullseye AS build
+FROM golang:1.21.0-bullseye AS build
 
 RUN set -eux; \
 	apt-get update; \
@@ -54,7 +54,7 @@ RUN set -eux; \
 	docker --version; \
 	ldd /usr/local/bin/docker || :
 
-ARG MOBY_GITCOMMIT=c4dcaa0d9adb8cc0a0d95393e8cf3e853254eacb
+ARG MOBY_GITCOMMIT=767503d462af908a3c8f9fca7106e3ab6942f47d
 ENV MOBY_GITCOMMIT $MOBY_GITCOMMIT
 
 RUN set -eux; \
@@ -116,7 +116,7 @@ RUN set -eux; \
 
 FROM golang:1.21.0-bullseye AS buildx
 
-ARG BUILDX_GITCOMMIT=06d96d665ed00d9fccd391f4c7964ad6dfeae436
+ARG BUILDX_GITCOMMIT=ee642ecc4c61fb554a071197ebe51afb68563fb1
 ENV BUILDX_GITCOMMIT $BUILDX_GITCOMMIT
 
 RUN set -eux; \
