@@ -7,12 +7,10 @@
 FROM --platform=$BUILDPLATFORM golang:1.21 AS build
 
 # https://github.com/moby/buildkit/releases
-ENV BUILDKIT_VERSION 0.14.1
+ENV BUILDKIT_VERSION 0.15.0
 
 COPY \
-	backport-5072-fetch-tags.patch \
-	backport-5096-fix-umask.patch \
-	containerd-arm64-v8-pre-0.15.patch \
+	containerd-arm64-v8.patch \
 	git-no-submodules.patch \
 	mips64le.patch \
 	noclip.patch \

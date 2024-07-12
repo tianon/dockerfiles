@@ -1,20 +1,20 @@
 {
   "linux": {
     "iseol": false,
-    "version": "6.9.8",
+    "version": "6.9.9",
     "moniker": "stable",
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.9.8.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.9.8.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.9.9.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.9.9.tar.sign",
     "released": {
-      "timestamp": 1720165163,
-      "isodate": "2024-07-05"
+      "timestamp": 1720695098,
+      "isodate": "2024-07-11"
     },
-    "gitweb": "https://git.kernel.org/stable/h/v6.9.8",
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.9.8",
-    "diffview": "https://git.kernel.org/stable/ds/v6.9.8/v6.9.7",
+    "gitweb": "https://git.kernel.org/stable/h/v6.9.9",
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.9.9",
+    "diffview": "https://git.kernel.org/stable/ds/v6.9.9/v6.9.8",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.9.8.xz",
-      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.9.7-8.xz"
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.9.9.xz",
+      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.9.8-9.xz"
     }
   },
   "arches": {
