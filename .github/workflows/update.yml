@@ -83,18 +83,7 @@ jobs:
       - name: Update
         run: |
           version_components() {
-            # TODO perhaps figure out a way to have this "coalesce" components with the same version number?
-            jq -c '
-              [
-                path(.. | select(type == "object" and has("version"))) as $path
-                | [
-                  $path[],
-                  getpath($path).version
-                ]
-              ]
-              | sort_by(length != 1) # make sure "top level" version is first in the list, but everything else in file order (sort_by is stable)
-              | map(join(" "))
-            ' "$dir/versions.json"
+            jq -c -f .github/workflows/version-components.jq "$dir/versions.json"
           }
           before="$(version_components)"
           ./update.sh "$dir"
