@@ -14,6 +14,7 @@ COPY \
 	git-no-submodules.patch \
 	mips64le.patch \
 	noclip.patch \
+	nolint.patch \
 	/tmp/buildkit-patches/
 
 WORKDIR /app
