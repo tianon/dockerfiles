@@ -1,5 +1,5 @@
 {
-  "version": "4.0.3",
+  "version": "4.1.0",
   "python": {
     "version": "3.12",
     "from": "python:3.12-alpine3.19",
