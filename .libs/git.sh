@@ -25,7 +25,7 @@ git-tags() {
 			capture("^(?<commit>[a-f0-9]+)\t(?<ref>refs/tags/(?<tag>v(?<version>[0-9]+.*?)|.*?)(?:\\^{})?)$")
 			| .version //= .tag
 		)
-		# (ab)using that "git ls-remote --sort=-version:refname" will list "annotated" tags before their unannotated counterparts, so they will be the ref we return here
+		# (ab)using that "git ls-remote --sort=-version:refname" will list the objects "annotated" tags point to before the annotated counterparts, so they will be the ref we return here (ie, we return the "real" commit ID, not the reference to the annotated tag object)
 		| reduce .[] as $i ({}; .[$i.version] //= $i)
 		| [ .[] ]
 	')" || return "$?"
