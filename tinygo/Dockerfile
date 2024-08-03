@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM golang:1.19-bullseye
+FROM golang:1.19-bookworm
 
 # the .deb (as of 0.6.0) installs to /usr/local/tinygo but doesn't add "tinygo" to PATH
 ENV PATH /usr/local/tinygo/bin:$PATH
