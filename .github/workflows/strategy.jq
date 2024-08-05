@@ -8,6 +8,7 @@ include "meta"; # this comes from "meta-scripts" ("jq -L .meta-scripts ...")
 map(
 	.[0].build.arch as $arch
 	| if any(.build.arch != $arch) then error("arch mismatch!\n" + tojson) else . end
+	| select(any(.source.arches[$arch] | .tags[], .archTags[] | contains("handbrake")) | not) # TODO remove handbrake exclusion 😅
 	| {
 		name: "\(map(first(.source.arches[$arch] | .tags[], .archTags[])) | join(", ")) [\($arch)]",
 		runsOn: (
@@ -29,8 +30,10 @@ map(
 				| [
 					"(",
 					"echo \("::group::prep \($name)" | @sh)",
+					"set -x",
 					"mkdir \(.buildId | @sh)",
 					"cd \(.buildId | @sh)",
+					"set +x",
 					"echo \("::endgroup::" | @sh)",
 					"echo \("::group::pull \($name)" | @sh)",
 					"( set -x", pull_command, ")",
