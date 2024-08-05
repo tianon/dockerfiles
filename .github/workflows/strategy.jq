@@ -25,18 +25,28 @@ map(
 		),
 		commands: (
 			map(
-				[
+				first(.source.arches[$arch] | .tags[], .archTags[]) as $name
+				| [
 					"(",
+					"echo \("::group::prep \($name)" | @sh)",
 					"mkdir \(.buildId | @sh)",
 					"cd \(.buildId | @sh)",
-					pull_command,
-					build_command,
-					push_command,
+					"echo \("::endgroup::" | @sh)",
+					"echo \("::group::pull \($name)" | @sh)",
+					"( set -x", pull_command, ")",
+					"echo \("::endgroup::" | @sh)",
+					"echo \("::group::build \($name)" | @sh)",
+					"( set -x", build_command, ")",
+					"echo \("::endgroup::" | @sh)",
+					"echo \("::group::push (NOT PRODUCTION) \($name)" | @sh)",
+					"( set -x", push_command, ")",
+					"echo \("::endgroup::" | @sh)",
 					")",
 					empty
 				]
 				| join("\n")
 			)
+			| [ "set +x" ] + .
 			| join("\n\n")
 		),
 		builds: .,
