@@ -8,7 +8,6 @@ include "meta"; # this comes from "meta-scripts" ("jq -L .meta-scripts ...")
 map(
 	.[0].build.arch as $arch
 	| if any(.build.arch != $arch) then error("arch mismatch!\n" + tojson) else . end
-	| select(any(.source.arches[$arch] | .tags[], .archTags[] | contains("handbrake")) | not) # TODO remove handbrake exclusion 😅
 	| {
 		name: "\(map(first(.source.arches[$arch] | .tags[], .archTags[])) | join(", ")) [\($arch)]",
 		runsOn: (
@@ -41,6 +40,8 @@ map(
 					"echo \("::group::build \($name)" | @sh)",
 					"( set -x", build_command, ")",
 					"echo \("::endgroup::" | @sh)",
+					# TODO only push if we have more than one image we're going to build? (on the one hand it's useful to exercise the push code, but on the other, it's a waste of time that *also* tends to confuse consumers who think this is doing the real push to Docker Hub...)
+					# TODO run tests -- counter to the above point, our "build_command" does *not* guarantee the image is in the local image store (and "docker load" doesn't even support OCI layout tarballs until like 27+), so pulling it back down from the registry might be the only way we can officially run the tests?  unless we change meta-scripts so that it *does* promise the image is loaded into the local image store 😞
 					"echo \("::group::push (NOT PRODUCTION) \($name)" | @sh)",
 					"( set -x", push_command, ")",
 					"echo \("::endgroup::" | @sh)",
