@@ -93,10 +93,6 @@ jobs:
           echo 'BUILDX_BUILDER=tianon' >> "$GITHUB_ENV"
           echo 'BASHBREW_BUILDKIT_SYNTAX=tianon/buildkit' >> "$GITHUB_ENV"
         if: contains(matrix.commands, ' buildx ')
-      - name: prep registry
-        run: |
-          docker run --rm --detach --name registry -p 5000:5000 registry:2 # TODO windows
-        if: runner.os == 'linux'
       - name: prep crane
         env:
           craneExe: crane${{ runner.os == 'windows' && '.exe' || '' }}
@@ -107,7 +103,11 @@ jobs:
           chmod +x ".bin/$craneExe"
           ".bin/$craneExe" version
           echo "$PWD/.bin" >> "$GITHUB_PATH"
-        if: contains(matrix.commands, 'crane ')
+      - name: prep registry
+        run: |
+          rm -rf "$RUNNER_TEMP/registry"
+          mkdir "$RUNNER_TEMP/registry"
+          nohup crane registry serve --disk "$RUNNER_TEMP/registry" --address ':5000' &>> "$RUNNER_TEMP/registry.log" &
       # TODO use https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#stopping-and-starting-workflow-commands to prevent builds from using workflow commands
       - name: run
         run: ${{ matrix.commands }}
