@@ -99,7 +99,7 @@ jobs:
           craneUrl: https://doi-janky.infosiftr.net/job/wip/job/crane/lastSuccessfulBuild/artifact/crane-${{ runner.os == 'windows' && 'windows-amd64.exe' || 'amd64' }}
         run: |
           mkdir .bin
-          wget -O ".bin/$craneExe" "$craneUrl"
+          curl -fL -o ".bin/$craneExe" "$craneUrl"
           chmod +x ".bin/$craneExe"
           ".bin/$craneExe" version
           echo "$PWD/.bin" >> "$GITHUB_PATH"
