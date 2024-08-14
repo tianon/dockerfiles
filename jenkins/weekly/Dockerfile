@@ -47,7 +47,7 @@ RUN set -eux; \
 
 RUN echo 'deb [ signed-by=/etc/apt/keyrings/jenkins.gpg.asc ] https://pkg.jenkins.io/debian binary/' > /etc/apt/sources.list.d/jenkins.list
 
-ENV JENKINS_VERSION 2.471
+ENV JENKINS_VERSION 2.472
 
 RUN set -eux; \
 	apt-get update; \
