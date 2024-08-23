@@ -45,7 +45,6 @@ RUN set -eux; \
 		libvorbis-dev \
 		libvpx-dev \
 		libx264-dev \
-		libx265-dev \
 		libxml2-dev \
 		make \
 		meson \
@@ -53,6 +52,10 @@ RUN set -eux; \
 		patch \
 		pkg-config \
 		python3 \
+		\
+# https://github.com/HandBrake/HandBrake/issues/6006#issuecomment-2081484348
+		git \
+#		libx265-dev \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
 	\
