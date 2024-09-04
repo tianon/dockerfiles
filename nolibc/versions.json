@@ -1,21 +1,21 @@
 {
   "linux": {
     "moniker": "stable",
-    "version": "6.10.7",
+    "version": "6.10.8",
     "iseol": false,
     "released": {
-      "timestamp": 1724945842,
-      "isodate": "2024-08-29"
+      "timestamp": 1725449421,
+      "isodate": "2024-09-04"
     },
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.10.7.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.10.7.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.10.8.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.10.8.tar.sign",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.10.7.xz",
-      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.10.6-7.xz"
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.10.8.xz",
+      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.10.7-8.xz"
     },
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.10.7",
-    "gitweb": "https://git.kernel.org/stable/h/v6.10.7",
-    "diffview": "https://git.kernel.org/stable/ds/v6.10.7/v6.10.6"
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.10.8",
+    "gitweb": "https://git.kernel.org/stable/h/v6.10.8",
+    "diffview": "https://git.kernel.org/stable/ds/v6.10.8/v6.10.7"
   },
   "arches": {
     "amd64": {
