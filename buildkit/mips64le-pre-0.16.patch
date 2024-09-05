@@ -1,13 +1,13 @@
 Description: fix build on mips64le
 Forwarded: https://github.com/moby/buildkit/issues/5129#issuecomment-2214797262
 
-# pkg/mod/github.com/moby/buildkit@v0.12.0/snapshot/diffapply_linux.go:131:8: cannot use stat.Dev (variable of type uint32) as uint64 value in struct literal
-# pkg/mod/github.com/moby/buildkit@v0.12.0/snapshot/diffapply_linux.go:300:12: cannot use unix.Mkdev(0, 0) (value of type uint64) as uint32 value in struct literal
+# pkg/mod/github.com/moby/buildkit@v0.12.0/snapshot/diffapply_unix.go:131:8: cannot use stat.Dev (variable of type uint32) as uint64 value in struct literal
+# pkg/mod/github.com/moby/buildkit@v0.12.0/snapshot/diffapply_unix.go:300:12: cannot use unix.Mkdev(0, 0) (value of type uint64) as uint32 value in struct literal
 
-diff --git a/snapshot/diffapply_linux.go b/snapshot/diffapply_linux.go
+diff --git a/snapshot/diffapply_unix.go b/snapshot/diffapply_unix.go
 index c4875000e..1d9d09d8f 100644
---- a/snapshot/diffapply_linux.go
-+++ b/snapshot/diffapply_linux.go
+--- a/snapshot/diffapply_unix.go
++++ b/snapshot/diffapply_unix.go
 @@ -128,7 +128,7 @@ func statInode(stat *syscall.Stat_t) inode {
  	}
  	return inode{

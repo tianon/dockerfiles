@@ -14,7 +14,7 @@ COPY \
 	backport-5096-fix-umask.patch \
 	containerd-arm64-v8-pre-0.15.patch \
 	git-no-submodules.patch \
-	mips64le.patch \
+	mips64le-pre-0.16.patch \
 	noclip.patch \
 	/tmp/buildkit-patches/
 
@@ -22,7 +22,9 @@ WORKDIR /app
 
 RUN set -eux; \
 	git clone --branch "v$BUILDKIT_VERSION" --depth 1 --config advice.detachedHead=false 'https://github.com/moby/buildkit.git' .; \
-	git apply /tmp/buildkit-patches/*.patch; \
+	for patch in /tmp/buildkit-patches/*.patch; do \
+		git apply --verbose "$patch"; \
+	done; \
 	git diff --color
 
 ENV CGO_ENABLED 0

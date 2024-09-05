@@ -12,16 +12,18 @@ ENV BUILDKIT_VERSION 0.15.2
 COPY \
 	containerd-arm64-v8.patch \
 	git-no-submodules.patch \
-	mips64le.patch \
+	mips64le-pre-0.16.patch \
 	noclip.patch \
-	nolint.patch \
+	nolint-pre-0.16.patch \
 	/tmp/buildkit-patches/
 
 WORKDIR /app
 
 RUN set -eux; \
 	git clone --branch "v$BUILDKIT_VERSION" --depth 1 --config advice.detachedHead=false 'https://github.com/moby/buildkit.git' .; \
-	git apply /tmp/buildkit-patches/*.patch; \
+	for patch in /tmp/buildkit-patches/*.patch; do \
+		git apply --verbose "$patch"; \
+	done; \
 	git diff --color
 
 ENV CGO_ENABLED 0

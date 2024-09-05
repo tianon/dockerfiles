@@ -23,10 +23,16 @@ COPY \
 	containerd-arm64-v8.patch \
 {{ ) end -}}
 	git-no-submodules.patch \
+{{ if .version | startswith("0.13.") or startswith("0.14.") or startswith("0.15.") then ( -}}
+	mips64le-pre-0.16.patch \
+{{ ) else ( -}}
 	mips64le.patch \
+{{ ) end -}}
 	noclip.patch \
 {{ # linting was introduced in 0.14+ slash dockerfile/1.8.0 -}}
-{{ if .version | startswith("0.13.") then "" else ( -}}
+{{ if .version | startswith("0.13.") then "" elif .version | startswith("0.14.") or startswith("0.15.") then ( -}}
+	nolint-pre-0.16.patch \
+{{ ) else ( -}}
 	nolint.patch \
 {{ ) end -}}
 	/tmp/buildkit-patches/
@@ -42,7 +48,9 @@ RUN set -eux; \
 {{ ) else ( -}}
 	git clone --branch "v$BUILDKIT_VERSION" --depth 1 --config advice.detachedHead=false 'https://github.com/moby/buildkit.git' .; \
 {{ ) end -}}
-	git apply /tmp/buildkit-patches/*.patch; \
+	for patch in /tmp/buildkit-patches/*.patch; do \
+		git apply --verbose "$patch"; \
+	done; \
 	git diff --color
 
 ENV CGO_ENABLED 0

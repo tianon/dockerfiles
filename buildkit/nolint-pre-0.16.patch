@@ -7,22 +7,22 @@ Ideally, this would be disabled in such a way that it was merely disabled-by-def
 Alternatively, it would be interesting to try and remove *all* the code (instead of just making it no-op quickly), but the binary size reduction from doing so would probably not be large enough to justify the added burden of maintaining a more complex patch.
 
 diff --git a/frontend/dockerfile/linter/linter.go b/frontend/dockerfile/linter/linter.go
-index 890acc53b..3b2efd788 100644
+index da94cbc9e..6d07a9ba7 100644
 --- a/frontend/dockerfile/linter/linter.go
 +++ b/frontend/dockerfile/linter/linter.go
-@@ -29,6 +29,7 @@ type Linter struct {
+@@ -25,6 +25,7 @@ type Linter struct {
  }
  
  func New(config *Config) *Linter {
 +	return nil // NO LINTING
  	toret := &Linter{
- 		SkippedRules:      map[string]struct{}{},
- 		ExperimentalRules: map[string]struct{}{},
-@@ -48,6 +49,7 @@ func New(config *Config) *Linter {
+ 		SkippedRules: map[string]struct{}{},
+ 		CalledRules:  []string{},
+@@ -39,6 +40,7 @@ func New(config *Config) *Linter {
  }
  
  func (lc *Linter) Run(rule LinterRuleI, location []parser.Range, txt ...string) {
 +	return // NO LINTING
- 	if lc == nil || lc.Warn == nil || rule.IsDeprecated() {
+ 	if lc == nil || lc.Warn == nil || lc.SkipAll || rule.IsDeprecated() {
  		return
  	}
