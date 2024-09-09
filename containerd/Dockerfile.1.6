@@ -42,14 +42,14 @@ RUN set -eux; \
 	runc --version
 
 # https://github.com/containerd/containerd/releases
-ENV CONTAINERD_VERSION 1.6.35
+ENV CONTAINERD_VERSION 1.6.36
 RUN set -eux; \
 	dpkgArch="$(dpkg --print-architecture)"; \
 	case "$dpkgArch" in \
-		'amd64') url='https://github.com/containerd/containerd/releases/download/v1.6.35/containerd-1.6.35-linux-amd64.tar.gz'; sha256='50f05b2986a8635827e3f015f10d8d1c342e9a9d6886c7392160b5c27ac77c83' ;; \
-		'arm64') url='https://github.com/containerd/containerd/releases/download/v1.6.35/containerd-1.6.35-linux-arm64.tar.gz'; sha256='0e0066aeffbd4360bfcf16bd08b6a9e40da7f437aa7b292991ce8d08083bee40' ;; \
-		'ppc64el') url='https://github.com/containerd/containerd/releases/download/v1.6.35/containerd-1.6.35-linux-ppc64le.tar.gz'; sha256='99095ab778f6fd532eb01d11771e7f8de8383ef20a00ec536c0cf9c018895115' ;; \
-		'riscv64') url='https://github.com/containerd/containerd/releases/download/v1.6.35/containerd-1.6.35-linux-riscv64.tar.gz'; sha256='75c48df303c9d639d76fcd418eb1f76b5e3464ec3fa998700f6237d8a1f1504c' ;; \
+		'amd64') url='https://github.com/containerd/containerd/releases/download/v1.6.36/containerd-1.6.36-linux-amd64.tar.gz'; sha256='e9a53f5f7549afbe9208578609eddecd238b7166663ab273f2954fab77602b3f' ;; \
+		'arm64') url='https://github.com/containerd/containerd/releases/download/v1.6.36/containerd-1.6.36-linux-arm64.tar.gz'; sha256='48aaf746ad4adc6e5c3b077875ddbd15a8f5b660a5f7dcb533f0205aeeff3785' ;; \
+		'ppc64el') url='https://github.com/containerd/containerd/releases/download/v1.6.36/containerd-1.6.36-linux-ppc64le.tar.gz'; sha256='8978cd8bcd4d5a2640bad26d8ea522a46847b6e4a62da1b07bfa482c8906e5ce' ;; \
+		'riscv64') url='https://github.com/containerd/containerd/releases/download/v1.6.36/containerd-1.6.36-linux-riscv64.tar.gz'; sha256='adc47223e16a4cc44224562c3190ff413e0666adaef404a108303e256cee6986' ;; \
 		*) echo >&2 "error: unsupported architecture: '$dpkgArch'"; exit 1 ;; \
 	esac; \
 	wget -O containerd.tar.gz "$url" --progress=dot:giga; \
