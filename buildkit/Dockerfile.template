@@ -17,6 +17,7 @@ COPY \
 	backport-5072-fetch-tags.patch \
 	backport-5096-fix-umask.patch \
 {{) else "" end -}}
+	backport-moby-48455-fix-riscv64-seccomp.patch \
 {{ if .version | startswith("0.13.") or startswith("0.14.") then ( -}}
 	containerd-arm64-v8-pre-0.15.patch \
 {{ ) else ( -}}

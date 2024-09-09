@@ -12,6 +12,7 @@ ENV BUILDKIT_VERSION 0.13.2
 COPY \
 	backport-5072-fetch-tags.patch \
 	backport-5096-fix-umask.patch \
+	backport-moby-48455-fix-riscv64-seccomp.patch \
 	containerd-arm64-v8-pre-0.15.patch \
 	git-no-submodules.patch \
 	mips64le-pre-0.16.patch \
