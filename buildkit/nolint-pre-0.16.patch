@@ -26,3 +26,11 @@ index da94cbc9e..6d07a9ba7 100644
  	if lc == nil || lc.Warn == nil || lc.SkipAll || rule.IsDeprecated() {
  		return
  	}
+@@ -84,6 +84,7 @@ func (rule *LinterRule[F]) RuleName() string {
+ }
+ 
+ func (rule *LinterRule[F]) Run(warn LintWarnFunc, location []parser.Range, txt ...string) {
++	return // NO LINTING
+ 	if len(txt) == 0 {
+ 		txt = []string{rule.Description}
+ 	}
