@@ -7,15 +7,15 @@
 FROM --platform=$BUILDPLATFORM golang:1.21 AS build
 
 # https://github.com/moby/buildkit/releases
-ENV BUILDKIT_VERSION 0.15.2
+ENV BUILDKIT_VERSION 0.16.0
 
 COPY \
 	backport-moby-48455-fix-riscv64-seccomp.patch \
 	containerd-arm64-v8.patch \
 	git-no-submodules.patch \
-	mips64le-pre-0.16.patch \
+	mips64le.patch \
 	noclip.patch \
-	nolint-pre-0.16.patch \
+	nolint.patch \
 	/tmp/buildkit-patches/
 
 WORKDIR /app
