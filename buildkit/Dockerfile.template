@@ -31,9 +31,7 @@ COPY \
 {{ ) end -}}
 	noclip.patch \
 {{ # linting was introduced in 0.14+ slash dockerfile/1.8.0 -}}
-{{ if .version | startswith("0.13.") then "" elif .version | startswith("0.14.") or startswith("0.15.") then ( -}}
-	nolint-pre-0.16.patch \
-{{ ) else ( -}}
+{{ if .version | startswith("0.13.") then "" else ( -}}
 	nolint.patch \
 {{ ) end -}}
 	/tmp/buildkit-patches/
