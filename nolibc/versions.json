@@ -1,21 +1,21 @@
 {
   "linux": {
     "moniker": "stable",
-    "version": "6.10.9",
+    "version": "6.10.10",
     "iseol": false,
     "released": {
-      "timestamp": 1725775007,
-      "isodate": "2024-09-08"
+      "timestamp": 1726132405,
+      "isodate": "2024-09-12"
     },
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.10.9.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.10.9.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.10.10.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.10.10.tar.sign",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.10.9.xz",
-      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.10.8-9.xz"
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.10.10.xz",
+      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.10.9-10.xz"
     },
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.10.9",
-    "gitweb": "https://git.kernel.org/stable/h/v6.10.9",
-    "diffview": "https://git.kernel.org/stable/ds/v6.10.9/v6.10.8"
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.10.10",
+    "gitweb": "https://git.kernel.org/stable/h/v6.10.10",
+    "diffview": "https://git.kernel.org/stable/ds/v6.10.10/v6.10.9"
   },
   "arches": {
     "amd64": {
