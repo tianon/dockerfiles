@@ -15,11 +15,13 @@ RUN set -eux; \
 		ipcalc \
 		iperf \
 		iptables \
+		iptables-legacy \
 		iputils \
 		jq \
 		mtr \
 		nbtscan \
 		net-tools \
+		nftables \
 		nmap \
 		openssh-client \
 		openssl \

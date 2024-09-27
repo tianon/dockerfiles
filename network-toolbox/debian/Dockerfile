@@ -23,6 +23,7 @@ RUN set -eux; \
 		nbtscan \
 		net-tools \
 		netcat-openbsd \
+		nftables \
 		nmap \
 		ntpdate \
 		openssh-client \
