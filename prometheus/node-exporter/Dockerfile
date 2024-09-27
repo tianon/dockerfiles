@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 WORKDIR /opt/node-exporter
 ENV PATH /opt/node-exporter:$PATH
