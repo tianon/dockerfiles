@@ -4,8 +4,8 @@
     "lts"
   ],
   "weekly": {
-    "sha256": "815b55d2fa515d7cfd0e851c6683046a208dd2f236f9b1ced598e16e77739b16",
-    "version": "2.479",
+    "sha256": "093110f6a09cb07bd756948d7a40389029862faea707419ffb731794b654d93c",
+    "version": "2.480",
     "repo": "https://pkg.jenkins.io/debian"
   },
   "lts": {
