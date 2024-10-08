@@ -29,6 +29,9 @@ COPY \
 {{ ) else ( -}}
 	mips64le.patch \
 {{ ) end -}}
+{{ if .version | startswith("0.13.") or startswith("0.14.") or startswith("0.15.") or startswith("0.16.") then ( -}}
+	backport-5372-sbom-args.patch \
+{{) else "" end -}}
 	noclip.patch \
 {{ # linting was introduced in 0.14+ slash dockerfile/1.8.0 -}}
 {{ if .version | startswith("0.13.") then "" else ( -}}
