@@ -1,0 +1,156 @@
+Description: git: Added way to configure SBOM scanner
+Author: Laurent Goderre <laurent.goderre@docker.com>
+Applied-Upstream: 0.17+; https://github.com/moby/buildkit/pull/5372
+
+diff --git a/control/control.go b/control/control.go
+index badd7561130d..c1fd299f86ba 100644
+--- a/control/control.go
++++ b/control/control.go
+@@ -460,15 +460,22 @@ func (c *Controller) Solve(ctx context.Context, req *controlapi.SolveRequest) (*
+ 	var procs []llbsolver.Processor
+ 
+ 	if attrs, ok := attests["sbom"]; ok {
+-		src := attrs["generator"]
+-		if src == "" {
+-			return nil, errors.Errorf("sbom generator cannot be empty")
+-		}
+-		ref, err := reference.ParseNormalizedNamed(src)
+-		if err != nil {
+-			return nil, errors.Wrapf(err, "failed to parse sbom generator %s", src)
++		var ref reference.Named
++		params := make(map[string]string)
++		for k, v := range attrs {
++			if k == "generator" {
++				if v == "" {
++					return nil, errors.Errorf("sbom generator cannot be empty")
++				}
++				ref, err = reference.ParseNormalizedNamed(v)
++				if err != nil {
++					return nil, errors.Wrapf(err, "failed to parse sbom generator %s", v)
++				}
++				ref = reference.TagNameOnly(ref)
++			} else {
++				params[k] = v
++			}
+ 		}
+-		ref = reference.TagNameOnly(ref)
+ 
+ 		useCache := true
+ 		if v, ok := req.FrontendAttrs["no-cache"]; ok && v == "" {
+@@ -480,7 +487,7 @@ func (c *Controller) Solve(ctx context.Context, req *controlapi.SolveRequest) (*
+ 			resolveMode = v
+ 		}
+ 
+-		procs = append(procs, proc.SBOMProcessor(ref.String(), useCache, resolveMode))
++		procs = append(procs, proc.SBOMProcessor(ref.String(), useCache, resolveMode, params))
+ 	}
+ 
+ 	if attrs, ok := attests["provenance"]; ok {
+diff --git a/frontend/attestations/sbom/sbom.go b/frontend/attestations/sbom/sbom.go
+index a307e938bb00..61f6444685c4 100644
+--- a/frontend/attestations/sbom/sbom.go
++++ b/frontend/attestations/sbom/sbom.go
+@@ -34,7 +34,7 @@ const (
+ // attestation.
+ type Scanner func(ctx context.Context, name string, ref llb.State, extras map[string]llb.State, opts ...llb.ConstraintsOpt) (result.Attestation[*llb.State], error)
+ 
+-func CreateSBOMScanner(ctx context.Context, resolver sourceresolver.MetaResolver, scanner string, resolveOpt sourceresolver.Opt) (Scanner, error) {
++func CreateSBOMScanner(ctx context.Context, resolver sourceresolver.MetaResolver, scanner string, resolveOpt sourceresolver.Opt, params map[string]string) (Scanner, error) {
+ 	if scanner == "" {
+ 		return nil, nil
+ 	}
+@@ -66,6 +66,10 @@ func CreateSBOMScanner(ctx context.Context, resolver sourceresolver.MetaResolver
+ 			env = append(env, "BUILDKIT_SCAN_SOURCE_EXTRAS="+path.Join(srcDir, "extras/"))
+ 		}
+ 
++		for k, v := range params {
++			env = append(env, "BUILDKIT_SCAN_"+k+"="+v)
++		}
++
+ 		runOpts := []llb.RunOption{
+ 			llb.WithCustomName(fmt.Sprintf("[%s] generating sbom using %s", name, scanner)),
+ 		}
+diff --git a/frontend/dockerfile/builder/build.go b/frontend/dockerfile/builder/build.go
+index 2f5348f978c3..31ca7381c761 100644
+--- a/frontend/dockerfile/builder/build.go
++++ b/frontend/dockerfile/builder/build.go
+@@ -118,7 +118,7 @@ func Build(ctx context.Context, c client.Client) (_ *client.Result, err error) {
+ 			ImageOpt: &sourceresolver.ResolveImageOpt{
+ 				ResolveMode: opts["image-resolve-mode"],
+ 			},
+-		})
++		}, bc.SBOM.Parameters)
+ 		if err != nil {
+ 			return nil, err
+ 		}
+diff --git a/frontend/dockerui/config.go b/frontend/dockerui/config.go
+index 41fd51698c70..5d4868435a9d 100644
+--- a/frontend/dockerui/config.go
++++ b/frontend/dockerui/config.go
+@@ -89,7 +89,8 @@ type Client struct {
+ }
+ 
+ type SBOM struct {
+-	Generator string
++	Generator  string
++	Parameters map[string]string
+ }
+ 
+ type Source struct {
+@@ -257,17 +258,26 @@ func (bc *Client) init() error {
+ 		return err
+ 	}
+ 	if attrs, ok := attests[attestations.KeyTypeSbom]; ok {
+-		src, ok := attrs["generator"]
+-		if !ok {
+-			return errors.Errorf("sbom scanner cannot be empty")
++		params := make(map[string]string)
++		var ref reference.Named
++		for k, v := range attrs {
++			if k == "generator" {
++				ref, err = reference.ParseNormalizedNamed(v)
++				if err != nil {
++					return errors.Wrapf(err, "failed to parse sbom scanner %s", v)
++				}
++				ref = reference.TagNameOnly(ref)
++			} else {
++				params[k] = v
++			}
+ 		}
+-		ref, err := reference.ParseNormalizedNamed(src)
+-		if err != nil {
+-			return errors.Wrapf(err, "failed to parse sbom scanner %s", src)
++		if ref == nil {
++			return errors.Errorf("sbom scanner cannot be empty")
+ 		}
+-		ref = reference.TagNameOnly(ref)
++
+ 		bc.SBOM = &SBOM{
+-			Generator: ref.String(),
++			Generator:  ref.String(),
++			Parameters: params,
+ 		}
+ 	}
+ 
+diff --git a/solver/llbsolver/proc/sbom.go b/solver/llbsolver/proc/sbom.go
+index 54774b797a4a..731d9bc20184 100644
+--- a/solver/llbsolver/proc/sbom.go
++++ b/solver/llbsolver/proc/sbom.go
+@@ -16,7 +16,7 @@ import (
+ 	"github.com/pkg/errors"
+ )
+ 
+-func SBOMProcessor(scannerRef string, useCache bool, resolveMode string) llbsolver.Processor {
++func SBOMProcessor(scannerRef string, useCache bool, resolveMode string, params map[string]string) llbsolver.Processor {
+ 	return func(ctx context.Context, res *llbsolver.Result, s *llbsolver.Solver, j *solver.Job, usage *resources.SysSampler) (*llbsolver.Result, error) {
+ 		// skip sbom generation if we already have an sbom
+ 		if sbom.HasSBOM(res.Result) {
+@@ -35,7 +35,7 @@ func SBOMProcessor(scannerRef string, useCache bool, resolveMode string) llbsolv
+ 			ImageOpt: &sourceresolver.ResolveImageOpt{
+ 				ResolveMode: resolveMode,
+ 			},
+-		})
++		}, params)
+ 		if err != nil {
+ 			return nil, err
+ 		}

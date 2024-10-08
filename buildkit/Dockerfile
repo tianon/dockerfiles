@@ -14,6 +14,7 @@ COPY \
 	containerd-arm64-v8.patch \
 	git-no-submodules.patch \
 	mips64le.patch \
+	backport-5372-sbom-args.patch \
 	noclip.patch \
 	nolint.patch \
 	/tmp/buildkit-patches/
