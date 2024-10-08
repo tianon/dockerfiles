@@ -10,11 +10,11 @@ FROM --platform=$BUILDPLATFORM golang:1.21 AS build
 ENV BUILDKIT_VERSION 0.16.0
 
 COPY \
+	backport-5372-sbom-args.patch \
 	backport-moby-48455-fix-riscv64-seccomp.patch \
 	containerd-arm64-v8.patch \
 	git-no-submodules.patch \
 	mips64le.patch \
-	backport-5372-sbom-args.patch \
 	noclip.patch \
 	nolint.patch \
 	/tmp/buildkit-patches/
