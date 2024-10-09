@@ -10,7 +10,6 @@ FROM --platform=$BUILDPLATFORM golang:1.22 AS build
 ENV BUILDKIT_VERSION 0.17.0-rc1
 
 COPY \
-	backport-moby-48455-fix-riscv64-seccomp.patch \
 	containerd-arm64-v8.patch \
 	git-no-submodules.patch \
 	mips64le.patch \
