@@ -10,7 +10,7 @@
 #
 #   $ docker run -d --name dind --privileged --volume dind:/var/lib/docker tianon/docker-master
 
-FROM golang:1.21.0-bookworm AS build
+FROM golang:1.22.0-bookworm AS build
 
 RUN set -eux; \
 	apt-get update; \
@@ -33,7 +33,7 @@ ENV DOCKER_BUILDTAGS \
 
 WORKDIR /moby
 
-ARG CLI_GITCOMMIT=305985c1b11e8542abdb361205328e69f327caad
+ARG CLI_GITCOMMIT=6a78e9231a1c35b64bff99bcb8b9714071335d2f
 ENV CLI_GITCOMMIT $CLI_GITCOMMIT
 
 RUN set -eux; \
@@ -54,7 +54,7 @@ RUN set -eux; \
 	docker --version; \
 	ldd /usr/local/bin/docker || :
 
-ARG MOBY_GITCOMMIT=d945d0cd9261a12dd6b896132b11acc28dfe753f
+ARG MOBY_GITCOMMIT=810c7c1dce5bbf76af4ed5c6bac8c47fead4f6c6
 ENV MOBY_GITCOMMIT $MOBY_GITCOMMIT
 
 RUN set -eux; \
