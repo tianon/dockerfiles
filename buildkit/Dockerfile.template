@@ -19,8 +19,8 @@ COPY \
 {{) else "" end -}}
 {{ if .version | startswith("0.13.") or startswith("0.14.") or startswith("0.15.") or startswith("0.16.") then ( -}}
 	backport-5372-sbom-args.patch \
-{{) else "" end -}}
 	backport-moby-48455-fix-riscv64-seccomp.patch \
+{{) else "" end -}}
 {{ if .version | startswith("0.13.") or startswith("0.14.") then ( -}}
 	containerd-arm64-v8-pre-0.15.patch \
 {{ ) else ( -}}
