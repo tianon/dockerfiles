@@ -21,7 +21,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # https://pypi.org/project/diffoscope/
-ENV DIFFOSCOPE_VERSION 277
+ENV DIFFOSCOPE_VERSION 280
 
 RUN set -eux; \
 	pip install --no-cache-dir "diffoscope[distro_detection,cmdline] == $DIFFOSCOPE_VERSION"; \
