@@ -24,9 +24,9 @@ RUN set -eux; \
 # https://kernel.org/
 # https://kernel.org/releases.json
 # https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Makefile?h=linux-rolling-stable
-# 2024-10-10
-ENV LINUX_VERSION 6.11.3
-ENV LINUX_SOURCE_URL https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.11.3.tar.xz
+# 2024-10-17
+ENV LINUX_VERSION 6.11.4
+ENV LINUX_SOURCE_URL https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.11.4.tar.xz
 # https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/tools/include/nolibc?h=linux-rolling-stable
 # https://github.com/gregkh/linux/commits/linux-rolling-stable/tools/include/nolibc
 # https://github.com/torvalds/linux/commits/master/tools/include/nolibc
