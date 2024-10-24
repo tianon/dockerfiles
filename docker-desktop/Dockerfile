@@ -11,7 +11,7 @@
 #   This is a huge ugly hack that barely works for the way I play with it.
 #
 
-FROM rust:1.75-slim-bullseye AS virtiofsd
+FROM rust:1.75-slim-bookworm AS virtiofsd
 
 RUN set -eux; \
 	apt-get update; \
@@ -44,7 +44,7 @@ RUN patch --strip=1 --input=virtiofsd.patch
 RUN cargo build --release
 
 # https://docs.docker.com/desktop/linux/
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 # https://docs.docker.com/desktop/release-notes/
 # https://docs.docker.com/desktop/linux/install/
