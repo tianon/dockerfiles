@@ -1,0 +1,2121 @@
+Description: Add UID/GID translation layer
+Author: Hanna Czenczek <hreitz@redhat.com>
+Origin: https://gitlab.com/virtio-fs/virtiofsd/-/merge_requests/237 -- https://gitlab.com/virtio-fs/virtiofsd/-/compare/v1.11.1...a825757fa5d0ebedb3a126ed303131f3ae9a7954 (version 1 of the MR)
+
+diff --git a/Cargo.lock b/Cargo.lock
+index 51b60fb..7a3c754 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -104,6 +104,29 @@ version = "2.4.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "327762f6e5a765692301e5bb513e0d9fef63be86bbc14528052b1cd3e6f03e07"
+ 
++[[package]]
++name = "btree-range-map"
++version = "0.7.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "1be5c9672446d3800bcbcaabaeba121fe22f1fb25700c4562b22faf76d377c33"
++dependencies = [
++ "btree-slab",
++ "cc-traits",
++ "range-traits",
++ "slab",
++]
++
++[[package]]
++name = "btree-slab"
++version = "0.6.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "7a2b56d3029f075c4fa892428a098425b86cef5c89ae54073137ece416aef13c"
++dependencies = [
++ "cc-traits",
++ "slab",
++ "smallvec",
++]
++
+ [[package]]
+ name = "byteorder"
+ version = "1.4.3"
+@@ -126,6 +149,15 @@ version = "1.0.79"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "50d30906286121d95be3d479533b458f87493b30a4b5f79a607db8f5d11aa91f"
+ 
++[[package]]
++name = "cc-traits"
++version = "2.0.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "060303ef31ef4a522737e1b1ab68c67916f2a787bb2f4f54f383279adba962b5"
++dependencies = [
++ "slab",
++]
++
+ [[package]]
+ name = "cfg-if"
+ version = "1.0.0"
+@@ -517,6 +549,12 @@ dependencies = [
+  "proc-macro2",
+ ]
+ 
++[[package]]
++name = "range-traits"
++version = "0.3.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "d20581732dd76fa913c7dff1a2412b714afe3573e94d41c34719de73337cc8ab"
++
+ [[package]]
+ name = "regex"
+ version = "1.6.0"
+@@ -597,6 +635,12 @@ dependencies = [
+  "autocfg",
+ ]
+ 
++[[package]]
++name = "smallvec"
++version = "1.13.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "3c5e1a9a646d36c3599cd173a41282daf47c44583ad367b8e6837255952e5c67"
++
+ [[package]]
+ name = "spin"
+ version = "0.9.8"
+@@ -761,6 +805,7 @@ name = "virtiofsd"
+ version = "1.11.1"
+ dependencies = [
+  "bitflags 1.3.2",
++ "btree-range-map",
+  "capng",
+  "clap",
+  "env_logger",
+diff --git a/Cargo.toml b/Cargo.toml
+index a0b5d92..d72079d 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -17,6 +17,7 @@ xen = ["vhost-user-backend/xen", "vhost/xen", "vm-memory/xen"]
+ 
+ [dependencies]
+ bitflags = "1.2"
++btree-range-map = "0.7"
+ capng = "0.2.2"
+ env_logger = "0.8.4"
+ futures = { version = "0.3", features = ["thread-pool"] }
+diff --git a/README.md b/README.md
+index f652472..f21bdbd 100644
+--- a/README.md
++++ b/README.md
+@@ -329,6 +329,55 @@ This range can be mapped to the GIDs [0, 65535] in virtiofsd’s user namespace
+ Alternatively, you can simply map your own GID to a single GID in the namespace:
+ For example, --gid-map=:0:1000:1: would map GID 1000 to root’s GID in the namespace (and thus the guest).
+ 
++```shell
++--translate-uid=guest:<guest base UID>:<host base UID>:<count>
++--translate-uid=host:<host base UID>:<guest base UID>:<count>
++--translate-uid=squash-guest:<guest base UID>:<host UID>:<count>
++--translate-uid=squash-host:<host base UID>:<guest UID>:<count>
++--translate-uid=:<guest base UID>:<host base UID>:<count>
++```
++Set up a map for virtiofsd to internally translate between host and guest UIDs.  As opposed to `--uid-map`, this option
++does not require a user namespace, and may freely be used regardless of whether virtiofsd runs as root or not.
++
++Mapping from guest UIDs to host UIDs is independent from the reverse, i.e. setting up a *guest* or *squash-guest*
++mapping only instructs virtiofsd to follow this guest-to-host mapping, it does not imply any potentially corresponding
++host-to-guest mapping.  The only exception is the prefix-less form, which sets up a bidirectional mapping.
++
++- `guest:<guest base UID>:<host base UID>:<count>`: Maps the range [guest base UID, guest base UID + count) 1:1 to [host
++  base UID, host base UID + count), i.e. `guest UID ↦ host base UID + (guest UID - guest base UID)`.
++- `host:<host base UID>:<guest base UID>:<count>`: Reverse of the above, i.e. maps the range [host base UID, host base
++  UID + count) to [guest base UID, guest base UID + count); `host UID ↦ guest base UID + (host UID - host base UID)`.
++- `squash-guest:<guest base UID>:<host UID>:<count>`: Maps everything in the range [guest base UID, guest base UID +
++  count) to the single given host UID, i.e. `guest UID ↦ host UID`.
++- `squash-host:<host base UID>:<guest UID>:<count>`: Reverse of the above, i.e. maps the range [host base UID, host base
++  UID + count) to the single given guest UID, i.e. `host UID ↦ guest UID`.
++- `:<guest base UID>:<host base UID>:<count>`: Sets up a bidirectional 1:1 mapping between [guest base UID, guest base
++  UID + count) and [host base UID, host base UID + count), i.e. the same as passing both `guest:<guest base UID>:<host
++  base UID>:<count>` and `host:<host base UID>:<guest base UID>:<count>`.
++
++When giving multiple mappings, their source ranges must not overlap.
++
++Example use case: virtiofsd runs unprivileged with UID:GID 1001:100.  It cannot change its own UID/GID, so attempting to
++let the guest create files with any other UID/GID combination will fail.  By using `--translate-uid` and
++`--translate-gid`, however, a mapping from guest UIDs/GIDs can be set up such that virtiofsd will create files under the
++only combination that it can, which is 1001:100.  For example, to allow any guest user to create a file, we can squash
++everything to 1001:100, which will create all those files as 1001:100 on the host.  In the guest, we may want to have
++those files appear as 1000:1000, though, and all other UIDs and GIDs should be visible unchanged in the guest.  That
++would look like so:
++
++```shell
++virtiofsd [...] \
++    --translate-uid squash-guest:0:1001:4294967295 \
++    --translate-gid squash-guest:0:100:4294967295 \
++    --translate-uid host:1001:1000:1 \
++    --translate-gid host:100:1000:1
++```
++
++```shell
++--translate-gid=<type>:<source base GID>:<target base GID>:<count>
++```
++Same as `--translate-uid`, but for GIDs.
++
+ ```shell
+ --migration-mode=<find-paths>
+ ```
+diff --git a/src/filesystem.rs b/src/filesystem.rs
+index c4eb916..626b3ae 100644
+--- a/src/filesystem.rs
++++ b/src/filesystem.rs
+@@ -10,6 +10,7 @@ use std::sync::Arc;
+ use std::time::Duration;
+ use std::{io, mem};
+ 
++use crate::soft_idmap::{GuestGid, GuestId, GuestUid, HostGid, HostId, HostUid};
+ use crate::{fuse, oslib};
+ 
+ use super::fs_cache_req_handler::FsCacheReqHandler;
+@@ -48,16 +49,16 @@ pub struct Entry {
+     pub entry_timeout: Duration,
+ }
+ 
+-impl From<Entry> for fuse::EntryOut {
+-    fn from(entry: Entry) -> fuse::EntryOut {
++impl Entry {
++    pub fn into_fuse<F: FileSystem>(self, fs: &F) -> fuse::EntryOut {
+         fuse::EntryOut {
+-            nodeid: entry.inode,
+-            generation: entry.generation,
+-            entry_valid: entry.entry_timeout.as_secs(),
+-            attr_valid: entry.attr_timeout.as_secs(),
+-            entry_valid_nsec: entry.entry_timeout.subsec_nanos(),
+-            attr_valid_nsec: entry.attr_timeout.subsec_nanos(),
+-            attr: fuse::Attr::with_flags(entry.attr, entry.attr_flags),
++            nodeid: self.inode,
++            generation: self.generation,
++            entry_valid: self.entry_timeout.as_secs(),
++            attr_valid: self.attr_timeout.as_secs(),
++            entry_valid_nsec: self.entry_timeout.subsec_nanos(),
++            attr_valid_nsec: self.attr_timeout.subsec_nanos(),
++            attr: fuse::Attr::with_flags(self.attr, self.attr_flags, fs),
+         }
+     }
+ }
+@@ -332,20 +333,20 @@ impl<'a, W: ZeroCopyWriter> ZeroCopyWriter for &'a mut W {
+ #[derive(Clone, Copy, Debug)]
+ pub struct Context {
+     /// The user ID of the calling process.
+-    pub uid: libc::uid_t,
++    pub uid: HostUid,
+ 
+     /// The group ID of the calling process.
+-    pub gid: libc::gid_t,
++    pub gid: HostGid,
+ 
+     /// The thread group ID of the calling process.
+     pub pid: libc::pid_t,
+ }
+ 
+-impl From<fuse::InHeader> for Context {
+-    fn from(source: fuse::InHeader) -> Self {
++impl Context {
++    pub fn from_fuse<F: FileSystem>(source: fuse::InHeader, fs: &F) -> Self {
+         Context {
+-            uid: source.uid,
+-            gid: source.gid,
++            uid: fs.map_guest_uid(source.uid),
++            gid: fs.map_guest_gid(source.gid),
+             pid: source.pid as i32,
+         }
+     }
+@@ -355,7 +356,7 @@ impl From<fuse::InHeader> for Context {
+ #[derive(Clone, Default, Debug)]
+ pub struct Extensions {
+     pub secctx: Option<SecContext>,
+-    pub sup_gid: Option<u32>,
++    pub sup_gid: Option<HostGid>,
+ }
+ 
+ /// Additional security context associated with requests.
+@@ -1191,6 +1192,26 @@ pub trait FileSystem {
+     fn tmpfile(&self) -> io::Result<(Entry, Option<Self::Handle>, OpenOptions)> {
+         Err(io::Error::from_raw_os_error(libc::ENOSYS))
+     }
++
++    /// Map the given guest UID to a host UID
++    fn map_guest_uid(&self, guest_uid: GuestUid) -> HostUid {
++        guest_uid.id_mapped()
++    }
++
++    /// Map the given guest GID to a host GID
++    fn map_guest_gid(&self, guest_gid: GuestGid) -> HostGid {
++        guest_gid.id_mapped()
++    }
++
++    /// Map the given host UID to a guest UID
++    fn map_host_uid(&self, host_uid: HostUid) -> GuestUid {
++        host_uid.id_mapped()
++    }
++
++    /// Map the given host GID to a guest GID
++    fn map_host_gid(&self, host_gid: HostGid) -> GuestGid {
++        host_gid.id_mapped()
++    }
+ }
+ 
+ /// Allow filesystem's state to be serialized for migration.
+diff --git a/src/fuse.rs b/src/fuse.rs
+index a8f65e9..941873b 100644
+--- a/src/fuse.rs
++++ b/src/fuse.rs
+@@ -5,7 +5,9 @@
+ use std::convert::TryFrom;
+ use std::mem;
+ 
++use crate::filesystem::FileSystem;
+ use crate::macros::enum_value;
++use crate::soft_idmap::{GuestGid, GuestUid, HostGid, HostUid, Id};
+ use bitflags::bitflags;
+ use vm_memory::ByteValued;
+ 
+@@ -588,22 +590,20 @@ pub struct Attr {
+     pub ctimensec: u32,
+     pub mode: u32,
+     pub nlink: u32,
+-    pub uid: u32,
+-    pub gid: u32,
++    pub uid: GuestUid,
++    pub gid: GuestGid,
+     pub rdev: u32,
+     pub blksize: u32,
+     pub flags: u32,
+ }
+ unsafe impl ByteValued for Attr {}
+ 
+-impl From<libc::stat64> for Attr {
+-    fn from(st: libc::stat64) -> Attr {
+-        Attr::with_flags(st, 0)
++impl Attr {
++    pub fn from_stat64<F: FileSystem>(st: libc::stat64, fs: &F) -> Attr {
++        Attr::with_flags(st, 0, fs)
+     }
+-}
+ 
+-impl Attr {
+-    pub fn with_flags(st: libc::stat64, flags: u32) -> Attr {
++    pub fn with_flags<F: FileSystem>(st: libc::stat64, flags: u32, fs: &F) -> Attr {
+         Attr {
+             ino: st.st_ino,
+             size: st.st_size as u64,
+@@ -616,8 +616,8 @@ impl Attr {
+             ctimensec: st.st_ctime_nsec as u32,
+             mode: st.st_mode,
+             nlink: st.st_nlink as u32,
+-            uid: st.st_uid,
+-            gid: st.st_gid,
++            uid: fs.map_host_uid(HostUid::from(st.st_uid)),
++            gid: fs.map_host_gid(HostGid::from(st.st_gid)),
+             rdev: st.st_rdev as u32,
+             blksize: st.st_blksize as u32,
+             flags,
+@@ -846,25 +846,25 @@ pub struct SetattrIn {
+     pub ctimensec: u32,
+     pub mode: u32,
+     pub unused4: u32,
+-    pub uid: u32,
+-    pub gid: u32,
++    pub uid: GuestUid,
++    pub gid: GuestGid,
+     pub unused5: u32,
+ }
+ unsafe impl ByteValued for SetattrIn {}
+ 
+-impl From<SetattrIn> for libc::stat64 {
+-    fn from(sai: SetattrIn) -> libc::stat64 {
++impl SetattrIn {
++    pub fn into_stat64<F: FileSystem>(self, fs: &F) -> libc::stat64 {
+         let mut out: libc::stat64 = unsafe { mem::zeroed() };
+-        out.st_mode = sai.mode;
+-        out.st_uid = sai.uid;
+-        out.st_gid = sai.gid;
+-        out.st_size = sai.size as i64;
+-        out.st_atime = sai.atime as i64;
+-        out.st_mtime = sai.mtime as i64;
+-        out.st_ctime = sai.ctime as i64;
+-        out.st_atime_nsec = sai.atimensec.into();
+-        out.st_mtime_nsec = sai.mtimensec.into();
+-        out.st_ctime_nsec = sai.ctimensec.into();
++        out.st_mode = self.mode;
++        out.st_uid = fs.map_guest_uid(self.uid).unwrap();
++        out.st_gid = fs.map_guest_gid(self.gid).unwrap();
++        out.st_size = self.size as i64;
++        out.st_atime = self.atime as i64;
++        out.st_mtime = self.mtime as i64;
++        out.st_ctime = self.ctime as i64;
++        out.st_atime_nsec = self.atimensec.into();
++        out.st_mtime_nsec = self.mtimensec.into();
++        out.st_ctime_nsec = self.ctimensec.into();
+ 
+         out
+     }
+@@ -1159,8 +1159,8 @@ pub struct InHeader {
+     pub opcode: u32,
+     pub unique: u64,
+     pub nodeid: u64,
+-    pub uid: u32,
+-    pub gid: u32,
++    pub uid: GuestUid,
++    pub gid: GuestGid,
+     pub pid: u32,
+     pub total_extlen: u16, // length of extensions in 8-byte units
+     pub padding: u16,
+@@ -1412,7 +1412,7 @@ unsafe impl ByteValued for SecctxHeader {}
+ #[derive(Debug, Default, Copy, Clone)]
+ pub struct SuppGroups {
+     pub nr_groups: u32,
+-    // uint32_t	groups[];
++    // groups: [GuestGid];
+ }
+ 
+ unsafe impl ByteValued for SuppGroups {}
+diff --git a/src/lib.rs b/src/lib.rs
+index 753d15d..f3bf0a6 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -19,6 +19,7 @@ pub mod read_dir;
+ pub mod sandbox;
+ pub mod seccomp;
+ pub mod server;
++pub mod soft_idmap;
+ pub mod util;
+ 
+ use std::ffi::{FromBytesWithNulError, FromVecWithNulError};
+diff --git a/src/main.rs b/src/main.rs
+index ca36055..7c7cac8 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -42,7 +42,7 @@ use virtiofsd::sandbox::{Sandbox, SandboxMode};
+ use virtiofsd::seccomp::{enable_seccomp, SeccompAction};
+ use virtiofsd::server::Server;
+ use virtiofsd::util::{other_io_error, write_pid_file};
+-use virtiofsd::{limits, oslib, Error as VhostUserFsError};
++use virtiofsd::{limits, oslib, soft_idmap, Error as VhostUserFsError};
+ use vm_memory::{
+     ByteValued, GuestAddressSpace, GuestMemoryAtomic, GuestMemoryLoadGuard, GuestMemoryMmap, Le32,
+ };
+@@ -868,6 +868,9 @@ struct Opt {
+     /// Map a range of UIDs from the host into the namespace, given as
+     /// :namespace_uid:host_uid:count:
+     ///
++    /// As opposed to '--translate-uid', this mapping is not done by virtiofsd, but by the
++    /// user namespace into which virtiofsd is placed via '--sandbox=namespace'.
++    ///
+     /// For example, :0:100000:65536: will map the 65536 host UIDs [100000, 165535]
+     /// into the namespace as [0, 65535].
+     ///
+@@ -878,6 +881,9 @@ struct Opt {
+     /// Map a range of GIDs from the host into the namespace, given as
+     /// :namespace_gid:host_gid:count:
+     ///
++    /// As opposed to '--translate-gid', this mapping is not done by virtiofsd, but by the
++    /// user namespace into which virtiofsd is placed via '--sandbox=namespace'.
++    ///
+     /// For example, :0:100000:65536: will map the 65536 host GIDs [100000, 165535]
+     /// into the namespace as [0, 65535].
+     ///
+@@ -885,6 +891,33 @@ struct Opt {
+     #[arg(long)]
+     gid_map: Vec<GidMap>,
+ 
++    /// Describe how to translate UIDs between guest and host, given as
++    /// '<type>:<source base>:<target base>:<count>'.
++    ///
++    /// As opposed to '--map-uid', this mapping is done internally by virtiofsd, and does not
++    /// require using a user namespace.
++    ///
++    /// 'type' describes how to do the mapping, and in which direction:
++    ///
++    /// - 'guest': 1:1 map a range of guest UIDs to host UIDs
++    ///
++    /// - 'host': 1:1 map a range of host UIDs to guest UIDs
++    ///
++    /// - 'squash-guest': n:1 map a range of guest UIDs all to a single host UID
++    ///
++    /// - 'squash-host': n:1 map a range of host UIDs all to a single guest UID
++    ///
++    /// - '' (empty): bidirectionally 1:1 map between a range of guest UIDs and host UIDs; the
++    ///   order is: ':<guest base>:<host base>:<count>'
++    ///
++    /// Provide this argument multiple times to map multiple UID ranges.
++    #[arg(long)]
++    translate_uid: Vec<soft_idmap::cmdline::IdMap>,
++
++    /// Same as '--translate-uid', but for GIDs.
++    #[arg(long)]
++    translate_gid: Vec<soft_idmap::cmdline::IdMap>,
++
+     /// Preserve O_NOATIME behavior, otherwise automatically clean up O_NOATIME flag to prevent
+     /// potential permission errors when running in unprivileged mode (e.g., when accessing files
+     /// without having ownership/capability to use O_NOATIME).
+@@ -1373,6 +1406,8 @@ fn main() {
+         migration_verify_handles: opt.migration_verify_handles,
+         migration_confirm_paths: opt.migration_confirm_paths,
+         migration_mode: opt.migration_mode,
++        uid_map: Some(opt.translate_uid),
++        gid_map: Some(opt.translate_gid),
+         ..Default::default()
+     };
+ 
+diff --git a/src/oslib.rs b/src/oslib.rs
+index ffb2409..49ddb54 100644
+--- a/src/oslib.rs
++++ b/src/oslib.rs
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: BSD-3-Clause
+ 
++use crate::soft_idmap::{HostGid, HostUid, Id};
+ use bitflags::bitflags;
+ use std::ffi::{CStr, CString};
+ use std::fs::File;
+@@ -455,20 +456,21 @@ pub fn pipe() -> io::Result<(PipeReader, PipeWriter)> {
+ // setfsgid systems calls. However since those calls have no way to
+ // return an error, it's preferable to do this instead.
+ /// Set effective user ID
+-pub fn seteffuid(uid: libc::uid_t) -> io::Result<()> {
+-    check_retval(unsafe { libc::syscall(libc::SYS_setresuid, -1, uid, -1) })?;
++pub fn seteffuid(uid: HostUid) -> io::Result<()> {
++    check_retval(unsafe { libc::syscall(libc::SYS_setresuid, -1, uid.unwrap(), -1) })?;
+     Ok(())
+ }
+ 
+ /// Set effective group ID
+-pub fn seteffgid(gid: libc::gid_t) -> io::Result<()> {
+-    check_retval(unsafe { libc::syscall(libc::SYS_setresgid, -1, gid, -1) })?;
++pub fn seteffgid(gid: HostGid) -> io::Result<()> {
++    check_retval(unsafe { libc::syscall(libc::SYS_setresgid, -1, gid.unwrap(), -1) })?;
+     Ok(())
+ }
+ 
+ /// Set supplementary group
+-pub fn setsupgroup(gid: libc::gid_t) -> io::Result<()> {
+-    check_retval(unsafe { libc::setgroups(1, &gid) })?;
++pub fn setsupgroup(gid: HostGid) -> io::Result<()> {
++    let gid_raw = gid.unwrap();
++    check_retval(unsafe { libc::setgroups(1, &gid_raw) })?;
+     Ok(())
+ }
+ 
+diff --git a/src/passthrough/credentials.rs b/src/passthrough/credentials.rs
+index f75b80f..6cf0959 100644
+--- a/src/passthrough/credentials.rs
++++ b/src/passthrough/credentials.rs
+@@ -2,17 +2,18 @@
+ 
+ use crate::oslib;
+ use crate::passthrough::util::einval;
++use crate::soft_idmap::{HostGid, HostUid, Id};
+ use std::io;
+ 
+ pub struct UnixCredentials {
+-    uid: libc::uid_t,
+-    gid: libc::gid_t,
+-    sup_gid: Option<u32>,
++    uid: HostUid,
++    gid: HostGid,
++    sup_gid: Option<HostGid>,
+     keep_capability: bool,
+ }
+ 
+ impl UnixCredentials {
+-    pub fn new(uid: libc::uid_t, gid: libc::gid_t) -> Self {
++    pub fn new(uid: HostUid, gid: HostGid) -> Self {
+         UnixCredentials {
+             uid,
+             gid,
+@@ -24,7 +25,7 @@ impl UnixCredentials {
+     /// Set a supplementary group. Set `supported_extension` to `false` to signal that a
+     /// supplementary group maybe required, but the guest was not able to tell us which,
+     /// so we have to rely on keeping the DAC_OVERRIDE capability.
+-    pub fn supplementary_gid(self, supported_extension: bool, sup_gid: Option<u32>) -> Self {
++    pub fn supplementary_gid(self, supported_extension: bool, sup_gid: Option<HostGid>) -> Self {
+         UnixCredentials {
+             uid: self.uid,
+             gid: self.gid,
+@@ -36,8 +37,14 @@ impl UnixCredentials {
+     /// Changes the effective uid/gid of the current thread to `val`.  Changes
+     /// the thread's credentials back to root when the returned struct is dropped.
+     pub fn set(self) -> io::Result<Option<UnixCredentialsGuard>> {
+-        let change_uid = self.uid != 0;
+-        let change_gid = self.gid != 0;
++        // Safe: Always succesful
++        let current_uid = HostUid::from(unsafe { libc::geteuid() });
++        let current_gid = HostGid::from(unsafe { libc::getegid() });
++
++        // Not to change UID/GID when they’re 0 (root) is legacy behavior that we’re afraid to
++        // change
++        let change_uid = !self.uid.is_root() && self.uid != current_uid;
++        let change_gid = !self.gid.is_root() && self.gid != current_gid;
+ 
+         // We have to change the gid before we change the uid because if we
+         // change the uid first then we lose the capability to change the gid.
+@@ -71,30 +78,30 @@ impl UnixCredentials {
+         }
+ 
+         Ok(Some(UnixCredentialsGuard {
+-            reset_uid: change_uid,
+-            reset_gid: change_gid,
++            reset_uid: change_uid.then_some(current_uid),
++            reset_gid: change_gid.then_some(current_gid),
+             drop_sup_gid: self.sup_gid.is_some(),
+         }))
+     }
+ }
+ 
+ pub struct UnixCredentialsGuard {
+-    reset_uid: bool,
+-    reset_gid: bool,
++    reset_uid: Option<HostUid>,
++    reset_gid: Option<HostGid>,
+     drop_sup_gid: bool,
+ }
+ 
+ impl Drop for UnixCredentialsGuard {
+     fn drop(&mut self) {
+-        if self.reset_uid {
+-            oslib::seteffuid(0).unwrap_or_else(|e| {
+-                error!("failed to change uid back to root: {e}");
++        if let Some(uid) = self.reset_uid {
++            oslib::seteffuid(uid).unwrap_or_else(|e| {
++                error!("failed to change uid back to {uid}: {e}");
+             });
+         }
+ 
+-        if self.reset_gid {
+-            oslib::seteffgid(0).unwrap_or_else(|e| {
+-                error!("failed to change gid back to root: {e}");
++        if let Some(gid) = self.reset_gid {
++            oslib::seteffgid(gid).unwrap_or_else(|e| {
++                error!("failed to change gid back to {gid}: {e}");
+             });
+         }
+ 
+diff --git a/src/passthrough/mod.rs b/src/passthrough/mod.rs
+index 58ea5e7..6b56a69 100644
+--- a/src/passthrough/mod.rs
++++ b/src/passthrough/mod.rs
+@@ -23,12 +23,15 @@ use crate::passthrough::inode_store::{
+ };
+ use crate::passthrough::util::{ebadf, is_safe_inode, openat, reopen_fd_through_proc};
+ use crate::read_dir::ReadDir;
++use crate::soft_idmap::{self, GuestGid, GuestUid, HostGid, HostUid, Id, IdMap};
++use crate::util::ResultErrorContext;
+ use crate::{fuse, oslib};
+ use file_handle::{FileHandle, FileOrHandle, OpenableFileHandle};
+ use mount_fd::{MPRError, MountFds};
+ use stat::{statx, StatExt};
+ use std::borrow::Cow;
+ use std::collections::{btree_map, BTreeMap};
++use std::convert::TryInto;
+ use std::ffi::{CStr, CString};
+ use std::fs::File;
+ use std::io;
+@@ -355,6 +358,10 @@ pub struct Config {
+     ///
+     /// The default is `FindPaths`.
+     pub migration_mode: MigrationMode,
++
++    /// Is `take()`n when `PassthroughFs` is created, i.e. `None` during runtime.
++    pub uid_map: Option<Vec<soft_idmap::cmdline::IdMap>>,
++    pub gid_map: Option<Vec<soft_idmap::cmdline::IdMap>>,
+ }
+ 
+ impl Default for Config {
+@@ -384,6 +391,8 @@ impl Default for Config {
+             migration_verify_handles: false,
+             migration_confirm_paths: false,
+             migration_mode: MigrationMode::FindPaths,
++            uid_map: None,
++            gid_map: None,
+         }
+     }
+ }
+@@ -442,6 +451,9 @@ pub struct PassthroughFs {
+     track_migration_info: AtomicBool,
+ 
+     cfg: Config,
++
++    uid_map: IdMap<GuestUid, HostUid>,
++    gid_map: IdMap<GuestGid, HostGid>,
+ }
+ 
+ impl PassthroughFs {
+@@ -477,6 +489,18 @@ impl PassthroughFs {
+             Some(MountFds::new(mountinfo_fd, cfg.mountinfo_prefix.clone()))
+         };
+ 
++        let uid_map = if let Some(map) = cfg.uid_map.take() {
++            map.try_into().err_context(|| "UID map")?
++        } else {
++            IdMap::empty()
++        };
++
++        let gid_map = if let Some(map) = cfg.gid_map.take() {
++            map.try_into().err_context(|| "GID map")?
++        } else {
++            IdMap::empty()
++        };
++
+         let mut fs = PassthroughFs {
+             inodes: Default::default(),
+             next_inode: AtomicU64::new(fuse::ROOT_ID + 1),
+@@ -492,6 +516,8 @@ impl PassthroughFs {
+             os_facts: oslib::OsFacts::new(),
+             track_migration_info: AtomicBool::new(false),
+             cfg,
++            uid_map,
++            gid_map,
+         };
+ 
+         // Check to see if the client remapped "security.capability", if so,
+@@ -2051,19 +2077,22 @@ impl FileSystem for PassthroughFs {
+             return Ok(());
+         }
+ 
++        let st_uid = HostUid::from(st.st_uid);
++        let st_gid = HostGid::from(st.st_gid);
++
+         if (mode & libc::R_OK) != 0
+-            && ctx.uid != 0
+-            && (st.st_uid != ctx.uid || st.st_mode & 0o400 == 0)
+-            && (st.st_gid != ctx.gid || st.st_mode & 0o040 == 0)
++            && !ctx.uid.is_root()
++            && (st_uid != ctx.uid || st.st_mode & 0o400 == 0)
++            && (st_gid != ctx.gid || st.st_mode & 0o040 == 0)
+             && st.st_mode & 0o004 == 0
+         {
+             return Err(io::Error::from_raw_os_error(libc::EACCES));
+         }
+ 
+         if (mode & libc::W_OK) != 0
+-            && ctx.uid != 0
+-            && (st.st_uid != ctx.uid || st.st_mode & 0o200 == 0)
+-            && (st.st_gid != ctx.gid || st.st_mode & 0o020 == 0)
++            && !ctx.uid.is_root()
++            && (st_uid != ctx.uid || st.st_mode & 0o200 == 0)
++            && (st_gid != ctx.gid || st.st_mode & 0o020 == 0)
+             && st.st_mode & 0o002 == 0
+         {
+             return Err(io::Error::from_raw_os_error(libc::EACCES));
+@@ -2072,9 +2101,9 @@ impl FileSystem for PassthroughFs {
+         // root can only execute something if it is executable by one of the owner, the group, or
+         // everyone.
+         if (mode & libc::X_OK) != 0
+-            && (ctx.uid != 0 || st.st_mode & 0o111 == 0)
+-            && (st.st_uid != ctx.uid || st.st_mode & 0o100 == 0)
+-            && (st.st_gid != ctx.gid || st.st_mode & 0o010 == 0)
++            && (!ctx.uid.is_root() || st.st_mode & 0o111 == 0)
++            && (st_uid != ctx.uid || st.st_mode & 0o100 == 0)
++            && (st_gid != ctx.gid || st.st_mode & 0o010 == 0)
+             && st.st_mode & 0o001 == 0
+         {
+             return Err(io::Error::from_raw_os_error(libc::EACCES));
+@@ -2439,6 +2468,22 @@ impl FileSystem for PassthroughFs {
+             Ok(())
+         }
+     }
++
++    fn map_guest_uid(&self, guest_uid: GuestUid) -> HostUid {
++        self.uid_map.map_guest(guest_uid)
++    }
++
++    fn map_guest_gid(&self, guest_gid: GuestGid) -> HostGid {
++        self.gid_map.map_guest(guest_gid)
++    }
++
++    fn map_host_uid(&self, host_uid: HostUid) -> GuestUid {
++        self.uid_map.map_host(host_uid)
++    }
++
++    fn map_host_gid(&self, host_gid: HostGid) -> GuestGid {
++        self.gid_map.map_host(host_gid)
++    }
+ }
+ 
+ impl HandleDataFile {
+diff --git a/src/server.rs b/src/server.rs
+index 7fc4d35..6a0d71b 100644
+--- a/src/server.rs
++++ b/src/server.rs
+@@ -10,6 +10,7 @@ use crate::filesystem::{
+ };
+ use crate::fuse::*;
+ use crate::passthrough::util::einval;
++use crate::soft_idmap::GuestGid;
+ use crate::{oslib, Error, Result};
+ use std::convert::{TryFrom, TryInto};
+ use std::ffi::{CStr, CString};
+@@ -182,7 +183,7 @@ impl<F: FileSystem + Sync> Server<F> {
+             } = r.read_obj().map_err(Error::DecodeMessage)?;
+ 
+             match self.fs.setupmapping(
+-                Context::from(in_header),
++                Context::from_fuse(in_header, &self.fs),
+                 in_header.nodeid.into(),
+                 fh.into(),
+                 foffset,
+@@ -239,7 +240,7 @@ impl<F: FileSystem + Sync> Server<F> {
+ 
+             match self
+                 .fs
+-                .removemapping(Context::from(in_header), requests, req)
++                .removemapping(Context::from_fuse(in_header, &self.fs), requests, req)
+             {
+                 Ok(()) => reply_ok(None::<u8>, None, in_header.unique, w),
+                 Err(e) => reply_error(e, in_header.unique, w),
+@@ -264,13 +265,13 @@ impl<F: FileSystem + Sync> Server<F> {
+ 
+         let name = bytes_to_cstr(buf.as_ref())?;
+ 
+-        match self
+-            .fs
+-            .lookup(Context::from(in_header), in_header.nodeid.into(), name)
+-        {
++        match self.fs.lookup(
++            Context::from_fuse(in_header, &self.fs),
++            in_header.nodeid.into(),
++            name,
++        ) {
+             Ok(entry) => {
+-                let out = EntryOut::from(entry);
+-
++                let out = entry.into_fuse(&self.fs);
+                 reply_ok(Some(out), None, in_header.unique, w)
+             }
+             Err(e) => reply_error(e, in_header.unique, w),
+@@ -280,8 +281,11 @@ impl<F: FileSystem + Sync> Server<F> {
+     fn forget(&self, in_header: InHeader, mut r: Reader) -> Result<usize> {
+         let ForgetIn { nlookup } = r.read_obj().map_err(Error::DecodeMessage)?;
+ 
+-        self.fs
+-            .forget(Context::from(in_header), in_header.nodeid.into(), nlookup);
++        self.fs.forget(
++            Context::from_fuse(in_header, &self.fs),
++            in_header.nodeid.into(),
++            nlookup,
++        );
+ 
+         // There is no reply for forget messages.
+         Ok(0)
+@@ -296,16 +300,17 @@ impl<F: FileSystem + Sync> Server<F> {
+             None
+         };
+ 
+-        match self
+-            .fs
+-            .getattr(Context::from(in_header), in_header.nodeid.into(), handle)
+-        {
++        match self.fs.getattr(
++            Context::from_fuse(in_header, &self.fs),
++            in_header.nodeid.into(),
++            handle,
++        ) {
+             Ok((st, timeout)) => {
+                 let out = AttrOut {
+                     attr_valid: timeout.as_secs(),
+                     attr_valid_nsec: timeout.subsec_nanos(),
+                     dummy: 0,
+-                    attr: st.into(),
++                    attr: Attr::from_stat64(st, &self.fs),
+                 };
+                 reply_ok(Some(out), None, in_header.unique, w)
+             }
+@@ -324,10 +329,10 @@ impl<F: FileSystem + Sync> Server<F> {
+ 
+         let valid = SetattrValid::from_bits_truncate(setattr_in.valid);
+ 
+-        let st: libc::stat64 = setattr_in.into();
++        let st = setattr_in.into_stat64(&self.fs);
+ 
+         match self.fs.setattr(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             st,
+             handle,
+@@ -338,7 +343,7 @@ impl<F: FileSystem + Sync> Server<F> {
+                     attr_valid: timeout.as_secs(),
+                     attr_valid_nsec: timeout.subsec_nanos(),
+                     dummy: 0,
+-                    attr: st.into(),
++                    attr: Attr::from_stat64(st, &self.fs),
+                 };
+                 reply_ok(Some(out), None, in_header.unique, w)
+             }
+@@ -347,10 +352,10 @@ impl<F: FileSystem + Sync> Server<F> {
+     }
+ 
+     fn readlink(&self, in_header: InHeader, w: Writer) -> Result<usize> {
+-        match self
+-            .fs
+-            .readlink(Context::from(in_header), in_header.nodeid.into())
+-        {
++        match self.fs.readlink(
++            Context::from_fuse(in_header, &self.fs),
++            in_header.nodeid.into(),
++        ) {
+             Ok(linkname) => {
+                 // We need to disambiguate the option type here even though it is `None`.
+                 reply_ok(None::<u8>, Some(&linkname), in_header.unique, w)
+@@ -376,18 +381,18 @@ impl<F: FileSystem + Sync> Server<F> {
+ 
+         let options = FsOptions::from_bits_truncate(self.options.load(Ordering::Relaxed));
+ 
+-        let extensions = get_extensions(options, name.len() + linkname.len(), buf.as_slice())?;
++        let extensions =
++            self.get_extensions(options, name.len() + linkname.len(), buf.as_slice())?;
+ 
+         match self.fs.symlink(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             bytes_to_cstr(linkname)?,
+             in_header.nodeid.into(),
+             bytes_to_cstr(name)?,
+             extensions,
+         ) {
+             Ok(entry) => {
+-                let out = EntryOut::from(entry);
+-
++                let out = entry.into_fuse(&self.fs);
+                 reply_ok(Some(out), None, in_header.unique, w)
+             }
+             Err(e) => reply_error(e, in_header.unique, w),
+@@ -411,10 +416,10 @@ impl<F: FileSystem + Sync> Server<F> {
+ 
+         let options = FsOptions::from_bits_truncate(self.options.load(Ordering::Relaxed));
+ 
+-        let extensions = get_extensions(options, name.len(), buf.as_slice())?;
++        let extensions = self.get_extensions(options, name.len(), buf.as_slice())?;
+ 
+         match self.fs.mknod(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             bytes_to_cstr(name)?,
+             mode,
+@@ -423,8 +428,7 @@ impl<F: FileSystem + Sync> Server<F> {
+             extensions,
+         ) {
+             Ok(entry) => {
+-                let out = EntryOut::from(entry);
+-
++                let out = entry.into_fuse(&self.fs);
+                 reply_ok(Some(out), None, in_header.unique, w)
+             }
+             Err(e) => reply_error(e, in_header.unique, w),
+@@ -446,10 +450,10 @@ impl<F: FileSystem + Sync> Server<F> {
+ 
+         let options = FsOptions::from_bits_truncate(self.options.load(Ordering::Relaxed));
+ 
+-        let extensions = get_extensions(options, name.len(), buf.as_slice())?;
++        let extensions = self.get_extensions(options, name.len(), buf.as_slice())?;
+ 
+         match self.fs.mkdir(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             bytes_to_cstr(name)?,
+             mode,
+@@ -457,8 +461,7 @@ impl<F: FileSystem + Sync> Server<F> {
+             extensions,
+         ) {
+             Ok(entry) => {
+-                let out = EntryOut::from(entry);
+-
++                let out = entry.into_fuse(&self.fs);
+                 reply_ok(Some(out), None, in_header.unique, w)
+             }
+             Err(e) => reply_error(e, in_header.unique, w),
+@@ -474,7 +477,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         r.read_exact(&mut name).map_err(Error::DecodeMessage)?;
+ 
+         match self.fs.unlink(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             bytes_to_cstr(&name)?,
+         ) {
+@@ -492,7 +495,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         r.read_exact(&mut name).map_err(Error::DecodeMessage)?;
+ 
+         match self.fs.rmdir(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             bytes_to_cstr(&name)?,
+         ) {
+@@ -528,7 +531,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         let (oldname, newname) = buf.split_at(split_pos);
+ 
+         match self.fs.rename(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             bytes_to_cstr(oldname)?,
+             newdir.into(),
+@@ -567,14 +570,13 @@ impl<F: FileSystem + Sync> Server<F> {
+         r.read_exact(&mut name).map_err(Error::DecodeMessage)?;
+ 
+         match self.fs.link(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             oldnodeid.into(),
+             in_header.nodeid.into(),
+             bytes_to_cstr(&name)?,
+         ) {
+             Ok(entry) => {
+-                let out = EntryOut::from(entry);
+-
++                let out = entry.into_fuse(&self.fs);
+                 reply_ok(Some(out), None, in_header.unique, w)
+             }
+             Err(e) => reply_error(e, in_header.unique, w),
+@@ -589,7 +591,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         let kill_priv = open_flags & OPEN_KILL_SUIDGID != 0;
+ 
+         match self.fs.open(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             kill_priv,
+             flags,
+@@ -628,7 +630,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         let data_writer = ZcWriter(w.split_at(size_of::<OutHeader>()).unwrap());
+ 
+         match self.fs.read(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             fh.into(),
+             data_writer,
+@@ -677,7 +679,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         let data_reader = ZcReader(r);
+ 
+         match self.fs.write(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             fh.into(),
+             data_reader,
+@@ -701,10 +703,10 @@ impl<F: FileSystem + Sync> Server<F> {
+     }
+ 
+     fn statfs(&self, in_header: InHeader, w: Writer) -> Result<usize> {
+-        match self
+-            .fs
+-            .statfs(Context::from(in_header), in_header.nodeid.into())
+-        {
++        match self.fs.statfs(
++            Context::from_fuse(in_header, &self.fs),
++            in_header.nodeid.into(),
++        ) {
+             Ok(st) => reply_ok(Some(Kstatfs::from(st)), None, in_header.unique, w),
+             Err(e) => reply_error(e, in_header.unique, w),
+         }
+@@ -727,7 +729,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         };
+ 
+         match self.fs.release(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             flags,
+             fh.into(),
+@@ -747,7 +749,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         let datasync = fsync_flags & 0x1 != 0;
+ 
+         match self.fs.fsync(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             datasync,
+             fh.into(),
+@@ -808,7 +810,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         }
+ 
+         match self.fs.setxattr(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             bytes_to_cstr(name)?,
+             value,
+@@ -840,7 +842,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         }
+ 
+         match self.fs.getxattr(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             bytes_to_cstr(&name)?,
+             size,
+@@ -869,10 +871,11 @@ impl<F: FileSystem + Sync> Server<F> {
+             );
+         }
+ 
+-        match self
+-            .fs
+-            .listxattr(Context::from(in_header), in_header.nodeid.into(), size)
+-        {
++        match self.fs.listxattr(
++            Context::from_fuse(in_header, &self.fs),
++            in_header.nodeid.into(),
++            size,
++        ) {
+             Ok(ListxattrReply::Names(val)) => reply_ok(None::<u8>, Some(&val), in_header.unique, w),
+             Ok(ListxattrReply::Count(count)) => {
+                 let out = GetxattrOut {
+@@ -897,10 +900,11 @@ impl<F: FileSystem + Sync> Server<F> {
+ 
+         let name = bytes_to_cstr(&buf)?;
+ 
+-        match self
+-            .fs
+-            .removexattr(Context::from(in_header), in_header.nodeid.into(), name)
+-        {
++        match self.fs.removexattr(
++            Context::from_fuse(in_header, &self.fs),
++            in_header.nodeid.into(),
++            name,
++        ) {
+             Ok(()) => reply_ok(None::<u8>, None, in_header.unique, w),
+             Err(e) => reply_error(e, in_header.unique, w),
+         }
+@@ -910,7 +914,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         let FlushIn { fh, lock_owner, .. } = r.read_obj().map_err(Error::DecodeMessage)?;
+ 
+         match self.fs.flush(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             fh.into(),
+             lock_owner,
+@@ -1016,10 +1020,11 @@ impl<F: FileSystem + Sync> Server<F> {
+     fn opendir(&self, in_header: InHeader, mut r: Reader, w: Writer) -> Result<usize> {
+         let OpenIn { flags, .. } = r.read_obj().map_err(Error::DecodeMessage)?;
+ 
+-        match self
+-            .fs
+-            .opendir(Context::from(in_header), in_header.nodeid.into(), flags)
+-        {
++        match self.fs.opendir(
++            Context::from_fuse(in_header, &self.fs),
++            in_header.nodeid.into(),
++            flags,
++        ) {
+             Ok((handle, opts)) => {
+                 let out = OpenOut {
+                     fh: handle.map(Into::into).unwrap_or(0),
+@@ -1059,7 +1064,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         let unique = in_header.unique;
+         let mut cursor = w.split_at(size_of::<OutHeader>()).unwrap();
+         let result = match self.fs.readdir(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             fh.into(),
+             size,
+@@ -1070,7 +1075,7 @@ impl<F: FileSystem + Sync> Server<F> {
+                 let mut err = None;
+                 while let Some(dirent) = entries.next() {
+                     let remaining = (size as usize).saturating_sub(total_written);
+-                    match add_dirent(&mut cursor, remaining, dirent, None) {
++                    match self.add_dirent(&mut cursor, remaining, dirent, None) {
+                         // No more space left in the buffer.
+                         Ok(0) => break,
+                         Ok(bytes_written) => {
+@@ -1121,8 +1126,11 @@ impl<F: FileSystem + Sync> Server<F> {
+                 entry_timeout: Duration::from_secs(0),
+             }
+         } else {
+-            self.fs
+-                .lookup(Context::from(*in_header), parent, dir_entry.name)?
++            self.fs.lookup(
++                Context::from_fuse(*in_header, &self.fs),
++                parent,
++                dir_entry.name,
++            )?
+         };
+ 
+         Ok((dir_entry, entry))
+@@ -1154,7 +1162,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         let unique = in_header.unique;
+         let mut cursor = w.split_at(size_of::<OutHeader>()).unwrap();
+         let result = match self.fs.readdir(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             fh.into(),
+             size,
+@@ -1169,7 +1177,7 @@ impl<F: FileSystem + Sync> Server<F> {
+                         self.handle_dirent(&in_header, dirent).and_then(|(d, e)| {
+                             entry_inode = Some(e.inode);
+                             let remaining = (size as usize).saturating_sub(total_written);
+-                            add_dirent(&mut cursor, remaining, d, Some(e))
++                            self.add_dirent(&mut cursor, remaining, d, Some(e))
+                         });
+                     match bytes_written {
+                         Ok(0) => {
+@@ -1177,7 +1185,11 @@ impl<F: FileSystem + Sync> Server<F> {
+                             // that created the Entry or we will end up with mismatched lookup
+                             // counts.
+                             if let Some(inode) = entry_inode {
+-                                self.fs.forget(Context::from(in_header), inode.into(), 1);
++                                self.fs.forget(
++                                    Context::from_fuse(in_header, &self.fs),
++                                    inode.into(),
++                                    1,
++                                );
+                             }
+                             break;
+                         }
+@@ -1186,7 +1198,11 @@ impl<F: FileSystem + Sync> Server<F> {
+                         }
+                         Err(e) => {
+                             if let Some(inode) = entry_inode {
+-                                self.fs.forget(Context::from(in_header), inode.into(), 1);
++                                self.fs.forget(
++                                    Context::from_fuse(in_header, &self.fs),
++                                    inode.into(),
++                                    1,
++                                );
+                             }
+ 
+                             if total_written == 0 {
+@@ -1221,7 +1237,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         let ReleaseIn { fh, flags, .. } = r.read_obj().map_err(Error::DecodeMessage)?;
+ 
+         match self.fs.releasedir(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             flags,
+             fh.into(),
+@@ -1238,7 +1254,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         let datasync = fsync_flags & 0x1 != 0;
+ 
+         match self.fs.fsyncdir(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             datasync,
+             fh.into(),
+@@ -1275,10 +1291,11 @@ impl<F: FileSystem + Sync> Server<F> {
+     fn access(&self, in_header: InHeader, mut r: Reader, w: Writer) -> Result<usize> {
+         let AccessIn { mask, .. } = r.read_obj().map_err(Error::DecodeMessage)?;
+ 
+-        match self
+-            .fs
+-            .access(Context::from(in_header), in_header.nodeid.into(), mask)
+-        {
++        match self.fs.access(
++            Context::from_fuse(in_header, &self.fs),
++            in_header.nodeid.into(),
++            mask,
++        ) {
+             Ok(()) => reply_ok(None::<u8>, None, in_header.unique, w),
+             Err(e) => reply_error(e, in_header.unique, w),
+         }
+@@ -1306,12 +1323,12 @@ impl<F: FileSystem + Sync> Server<F> {
+ 
+         let options = FsOptions::from_bits_truncate(self.options.load(Ordering::Relaxed));
+ 
+-        let extensions = get_extensions(options, name.len(), buf.as_slice())?;
++        let extensions = self.get_extensions(options, name.len(), buf.as_slice())?;
+ 
+         let kill_priv = open_flags & OPEN_KILL_SUIDGID != 0;
+ 
+         match self.fs.create(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             bytes_to_cstr(name)?,
+             mode,
+@@ -1328,7 +1345,7 @@ impl<F: FileSystem + Sync> Server<F> {
+                     attr_valid: entry.attr_timeout.as_secs(),
+                     entry_valid_nsec: entry.entry_timeout.subsec_nanos(),
+                     attr_valid_nsec: entry.attr_timeout.subsec_nanos(),
+-                    attr: Attr::with_flags(entry.attr, entry.attr_flags),
++                    attr: Attr::with_flags(entry.attr, entry.attr_flags, &self.fs),
+                 };
+                 let open_out = OpenOut {
+                     fh: handle.map(Into::into).unwrap_or(0),
+@@ -1421,7 +1438,8 @@ impl<F: FileSystem + Sync> Server<F> {
+             );
+         }
+ 
+-        self.fs.batch_forget(Context::from(in_header), requests);
++        self.fs
++            .batch_forget(Context::from_fuse(in_header, &self.fs), requests);
+ 
+         // No reply for forget messages.
+         Ok(0)
+@@ -1437,7 +1455,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         } = r.read_obj().map_err(Error::DecodeMessage)?;
+ 
+         match self.fs.fallocate(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             fh.into(),
+             mode,
+@@ -1455,7 +1473,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         } = r.read_obj().map_err(Error::DecodeMessage)?;
+ 
+         match self.fs.lseek(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             fh.into(),
+             offset,
+@@ -1483,7 +1501,7 @@ impl<F: FileSystem + Sync> Server<F> {
+         } = r.read_obj().map_err(Error::DecodeMessage)?;
+ 
+         match self.fs.copyfilerange(
+-            Context::from(in_header),
++            Context::from_fuse(in_header, &self.fs),
+             in_header.nodeid.into(),
+             fh_in.into(),
+             off_in,
+@@ -1506,10 +1524,10 @@ impl<F: FileSystem + Sync> Server<F> {
+     }
+ 
+     fn syncfs(&self, in_header: InHeader, w: Writer) -> Result<usize> {
+-        match self
+-            .fs
+-            .syncfs(Context::from(in_header), in_header.nodeid.into())
+-        {
++        match self.fs.syncfs(
++            Context::from_fuse(in_header, &self.fs),
++            in_header.nodeid.into(),
++        ) {
+             Ok(()) => reply_ok(None::<u8>, None, in_header.unique, w),
+             Err(e) => reply_error(e, in_header.unique, w),
+         }
+@@ -1523,6 +1541,139 @@ impl<F: FileSystem + Sync> Server<F> {
+             .unwrap_or_else(|| panic!("unsupported operation"));
+         reply_error(e, in_header.unique, w)
+     }
++
++    fn add_dirent(
++        &self,
++        cursor: &mut Writer,
++        max: usize,
++        d: DirEntry,
++        entry: Option<Entry>,
++    ) -> io::Result<usize> {
++        // Strip the trailing '\0'.
++        let name = d.name.to_bytes();
++        if name.len() > u32::MAX as usize {
++            return Err(io::Error::from_raw_os_error(libc::EOVERFLOW));
++        }
++
++        let dirent_len = size_of::<Dirent>()
++            .checked_add(name.len())
++            .ok_or_else(|| io::Error::from_raw_os_error(libc::EOVERFLOW))?;
++
++        // Directory entries must be padded to 8-byte alignment.  If adding 7 causes
++        // an overflow then this dirent cannot be properly padded.
++        let padded_dirent_len = dirent_len
++            .checked_add(7)
++            .map(|l| l & !7)
++            .ok_or_else(|| io::Error::from_raw_os_error(libc::EOVERFLOW))?;
++
++        let total_len = if entry.is_some() {
++            padded_dirent_len
++                .checked_add(size_of::<EntryOut>())
++                .ok_or_else(|| io::Error::from_raw_os_error(libc::EOVERFLOW))?
++        } else {
++            padded_dirent_len
++        };
++
++        if max < total_len {
++            Ok(0)
++        } else {
++            if let Some(entry) = entry {
++                cursor.write_all(entry.into_fuse(&self.fs).as_slice())?;
++            }
++
++            let dirent = Dirent {
++                ino: d.ino,
++                off: d.offset,
++                namelen: name.len() as u32,
++                type_: d.type_,
++            };
++
++            cursor.write_all(dirent.as_slice())?;
++            cursor.write_all(name)?;
++
++            // We know that `dirent_len` <= `padded_dirent_len` due to the check above
++            // so there's no need for checked arithmetic.
++            let padding = padded_dirent_len - dirent_len;
++            if padding > 0 {
++                cursor.write_all(&DIRENT_PADDING[..padding])?;
++            }
++
++            Ok(total_len)
++        }
++    }
++
++    fn get_extensions(
++        &self,
++        options: FsOptions,
++        skip: usize,
++        request_bytes: &[u8],
++    ) -> Result<Extensions> {
++        let mut extensions = Extensions::default();
++
++        if !(options.contains(FsOptions::SECURITY_CTX)
++            || options.contains(FsOptions::CREATE_SUPP_GROUP))
++        {
++            return Ok(extensions);
++        }
++
++        // It's not guaranty to receive an extension even if it's supported by the guest kernel
++        if request_bytes.len() < skip {
++            return Err(Error::DecodeMessage(einval()));
++        }
++
++        // We need to track if a SecCtx was received, because it's valid
++        // for the guest to send an empty SecCtx (i.e, nr_secctx == 0)
++        let mut secctx_received = false;
++
++        let mut buf = &request_bytes[skip..];
++        while !buf.is_empty() {
++            let (extension_header, remaining_bytes) = take_object::<ExtHeader>(buf)?;
++
++            let extension_size = (extension_header.size as usize)
++                .checked_sub(size_of::<ExtHeader>())
++                .ok_or(Error::InvalidHeaderLength)?;
++
++            let (current_extension_bytes, next_extension_bytes) =
++                remaining_bytes.split_at(extension_size);
++
++            let ext_type = ExtType::try_from(extension_header.ext_type)
++                .map_err(|_| Error::DecodeMessage(einval()))?;
++
++            match ext_type {
++                ExtType::SecCtx(nr_secctx) => {
++                    if !options.contains(FsOptions::SECURITY_CTX) || secctx_received {
++                        return Err(Error::DecodeMessage(einval()));
++                    }
++
++                    secctx_received = true;
++                    extensions.secctx = parse_security_context(nr_secctx, current_extension_bytes)?;
++                    debug!("Extension received: {} SecCtx", nr_secctx);
++                }
++                ExtType::SupGroups => {
++                    if !options.contains(FsOptions::CREATE_SUPP_GROUP)
++                        || extensions.sup_gid.is_some()
++                    {
++                        return Err(Error::DecodeMessage(einval()));
++                    }
++
++                    let guest_sup_gid = parse_sup_groups(current_extension_bytes)?;
++                    extensions.sup_gid = Some(self.fs.map_guest_gid(guest_sup_gid));
++                    debug!("Extension received: SupGroups({:?})", extensions.sup_gid);
++                }
++            }
++
++            // Let's process the next extension
++            buf = next_extension_bytes;
++        }
++
++        // The SupGroup extension can be missing, since it is only sent if needed.
++        // A SecCtx is always sent in create/synlink/mknod/mkdir if supported.
++        if options.contains(FsOptions::SECURITY_CTX) && !secctx_received {
++            return Err(Error::MissingExtension);
++        }
++
++        Ok(extensions)
++    }
+ }
+ 
+ impl<F: FileSystem + SerializableFileSystem + Sync> SerializableFileSystem for Server<F> {
+@@ -1634,65 +1785,6 @@ fn bytes_to_cstr(buf: &[u8]) -> Result<&CStr> {
+     CStr::from_bytes_with_nul(buf).map_err(Error::InvalidCString)
+ }
+ 
+-fn add_dirent(
+-    cursor: &mut Writer,
+-    max: usize,
+-    d: DirEntry,
+-    entry: Option<Entry>,
+-) -> io::Result<usize> {
+-    // Strip the trailing '\0'.
+-    let name = d.name.to_bytes();
+-    if name.len() > u32::MAX as usize {
+-        return Err(io::Error::from_raw_os_error(libc::EOVERFLOW));
+-    }
+-
+-    let dirent_len = size_of::<Dirent>()
+-        .checked_add(name.len())
+-        .ok_or_else(|| io::Error::from_raw_os_error(libc::EOVERFLOW))?;
+-
+-    // Directory entries must be padded to 8-byte alignment.  If adding 7 causes
+-    // an overflow then this dirent cannot be properly padded.
+-    let padded_dirent_len = dirent_len
+-        .checked_add(7)
+-        .map(|l| l & !7)
+-        .ok_or_else(|| io::Error::from_raw_os_error(libc::EOVERFLOW))?;
+-
+-    let total_len = if entry.is_some() {
+-        padded_dirent_len
+-            .checked_add(size_of::<EntryOut>())
+-            .ok_or_else(|| io::Error::from_raw_os_error(libc::EOVERFLOW))?
+-    } else {
+-        padded_dirent_len
+-    };
+-
+-    if max < total_len {
+-        Ok(0)
+-    } else {
+-        if let Some(entry) = entry {
+-            cursor.write_all(EntryOut::from(entry).as_slice())?;
+-        }
+-
+-        let dirent = Dirent {
+-            ino: d.ino,
+-            off: d.offset,
+-            namelen: name.len() as u32,
+-            type_: d.type_,
+-        };
+-
+-        cursor.write_all(dirent.as_slice())?;
+-        cursor.write_all(name)?;
+-
+-        // We know that `dirent_len` <= `padded_dirent_len` due to the check above
+-        // so there's no need for checked arithmetic.
+-        let padding = padded_dirent_len - dirent_len;
+-        if padding > 0 {
+-            cursor.write_all(&DIRENT_PADDING[..padding])?;
+-        }
+-
+-        Ok(total_len)
+-    }
+-}
+-
+ fn take_object<T: ByteValued>(data: &[u8]) -> Result<(T, &[u8])> {
+     if data.len() < size_of::<T>() {
+         return Err(Error::DecodeMessage(einval()));
+@@ -1745,7 +1837,7 @@ fn parse_security_context(nr_secctx: u32, data: &[u8]) -> Result<Option<SecConte
+     Ok(Some(fuse_secctx))
+ }
+ 
+-fn parse_sup_groups(data: &[u8]) -> Result<u32> {
++fn parse_sup_groups(data: &[u8]) -> Result<GuestGid> {
+     let (group_header, group_id_bytes) = take_object::<SuppGroups>(data)?;
+ 
+     // The FUSE extension allows sending several group IDs, but currently the guest
+@@ -1755,70 +1847,5 @@ fn parse_sup_groups(data: &[u8]) -> Result<u32> {
+     }
+ 
+     let (gid, _) = take_object::<u32>(group_id_bytes)?;
+-    Ok(gid)
+-}
+-
+-fn get_extensions(options: FsOptions, skip: usize, request_bytes: &[u8]) -> Result<Extensions> {
+-    let mut extensions = Extensions::default();
+-
+-    if !(options.contains(FsOptions::SECURITY_CTX)
+-        || options.contains(FsOptions::CREATE_SUPP_GROUP))
+-    {
+-        return Ok(extensions);
+-    }
+-
+-    // It's not guaranty to receive an extension even if it's supported by the guest kernel
+-    if request_bytes.len() < skip {
+-        return Err(Error::DecodeMessage(einval()));
+-    }
+-
+-    // We need to track if a SecCtx was received, because it's valid
+-    // for the guest to send an empty SecCtx (i.e, nr_secctx == 0)
+-    let mut secctx_received = false;
+-
+-    let mut buf = &request_bytes[skip..];
+-    while !buf.is_empty() {
+-        let (extension_header, remaining_bytes) = take_object::<ExtHeader>(buf)?;
+-
+-        let extension_size = (extension_header.size as usize)
+-            .checked_sub(size_of::<ExtHeader>())
+-            .ok_or(Error::InvalidHeaderLength)?;
+-
+-        let (current_extension_bytes, next_extension_bytes) =
+-            remaining_bytes.split_at(extension_size);
+-
+-        let ext_type = ExtType::try_from(extension_header.ext_type)
+-            .map_err(|_| Error::DecodeMessage(einval()))?;
+-
+-        match ext_type {
+-            ExtType::SecCtx(nr_secctx) => {
+-                if !options.contains(FsOptions::SECURITY_CTX) || secctx_received {
+-                    return Err(Error::DecodeMessage(einval()));
+-                }
+-
+-                secctx_received = true;
+-                extensions.secctx = parse_security_context(nr_secctx, current_extension_bytes)?;
+-                debug!("Extension received: {} SecCtx", nr_secctx);
+-            }
+-            ExtType::SupGroups => {
+-                if !options.contains(FsOptions::CREATE_SUPP_GROUP) || extensions.sup_gid.is_some() {
+-                    return Err(Error::DecodeMessage(einval()));
+-                }
+-
+-                extensions.sup_gid = parse_sup_groups(current_extension_bytes)?.into();
+-                debug!("Extension received: SupGroups({:?})", extensions.sup_gid);
+-            }
+-        }
+-
+-        // Let's process the next extension
+-        buf = next_extension_bytes;
+-    }
+-
+-    // The SupGroup extension can be missing, since it is only sent if needed.
+-    // A SecCtx is always sent in create/synlink/mknod/mkdir if supported.
+-    if options.contains(FsOptions::SECURITY_CTX) && !secctx_received {
+-        return Err(Error::MissingExtension);
+-    }
+-
+-    Ok(extensions)
++    Ok(gid.into())
+ }
+diff --git a/src/soft_idmap/cmdline.rs b/src/soft_idmap/cmdline.rs
+new file mode 100644
+index 0000000..e92e4c4
+--- /dev/null
++++ b/src/soft_idmap/cmdline.rs
+@@ -0,0 +1,162 @@
++// Copyright 2024 Red Hat, Inc. All rights reserved.
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
++use std::fmt::{self, Display, Formatter};
++use std::num::ParseIntError;
++use std::str::FromStr;
++
++/// Command-line configuration for UID/GID translation between host and guest
++#[derive(Clone, Debug)]
++pub enum IdMap {
++    /// 1:1 translate a guest ID range to a host ID range
++    Guest {
++        from_guest: u32,
++        to_host: u32,
++        count: u32,
++    },
++
++    /// 1:1 translate a host ID range to a guest ID range
++    Host {
++        from_host: u32,
++        to_guest: u32,
++        count: u32,
++    },
++
++    /// n:1 translate a guest ID range to a single host ID
++    SquashGuest {
++        from_guest: u32,
++        to_host: u32,
++        count: u32,
++    },
++
++    /// n:1 translate a host ID range to a single guest ID
++    SquashHost {
++        from_host: u32,
++        to_guest: u32,
++        count: u32,
++    },
++
++    /// 1:1 translate between a guest ID range and a host ID range, both directions
++    Bidirectional { guest: u32, host: u32, count: u32 },
++}
++
++/// Errors that can occur when parsing an `IdMap` argument
++#[derive(Debug)]
++pub enum IdMapError {
++    /// Invalid/unknown mapping type prefix
++    InvalidPrefix(String),
++
++    /// Invalid number of arguments
++    InvalidLength { expected: usize, seen: usize },
++
++    /// Error parsing an integer; `value` containing the original value
++    InvalidValue { value: String, error: ParseIntError },
++}
++
++impl std::error::Error for IdMapError {}
++
++impl Display for IdMapError {
++    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
++        match self {
++            IdMapError::InvalidPrefix(prefix) => write!(f, "Invalid ID map prefix {prefix}"),
++            IdMapError::InvalidLength { expected, seen } => write!(
++                f,
++                "Invalid ID map length (expected {expected} elements, got {seen} elements)"
++            ),
++            IdMapError::InvalidValue { value, error } => {
++                write!(f, "Invalid value {value} in ID map: {error}")
++            }
++        }
++    }
++}
++
++impl FromStr for IdMap {
++    type Err = IdMapError;
++
++    fn from_str(s: &str) -> Result<Self, IdMapError> {
++        let (prefix, fields) = parse_idmap(s, 3)?;
++
++        match prefix.as_str() {
++            "guest" => Ok(IdMap::Guest {
++                from_guest: fields[0],
++                to_host: fields[1],
++                count: fields[2],
++            }),
++
++            "host" => Ok(IdMap::Host {
++                from_host: fields[0],
++                to_guest: fields[1],
++                count: fields[2],
++            }),
++
++            "squash-guest" => Ok(IdMap::SquashGuest {
++                from_guest: fields[0],
++                to_host: fields[1],
++                count: fields[2],
++            }),
++
++            "squash-host" => Ok(IdMap::SquashHost {
++                from_host: fields[0],
++                to_guest: fields[1],
++                count: fields[2],
++            }),
++
++            "" => Ok(IdMap::Bidirectional {
++                guest: fields[0],
++                host: fields[1],
++                count: fields[2],
++            }),
++
++            _ => Err(IdMapError::InvalidPrefix(prefix)),
++        }
++    }
++}
++
++/// Pre-parse an `IdMap` argument of the form /^[a-zA-Z0-9_-]*(:[0-9]+){expected_len}$/ (separator
++/// given as a colon here, but can be any non-alphanumeric separator in practice).
++/// The prefix is returned as a string, the remaining numerical values as a parsed vector.
++/// `expected_len` gives the expected number of numerical fields, and that is checked, so a
++/// successfully returned vector is always of length `expected_len`.
++fn parse_idmap(s: &str, expected_len: usize) -> Result<(String, Vec<u32>), IdMapError> {
++    let mut chars = s.chars();
++    let mut prefix = String::new();
++
++    let separator = loop {
++        let Some(c) = chars.next() else {
++            return Err(IdMapError::InvalidLength {
++                expected: expected_len,
++                seen: 0,
++            });
++        };
++
++        if c.is_alphanumeric() || c == '-' || c == '_' {
++            for c in c.to_lowercase() {
++                prefix.push(c);
++            }
++        } else {
++            break c;
++        }
++    };
++
++    let values: Vec<&str> = chars.as_str().split(separator).collect();
++
++    if values.len() != expected_len {
++        return Err(IdMapError::InvalidLength {
++            expected: expected_len,
++            seen: values.len(),
++        });
++    }
++
++    let values = values
++        .into_iter()
++        .map(|v| {
++            v.parse().map_err(|error| IdMapError::InvalidValue {
++                value: String::from(v),
++                error,
++            })
++        })
++        .collect::<Result<Vec<u32>, IdMapError>>()?;
++
++    Ok((prefix, values))
++}
+diff --git a/src/soft_idmap/id_types.rs b/src/soft_idmap/id_types.rs
+new file mode 100644
+index 0000000..0f069ee
+--- /dev/null
++++ b/src/soft_idmap/id_types.rs
+@@ -0,0 +1,141 @@
++// Copyright 2024 Red Hat, Inc. All rights reserved.
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
++use btree_range_map::{Measure, PartialEnum, RangePartialOrd};
++use std::fmt::{self, Debug, Display, Formatter};
++use std::ops::{Add, Sub};
++
++/// Trait for all kinds of UIDs and GIDs.  Explanation for dependencies:
++/// - Clone + Copy: Must consist internally only of a plain integer, so must be copiable
++/// - Display: We want to easily print the type without deconstructing it
++/// - From<Self::Inner>: Must be constructable from its inner type (the raw numerical value)
++/// - Eq + PartialEq + Ord + PartialOrd: Must be comparable, as would be expected from UIDs/GIDs
++/// - Sub<Self>: Must be able to calculate the offset of two IDs, i.e. the length of an ID range
++pub trait Id:
++    Clone + Copy + Display + Eq + From<Self::Inner> + Ord + PartialEq + PartialOrd + Sub<Self>
++{
++    /// Inner raw numerical type.  `Range<Self::Inner>` must be usable as the key for a
++    /// `btree_range_map::RangeMap`, hence the dependencies outside of `Clone + Copy`.
++    type Inner: Clone + Copy + Measure + PartialEnum + RangePartialOrd;
++
++    /// Is this a root UID/GID?
++    fn is_root(&self) -> bool;
++
++    /// Get the raw numerical value
++    fn unwrap(self) -> Self::Inner;
++}
++
++/// Trait designating a guest UID/GID.  Must be able to add the length of an ID range of the
++/// corresponding host type, so we can map one range to the other, e.g. like so:
++/// `let guest_id_range guest_id_base..(guest_id_base + (host_id_range.end - host_id_range.start))`
++/// Or:
++/// `let guest_id = guest_id_range.start + (host_id_in_range - host_id_range.start)`
++pub trait GuestId: Id + Add<<Self::HostType as Sub>::Output, Output = Self> {
++    /// Respective host UID or GID
++    type HostType: HostId;
++
++    /// Plain identity mapping to respective host UID/GID
++    fn id_mapped(self) -> Self::HostType;
++}
++
++/// Trait designating a host UID/GID.  Must be able to add the length of an ID range of the
++/// corresponding guest type, so we can map one range to the other, e.g. like so:
++/// `let host_id_range = host_id_base..(host_id_base + (guest_id_range.end - guest_id_range.start))`
++/// Or:
++/// `let host_id = host_id_range.start + (guest_id_in_range - guest_id_range.start)`
++pub trait HostId: Id + Add<<Self::GuestType as Sub>::Output, Output = Self> {
++    /// Respective guest UID or GID
++    type GuestType: GuestId;
++
++    /// Plain identity mapping to respective guest UID/GID
++    fn id_mapped(self) -> Self::GuestType;
++}
++
++// Implement ID types
++macro_rules! impl_ids {
++    {
++        $(
++            $(#[$meta:meta])*
++            $visibility:vis struct $t:ident<
++                $opposite_name:tt = $opposite_type:ty,
++                OffsetType = $offset_type:tt
++            >($inner:ty): $variant_trait:tt;
++        )*
++    } => {
++        $(
++            #[derive(Clone, Copy, Debug, Default, Eq, Ord, PartialEq, PartialOrd)]
++            #[repr(C, packed)]
++            pub struct $t($inner);
++
++            impl From<$inner> for $t {
++                fn from(id: $inner) -> Self {
++                    $t(id)
++                }
++            }
++
++            impl Id for $t {
++                type Inner = $inner;
++
++                fn is_root(&self) -> bool {
++                    self.0 == 0
++                }
++
++                fn unwrap(self) -> $inner {
++                    self.0
++                }
++            }
++
++            impl $variant_trait for $t {
++                type $opposite_name = $opposite_type;
++
++                fn id_mapped(self) -> $opposite_type {
++                    self.unwrap().into()
++                }
++            }
++
++            impl Add<$offset_type> for $t {
++                type Output = $t;
++
++                fn add(self, rhs: $offset_type) -> $t {
++                    (self.unwrap() + rhs.0).into()
++                }
++            }
++
++            impl Sub<$t> for $t {
++                type Output = $offset_type;
++
++                fn sub(self, rhs: $t) -> $offset_type {
++                    $offset_type(self.unwrap() - rhs.unwrap())
++                }
++            }
++
++            impl Display for $t {
++                fn fmt(&self, f: &mut Formatter) -> fmt::Result {
++                    let inner = (*self).unwrap();
++                    write!(f, "{inner}")
++                }
++            }
++            )*
++    };
++}
++
++/// Offset between two UIDs
++pub struct UidOffset(u32);
++
++/// Offset between two GIDs
++pub struct GidOffset(u32);
++
++impl_ids! {
++    /// Guest UID type, i.e. a UID used in the guest
++    pub struct GuestUid<HostType = HostUid, OffsetType = UidOffset>(u32): GuestId;
++
++    /// Guest GID type, i.e. a GID used in the guest
++    pub struct GuestGid<HostType = HostGid, OffsetType = GidOffset>(u32): GuestId;
++
++    /// Host UID type, i.e. a UID valid on the host
++    pub struct HostUid<GuestType = GuestUid, OffsetType = UidOffset>(libc::uid_t): HostId;
++
++    /// Host UID type, i.e. a GID valid on the host
++    pub struct HostGid<GuestType = GuestGid, OffsetType = GidOffset>(libc::gid_t): HostId;
++}
+diff --git a/src/soft_idmap/mod.rs b/src/soft_idmap/mod.rs
+new file mode 100644
+index 0000000..80e1d85
+--- /dev/null
++++ b/src/soft_idmap/mod.rs
+@@ -0,0 +1,216 @@
++// Copyright 2024 Red Hat, Inc. All rights reserved.
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
++pub mod cmdline;
++pub mod id_types;
++
++use crate::util::other_io_error;
++use btree_range_map::RangeMap;
++pub use id_types::{GuestGid, GuestId, GuestUid, HostGid, HostId, HostUid, Id};
++use std::convert::TryFrom;
++use std::fmt::{self, Display, Formatter};
++use std::io;
++use std::ops::{Add, Range, Sub};
++
++/// Translates a UID or GID between host and guest
++pub struct IdMap<Guest: GuestId<HostType = Host>, Host: HostId<GuestType = Guest>> {
++    /// Guest-to-host mapping
++    guest_to_host: RangeMap<Guest::Inner, MapEntry<Guest, Host>>,
++    /// Host-to-guest mapping
++    host_to_guest: RangeMap<Host::Inner, MapEntry<Host, Guest>>,
++}
++
++/// Maps some IDs to other IDs (e.g. host to guest or guest to host)
++#[derive(Clone, Debug, PartialEq)]
++enum MapEntry<Source: Id, Target: Id> {
++    /// Squash a range of IDs onto a single one
++    Squash { from: Range<Source>, to: Target },
++
++    /// 1:1 map a range of IDs to another range (of the same length)
++    Range {
++        from: Range<Source>,
++        to_base: Target,
++    },
++}
++
++impl<Guest, Host> IdMap<Guest, Host>
++where
++    Guest: GuestId<HostType = Host>,
++    Host: HostId<GuestType = Guest>,
++{
++    /// Create an empty map.  Note that unmapped ranges default to identity mapping, i.e. an empty
++    /// map will map everything to itself.
++    pub fn empty() -> Self {
++        IdMap {
++            guest_to_host: RangeMap::new(),
++            host_to_guest: RangeMap::new(),
++        }
++    }
++
++    /// Map a guest UID/GID to one for the host
++    pub fn map_guest(&self, guest_id: Guest) -> Host {
++        self.guest_to_host
++            .get(guest_id.unwrap())
++            .map(|e| e.map(guest_id))
++            .unwrap_or(guest_id.id_mapped())
++    }
++
++    /// Map a host UID/GID to one for the guest
++    pub fn map_host(&self, host_id: Host) -> Guest {
++        self.host_to_guest
++            .get(host_id.unwrap())
++            .map(|e| e.map(host_id))
++            .unwrap_or(host_id.id_mapped())
++    }
++
++    fn do_push<Source, Target>(
++        map: &mut RangeMap<Source::Inner, MapEntry<Source, Target>>,
++        map_name: &str,
++        entry: MapEntry<Source, Target>,
++    ) -> io::Result<()>
++    where
++        Source: Id + Sub<Source>,
++        Target: Id + Add<<Source as Sub>::Output, Output = Target>,
++    {
++        let wrapped_range = entry.source_range();
++        let inner_range = Range {
++            start: wrapped_range.start.unwrap(),
++            end: wrapped_range.end.unwrap(),
++        };
++        if map.intersects(inner_range.clone()) {
++            return Err(other_io_error(format!(
++                "{map_name} mapping '{entry}' intersects previously added entry"
++            )));
++        }
++
++        map.insert(inner_range, entry);
++        Ok(())
++    }
++
++    fn push_guest_to_host(&mut self, entry: MapEntry<Guest, Host>) -> io::Result<()> {
++        Self::do_push(&mut self.guest_to_host, "Guest-to-host", entry)
++    }
++
++    fn push_host_to_guest(&mut self, entry: MapEntry<Host, Guest>) -> io::Result<()> {
++        Self::do_push(&mut self.host_to_guest, "Host-to-guest", entry)
++    }
++}
++
++impl<Source: Id, Target: Id> MapEntry<Source, Target>
++where
++    Source: Sub<Source>,
++    Target: Add<<Source as Sub>::Output, Output = Target>,
++{
++    /// Map an element from the source domain into the target domain
++    fn map(&self, id: Source) -> Target {
++        match self {
++            MapEntry::Squash { from, to } => {
++                assert!(from.contains(&id));
++                *to
++            }
++
++            MapEntry::Range { from, to_base } => {
++                assert!(from.contains(&id));
++                *to_base + (id - from.start)
++            }
++        }
++    }
++
++    fn source_range(&self) -> &Range<Source> {
++        match self {
++            MapEntry::Squash { from, to: _ } => from,
++            MapEntry::Range { from, to_base: _ } => from,
++        }
++    }
++}
++
++impl<Source: Id, Target: Id> Display for MapEntry<Source, Target>
++where
++    Source: Sub<Source>,
++    Target: Add<<Source as Sub>::Output, Output = Target>,
++{
++    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
++        match self {
++            MapEntry::Squash { from, to } => {
++                write!(f, "squash [{}, {}) to {}", from.start, from.end, to)
++            }
++            MapEntry::Range { from, to_base } => {
++                write!(
++                    f,
++                    "map [{}, {}) to [{}, {})",
++                    from.start,
++                    from.end,
++                    to_base,
++                    *to_base + (from.end - from.start)
++                )
++            }
++        }
++    }
++}
++
++impl<Guest, Host> TryFrom<Vec<cmdline::IdMap>> for IdMap<Guest, Host>
++where
++    Guest: GuestId<HostType = Host> + From<u32>,
++    Host: HostId<GuestType = Guest> + From<u32>,
++{
++    type Error = io::Error;
++
++    fn try_from(cmdline: Vec<cmdline::IdMap>) -> io::Result<Self> {
++        let mut map = IdMap::empty();
++
++        for entry in cmdline {
++            match entry {
++                cmdline::IdMap::Guest {
++                    from_guest,
++                    to_host,
++                    count,
++                } => map.push_guest_to_host(MapEntry::Range {
++                    from: (from_guest.into())..((from_guest + count).into()),
++                    to_base: to_host.into(),
++                })?,
++
++                cmdline::IdMap::Host {
++                    from_host,
++                    to_guest,
++                    count,
++                } => map.push_host_to_guest(MapEntry::Range {
++                    from: (from_host.into())..((from_host + count).into()),
++                    to_base: to_guest.into(),
++                })?,
++
++                cmdline::IdMap::SquashGuest {
++                    from_guest,
++                    to_host,
++                    count,
++                } => map.push_guest_to_host(MapEntry::Squash {
++                    from: (from_guest.into())..((from_guest + count).into()),
++                    to: to_host.into(),
++                })?,
++
++                cmdline::IdMap::SquashHost {
++                    from_host,
++                    to_guest,
++                    count,
++                } => map.push_host_to_guest(MapEntry::Squash {
++                    from: (from_host.into())..((from_host + count).into()),
++                    to: to_guest.into(),
++                })?,
++
++                cmdline::IdMap::Bidirectional { guest, host, count } => {
++                    map.push_guest_to_host(MapEntry::Range {
++                        from: (guest.into())..((guest + count).into()),
++                        to_base: host.into(),
++                    })?;
++
++                    map.push_host_to_guest(MapEntry::Range {
++                        from: (host.into())..((host + count).into()),
++                        to_base: guest.into(),
++                    })?;
++                }
++            }
++        }
++
++        Ok(map)
++    }
++}

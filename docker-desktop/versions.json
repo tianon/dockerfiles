@@ -1,5 +1,5 @@
 {
-  "sha256": "ae4f0dceddb93a381a150ee085c7b802aab6c6233fc4f4b2809959c99fcc1452",
-  "url": "https://desktop.docker.com/linux/main/amd64/153195/docker-desktop-4.31.0-amd64.deb",
-  "version": "4.31.0"
+  "sha256": "c93573f1d1c1e83b6460e5666b29283a085a529c2fe8b7e13d1a8955eb0be1ce",
+  "url": "https://desktop.docker.com/linux/main/amd64/172550/docker-desktop-amd64.deb",
+  "version": "4.35.0"
 }
