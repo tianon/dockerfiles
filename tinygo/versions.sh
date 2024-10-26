@@ -12,13 +12,24 @@ versions_hooks+=( hook_no-prereleases )
 json="$(git-tags 'https://github.com/tinygo-org/tinygo.git')"
 
 tag="$(jq <<<"$json" -r '.tag')"
+
+# parse https://github.com/tinygo-org/tinygo/blob/v0.34.0/builder/config.go#L27-L29 to get the "range" of Go versions supported
 go="$(
-	wget -qO- "https://github.com/tinygo-org/tinygo/raw/$tag/go.mod" \
-		| awk '$1 == "go" { print $2; exit }'
+	wget -qO- "https://github.com/tinygo-org/tinygo/raw/$tag/builder/config.go" \
+		| jq -csR '
+			[
+				capture("((?<=\n)|^)[[:space:]]*const[[:space:]]+minor(?<key>Min|Max)[[:space:]]*=[[:space:]]*(?<value>[0-9]+)[[:space:]]*((?=\n)|$)"; "g")
+				| .key |= ascii_downcase
+				| .value |= { version: "1.\(.)" }
+			]
+			| from_entries
+			| if has("min") and has("max") then . else
+				error("failed to scrape either min or max from upstream")
+			end
+		'
 )"
 echo "tinygo go: $go"
-# TODO this gives us the "minimal" version of Go, where it would be great if we could somehow parse https://github.com/tinygo-org/tinygo/blob/dc449882ad09c60c11cef7c35914d5fbfe22a88e/builder/config.go#L33 and get the "maximal" version instead
 
-jq <<<"$json" --arg go "$go" '
-	.go = { version: $go }
+jq <<<"$json" --argjson go "$go" '
+	.go = $go
 ' > versions.json
