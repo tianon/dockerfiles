@@ -1,8 +1,8 @@
 {
-  "version": "4.1.0",
+  "version": "4.2.0",
   "python": {
-    "version": "3.12",
-    "from": "python:3.12-alpine3.20",
+    "version": "3.13",
+    "from": "python:3.13-alpine3.20",
     "arches": [
       "amd64",
       "arm32v6",
