@@ -12,35 +12,55 @@ ENV BUILDKIT_COMMIT $BUILDKIT_COMMIT
 ENV BUILDKIT_VERSION {{ .version }}
 {{ ) end -}}
 
-{{ # TODO put patches into an object with versioning information so this can be easier to maintain (patch: ... versions: ... else: ... ?) -}}
 COPY \
-{{ if .version | startswith("0.13.") then ( -}}
-	backport-4727-index-mediaType.patch \
-{{ ) else "" end -}}
-{{ if .version | startswith("0.13.") or startswith("0.14.") then ( -}}
-	backport-5072-fetch-tags.patch \
-	backport-5096-fix-umask.patch \
-{{) else "" end -}}
-{{ if .version | startswith("0.13.") or startswith("0.14.") or startswith("0.15.") or startswith("0.16.") then ( -}}
-	backport-5372-sbom-args.patch \
-	backport-moby-48455-fix-riscv64-seccomp.patch \
-{{) else "" end -}}
-{{ if .version | startswith("0.13.") or startswith("0.14.") then ( -}}
-	containerd-arm64-v8-pre-0.15.patch \
-{{ ) else ( -}}
-	containerd-arm64-v8.patch \
-{{ ) end -}}
-	git-no-submodules.patch \
-{{ if .version | startswith("0.13.") or startswith("0.14.") or startswith("0.15.") then ( -}}
-	mips64le-pre-0.16.patch \
-{{ ) else ( -}}
-	mips64le.patch \
-{{ ) end -}}
-	noclip.patch \
-{{ # linting was introduced in 0.14+ slash dockerfile/1.8.0 -}}
-{{ if .version | startswith("0.13.") then "" else ( -}}
-	nolint.patch \
-{{ ) end -}}
+{{ def vsplit: split(".") | map(tonumber? // .) -}}
+{{
+	# TODO probably put more of this into an external "included" file so it can be used for things like verifying that I don't have any extra unnecessary patch files checked in, etc 😅 (would be easier to debug that way too)
+	(.version | vsplit) as $vsplit
+	| {
+		# "after:" is inclusive ("added in" or "introduced")
+		# "until:" is exclusive ("fixed in" or "applied upstream")
+		# "older:" is "until:" but with an alternate patch
+
+		# all patches should also adhere to Debian's DEP3 guidelines: https://dep-team.pages.debian.net/deps/dep3/
+
+		"backport-4727-index-mediaType.patch": { until: "0.14" },
+		"backport-5072-fetch-tags.patch": { until: "0.15" },
+		"backport-5096-fix-umask.patch": { until: "0.15" },
+		"backport-5372-sbom-args.patch": { until: "0.17" },
+		"backport-moby-48455-fix-riscv64-seccomp.patch": { until: "0.17" },
+		"containerd-arm64-v8.patch": { older: { "0.15": "containerd-arm64-v8-pre-0.15.patch" } },
+		"git-no-submodules.patch": { },
+		"mips64le.patch": { older: { "0.16": "mips64le-pre-0.16.patch" } },
+		"noclip.patch": { },
+		"nolint.patch": { after: "0.14" }, # linting was introduced in 0.14+ slash dockerfile/1.8.0
+
+		# NOTE: 0.14 and 0.15 are not *actually* supported here, and will not build successfully with these patches, but the version numbers are included here because it's useful/interesting data
+	}
+	| to_entries
+	| map(
+		select(
+			.value
+			| if .until and $vsplit >= (.until | vsplit) then false else true end
+			and if .after and $vsplit < (.after | vsplit) then false else true end
+		)
+		| .key as $patch
+		| (.value.older // {})
+		| to_entries
+		| .[].key |= vsplit
+		| sort_by(.key)
+		| first(
+			.[]
+			| select($vsplit < .key)
+			| .value
+		) // $patch
+		| (
+-}}
+	{{ . }} \
+{{
+		)
+	) | add
+-}}
 	/tmp/buildkit-patches/
 
 WORKDIR /app
