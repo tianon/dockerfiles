@@ -12,8 +12,12 @@ ENV BUILDKIT_COMMIT $BUILDKIT_COMMIT
 ENV BUILDKIT_VERSION {{ .version }}
 {{ ) end -}}
 
+{{ # TODO put patches into an object with versioning information so this can be easier to maintain (patch: ... versions: ... else: ... ?) -}}
 COPY \
-{{ if env.variant != "dev" and (.version | startswith("0.13.") or startswith("0.14.")) then ( -}}
+{{ if .version | startswith("0.13.") then ( -}}
+	backport-4727-index-mediaType.patch \
+{{ ) else "" end -}}
+{{ if .version | startswith("0.13.") or startswith("0.14.") then ( -}}
 	backport-5072-fetch-tags.patch \
 	backport-5096-fix-umask.patch \
 {{) else "" end -}}
