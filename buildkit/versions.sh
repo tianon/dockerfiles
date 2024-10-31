@@ -11,6 +11,7 @@ variants=(
 	''
 	'rc'
 
+	'0.16'
 	'0.13'
 
 	# TODO add this back when I figure out a clean way to do something more akin to a "weekly snapshot" or something so it doesn't have an update every single day
