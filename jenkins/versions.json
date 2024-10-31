@@ -9,8 +9,8 @@
     "repo": "https://pkg.jenkins.io/debian"
   },
   "lts": {
-    "sha256": "672f60cf310afa615c5cf51cd5c33466a2c64cbc5ad9d924e7f50634a866bc89",
-    "version": "2.462.3",
+    "sha256": "a0645eb53ecb0d988180dad6170b09c7ecb94f13308f326947f8ce1a797a7cfd",
+    "version": "2.479.1",
     "repo": "https://pkg.jenkins.io/debian-stable"
   }
 }

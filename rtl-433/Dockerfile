@@ -15,7 +15,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # https://github.com/merbanan/rtl_433/releases
-ENV RTL_433_VERSION 23.11
+ENV RTL_433_VERSION 24.10
 
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \

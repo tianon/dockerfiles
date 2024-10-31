@@ -1,10 +1,10 @@
 {
-  "commit": "0865fcc9b78559e856e81dc52b3613701e7be28d",
-  "ref": "refs/tags/v0.16.0",
-  "tag": "v0.16.0",
-  "version": "0.16.0",
+  "commit": "fd61877fa73693dcd4ef64c538f894ec216409a3",
+  "ref": "refs/tags/v0.17.0",
+  "tag": "v0.17.0",
+  "version": "0.17.0",
   "go": {
-    "version": "1.21"
+    "version": "1.22"
   },
   "variants": [
     "",
