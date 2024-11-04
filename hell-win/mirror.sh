@@ -28,15 +28,17 @@ curl_manifest() {
 for targetTag in core nano iot; do
 	case "$targetTag" in
 		core)
+			# https://oci.dag.dev/?repo=mcr.microsoft.com/windows/servercore
 			# https://hub.docker.com/r/microsoft/windowsservercore
 			sourceRepo='windows/servercore'
-			sourceTags=( ltsc2022 20H2 2004 1909 1903 1809 1803 1709 1607 ltsc2019 ltsc2016 )
+			sourceTags=( ltsc2025 ltsc2022 20H2 2004 1909 1903 1809 1803 1709 1607 ltsc2019 ltsc2016 )
 			;;
 
 		nano)
+			# https://oci.dag.dev/?repo=mcr.microsoft.com/windows/nanoserver
 			# https://hub.docker.com/r/microsoft/nanoserver
 			sourceRepo='windows/nanoserver'
-			sourceTags=( ltsc2022 20H2 2004 1909 1903 1809 1803 1709 sac2016 )
+			sourceTags=( ltsc2025 ltsc2022 20H2 2004 1909 1903 1809 1803 1709 sac2016 )
 			;;
 
 		iot)
@@ -48,15 +50,17 @@ for targetTag in core nano iot; do
 		full) # TODO figure out WTF this is and whether "full" is really an appropriate name??  seems related to https://docs.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/gpu-acceleration but https://techcommunity.microsoft.com/t5/Containers/Windows-Server-2019-Now-Available/ba-p/382430 is the only announcement of it I can find...
 			# https://www.thomasmaurer.ch/2018/06/new-windows-container-image/ !!!
 			# https://docs.microsoft.com/en-us/virtualization/community/team-blog/2018/20180627-insider-preview-windows-container-image
+			# https://oci.dag.dev/?repo=mcr.microsoft.com/windows
 			# https://hub.docker.com/_/microsoft-windows
 			sourceRepo='windows'
 			sourceTags=( 20H2 2004 1909 1903 1809 ltsc2019 )
 			;;
 
 		server) # TODO figure out WTF this is 😩
+			# https://oci.dag.dev/?repo=mcr.microsoft.com/windows/server
 			# https://hub.docker.com/_/microsoft-windows-server
 			sourceRepo='windows/server'
-			sourceTags=( ltsc2022 )
+			sourceTags=( ltsc2025 ltsc2022 )
 			;;
 
 		*)
