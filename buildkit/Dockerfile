@@ -10,6 +10,7 @@ FROM --platform=$BUILDPLATFORM golang:1.22 AS build
 ENV BUILDKIT_VERSION 0.17.1
 
 COPY \
+	argsescaped.patch \
 	containerd-arm64-v8.patch \
 	git-no-submodules.patch \
 	mips64le.patch \

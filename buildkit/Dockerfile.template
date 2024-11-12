@@ -24,6 +24,7 @@ COPY \
 
 		# all patches should also adhere to Debian's DEP3 guidelines: https://dep-team.pages.debian.net/deps/dep3/
 
+		"argsescaped.patch": { older: { "0.16": "argsescaped-0.13.patch" } },
 		"backport-4727-index-mediaType.patch": { until: "0.14" },
 		"backport-5072-fetch-tags.patch": { until: "0.15" },
 		"backport-5096-fix-umask.patch": { until: "0.15" },
