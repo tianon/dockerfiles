@@ -10,6 +10,7 @@ FROM --platform=$BUILDPLATFORM golang:1.21 AS build
 ENV BUILDKIT_VERSION 0.16.0
 
 COPY \
+	argsescaped.patch \
 	backport-5372-sbom-args.patch \
 	backport-5441-fetch-by-commit.patch \
 	backport-moby-48455-fix-riscv64-seccomp.patch \
