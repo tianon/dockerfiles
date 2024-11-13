@@ -1,42 +1,42 @@
 {
-  "commit": "a7ed346585e30b99317d36e4d007b7b19a228ea5",
-  "ref": "refs/tags/v1.11.3",
-  "tag": "v1.11.3",
-  "version": "1.11.3",
+  "commit": "6e11ebddfc13bfca683fcbcae72cc4af6de47dd2",
+  "ref": "refs/tags/v1.11.4",
+  "tag": "v1.11.4",
+  "version": "1.11.4",
   "arches": {
     "amd64": {
-      "url": "https://github.com/coredns/coredns/releases/download/v1.11.3/coredns_1.11.3_linux_amd64.tgz",
-      "sha256": "6af4d6a5412734417378f778343c4fba363a61ae027060675123d4296f5a8ee5",
+      "url": "https://github.com/coredns/coredns/releases/download/v1.11.4/coredns_1.11.4_linux_amd64.tgz",
+      "sha256": "3dd1b565a6b72e04f7c19dc461ffcc7b8e013d520569aa163312384a5be307e5",
       "dpkgArch": "amd64"
     },
     "arm64v8": {
-      "url": "https://github.com/coredns/coredns/releases/download/v1.11.3/coredns_1.11.3_linux_arm64.tgz",
-      "sha256": "f10161d95585a8f1bbd967f9fd8004fc8aee97963b7180e1b8e6072293c42a54",
+      "url": "https://github.com/coredns/coredns/releases/download/v1.11.4/coredns_1.11.4_linux_arm64.tgz",
+      "sha256": "54cf9dd7c2af46072b12e8bf0412a2f2d42098064ed2d75d746028b73ede455d",
       "dpkgArch": "arm64"
     },
     "mips64le": {
-      "url": "https://github.com/coredns/coredns/releases/download/v1.11.3/coredns_1.11.3_linux_mips64le.tgz",
-      "sha256": "4c35768b57bfb4f1934611876ccd62963a9929c7ea29f0191e7e15a6f0160e69",
+      "url": "https://github.com/coredns/coredns/releases/download/v1.11.4/coredns_1.11.4_linux_mips64le.tgz",
+      "sha256": "a8d8f74b77b05479da91e70be2649ed8f0341b79ae7c0f6cc7c3ef7dfabe5ce1",
       "dpkgArch": "mips64el"
     },
     "ppc64le": {
-      "url": "https://github.com/coredns/coredns/releases/download/v1.11.3/coredns_1.11.3_linux_ppc64le.tgz",
-      "sha256": "f4d3ac8f7032f7d7160e5c1df3a6d6a6c37f84637dba50014d21f5f9492d357e",
+      "url": "https://github.com/coredns/coredns/releases/download/v1.11.4/coredns_1.11.4_linux_ppc64le.tgz",
+      "sha256": "bd0c76587bc8f4907d1b5d27963f9f38b72c79c922ecb94f7dcc40d723b051d6",
       "dpkgArch": "ppc64el"
     },
     "riscv64": {
-      "url": "https://github.com/coredns/coredns/releases/download/v1.11.3/coredns_1.11.3_linux_riscv64.tgz",
-      "sha256": "c080bd5210b33a0659f3f0a1cc21ee3ea2f9bdb8802563d693765b5689a8fa9d",
+      "url": "https://github.com/coredns/coredns/releases/download/v1.11.4/coredns_1.11.4_linux_riscv64.tgz",
+      "sha256": "7625961011878d0dcdf9ddd06d5b3875682f4654450c5ff61c213a83c88ce0f3",
       "dpkgArch": "riscv64"
     },
     "s390x": {
-      "url": "https://github.com/coredns/coredns/releases/download/v1.11.3/coredns_1.11.3_linux_s390x.tgz",
-      "sha256": "acf94127dd3e376d9f2bc20d7b6271ebe72fcc7f5eba32e45911d8e725609911",
+      "url": "https://github.com/coredns/coredns/releases/download/v1.11.4/coredns_1.11.4_linux_s390x.tgz",
+      "sha256": "083c26a3f821d66275d4cd4cad8767baab8b95810ffdf05b88115393d1d4c090",
       "dpkgArch": "s390x"
     },
     "windows-amd64": {
-      "url": "https://github.com/coredns/coredns/releases/download/v1.11.3/coredns_1.11.3_windows_amd64.tgz",
-      "sha256": "907901bbcf084e16c22c107b808db826ca2a260d8fee5db091b3386531846d4f",
+      "url": "https://github.com/coredns/coredns/releases/download/v1.11.4/coredns_1.11.4_windows_amd64.tgz",
+      "sha256": "080d1c176d67de6080e8b3c9f5573c7f615337e1da19dc338a9f602db867e209",
       "dpkgArch": null
     }
   }
