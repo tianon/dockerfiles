@@ -1,10 +1,19 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
+set -Eeuo pipefail
 
-if [ "$1" = 'java' ]; then
-	chown -R jenkins "$JENKINS_HOME"
+# TODO more argument detection (hyphens, etc)
+if [ "$#" -eq 0 ]; then
+	set -- jenkins "$@"
+fi
 
-	set -- gosu jenkins tini -- "$@"
+if [ "$1" = 'jenkins' ] || [ "$1" = 'java' ]; then
+	set -- tini -- "$@"
+
+	uid="$(id -u)"
+	if [ "$uid" = 0 ]; then
+		chown -R jenkins "$JENKINS_HOME"
+		set -- gosu jenkins "$@"
+	fi
 fi
 
 exec "$@"

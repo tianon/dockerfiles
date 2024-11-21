@@ -58,4 +58,4 @@ VOLUME $JENKINS_HOME
 EXPOSE 8080
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["java", "-jar", "/usr/share/jenkins/jenkins.war"]
+CMD ["jenkins"]
