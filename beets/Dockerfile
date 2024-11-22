@@ -4,9 +4,9 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM python:3.10-slim-bookworm
+FROM python:3.12-slim-bookworm
 
-ENV BEETS_VERSION 2.0.0
+ENV BEETS_VERSION 2.1.0
 
 RUN set -eux; \
 	pip install --no-cache-dir "beets == $BEETS_VERSION"; \
