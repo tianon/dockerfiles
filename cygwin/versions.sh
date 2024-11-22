@@ -15,7 +15,9 @@ jq -nS '
 	{
 		sha512: env.sha512,
 		variants: [
-			# https://hub.docker.com/r/microsoft/windowsservercore (minus EOL versions)
+			# https://oci.dag.dev/?repo=mcr.microsoft.com/windows/servercore
+			# https://hub.docker.com/r/microsoft/windowsservercore
+			"ltsc2025",
 			"ltsc2022",
 			"1809",
 			empty # trailing comma
