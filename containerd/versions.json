@@ -38,6 +38,7 @@
   "variants": [
     "",
     "rc",
+    "1.7",
     "1.6"
   ],
   "rc": {
@@ -74,6 +75,44 @@
       "windows-amd64": {
         "url": "https://github.com/containerd/containerd/releases/download/v2.0.0-rc.6/containerd-2.0.0-rc.6-windows-amd64.tar.gz",
         "sha256": "643e4ceafa20207e593e691b83547362225dfcb1104a153a628be4177f640d06",
+        "dpkgArch": null
+      }
+    }
+  },
+  "1.7": {
+    "commit": "88bf19b2105c8b17560993bee28a01ddc2f97182",
+    "ref": "refs/tags/v1.7.24^{}",
+    "tag": "v1.7.24",
+    "version": "1.7.24",
+    "arches": {
+      "amd64": {
+        "url": "https://github.com/containerd/containerd/releases/download/v1.7.24/containerd-1.7.24-linux-amd64.tar.gz",
+        "sha256": "1a94f15139f37633f39e24f08a4071f4533b285df3cbee6478972d26147bcaef",
+        "dpkgArch": "amd64"
+      },
+      "arm64v8": {
+        "url": "https://github.com/containerd/containerd/releases/download/v1.7.24/containerd-1.7.24-linux-arm64.tar.gz",
+        "sha256": "420406d2b34ebb422ab3755fbeede59bf3bfcfccf5cfa584b558c93769d99064",
+        "dpkgArch": "arm64"
+      },
+      "ppc64le": {
+        "url": "https://github.com/containerd/containerd/releases/download/v1.7.24/containerd-1.7.24-linux-ppc64le.tar.gz",
+        "sha256": "2ca4d527dac68132a2a6b3971d82ddfd18edc7fa838b7cfcfe6eb11efd017871",
+        "dpkgArch": "ppc64el"
+      },
+      "riscv64": {
+        "url": "https://github.com/containerd/containerd/releases/download/v1.7.24/containerd-1.7.24-linux-riscv64.tar.gz",
+        "sha256": "e570544ef0339caedc5daf54360d385d84dbc6d0070577ac561f19d51b5d59de",
+        "dpkgArch": "riscv64"
+      },
+      "s390x": {
+        "url": "https://github.com/containerd/containerd/releases/download/v1.7.24/containerd-1.7.24-linux-s390x.tar.gz",
+        "sha256": "353ed879ff2e298d97f9d690b96bf9f1ece58b5adf291da32f900b5352bcc690",
+        "dpkgArch": "s390x"
+      },
+      "windows-amd64": {
+        "url": "https://github.com/containerd/containerd/releases/download/v1.7.24/containerd-1.7.24-windows-amd64.tar.gz",
+        "sha256": "3260984ce37c927a8d1de4c25471ebb0533abb5b9e6c4e30e3685df0ecbfb629",
         "dpkgArch": null
       }
     }
