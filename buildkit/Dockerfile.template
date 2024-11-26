@@ -4,8 +4,8 @@ FROM --platform=$BUILDPLATFORM golang:{{ .go.version }} AS build
 
 {{ if env.variant == "dev" then ( -}}
 # https://github.com/moby/buildkit/commits/HEAD
-# https://github.com/moby/buildkit/tree/{{ .version }}
 ARG BUILDKIT_COMMIT={{ .version }}
+# https://github.com/moby/buildkit/tree/{{ .version }} -- {{ .date }} (@{{ .unix | tostring }})
 ENV BUILDKIT_COMMIT $BUILDKIT_COMMIT
 {{ ) else ( -}}
 # https://github.com/moby/buildkit/releases
