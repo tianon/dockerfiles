@@ -1,8 +1,8 @@
 {
-  "commit": "a3d734228b860a215f8a336e3983d35cbfaf08d8",
-  "ref": "refs/tags/v0.17.2",
-  "tag": "v0.17.2",
-  "version": "0.17.2",
+  "commit": "95d190ef4f18b57c717eaad703b67cb2be781ebb",
+  "ref": "refs/tags/v0.18.0",
+  "tag": "v0.18.0",
+  "version": "0.18.0",
   "go": {
     "version": "1.22"
   },
@@ -13,10 +13,10 @@
     "0.13"
   ],
   "rc": {
-    "commit": "db6989ab182b94eebac1c18f12ddd6d52a8c0ef4",
-    "ref": "refs/tags/v0.18.0-rc1",
-    "tag": "v0.18.0-rc1",
-    "version": "0.18.0-rc1",
+    "commit": "95d190ef4f18b57c717eaad703b67cb2be781ebb",
+    "ref": "refs/tags/v0.18.0-rc2",
+    "tag": "v0.18.0-rc2",
+    "version": "0.18.0-rc2",
     "go": {
       "version": "1.22"
     }
