@@ -45,7 +45,9 @@
     }
   },
   "dind": {
-    "version": "65cfcc28ab37cb75e1560e4b4738719c07c6618e"
+    "version": "65cfcc28ab37cb75e1560e4b4738719c07c6618e",
+    "date": "2023-11-27T14:48:51.000+01:00",
+    "unix": 1701092931
   },
   "version": "23.0.15",
   "variants": [

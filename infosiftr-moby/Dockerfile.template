@@ -86,10 +86,11 @@ RUN set -eux; \
 	echo 'dockremap:165536:65536' >> /etc/subuid; \
 	echo 'dockremap:165536:65536' >> /etc/subgid
 
-# https://github.com/docker/docker/tree/master/hack/dind
+# https://github.com/docker/docker/tree/HEAD/hack/dind
 ENV DIND_COMMIT {{ .dind.version }}
+# https://github.com/docker/docker/commit/{{ .dind.version }} -- {{ .dind.date }} (@{{ .dind.unix | tostring }})
 RUN set -eux; \
-	wget -O /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; \
+	wget -O /usr/local/bin/dind "https://github.com/docker/docker/raw/${DIND_COMMIT}/hack/dind"; \
 	chmod +x /usr/local/bin/dind
 
 COPY dockerd-entrypoint.sh /usr/local/bin/

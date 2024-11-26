@@ -15,10 +15,11 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-# https://github.com/docker/docker/tree/master/hack/dind
+# https://github.com/docker/docker/tree/HEAD/hack/dind
 ENV DIND_COMMIT 65cfcc28ab37cb75e1560e4b4738719c07c6618e
+# https://github.com/docker/docker/commit/65cfcc28ab37cb75e1560e4b4738719c07c6618e -- 2023-11-27T14:48:51.000+01:00 (@1701092931)
 RUN set -eux; \
-	wget -O /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; \
+	wget -O /usr/local/bin/dind "https://github.com/docker/docker/raw/${DIND_COMMIT}/hack/dind"; \
 	sh -n /usr/local/bin/dind; \
 	chmod +x /usr/local/bin/dind
 

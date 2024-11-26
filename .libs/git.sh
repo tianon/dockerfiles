@@ -66,10 +66,22 @@ github-file-commit() {
 
 	local atom
 	atom="$(wget -qO- --header 'Accept: application/json' "https://github.com/$repo/commits/$branch/$file.atom")"
-	local commit
-	commit="$(jq <<<"$atom" -r '.payload | first(.commitGroups[].commits[].oid)')"
+	local shell
+	shell="$(jq <<<"$atom" -r '
+		first(.payload.commitGroups[].commits[])
+		| @sh "local commit=\(.oid) date=\(first([ .committedDate, .authoredDate ] | sort | reverse[]))"
+	')"
+	eval "$shell"
+	[ -n "$commit" ] || return 1 # TODO error message?
+	[ -n "$date" ] || return 1
+	local unix
+	unix="$(date --utc --date "$date" '+%s')" || return 1 # TODO error message?
 
-	echo >&2 "github $repo - $file: $commit"
+	echo >&2 "github $repo - $file: $commit ($date -- @$unix)"
 
-	jq -nc --arg commit "$commit" '{ version: $commit }'
+	jq -nc --arg commit "$commit" --arg date "$date" --arg unix "$unix" '{
+		version: $commit,
+		$date,
+		unix: ($unix | tonumber),
+	}'
 }

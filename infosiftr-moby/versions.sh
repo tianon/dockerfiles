@@ -42,7 +42,7 @@ for suite in \
 	done
 done
 
-dind="$(github-file-commit 'moby/moby' 'HEAD' 'hack/dind')"
+dind="$(github-file-commit 'docker/docker' 'HEAD' 'hack/dind')"
 
 jq <<<"$json" --argjson dind "$dind" '
 	def upstream_version:

@@ -140,7 +140,7 @@ runc="$(
 	git-tags 'https://github.com/opencontainers/runc.git'
 )"
 
-dind="$(github-file-commit 'moby/moby' 'HEAD' 'hack/dind')"
+dind="$(github-file-commit 'docker/docker' 'HEAD' 'hack/dind')"
 
 jq <<<"$json" --argjson runc "$runc" --argjson dind "$dind" '
 	.runc = $runc
