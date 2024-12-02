@@ -6,7 +6,7 @@
 
 FROM python:3.12-slim-bookworm
 
-ENV BEETS_VERSION 2.1.0
+ENV BEETS_VERSION 2.2.0
 
 RUN set -eux; \
 	pip install --no-cache-dir "beets == $BEETS_VERSION"; \
