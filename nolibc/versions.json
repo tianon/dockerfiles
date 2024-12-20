@@ -1,21 +1,21 @@
 {
   "linux": {
     "moniker": "stable",
-    "version": "6.12.5",
+    "version": "6.12.6",
     "iseol": false,
     "released": {
-      "timestamp": 1734203221,
-      "isodate": "2024-12-14"
+      "timestamp": 1734628421,
+      "isodate": "2024-12-19"
     },
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.5.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.5.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.6.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.6.tar.sign",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.12.5.xz",
-      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.12.4-5.xz"
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.12.6.xz",
+      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.12.5-6.xz"
     },
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.12.5",
-    "gitweb": "https://git.kernel.org/stable/h/v6.12.5",
-    "diffview": "https://git.kernel.org/stable/ds/v6.12.5/v6.12.4"
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.12.6",
+    "gitweb": "https://git.kernel.org/stable/h/v6.12.6",
+    "diffview": "https://git.kernel.org/stable/ds/v6.12.6/v6.12.5"
   },
   "arches": {
     "amd64": {
