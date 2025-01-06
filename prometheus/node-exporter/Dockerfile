@@ -22,6 +22,7 @@ RUN set -ex; \
 		i386)     arch='386' ;; \
 		mips64el) arch='mips64le' ;; \
 		ppc64el)  arch='ppc64le' ;; \
+		riscv64)  arch='riscv64' ;; \
 		s390x)    arch='s390x' ;; \
 		*)        arch='src' ;; \
 	esac; \
