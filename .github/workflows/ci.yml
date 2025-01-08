@@ -22,7 +22,7 @@ jobs:
     outputs:
       strategy: ${{ steps.generate-jobs.outputs.strategy }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: tianon/actions/checkout@HEAD
       - uses: tianon/bashbrew@tianon
       - id: generate-jobs
         name: Generate Jobs
@@ -37,7 +37,7 @@ jobs:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: tianon/actions/checkout@HEAD
       # TODO something clever with https://github.com/marketplace/actions/changed-files
       - name: Prepare Environment
         run: ${{ matrix.runs.prepare }}
