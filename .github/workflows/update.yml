@@ -35,6 +35,7 @@ jobs:
                   # directories to skip creating branches/PRs for
                   "docker-desktop", # no "versions.sh" (yet?)
                   "docker-master",
+                  "", # "dirname --zero" gives us an extra empty value when we split
                   empty # trailing comma
                 ]
                 | sort
