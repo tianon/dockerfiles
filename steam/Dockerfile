@@ -37,8 +37,8 @@ ENV HOME /home/steam
 # https://repo.steampowered.com/steam/archive/precise/?C=N&O=D
 # "steam_latest.deb" is a symlink to "steam-launcher_X.X.X.X_all.deb"
 # https://repo.steampowered.com/steam/dists/precise/steam/binary-amd64/Packages (current version, current SHA256)
-ENV STEAM_VERSION 1.0.0.81
-ENV STEAM_SHA256 afd2b922f9771a9ca7ee0cb416bdd4fceabf3e75a2c5b65f654a10419762960d
+ENV STEAM_VERSION 1.0.0.82
+ENV STEAM_SHA256 b425fd8c77981ac88871d77cbd7c8f7053896f3d530817736a6999d54f29f9b7
 RUN set -eux; \
 	wget -O steam.deb "https://repo.steampowered.com/steam/archive/precise/steam-launcher_${STEAM_VERSION}_all.deb"; \
 	echo "$STEAM_SHA256 *steam.deb" | sha256sum --strict --check -; \
