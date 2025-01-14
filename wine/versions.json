@@ -1,7 +1,9 @@
 {
   "version": "9.0.0.0",
   "debian": {
+    "filename": "dists/bookworm/main/binary-amd64/winehq-stable_9.0.0.0~bookworm-1_amd64.deb",
     "sha256": "eafd27469751c2b6713c2385d1e6dfd616359e89a552510ed9ca305eca50232d",
+    "url": "https://dl.winehq.org/wine-builds/debian/dists/bookworm/main/binary-amd64/winehq-stable_9.0.0.0~bookworm-1_amd64.deb",
     "version": "9.0.0.0~bookworm-1"
   }
 }
