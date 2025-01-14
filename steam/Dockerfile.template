@@ -26,15 +26,17 @@ RUN set -eux; \
 ENV HOME /home/steam
 
 # https://github.com/ValveSoftware/steam-for-linux#getting-started
-# http://media.steampowered.com/client/installer/steam.deb redirects to https://repo.steampowered.com/steam/archive/precise/steam_latest.deb
-# https://repo.steampowered.com/steam/archive/precise/?C=M&O=D
-# https://repo.steampowered.com/steam/archive/precise/?C=N&O=D
+# http://media.steampowered.com/client/installer/steam.deb redirects to https://repo.steampowered.com/steam/archive/stable/steam_latest.deb
+# https://repo.steampowered.com/steam/archive/stable/?C=M&O=D
+# https://repo.steampowered.com/steam/archive/stable/?C=N&O=D
 # "steam_latest.deb" is a symlink to "steam-launcher_X.X.X.X_all.deb"
-# https://repo.steampowered.com/steam/dists/precise/steam/binary-amd64/Packages (current version, current SHA256)
+# https://repo.steampowered.com/steam/dists/stable/steam/binary-amd64/Packages (current version, current SHA256)
 ENV STEAM_VERSION {{ .version }}
 ENV STEAM_SHA256 {{ .sha256 }}
 RUN set -eux; \
-	wget -O steam.deb "https://repo.steampowered.com/steam/archive/precise/steam-launcher_${STEAM_VERSION}_all.deb"; \
+	if ! wget -O steam.deb {{ .url | @sh }}; then \
+		wget -O steam.deb {{ .url | split("/")[-1] | "https://repo.steampowered.com/steam/archive/stable/" + . | @sh }}; \
+	fi; \
 	echo "$STEAM_SHA256 *steam.deb" | sha256sum --strict --check -; \
 	apt-get update; \
 	apt-get install -y ./steam.deb; \

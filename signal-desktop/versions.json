@@ -1,4 +1,6 @@
 {
+  "filename": "pool/s/signal-desktop/signal-desktop_7.37.0_amd64.deb",
   "sha256": "4ecd53483c48352b48b592fa04e27326d50e2eb20cb245d298b3033fef55bb44",
+  "url": "https://updates.signal.org/desktop/apt/pool/s/signal-desktop/signal-desktop_7.37.0_amd64.deb",
   "version": "7.37.0"
 }

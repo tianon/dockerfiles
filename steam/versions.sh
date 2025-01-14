@@ -9,7 +9,7 @@ source "$dir/../.libs/deb-repo.sh"
 
 json="$(
 	uri='https://repo.steampowered.com/steam'
-	suite='precise'
+	suite='stable'
 	component='steam'
 	package='steam-launcher'
 	deb-repo
