@@ -31,7 +31,7 @@ COPY \
 		"backport-5372-sbom-args.patch": { until: "0.17" },
 		"backport-5441-fetch-by-commit.patch": { until: "0.17", older: { "0.16": "backport-5441-fetch-by-commit-0.13.patch" } },
 		"backport-moby-48455-fix-riscv64-seccomp.patch": { until: "0.17" },
-		"containerd-arm64-v8.patch": { older: { "0.15": "containerd-arm64-v8-pre-0.15.patch" } },
+		"containerd-arm64-v8.patch": { older: { "0.19": "containerd-arm64-v8-pre-0.19.patch", "0.15": "containerd-arm64-v8-pre-0.15.patch" } },
 		"git-no-submodules.patch": { },
 		"mips64le.patch": { older: { "0.16": "mips64le-pre-0.16.patch" } },
 		"noclip.patch": { },

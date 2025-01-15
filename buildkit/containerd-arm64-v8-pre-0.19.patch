@@ -2,17 +2,17 @@ Description: normalize "linux/arm64" to "linux/arm64/v8" instead of the other di
 Forwarded: no; presumably, the direction this went was intentional (Tianon just disagrees, and the normalization allows him that)
 
 diff --git a/vendor/github.com/containerd/platforms/database.go b/vendor/github.com/containerd/platforms/database.go
-index 7a6f0d98c..dbd4e3f96 100644
+index 2e26fd3b4..5ef7d74d1 100644
 --- a/vendor/github.com/containerd/platforms/database.go
 +++ b/vendor/github.com/containerd/platforms/database.go
 @@ -87,8 +87,8 @@ func normalizeArch(arch, variant string) (string, string) {
  	case "aarch64", "arm64":
  		arch = "arm64"
  		switch variant {
--		case "8", "v8", "v8.0":
+-		case "8", "v8":
 -			variant = ""
-+		case "8", "", "v8.0":
++		case "", "8":
 +			variant = "v8"
- 		case "9", "9.0", "v9.0":
- 			variant = "v9"
  		}
+ 	case "armhf":
+ 		arch = "arm"
