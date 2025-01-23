@@ -32,8 +32,8 @@ RUN set -eux; \
 
 # https://dl.winehq.org/wine-builds/debian/dists/bookworm/main/binary-amd64/?C=N;O=D
 # https://www.winehq.org/news/
-ENV WINE_VERSION 9.0.0.0
-ENV WINE_DEB_VERSION 9.0.0.0~bookworm-1
+ENV WINE_VERSION 10.0.0.0
+ENV WINE_DEB_VERSION 10.0.0.0~bookworm-1
 
 RUN set -eux; \
 	{ \
