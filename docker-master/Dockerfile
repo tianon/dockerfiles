@@ -33,7 +33,7 @@ ENV DOCKER_BUILDTAGS \
 
 WORKDIR /moby
 
-ARG CLI_GITCOMMIT=11999b16e49c338ca1c4573aa7bae7b7b620de8b
+ARG CLI_GITCOMMIT=c9620844624a095a56a3dcf8744d7616455af93f
 ENV CLI_GITCOMMIT $CLI_GITCOMMIT
 
 RUN set -eux; \
@@ -54,7 +54,7 @@ RUN set -eux; \
 	docker --version; \
 	ldd /usr/local/bin/docker || :
 
-ARG MOBY_GITCOMMIT=b32f2a2d5e6eccd77e02c69282a1b28336b13d03
+ARG MOBY_GITCOMMIT=6c3797923dcb082370a09f9381511da10120bd7b
 ENV MOBY_GITCOMMIT $MOBY_GITCOMMIT
 
 RUN set -eux; \
@@ -114,9 +114,9 @@ RUN set -eux; \
 		chroot . "./$bin" --version; \
 	done
 
-FROM golang:1.22.0-bookworm AS buildx
+FROM golang:1.23.0-bookworm AS buildx
 
-ARG BUILDX_GITCOMMIT=b76fdcaf8dbdcf64248afb98e703ec83fa7f85ea
+ARG BUILDX_GITCOMMIT=4b90b84995f695e948d20b337706fcf7900dc71b
 ENV BUILDX_GITCOMMIT $BUILDX_GITCOMMIT
 
 RUN set -eux; \
