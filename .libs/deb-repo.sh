@@ -54,6 +54,8 @@ deb-repo() {
 	echo >&2 "deb $package: $version ($filename)"
 	# TODO gather "supported arches" list
 
+	# TODO include $package (so the template can use it)
+	# TODO pre-split version apart into more useful parts (epoch, upstream, debian revision)
 	jq -nS --arg version "$version" --arg sha256 "$sha256" --arg filename "$filename" --arg uri "$uri" '
 		{
 			$version,
