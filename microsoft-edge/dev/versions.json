@@ -1,6 +1,6 @@
 {
-  "filename": "pool/main/m/microsoft-edge-dev/microsoft-edge-dev_134.0.3096.1-1_amd64.deb",
-  "sha256": "c7a419f6cfab01313ebaa01475531d25f1d3dc7eb0b6f85496a861ca134bc682",
-  "url": "https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-dev/microsoft-edge-dev_134.0.3096.1-1_amd64.deb",
-  "version": "134.0.3096.1-1"
+  "filename": "pool/main/m/microsoft-edge-dev/microsoft-edge-dev_134.0.3109.0-1_amd64.deb",
+  "sha256": "f4f928d0d81423f90985b7615053fbaaa070a280a0463a9385b22baf11a9ea79",
+  "url": "https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-dev/microsoft-edge-dev_134.0.3109.0-1_amd64.deb",
+  "version": "134.0.3109.0-1"
 }
