@@ -9,63 +9,70 @@ FROM debian:bookworm-slim
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		ca-certificates \
-		\
-# needed for "firefox --version" to succeed
-		libasound2 \
-		libdbus-glib-1-2 \
-		libgtk-3-0 \
-		libx11-xcb1 \
-		libxtst6 \
-		\
 # needed for "glxtest" to succeed (at runtime)
+#   [GFX1-]: glxtest: libpci missing
+#   [GFX1-]: glxtest: libEGL no display
 		libegl1 \
 		libgl1 \
 		libpci3 \
+# without this, we have no sound (so we cannot scream)
+		libpulse0 \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-ENV PATH /opt/firefox:$PATH
-
-# https://archive.mozilla.org/pub/firefox/releases/
-# https://download-installer.cdn.mozilla.net/pub/firefox/releases/
-# https://www.mozilla.org/en-US/firefox/all/#product-desktop-release
+# https://support.mozilla.org/kb/install-firefox-linux#w_install-firefox-deb-package-for-debian-based-distributions
+# https://www.mozilla.org/en-US/firefox/releases/
 ENV FIREFOX_VERSION 134.0.2
+ENV FIREFOX_DEB_VERSION 134.0.2~build1
 
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		bzip2 \
+		ca-certificates \
 		gnupg \
 		wget \
 	; \
-	\
-	wget -O firefox.tbz2.asc "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2.asc"; \
-	wget -O firefox.tbz2 "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2" --progress=dot:giga; \
-	\
-	GNUPGHOME="$(mktemp -d)"; export GNUPGHOME; \
-# https://archive.mozilla.org/pub/firefox/releases/92.0/KEY
-# https://keys.openpgp.org/search?q=release%40mozilla.com
-	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys 14F26682D0916CDD81E37B6D61B7B526D98F0353; \
-	gpg --batch --verify firefox.tbz2.asc firefox.tbz2; \
-	gpgconf --kill all; \
-	rm -rf "$GNUPGHOME" firefox.tbz2.asc; \
-	\
-	tar -xvf firefox.tbz2 -C /opt; \
-	[ -d /opt/firefox ]; \
-	rm firefox.tbz2; \
-	\
 	apt-mark auto '.*' > /dev/null; \
 	[ -z "$savedAptMark" ] || apt-mark manual $savedAptMark > /dev/null; \
-	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	\
+	GNUPGHOME="$(mktemp -d)"; export GNUPGHOME; \
+	wget -O firefox.gpg 'https://packages.mozilla.org/apt/repo-signing-key.gpg'; \
+	gpg --batch --import firefox.gpg; \
+# https://support.mozilla.org/en-US/kb/install-firefox-linux#w_install-firefox-deb-package-for-debian-based-distributions-recommended:~:text=35BAA0B33E9EB396F59CA838C0BA5CE6DC6315A3
+	gpg --batch --export --armor --output /etc/apt/keyrings/firefox.asc 35BAA0B33E9EB396F59CA838C0BA5CE6DC6315A3; \
+	gpgconf --kill all; \
+	rm -rf "$GNUPGHOME" firefox.gpg; \
+	\
+	{ \
+		echo 'Types: deb'; \
+		echo 'URIs: http://packages.mozilla.org/apt'; \
+		echo 'Suites: mozilla'; \
+		echo 'Components: main'; \
+		echo 'Signed-By: /etc/apt/keyrings/firefox.asc'; \
+	} > /etc/apt/sources.list.d/firefox.sources; \
+	{ \
+		echo 'Package: firefox* mozilla*'; \
+		echo 'Pin: origin packages.mozilla.org'; \
+		echo 'Pin-Priority: 1000'; \
+	} > /etc/apt/preferences.d/firefox.pref; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends "firefox=$FIREFOX_DEB_VERSION"; \
+	\
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+# make sure "apt-get update" still works after purging image-build-time deps
+	apt-get update; \
+	rm -rf /var/lib/apt/lists/*; \
+	\
+# smoke test firefox itself
 	firefox --version
 
-# disable automated updates
-# https://github.com/mozilla/policy-templates/blob/v3.3/README.md
+# https://mozilla.github.io/policy-templates/
+# see "about:policies" to verify they're loaded properly
 RUN set -eux; \
-	mkdir /opt/firefox/distribution; \
-	echo '{"policies":{"AppAutoUpdate":false}}' > /opt/firefox/distribution/policies.json
+	mkdir -p /etc/firefox/policies; \
+# disable automated updates
+# https://mozilla.github.io/policy-templates/#appautoupdate
+	echo '{"policies":{"AppAutoUpdate":false}}' > /etc/firefox/policies/policies.json
 
 CMD ["firefox"]

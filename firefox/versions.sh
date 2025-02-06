@@ -3,21 +3,17 @@ set -Eeuo pipefail
 
 [ -e versions.json ]
 
-# https://www.mozilla.org/en-US/firefox/all/#product-desktop-release
-url="$(
-	curl -fsS --head 'https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US' \
-		| gawk -F ':[[:space:]]+' '
-			tolower($1) == "location" {
-				print $2
-				exit
-			}
-		'
+dir="$(readlink -ve "$BASH_SOURCE")"
+dir="$(dirname "$dir")"
+source "$dir/../.libs/deb-repo.sh"
+
+# https://support.mozilla.org/kb/install-firefox-linux#w_install-firefox-deb-package-for-debian-based-distributions
+json="$(
+	uri='http://packages.mozilla.org/apt'
+	suite='mozilla'
+	component='main'
+	package='firefox' # TODO -beta? -nightly? -esr?
+	deb-repo
 )"
-version="$(basename "$url")"
-version="${version#firefox-}"
-version="${version%%.tar.*}"
-export version
 
-echo >&2 "firefox: $version"
-
-jq -nS '{ version: env.version }' > versions.json
+jq <<<"$json" '.' > versions.json
