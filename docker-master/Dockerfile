@@ -114,9 +114,9 @@ RUN set -eux; \
 		chroot . "./$bin" --version; \
 	done
 
-FROM golang:1.23.0-bookworm AS buildx
+FROM golang:1.22.0-bookworm AS buildx
 
-ARG BUILDX_GITCOMMIT=c8c9c72ca6811fa1394ca2e2281188926444ab0f
+ARG BUILDX_GITCOMMIT=f5802119c511ee0ac2fc4ee005e832db8376beef
 ENV BUILDX_GITCOMMIT $BUILDX_GITCOMMIT
 
 RUN set -eux; \
