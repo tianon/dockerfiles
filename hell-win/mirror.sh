@@ -31,14 +31,16 @@ for targetTag in core nano iot; do
 			# https://oci.dag.dev/?repo=mcr.microsoft.com/windows/servercore
 			# https://hub.docker.com/r/microsoft/windowsservercore
 			sourceRepo='windows/servercore'
-			sourceTags=( ltsc2025 ltsc2022 20H2 2004 1909 1903 1809 1803 1709 1607 ltsc2019 ltsc2016 )
+			sourceTags=( ltsc2025 ltsc2025-arm64 ltsc2022 20H2 2004 1909 1903 1809 1803 1709 1607 ltsc2019 ltsc2016 )
+			# TODO saner construction method that can dedupe in case ltsc2025 includes arm64 in the future
 			;;
 
 		nano)
 			# https://oci.dag.dev/?repo=mcr.microsoft.com/windows/nanoserver
 			# https://hub.docker.com/r/microsoft/nanoserver
 			sourceRepo='windows/nanoserver'
-			sourceTags=( ltsc2025 ltsc2022 20H2 2004 1909 1903 1809 1803 1709 sac2016 )
+			sourceTags=( ltsc2025 ltsc2025-arm64 ltsc2022 20H2 2004 1909 1903 1809 1809-arm32v7 1803 1709 sac2016 )
+			# TODO saner construction method that can dedupe in case ltsc2025 includes arm64 in the future
 			;;
 
 		iot)
@@ -147,7 +149,11 @@ for targetTag in core nano iot; do
 
 			platform="$(jq '.platform // empty' <<<"$manifestObject")"
 			if [ -z "$platform" ]; then
-				platform="$(jq '{ "os": .os, "architecture": .architecture, "os.version": ."os.version" }' <<<"$config")"
+				platform="$(jq '{ "os": .os, "architecture": .architecture, "os.version": ."os.version" } + if .variant then { variant: .variant } else {} end' <<<"$config")"
+				case "$tag" in
+					*arm32v7*) platform="$(jq <<<"$platform" '.variant //= "v7"')" ;;
+					*arm64*) platform="$(jq <<<"$platform" '.variant //= "v8"')" ;;
+				esac
 				manifestObject="$(jq --argjson platform "$platform" '. + {"platform": $platform}' <<<"$manifestObject")"
 				echo "      faked platform: $(jq -cS '.' <<<"$platform")"
 			else
