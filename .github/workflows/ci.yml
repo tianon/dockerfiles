@@ -3,6 +3,7 @@ name: GitHub CI
 on:
   pull_request:
   push:
+  workflow_dispatch:
   schedule:
     - cron: 0 0 * * 0
 
@@ -13,6 +14,9 @@ defaults:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
 
@@ -28,8 +32,11 @@ jobs:
         name: Generate Jobs
         run: |
           strategy="$(.github/workflows/generate.sh)"
-          echo "strategy=$strategy" >> "$GITHUB_OUTPUT"
-          jq . <<<"$strategy" # sanity check / debugging aid
+
+          EOF="EOF-$RANDOM-$RANDOM-$RANDOM"
+          echo "strategy<<$EOF" >> "$GITHUB_OUTPUT"
+          jq <<<"$strategy" . | tee -a "$GITHUB_OUTPUT"
+          echo "$EOF" >> "$GITHUB_OUTPUT"
 
   test:
     needs: generate-jobs
