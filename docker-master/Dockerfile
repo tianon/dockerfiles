@@ -33,7 +33,7 @@ ENV DOCKER_BUILDTAGS \
 
 WORKDIR /moby
 
-ARG CLI_GITCOMMIT=3d3f78028a4961c2133a76d7b921ba116a50e976
+ARG CLI_GITCOMMIT=2d74733942be353bc7730c8722ae2414f368b732
 ENV CLI_GITCOMMIT $CLI_GITCOMMIT
 
 RUN set -eux; \
@@ -45,16 +45,13 @@ RUN set -eux; \
 
 RUN set -eux; \
 	cd cli; \
-	{ echo 'module github.com/docker/cli'; grep -E '^go ' vendor.mod; } | tee go.mod; \
-# "go: inconsistent vendoring in /moby/cli:" -> "X@vY: is marked as explicit in vendor/modules.txt, but not explicitly required in go.mod"
-	rm vendor/modules.txt; \
-# can't use the Makefile anymore thanks to https://github.com/docker/cli/pull/2993 ...
-	GOFLAGS='-mod=vendor' CGO_ENABLED=0 GITCOMMIT="$CLI_GITCOMMIT" ./scripts/build/binary; \
+	grep -E '^(module|go) ' vendor.mod | tee go.mod; \
+	GOFLAGS='-mod=vendor -modfile=vendor.mod' CGO_ENABLED=0 GITCOMMIT="$CLI_GITCOMMIT" ./scripts/build/binary; \
 	cp -avlL build/docker /usr/local/bin/; \
 	docker --version; \
 	ldd /usr/local/bin/docker || :
 
-ARG MOBY_GITCOMMIT=a1c1340196f779021347db742f30b934d10eaf7d
+ARG MOBY_GITCOMMIT=ca00f9eacf88ad7b0317abb4f602a2ac7690da43
 ENV MOBY_GITCOMMIT $MOBY_GITCOMMIT
 
 RUN set -eux; \
@@ -116,7 +113,7 @@ RUN set -eux; \
 
 FROM golang:1.22.0-bookworm AS buildx
 
-ARG BUILDX_GITCOMMIT=23afb70e4083af8f4208449bb2a84f5be3852cb0
+ARG BUILDX_GITCOMMIT=0d708c0bc2422efb7bad7026c7dbfcb84ded51fe
 ENV BUILDX_GITCOMMIT $BUILDX_GITCOMMIT
 
 RUN set -eux; \

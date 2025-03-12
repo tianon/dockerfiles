@@ -39,11 +39,8 @@ RUN set -eux; \
 
 RUN set -eux; \
 	cd cli; \
-	{ echo 'module github.com/docker/cli'; grep -E '^go ' vendor.mod; } | tee go.mod; \
-# "go: inconsistent vendoring in /moby/cli:" -> "X@vY: is marked as explicit in vendor/modules.txt, but not explicitly required in go.mod"
-	rm vendor/modules.txt; \
-# can't use the Makefile anymore thanks to https://github.com/docker/cli/pull/2993 ...
-	GOFLAGS='-mod=vendor' CGO_ENABLED=0 GITCOMMIT="$CLI_GITCOMMIT" ./scripts/build/binary; \
+	grep -E '^(module|go) ' vendor.mod | tee go.mod; \
+	GOFLAGS='-mod=vendor -modfile=vendor.mod' CGO_ENABLED=0 GITCOMMIT="$CLI_GITCOMMIT" ./scripts/build/binary; \
 	cp -avlL build/docker /usr/local/bin/; \
 	docker --version; \
 	ldd /usr/local/bin/docker || :
