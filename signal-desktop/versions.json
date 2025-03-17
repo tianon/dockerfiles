@@ -1,6 +1,6 @@
 {
-  "filename": "pool/s/signal-desktop/signal-desktop_7.46.0_amd64.deb",
-  "sha256": "6eeb00618771ad785ecefaa6f69e656de206e4e31051683844abb6a7b304d03e",
-  "url": "https://updates.signal.org/desktop/apt/pool/s/signal-desktop/signal-desktop_7.46.0_amd64.deb",
-  "version": "7.46.0"
+  "filename": "pool/s/signal-desktop/signal-desktop_7.46.1_amd64.deb",
+  "sha256": "f09a51bc37ccb69ce00a23f41921556fdc9d96ebc4056b2165e0644786692edd",
+  "url": "https://updates.signal.org/desktop/apt/pool/s/signal-desktop/signal-desktop_7.46.1_amd64.deb",
+  "version": "7.46.1"
 }
