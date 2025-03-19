@@ -1,6 +1,6 @@
 {
-  "filename": "pool/mozilla/firefox_136.0.1~build1_amd64_82b90546f97605183174b091949e5caf.deb",
-  "sha256": "eb18878779079495357dcd5a6c8276f9f880f7ef13a430a4211fcedb598878d5",
-  "url": "http://packages.mozilla.org/apt/pool/mozilla/firefox_136.0.1~build1_amd64_82b90546f97605183174b091949e5caf.deb",
-  "version": "136.0.1~build1"
+  "filename": "pool/mozilla/firefox_136.0.2~build1_amd64_d4bc9350edd7bca83753ce427ae53f73.deb",
+  "sha256": "254edf212807f1639437424daae0ff2a06c8bd91780b0bb3427ba0e1946fb375",
+  "url": "http://packages.mozilla.org/apt/pool/mozilla/firefox_136.0.2~build1_amd64_d4bc9350edd7bca83753ce427ae53f73.deb",
+  "version": "136.0.2~build1"
 }
