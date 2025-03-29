@@ -1,21 +1,21 @@
 {
   "linux": {
     "moniker": "stable",
-    "version": "6.13.8",
+    "version": "6.13.9",
     "iseol": false,
     "released": {
-      "timestamp": 1742673449,
-      "isodate": "2025-03-22"
+      "timestamp": 1743195932,
+      "isodate": "2025-03-28"
     },
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.13.8.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.13.8.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.13.9.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.13.9.tar.sign",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.13.8.xz",
-      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.13.7-8.xz"
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.13.9.xz",
+      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.13.8-9.xz"
     },
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.13.8",
-    "gitweb": "https://git.kernel.org/stable/h/v6.13.8",
-    "diffview": "https://git.kernel.org/stable/ds/v6.13.8/v6.13.7"
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.13.9",
+    "gitweb": "https://git.kernel.org/stable/h/v6.13.9",
+    "diffview": "https://git.kernel.org/stable/ds/v6.13.9/v6.13.8"
   },
   "arches": {
     "amd64": {
