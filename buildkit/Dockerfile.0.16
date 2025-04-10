@@ -15,7 +15,7 @@ COPY \
 	backport-5441-fetch-by-commit.patch \
 	backport-moby-48455-fix-riscv64-seccomp.patch \
 	containerd-arm64-v8-pre-0.19.patch \
-	git-no-submodules.patch \
+	git-no-submodules-pre-0.21.patch \
 	mips64le.patch \
 	noclip.patch \
 	nolint.patch \
