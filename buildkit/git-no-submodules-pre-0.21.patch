@@ -16,5 +16,5 @@ index d139942fc..a3e251e41 100644
 -	}
 -
  	if idmap := mount.IdentityMapping(); idmap != nil {
- 		uid, gid := idmap.RootPair()
+ 		u := idmap.RootPair()
  		err := filepath.WalkDir(gitDir, func(p string, _ os.DirEntry, _ error) error {
