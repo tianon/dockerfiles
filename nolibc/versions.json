@@ -1,21 +1,21 @@
 {
   "linux": {
     "moniker": "stable",
-    "version": "6.14.1",
+    "version": "6.14.2",
     "iseol": false,
     "released": {
-      "timestamp": 1744013483,
-      "isodate": "2025-04-07"
+      "timestamp": 1744289177,
+      "isodate": "2025-04-10"
     },
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.14.1.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.14.1.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.14.2.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.14.2.tar.sign",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.14.1.xz",
-      "incremental": null
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.14.2.xz",
+      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.14.1-2.xz"
     },
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.14.1",
-    "gitweb": "https://git.kernel.org/stable/h/v6.14.1",
-    "diffview": "https://git.kernel.org/stable/ds/v6.14.1/v6.14"
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.14.2",
+    "gitweb": "https://git.kernel.org/stable/h/v6.14.2",
+    "diffview": "https://git.kernel.org/stable/ds/v6.14.2/v6.14.1"
   },
   "arches": {
     "amd64": {
