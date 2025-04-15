@@ -4,15 +4,15 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM --platform=$BUILDPLATFORM golang:1.22 AS build
+FROM --platform=$BUILDPLATFORM golang:1.23 AS build
 
 # https://github.com/moby/buildkit/releases
-ENV BUILDKIT_VERSION 0.20.2
+ENV BUILDKIT_VERSION 0.21.0
 
 COPY \
 	argsescaped.patch \
 	containerd-arm64-v8.patch \
-	git-no-submodules-pre-0.21.patch \
+	git-no-submodules.patch \
 	mips64le.patch \
 	noclip.patch \
 	nolint.patch \
