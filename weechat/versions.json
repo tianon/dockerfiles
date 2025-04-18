@@ -1,6 +1,6 @@
 {
-  "filename": "dists/stable/main/binary-amd64/weechat_4.6.1-1_all.deb",
-  "sha256": "bf2ca88037ec0517681476b9e6554470b83fcea7d68e17ec694dfc51b3573039",
-  "url": "https://weechat.org/debian/dists/stable/main/binary-amd64/weechat_4.6.1-1_all.deb",
-  "version": "4.6.1-1"
+  "filename": "dists/stable/main/binary-amd64/weechat_4.6.2-1_all.deb",
+  "sha256": "52994ae370316a82a064bb0ce61156037f1993188ab70c21923306e78208dea3",
+  "url": "https://weechat.org/debian/dists/stable/main/binary-amd64/weechat_4.6.2-1_all.deb",
+  "version": "4.6.2-1"
 }
