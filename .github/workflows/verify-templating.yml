@@ -22,12 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Apply Templates
         run: ./parallel.sh apply-templates.sh
-      - name: Git Diff (informational)
-        run: |
-          git diff || :
-      - name: Check Git Status
-        run: |
-          status="$(git status --short)"
-          [ -z "$status" ]
+
+      - name: Git Diff
+        run: git diff --exit-code
