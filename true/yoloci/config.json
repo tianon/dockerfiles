@@ -1,0 +1,22 @@
+{
+	"architecture": "amd64",
+	"config": {
+		"Cmd": [
+			"/true"
+		]
+	},
+	"created": "2023-02-22T05:21:54Z",
+	"history": [
+		{
+			"created": "2023-02-22T05:21:54Z",
+			"created_by": "https://github.com/tianon/dockerfiles/tree/master/true"
+		}
+	],
+	"os": "linux",
+	"rootfs": {
+		"diff_ids": [
+			"sha256:c6c49ae0f32c8806e774fa35b873205111e021271cfff078a6c924e29073b050"
+		],
+		"type": "layers"
+	}
+}

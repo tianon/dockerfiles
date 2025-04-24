@@ -10,3 +10,14 @@ source gsl-libs.sh
 globalEntry
 tagsEntry "$dir" latest
 dockerfile='Dockerfile.yolo' tagsEntry "$dir" yolo
+
+for variant in oci yoloci; do
+	commit="$(fileCommit "$dir/$variant")"
+	cat <<-EOE
+
+		Tags: $variant
+		GitCommit: $commit
+		Directory: $dir/$variant
+		Builder: oci-import
+	EOE
+done
