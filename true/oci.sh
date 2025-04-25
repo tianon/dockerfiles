@@ -8,6 +8,8 @@ bin="${1:-true-asm}"
 rm -rf "$folder"
 mkdir -p "$folder"
 
+jq -nc '{ imageLayoutVersion: "1.0.0" }' > "$folder/oci-layout"
+
 digest() {
 	local sha256
 	sha256="$(sha256sum "$@")" || return 1
