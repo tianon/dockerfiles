@@ -23,22 +23,8 @@ for gsl in */gsl.sh; do
 			;;
 
 		'tianon/true')
-			# make sure our "true" binaries are correctly compiled
-			newStrategy="$(jq -c '
-				.matrix.include[].runs.build |= (
-					(if contains("yolo") then "true-yolo" else "true-asm" end) as $binary
-					| [
-						"[ -s true/\($binary) ]",
-						"rm -v true/\($binary)",
-						"docker build --pull --tag tianon/true:builder --target asm --file true/Dockerfile.all true",
-						"docker run --rm tianon/true:builder tar -cC /true \($binary) | tar -xvC true",
-						"git diff --exit-code true",
-						"[ -s true/\($binary) ]",
-						"true/\($binary)",
-						.
-					] | join("\n")
-				)
-			' <<<"$newStrategy")"
+			# delete any "oci-builder" entries we can't (currently) test
+			newStrategy="$(jq -c 'del(.matrix.include[] | select(any(.meta.entries[]; .builder == "oci-import")))' <<<"$newStrategy")"
 			;;
 	esac
 	newStrategy="$(jq -c --arg img "$img" '.matrix.include = [ .matrix.include[] | .name = $img + ": " + .name ]' <<<"$newStrategy")"
