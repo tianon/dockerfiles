@@ -19,5 +19,6 @@ for variant in oci yoloci; do
 		GitCommit: $commit
 		Directory: $dir/$variant
 		Builder: oci-import
+		File: index.json
 	EOE
 done
