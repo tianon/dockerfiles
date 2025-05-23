@@ -14,13 +14,13 @@ archesString="$(jq <<<"$arches" -r 'join(", ")')"
 [ -n "$archesString" ]
 
 source gsl-libs.sh
-extraCommitFiles=( Dockerfile.unstable )
+extraCommitFiles=( Dockerfile.trixie )
 
 globalEntry
 echo "Architectures: $archesString"
 
 versionedTagsEntry "$dir" "$version" latest
-echo 'riscv64-File: Dockerfile.unstable'
+echo 'riscv64-File: Dockerfile.trixie'
 
 # add old per-arch tags: https://explore.ggcr.dev/?repo=infosiftr/moby
 archArr="$(jq <<<"$arches" -r 'map(@sh) | join(" ")')"
@@ -29,6 +29,6 @@ for arch in "${archArr[@]}"; do
 	tagsEntry "$dir" "$arch"
 	echo "Architectures: $arch"
 	if [ "$arch" = 'riscv64' ]; then
-		echo 'riscv64-File: Dockerfile.unstable'
+		echo 'riscv64-File: Dockerfile.trixie'
 	fi
 done

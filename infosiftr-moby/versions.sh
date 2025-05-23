@@ -16,7 +16,7 @@ component='main'
 
 for suite in \
 	"$debian" \
-	unstable \
+	trixie \
 ; do
 	for binpkg in \
 		engine \
@@ -27,14 +27,14 @@ for suite in \
 	; do
 		cjson="$(
 			package="moby-$binpkg"
-			if [ "$suite" = 'unstable' ]; then
+			if [ "$suite" = 'trixie' ]; then
 				arch='riscv64'
 			fi
 			deb-repo
 		)"
 		json="$(jq <<<"$json" -c --arg suite "$suite" --arg binpkg "$binpkg" --argjson cjson "$cjson" '
-			if $suite == "unstable" then
-				.["unstable"][$binpkg] = $cjson
+			if $suite == "trixie" then
+				.["trixie"][$binpkg] = $cjson
 			else
 				.[$binpkg] = $cjson
 			end
@@ -57,10 +57,10 @@ jq <<<"$json" --argjson dind "$dind" '
 	.dind = $dind
 	| (.engine.version | upstream_version) as $eng
 	| (.cli.version | upstream_version) as $cli
-	| (.unstable.engine.version | upstream_version) as $ueng
-	| (.unstable.cli.version | upstream_version) as $ucli
+	| (.trixie.engine.version | upstream_version) as $ueng
+	| (.trixie.cli.version | upstream_version) as $ucli
 	| if v($eng) >= v($cli) and $eng == $ueng and v($eng) >= v($ucli) then
 		.version = $eng
 	else . end
-	| .variants = [ "", "unstable" ] # make sure "apply-templates.sh" creates "Dockerfile.unstable" too
+	| .variants = [ "", "trixie" ] # make sure "apply-templates.sh" creates "Dockerfile.trixie" too
 ' > versions.json
