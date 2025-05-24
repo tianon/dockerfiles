@@ -27,9 +27,9 @@ RUN set -eux; \
 WORKDIR /readsb
 
 # https://github.com/wiedehopf/readsb
-ENV READSB_COMMIT aff96e812df0f72df91aa9fbcb4c83c0c185f632
+ENV READSB_COMMIT 7153cbe149b08a68f89ac467a875d6a325addcd1
 # https://github.com/wiedehopf/readsb/tags
-ENV READSB_VERSION 3.14.1674
+ENV READSB_VERSION 3.14.1675
 
 RUN set -eux; \
 	wget -O src.tgz "https://github.com/adsbxchange/readsb/archive/$READSB_COMMIT.tar.gz"; \
