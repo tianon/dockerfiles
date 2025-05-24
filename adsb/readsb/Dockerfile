@@ -66,6 +66,7 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 COPY --from=build /out/ ./
+RUN readsb --version
 
 COPY docker-entrypoint.sh /usr/local/bin/
 
