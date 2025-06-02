@@ -40,8 +40,10 @@ RUN set -eux; \
 	nproc="$(nproc)"; \
 	make -j "$nproc" \
 # https://github.com/wiedehopf/readsb/blob/HEAD/Makefile
+# https://github.com/wiedehopf/readsb/blob/HEAD/Dockerfile
 		READSB_VERSION="\"$READSB_VERSION tianon\"" \
-		RTLSDR='yes'
+		RTLSDR='yes' \
+		PRINT_UUIDS=yes TRACKS_UUID=yes
 
 RUN set -eux; \
 	mkdir /out; \
