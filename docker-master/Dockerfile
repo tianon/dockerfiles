@@ -134,7 +134,7 @@ RUN set -eux; \
 
 # TODO compose?
 
-FROM alpine:3.21
+FROM alpine:3.22
 
 RUN set -eux; \
 	apk add --no-cache \

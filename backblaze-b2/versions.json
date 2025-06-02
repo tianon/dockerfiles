@@ -2,7 +2,7 @@
   "version": "4.3.2",
   "python": {
     "version": "3.13",
-    "from": "python:3.13-alpine3.21",
+    "from": "python:3.13-alpine3.22",
     "arches": [
       "amd64",
       "arm32v6",
