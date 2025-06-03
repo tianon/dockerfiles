@@ -37,11 +37,11 @@ ENV HOME /home/steam
 # https://repo.steampowered.com/steam/archive/stable/?C=N&O=D
 # "steam_latest.deb" is a symlink to "steam-launcher_X.X.X.X_all.deb"
 # https://repo.steampowered.com/steam/dists/stable/steam/binary-amd64/Packages (current version, current SHA256)
-ENV STEAM_VERSION 1.0.0.82
-ENV STEAM_SHA256 b425fd8c77981ac88871d77cbd7c8f7053896f3d530817736a6999d54f29f9b7
+ENV STEAM_VERSION 1.0.0.83
+ENV STEAM_SHA256 20ddf0b7ba76ea0945c08de491fcc69b8b7a1350736937f87e9f3be16b109287
 RUN set -eux; \
-	if ! wget -O steam.deb 'https://repo.steampowered.com/steam/pool/steam/s/steam/steam-launcher_1.0.0.82_amd64.deb'; then \
-		wget -O steam.deb 'https://repo.steampowered.com/steam/archive/stable/steam-launcher_1.0.0.82_amd64.deb'; \
+	if ! wget -O steam.deb 'https://repo.steampowered.com/steam/pool/steam/s/steam/steam-launcher_1.0.0.83_amd64.deb'; then \
+		wget -O steam.deb 'https://repo.steampowered.com/steam/archive/stable/steam-launcher_1.0.0.83_amd64.deb'; \
 	fi; \
 	echo "$STEAM_SHA256 *steam.deb" | sha256sum --strict --check -; \
 	apt-get update; \
