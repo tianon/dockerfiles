@@ -7,7 +7,7 @@
 FROM python:3.13-alpine3.22
 
 # https://pypi.org/project/b2/
-ENV BACKBLAZE_B2_VERSION 4.3.2
+ENV BACKBLAZE_B2_VERSION 4.3.3
 
 RUN set -eux; \
 	pip install --no-cache-dir "b2 == $BACKBLAZE_B2_VERSION"; \
