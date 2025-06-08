@@ -26,7 +26,7 @@ ENV READSB_COMMIT {{ .commit }}
 ENV READSB_VERSION {{ .version }}
 
 RUN set -eux; \
-	wget -O src.tgz "https://github.com/adsbxchange/readsb/archive/$READSB_COMMIT.tar.gz"; \
+	wget -O src.tgz "https://github.com/wiedehopf/readsb/archive/$READSB_COMMIT.tar.gz"; \
 	tar -xvf src.tgz --strip-components=1; \
 	rm src.tgz
 

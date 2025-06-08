@@ -32,7 +32,7 @@ ENV READSB_COMMIT 04b69dfd0f2fe2526a15c51ff593679bba41c058
 ENV READSB_VERSION 3.14.1682
 
 RUN set -eux; \
-	wget -O src.tgz "https://github.com/adsbxchange/readsb/archive/$READSB_COMMIT.tar.gz"; \
+	wget -O src.tgz "https://github.com/wiedehopf/readsb/archive/$READSB_COMMIT.tar.gz"; \
 	tar -xvf src.tgz --strip-components=1; \
 	rm src.tgz
 
