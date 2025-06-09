@@ -31,6 +31,7 @@ ruamel.yaml.emitter.Emitter.write_indicator = _write_indicator
 yaml = ruamel.yaml.YAML(typ='rt')
 yaml.indent(mapping=2, sequence=4, offset=2)
 yaml.version = (1, 1)
+yaml.width = 1024
 
 parser = argparse.ArgumentParser()
 parser.add_argument('file', metavar='file.yml', help='files to parse (defaults to stdin)', nargs='*', default='-')
