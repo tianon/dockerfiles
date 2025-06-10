@@ -1,21 +1,21 @@
 {
   "linux": {
     "moniker": "stable",
-    "version": "6.15.1",
+    "version": "6.15.2",
     "iseol": false,
     "released": {
-      "timestamp": 1749041191,
-      "isodate": "2025-06-04"
+      "timestamp": 1749554241,
+      "isodate": "2025-06-10"
     },
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.15.1.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.15.1.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.15.2.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.15.2.tar.sign",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.15.1.xz",
-      "incremental": null
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.15.2.xz",
+      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.15.1-2.xz"
     },
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.15.1",
-    "gitweb": "https://git.kernel.org/stable/h/v6.15.1",
-    "diffview": "https://git.kernel.org/stable/ds/v6.15.1/v6.15"
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.15.2",
+    "gitweb": "https://git.kernel.org/stable/h/v6.15.2",
+    "diffview": "https://git.kernel.org/stable/ds/v6.15.2/v6.15.1"
   },
   "arches": {
     "amd64": {
