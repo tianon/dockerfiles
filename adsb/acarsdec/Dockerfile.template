@@ -1,9 +1,3 @@
-#
-# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
-#
-# PLEASE DO NOT EDIT IT DIRECTLY.
-#
-
 FROM debian:bookworm-slim AS base
 
 FROM base AS build
@@ -30,7 +24,7 @@ RUN set -eux; \
 WORKDIR /libacars
 
 # https://github.com/szpajder/libacars/releases
-ENV LIBACARS_VERSION 2.2.0
+ENV LIBACARS_VERSION {{ .libacars.version }}
 
 RUN set -eux; \
 	wget -O src.tgz "https://github.com/szpajder/libacars/archive/refs/tags/v${LIBACARS_VERSION}.tar.gz"; \
@@ -52,7 +46,7 @@ RUN set -eux; \
 WORKDIR /acarsdec
 
 # https://github.com/TLeconte/acarsdec/releases
-ENV ACARSDEC_VERSION 3.7
+ENV ACARSDEC_VERSION {{ .version }}
 
 RUN set -eux; \
 	wget -O src.tgz "https://github.com/TLeconte/acarsdec/archive/refs/tags/acarsdec-$ACARSDEC_VERSION.tar.gz"; \
