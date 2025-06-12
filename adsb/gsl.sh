@@ -15,3 +15,8 @@ versionedEnvVariantEntry "$dir/readsb" readsb 'READSB_VERSION' readsb
 from="$(awk '$1 == "FROM" { print $2; exit }' "$dir/readsb/Dockerfile")" # TODO multi-stage build??
 fromArches="$(bashbrew remote arches --json "$from" | jq -rc '.arches | keys | join(", ")')"
 echo "Architectures: $fromArches"
+
+versionedEnvVariantEntry "$dir/acarsdec" acarsdec 'ACARSDEC_VERSION' acarsdec
+from="$(awk '$1 == "FROM" { print $2; exit }' "$dir/acarsdec/Dockerfile")" # TODO multi-stage build??
+fromArches="$(bashbrew remote arches --json "$from" | jq -rc '.arches | keys | join(", ")')"
+echo "Architectures: $fromArches"
