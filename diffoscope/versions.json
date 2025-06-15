@@ -1,5 +1,5 @@
 {
-  "version": "297",
+  "version": "298",
   "python": {
     "version": "3.10",
     "from": "python:3.10-slim-bookworm",
