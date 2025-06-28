@@ -1,21 +1,21 @@
 {
   "linux": {
     "moniker": "stable",
-    "version": "6.15.3",
+    "version": "6.15.4",
     "iseol": false,
     "released": {
-      "timestamp": 1750340517,
-      "isodate": "2025-06-19"
+      "timestamp": 1751019229,
+      "isodate": "2025-06-27"
     },
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.15.3.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.15.3.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.15.4.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.15.4.tar.sign",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.15.3.xz",
-      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.15.2-3.xz"
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.15.4.xz",
+      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.15.3-4.xz"
     },
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.15.3",
-    "gitweb": "https://git.kernel.org/stable/h/v6.15.3",
-    "diffview": "https://git.kernel.org/stable/ds/v6.15.3/v6.15.2"
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.15.4",
+    "gitweb": "https://git.kernel.org/stable/h/v6.15.4",
+    "diffview": "https://git.kernel.org/stable/ds/v6.15.4/v6.15.3"
   },
   "arches": {
     "amd64": {
