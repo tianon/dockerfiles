@@ -11,4 +11,6 @@ globalEntry
 env="${dir^^}_VERSION"
 env="${env//-/_}"
 versionedEnvTagsEntry "$dir" "$env" latest
-echo 'Architectures: amd64, arm64v8'
+from="$(awk '$1 == "FROM" { print $2; exit }' "$dir/Dockerfile")" # TODO multi-stage build with more than one parent??
+fromArches="$(bashbrew remote arches --json "$from" | jq -rc '.arches | keys | join(", ")')"
+echo "Architectures: $fromArches"
