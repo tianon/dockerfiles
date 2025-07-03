@@ -14,6 +14,7 @@ RUN set -eux; \
 		ca-certificates \
 		gcc \
 		libc6-dev \
+		libhackrf-dev \
 		libncurses-dev \
 		librtlsdr-dev \
 		libzstd-dev \
@@ -42,6 +43,7 @@ RUN set -eux; \
 # https://github.com/wiedehopf/readsb/blob/HEAD/Makefile
 # https://github.com/wiedehopf/readsb/blob/HEAD/Dockerfile
 		READSB_VERSION="\"$READSB_VERSION tianon\"" \
+		HACKRF='yes' \
 		RTLSDR='yes' \
 		PRINT_UUIDS=yes TRACKS_UUID=yes
 
