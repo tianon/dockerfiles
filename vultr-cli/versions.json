@@ -1,57 +1,57 @@
 {
-  "commit": "6a47e1057b6c4546d926a3e0882d52c02e36b1da",
-  "ref": "refs/tags/v3.5.0",
-  "tag": "v3.5.0",
-  "version": "3.5.0",
+  "commit": "bf68cabf8bbc9b13d257d44da34a6f679e8ee16a",
+  "ref": "refs/tags/v3.6.0",
+  "tag": "v3.6.0",
+  "version": "3.6.0",
   "arches": {
     "amd64": {
-      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.5.0/vultr-cli_v3.5.0_linux_amd64.tar.gz",
-      "sha256": "db320a3d4f0ceef8a385313f7c2e7c472d73899ddf460b5201b0a557591c0d11",
+      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.6.0/vultr-cli_v3.6.0_linux_amd64.tar.gz",
+      "sha256": "48c45dd806ba51eefe3f7bc70a25b63ac568c33f67ed0bd152407e1a43961dc7",
       "apkArch": "x86_64"
     },
     "arm32v6": {
-      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.5.0/vultr-cli_v3.5.0_linux_arm32-v6.tar.gz",
-      "sha256": "b997330fad985e4261d6127884fd35c933a15110601ed9273ef95876c7052385",
+      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.6.0/vultr-cli_v3.6.0_linux_arm32-v6.tar.gz",
+      "sha256": "2aea6eb93ef870ff4f633f879f5429968887eee6c9b16ce9e0c7fe5501a2af07",
       "apkArch": "armhf"
     },
     "arm32v7": {
-      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.5.0/vultr-cli_v3.5.0_linux_arm32-v7.tar.gz",
-      "sha256": "91c3dbb669550e064b2b2a456bbc3e884f199cf6e8627c56dd9c5e62df25feba",
+      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.6.0/vultr-cli_v3.6.0_linux_arm32-v7.tar.gz",
+      "sha256": "7e9a11e1638c489eb81c006dc64e2f626f6b7dc65a27d2a87d2df56e2048b4bd",
       "apkArch": "armv7"
     },
     "arm64v8": {
-      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.5.0/vultr-cli_v3.5.0_linux_arm64.tar.gz",
-      "sha256": "1b88fdd9b9ad4508b3b2943ba7edae230d07ebbfee4735eb09fe2acc82eff552",
+      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.6.0/vultr-cli_v3.6.0_linux_arm64.tar.gz",
+      "sha256": "6aac2397a37ed9d4e5175216a5959875f09aa2f3c3d3ef38efb6d04c4a63f0cc",
       "apkArch": "aarch64"
     },
     "darwin-amd64": {
-      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.5.0/vultr-cli_v3.5.0_macOs_amd64.tar.gz",
-      "sha256": "1dc620c9312992b816d4f7aa306b3cc4a7ad4f3800331a9c55f5ff80c4141cef",
+      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.6.0/vultr-cli_v3.6.0_macOs_amd64.tar.gz",
+      "sha256": "4ac28b492f16bd041c90ee23728c34855716b6cec7624378d9870d5beb2ffe5e",
       "apkArch": null
     },
     "darwin-arm64v8": {
-      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.5.0/vultr-cli_v3.5.0_macOs_arm64.tar.gz",
-      "sha256": "7e2bf232f3cde9aa97c5069e63b6f7b701c134bdf749c68e05349f8f5425674d",
+      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.6.0/vultr-cli_v3.6.0_macOs_arm64.tar.gz",
+      "sha256": "202159a006bced46d320d4f716632cbcdcd925b2fc02717366b26c5531b5449e",
       "apkArch": null
     },
     "windows-amd64": {
-      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.5.0/vultr-cli_v3.5.0_windows_amd64.zip",
-      "sha256": "240ed3baf27e674b469206ace74e69f21c0f44d3714d99df8c8656483180682b",
+      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.6.0/vultr-cli_v3.6.0_windows_amd64.zip",
+      "sha256": "050febea29a6404c8139ebcfd17cb91f230bb42c1bff5d26b607cee7a1ec3c6c",
       "apkArch": null
     },
     "windows-arm32v6": {
-      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.5.0/vultr-cli_v3.5.0_windows_arm32-v6.zip",
-      "sha256": "244c771e79b6d500a41574de3fc80d578612cf7cdc36079d2bf9a0f1c6fd1b4b",
+      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.6.0/vultr-cli_v3.6.0_windows_arm32-v6.zip",
+      "sha256": "7d31b9bb4abb9723824be81f22068b228087525b29f09ada3393a99fac6a7f4d",
       "apkArch": null
     },
     "windows-arm32v7": {
-      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.5.0/vultr-cli_v3.5.0_windows_arm32-v7.zip",
-      "sha256": "34631e47bca70917fb81dc61c14fed1f4e6e85dc83a9ef28ab08fbd5c35ab227",
+      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.6.0/vultr-cli_v3.6.0_windows_arm32-v7.zip",
+      "sha256": "ab971fffa07dd35bbe8d34bbbfd906eac9db025b51bef91b2144da8f7f7b8e5d",
       "apkArch": null
     },
     "windows-arm64v8": {
-      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.5.0/vultr-cli_v3.5.0_windows_arm64.zip",
-      "sha256": "0677471c2bb56b01bb8f1a0d049094e62520b75accf5e25fc47fbb110fa63099",
+      "url": "https://github.com/vultr/vultr-cli/releases/download/v3.6.0/vultr-cli_v3.6.0_windows_arm64.zip",
+      "sha256": "866c7713065347aa8648167134a979cc1ef077b6373afdbb02994afc91e197d4",
       "apkArch": null
     }
   }
