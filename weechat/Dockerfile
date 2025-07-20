@@ -46,7 +46,7 @@ RUN set -eux; \
 
 # https://weechat.org/download/stable/
 # https://weechat.org/download/debian/active/#debian_bookworm
-ENV WEECHAT_VERSION 4.6.3-1
+ENV WEECHAT_VERSION 4.7.0-1
 
 RUN set -eux; \
 	apt-get update; \
