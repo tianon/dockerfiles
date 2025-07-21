@@ -6,7 +6,7 @@
 
 FROM alpine:3.22
 
-RUN apk add --no-cache bash ca-certificates
+RUN apk add --no-cache bash ca-certificates tzdata
 
 WORKDIR /opt/alertmanager
 ENV PATH /opt/alertmanager:$PATH
