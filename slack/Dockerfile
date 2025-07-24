@@ -47,7 +47,7 @@ RUN set -eux; \
 	\
 	echo 'deb https://packagecloud.io/slacktechnologies/slack/debian jessie main' > /etc/apt/sources.list.d/slack.list
 
-ENV SLACK_VERSION 4.43.52
+ENV SLACK_VERSION 4.45.64
 
 RUN set -eux; \
 	apt-get update; \
