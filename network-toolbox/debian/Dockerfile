@@ -10,6 +10,7 @@ RUN set -eux; \
 		curl \
 		dnsutils \
 		fio \
+		gawk \
 		gnupg \
 		iftop \
 		inetutils-ping \

@@ -10,6 +10,7 @@ RUN set -eux; \
 		curl \
 		fcgi \
 		fio \
+		gawk \
 		gnupg \
 		iftop \
 		ipcalc \
