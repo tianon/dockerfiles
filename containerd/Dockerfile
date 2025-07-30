@@ -44,15 +44,15 @@ RUN set -eux; \
 	runc --version
 
 # https://github.com/containerd/containerd/releases
-ENV CONTAINERD_VERSION 2.1.3
+ENV CONTAINERD_VERSION 2.1.4
 RUN set -eux; \
 	dpkgArch="$(dpkg --print-architecture)"; \
 	case "$dpkgArch" in \
-		'amd64') url='https://github.com/containerd/containerd/releases/download/v2.1.3/containerd-2.1.3-linux-amd64.tar.gz'; sha256='436cc160c33b37ec25b89fb5c72fc879ab2b3416df5d7af240c3e9c2f4065d3c' ;; \
-		'arm64') url='https://github.com/containerd/containerd/releases/download/v2.1.3/containerd-2.1.3-linux-arm64.tar.gz'; sha256='7e423abc7bf52ff6cb724f44995cca335b40331efa727415a5efc99ca34ac8d5' ;; \
-		'ppc64el') url='https://github.com/containerd/containerd/releases/download/v2.1.3/containerd-2.1.3-linux-ppc64le.tar.gz'; sha256='e517a6d936ffb6d2292e9c6560aa363382b1457eba34cad8289f6f3f76201588' ;; \
-		'riscv64') url='https://github.com/containerd/containerd/releases/download/v2.1.3/containerd-2.1.3-linux-riscv64.tar.gz'; sha256='8278ae63a77f3fa7e9fcf7a82033e396e63dedbdb1ba666d22cdf3aae4112627' ;; \
-		's390x') url='https://github.com/containerd/containerd/releases/download/v2.1.3/containerd-2.1.3-linux-s390x.tar.gz'; sha256='a0e86e6b8fec353ae7b6826cec9d6c75da9bee52f0b71b4094858c4d6113ad5c' ;; \
+		'amd64') url='https://github.com/containerd/containerd/releases/download/v2.1.4/containerd-2.1.4-linux-amd64.tar.gz'; sha256='316d510a0428276d931023f72c09fdff1a6ba81d6cc36f31805fea6a3c88f515' ;; \
+		'arm64') url='https://github.com/containerd/containerd/releases/download/v2.1.4/containerd-2.1.4-linux-arm64.tar.gz'; sha256='846d13bc2bf1c01ae2f20d13beb9b3a1e50b52c86e955b4ac7d658f5847f2b0e' ;; \
+		'ppc64el') url='https://github.com/containerd/containerd/releases/download/v2.1.4/containerd-2.1.4-linux-ppc64le.tar.gz'; sha256='d519e40e266f39cdd68f2c31e2e4e9b70eda09b96f3c3de343a7a3e11d49ad4c' ;; \
+		'riscv64') url='https://github.com/containerd/containerd/releases/download/v2.1.4/containerd-2.1.4-linux-riscv64.tar.gz'; sha256='2a6ce108639d5354a504146b82181d11634b8c7dc678dabb03d16d28a8c5725a' ;; \
+		's390x') url='https://github.com/containerd/containerd/releases/download/v2.1.4/containerd-2.1.4-linux-s390x.tar.gz'; sha256='be5b75203ab3ac5b6a9b5c0907315a9e4e1e2e0edd25505f0a783fb929b2cb87' ;; \
 		*) echo >&2 "error: unsupported architecture: '$dpkgArch'"; exit 1 ;; \
 	esac; \
 	wget -O containerd.tar.gz "$url" --progress=dot:giga; \
