@@ -69,9 +69,6 @@ RUN set -eux; \
 
 RUN set -eux; \
 	cd engine; \
-	{ echo 'module github.com/docker/docker'; grep -E '^go ' vendor.mod; } | tee go.mod; \
-# fix "inconsistent vendoring" issue
-#	rm vendor/modules.txt; \
 	sed -ri '/^[[:space:]]*copy_binaries /d' hack/make/binary-daemon; \
 	GOFLAGS='-mod=vendor' DOCKER_GITCOMMIT="$MOBY_GITCOMMIT" hack/make.sh binary; \
 	cp -avlL \

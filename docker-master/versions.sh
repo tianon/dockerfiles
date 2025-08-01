@@ -12,14 +12,16 @@ cli="$(git-ref-commit 'https://github.com/docker/cli.git' 'HEAD')"
 buildx="$(git-ref-commit 'https://github.com/docker/buildx.git' 'HEAD')"
 
 moby="$(
+	set -Eeuo pipefail
 	commit="$(jq <<<"$moby" -r '.version')"
-	go="$(wget -qO- "https://github.com/moby/moby/raw/$commit/vendor.mod")"
+	go="$(wget -qO- "https://github.com/moby/moby/raw/$commit/go.mod")"
 	go="$(awk <<<"$go" '$1 == "go" { print $2; exit }')"
 	echo >&2 "moby go: $go"
 	jq <<<"$moby" -c --arg go "$go" '.go = { version: $go }'
 )"
 
 cli="$(
+	set -Eeuo pipefail
 	commit="$(jq <<<"$cli" -r '.version')"
 	go="$(wget -qO- "https://github.com/docker/cli/raw/$commit/vendor.mod")"
 	go="$(awk <<<"$go" '$1 == "go" { print $2; exit }')"
@@ -28,6 +30,7 @@ cli="$(
 )"
 
 buildx="$(
+	set -Eeuo pipefail
 	commit="$(jq <<<"$buildx" -r '.version')"
 	go="$(wget -qO- "https://github.com/docker/buildx/raw/$commit/go.mod")"
 	go="$(awk <<<"$go" '$1 == "go" { print $2; exit }')"

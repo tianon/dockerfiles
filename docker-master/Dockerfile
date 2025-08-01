@@ -51,7 +51,7 @@ RUN set -eux; \
 	docker --version; \
 	ldd /usr/local/bin/docker || :
 
-ARG MOBY_GITCOMMIT=4faedf2bec363c9ca256afc32903394c16dcea5c
+ARG MOBY_GITCOMMIT=311b2c87e125c6d4198014369e313135cf928a8a
 ENV MOBY_GITCOMMIT $MOBY_GITCOMMIT
 
 RUN set -eux; \
@@ -75,9 +75,6 @@ RUN set -eux; \
 
 RUN set -eux; \
 	cd engine; \
-	{ echo 'module github.com/docker/docker'; grep -E '^go ' vendor.mod; } | tee go.mod; \
-# fix "inconsistent vendoring" issue
-#	rm vendor/modules.txt; \
 	sed -ri '/^[[:space:]]*copy_binaries /d' hack/make/binary-daemon; \
 	GOFLAGS='-mod=vendor' DOCKER_GITCOMMIT="$MOBY_GITCOMMIT" hack/make.sh binary; \
 	cp -avlL \
