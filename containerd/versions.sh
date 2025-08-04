@@ -16,7 +16,7 @@ variants=(
 	'1.7'
 	'1.6'
 
-	# TODO add this when I figure out a clean way to do something more akin to a "weekly snapshot" or something so it doesn't have an update every single day (see also "buildkit")
+	# TODO update Dockerfile.template with the necessary bits to build containerd from source (see buildkit/Dockerfile.template)
 	#'dev'
 )
 
@@ -79,6 +79,11 @@ for variant in "${variants[@]}"; do
 
 			('')
 				versions_hooks+=( hook_no-prereleases )
+				;;
+
+			(dev)
+				github-clamp-commit 'containerd/containerd'
+				exit # kill the subshell (no "git-tags" invocation)
 				;;
 
 			(*) echo >&2 "error: unknown variant: '$variant'"; exit 1 ;;
