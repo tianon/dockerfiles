@@ -123,4 +123,7 @@ RUN set -eux; \
 # TODO come up with something less ... hacky?
 
 #CMD ["docker-desktop"]
-CMD ["com.docker.backend", "--with-frontend"]
+# TODO CMD ["com.docker.backend", "--with-frontend"]
+# this broke and "com.docker.backend" does not like being run from PATH anymore
+# [com.docker.backend] monitor exited: fork/exec /docker-desktop-home/com.docker.backend: no such file or directory
+CMD ["/opt/docker-desktop/bin/com.docker.backend", "--with-frontend"]

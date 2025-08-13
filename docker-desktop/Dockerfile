@@ -48,9 +48,9 @@ FROM debian:trixie-slim
 
 # https://docs.docker.com/desktop/release-notes/
 # https://docs.docker.com/desktop/linux/install/
-ENV DOCKER_DESKTOP_VERSION 4.35.0
-ENV DOCKER_DESKTOP_URL https://desktop.docker.com/linux/main/amd64/172550/docker-desktop-amd64.deb
-ENV DOCKER_DESKTOP_SHA256 c93573f1d1c1e83b6460e5666b29283a085a529c2fe8b7e13d1a8955eb0be1ce
+ENV DOCKER_DESKTOP_VERSION 4.44.1
+ENV DOCKER_DESKTOP_URL https://desktop.docker.com/linux/main/amd64/docker-desktop-amd64.deb
+ENV DOCKER_DESKTOP_SHA256 5c7e8f61622d5b4aadbdae85821a99d936fc1792ed864e2cf9da991f76aee1c5
 
 RUN set -eux; \
 	apt-get update; \
@@ -129,4 +129,7 @@ RUN set -eux; \
 # TODO come up with something less ... hacky?
 
 #CMD ["docker-desktop"]
-CMD ["com.docker.backend", "--with-frontend"]
+# TODO CMD ["com.docker.backend", "--with-frontend"]
+# this broke and "com.docker.backend" does not like being run from PATH anymore
+# [com.docker.backend] monitor exited: fork/exec /docker-desktop-home/com.docker.backend: no such file or directory
+CMD ["/opt/docker-desktop/bin/com.docker.backend", "--with-frontend"]
