@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM python:3.13-slim-bookworm
+FROM python:3.13-slim-trixie
 
 ENV BEETS_VERSION 2.3.1
 

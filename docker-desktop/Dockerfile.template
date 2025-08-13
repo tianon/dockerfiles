@@ -5,7 +5,7 @@
 #   This is a huge ugly hack that barely works for the way I play with it.
 #
 
-FROM rust:1.75-slim-bookworm AS virtiofsd
+FROM rust:1.89-slim-trixie AS virtiofsd
 
 RUN set -eux; \
 	apt-get update; \
@@ -38,7 +38,7 @@ RUN patch --strip=1 --input=virtiofsd.patch
 RUN cargo build --release
 
 # https://docs.docker.com/desktop/linux/
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 # https://docs.docker.com/desktop/release-notes/
 # https://docs.docker.com/desktop/linux/install/
@@ -79,12 +79,18 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends ./docker-desktop.deb; \
 	rm docker-desktop.deb; \
 	\
+# yay, missing Depends again!
+	apt-get install -y --no-install-recommends \
+		libdrm2 \
+		libgbm1 \
+	; \
+	\
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	rm -rf /var/lib/apt/lists/*
 # smoke test
 RUN set -eux; \
 	find /opt/docker-desktop -type f -executable -exec bash -Eeuo pipefail -xc 'ldd "$@" || :' -- '{}' + > /tmp/ldd.txt; \
-	! grep 'not found' /tmp/ldd.txt; \
+	if grep 'not found' /tmp/ldd.txt; then exit 1; fi; \
 	rm /tmp/ldd.txt
 
 ENV PATH /opt/docker-desktop/bin:$PATH
@@ -101,9 +107,11 @@ RUN set -eux; \
 	after="$(virtiofsd --version 2>&1)"; \
 	[ "$before" = "$after" ]; \
 	\
-# divert QEMU's "virtiofsd" to make sure it doesn't get used accidentally
-	[ -s /usr/lib/qemu/virtiofsd ]; \
-	dpkg-divert --add --rename --divert /usr/lib/qemu/virtiofsd.orig /usr/lib/qemu/virtiofsd
+# explicitly divert QEMU's "virtiofsd" to make sure it doesn't get installed/used accidentally (in trixie it moved from qemu-system-common to a dedicated virtiofsd package, which is good)
+	[ ! -s /usr/lib/qemu/virtiofsd ]; \
+	[ ! -s /usr/libexec/virtiofsd ]; \
+	dpkg-divert --add --rename --divert /usr/lib/qemu/virtiofsd.orig /usr/lib/qemu/virtiofsd; \
+	dpkg-divert --add --rename --divert /usr/libexec/virtiofsd.orig /usr/libexec/virtiofsd
 
 RUN set -eux; \
 # setting up ID maps for virtiofsd namespace: retrieving subordinate UID range: no range for <USER> found in /etc/subuid

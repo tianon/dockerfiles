@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:bookworm-slim AS base
+FROM debian:trixie-slim AS base
 
 FROM base AS build
 

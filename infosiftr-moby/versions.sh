@@ -8,7 +8,7 @@ dir="$(dirname "$dir")"
 source "$dir/../.libs/deb-repo.sh"
 source "$dir/../.libs/git.sh"
 
-debian='bookworm'
+debian='trixie'
 json="$(jq -nc --arg debian "$debian" '{ debian: { version: $debian } }')"
 
 uri='https://apt.tianon.xyz/moby'
@@ -16,7 +16,7 @@ component='main'
 
 for suite in \
 	"$debian" \
-	trixie \
+	bookworm \
 ; do
 	for binpkg in \
 		engine \
@@ -27,14 +27,14 @@ for suite in \
 	; do
 		cjson="$(
 			package="moby-$binpkg"
-			if [ "$suite" = 'trixie' ]; then
-				arch='riscv64'
+			if [ "$suite" = 'bookworm' ]; then
+				arch='mips64el'
 			fi
 			deb-repo
 		)"
 		json="$(jq <<<"$json" -c --arg suite "$suite" --arg binpkg "$binpkg" --argjson cjson "$cjson" '
-			if $suite == "trixie" then
-				.["trixie"][$binpkg] = $cjson
+			if $suite == "bookworm" then
+				.["bookworm"][$binpkg] = $cjson
 			else
 				.[$binpkg] = $cjson
 			end
@@ -57,10 +57,10 @@ jq <<<"$json" --argjson dind "$dind" '
 	.dind = $dind
 	| (.engine.version | upstream_version) as $eng
 	| (.cli.version | upstream_version) as $cli
-	| (.trixie.engine.version | upstream_version) as $ueng
-	| (.trixie.cli.version | upstream_version) as $ucli
+	| (.bookworm.engine.version | upstream_version) as $ueng
+	| (.bookworm.cli.version | upstream_version) as $ucli
 	| if v($eng) >= v($cli) and $eng == $ueng and v($eng) >= v($ucli) then
 		.version = $eng
 	else . end
-	| .variants = [ "", "trixie" ] # make sure "apply-templates.sh" creates "Dockerfile.trixie" too
+	| .variants = [ "", "bookworm" ] # make sure "apply-templates.sh" creates "Dockerfile.bookworm" too
 ' > versions.json

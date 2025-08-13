@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM python:3.10-slim-bookworm
+FROM python:3.10-slim-trixie
 
 RUN set -eux; \
 	apt-get update; \

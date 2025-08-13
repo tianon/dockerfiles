@@ -8,7 +8,7 @@
 # https://github.com/wtarreau/nolibc
 # https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/tools/include/nolibc?h=linux-rolling-stable
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 RUN set -eux; \
 	apt-get update; \

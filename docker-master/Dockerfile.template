@@ -4,7 +4,17 @@
 #
 #   $ docker run -d --name dind --privileged --volume dind:/var/lib/docker tianon/docker-master
 
-FROM golang:{{ .go.version }}-bookworm AS build
+{{
+	def golang(version):
+		version
+		# we only want "golang:X.Y", never "X.Y.Z"
+		| split(".")[0:2]
+		| join(".")
+		# TODO remove this 1.23 hack once "go.mod" in moby/moby updates to 1.24+ (we don't have a golang:1.23-trixie, only 1.24+)
+		| if . == "1.23" then "1.24" else . end
+		| "golang:\(.)-trixie"
+-}}
+FROM {{ golang(.go.version) }} AS build
 
 RUN set -eux; \
 	apt-get update; \
@@ -102,7 +112,7 @@ RUN set -eux; \
 		chroot . "./$bin" --version; \
 	done
 
-FROM golang:{{ .buildx.go.version }}-bookworm AS buildx
+FROM {{ golang(.buildx.go.version) }} AS buildx
 
 ARG BUILDX_GITCOMMIT={{ .buildx.version }}
 ENV BUILDX_GITCOMMIT $BUILDX_GITCOMMIT
