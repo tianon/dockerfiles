@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 # https://github.com/coredns/coredns/releases
 ENV COREDNS_VERSION {{ .version }}

@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 RUN set -eux; \
 # dangit, wireshark-common!  *shakes fist*
@@ -26,7 +26,7 @@ RUN set -eux; \
 		netcat-openbsd \
 		nftables \
 		nmap \
-		ntpdate \
+		ntpsec-ntpdate \
 		openssh-client \
 		procps \
 		rsync \

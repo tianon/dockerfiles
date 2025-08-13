@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 # runtime deps
 RUN set -eux; \

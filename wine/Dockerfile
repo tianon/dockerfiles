@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 # https://wiki.winehq.org/Debian
 
@@ -13,14 +13,12 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends apt-transport-https ca-certificates; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get install -y --no-install-recommends gnupg; \
-	rm -rf /var/lib/apt/lists/*; \
 	\
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys D43F640145369C51D786DDEA76F1A20FF987672F; \
-	gpg --batch --export --armor D43F640145369C51D786DDEA76F1A20FF987672F > /etc/apt/trusted.gpg.d/winehq.gpg.asc; \
+	gpg --batch --export --armor D43F640145369C51D786DDEA76F1A20FF987672F > /etc/apt/keyrings/winehq.asc; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME"; \
-	apt-key list | grep 'WineHQ'; \
 	\
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark > /dev/null; \
@@ -28,12 +26,14 @@ RUN set -eux; \
 	\
 	dpkg --add-architecture i386; \
 	suite="$(awk '$1 == "Suites:" { print $2; exit }' /etc/apt/sources.list.d/debian.sources)"; \
-	echo "deb https://dl.winehq.org/wine-builds/debian $suite main" > /etc/apt/sources.list.d/winehq.list
+	echo "deb [ signed-by=/etc/apt/keyrings/winehq.asc ] https://dl.winehq.org/wine-builds/debian $suite main" > /etc/apt/sources.list.d/winehq.list; \
+	apt-get update; \
+	apt-get dist-clean
 
-# https://dl.winehq.org/wine-builds/debian/dists/bookworm/main/binary-amd64/?C=N;O=D
+# https://dl.winehq.org/wine-builds/debian/dists/trixie/main/binary-amd64/?C=N;O=D
 # https://www.winehq.org/news/
 ENV WINE_VERSION 10.0.0.0
-ENV WINE_DEB_VERSION 10.0.0.0~bookworm-1
+ENV WINE_DEB_VERSION 10.0.0.0~trixie-1
 
 RUN set -eux; \
 	{ \
@@ -41,9 +41,8 @@ RUN set -eux; \
 		echo "Pin: version $WINE_DEB_VERSION"; \
 		echo 'Pin-Priority: 1001'; \
 	} > /etc/apt/preferences.d/winehq.pref; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
+	apt-get install --update -y --no-install-recommends \
 		"winehq-stable=$WINE_DEB_VERSION" \
 	; \
-	rm -rf /var/lib/apt/lists/*; \
+	apt-get dist-clean; \
 	wine --version

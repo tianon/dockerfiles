@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 # https://github.com/HandBrake/HandBrake/releases
 ENV HANDBRAKE_VERSION 1.10.0
