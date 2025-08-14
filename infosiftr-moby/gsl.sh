@@ -14,7 +14,7 @@ archesString="$(jq <<<"$arches" -r 'join(", ")')"
 [ -n "$archesString" ]
 
 source gsl-libs.sh
-extraCommitFiles=( Dockerfile.trixie )
+extraCommitFiles=( Dockerfile.bookworm )
 
 globalEntry
 echo "Architectures: $archesString"
