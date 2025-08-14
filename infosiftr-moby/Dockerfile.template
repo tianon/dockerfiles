@@ -1,6 +1,7 @@
 {{ def debian: if env.variant != "" then env.variant else .debian.version end -}}
 FROM debian:{{ debian }}-slim
 
+{{ def dist_clean: if debian == "bookworm" then "rm -rf /var/lib/apt/lists/*" else "apt-get dist-clean" end -}}
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
@@ -10,7 +11,7 @@ RUN set -eux; \
 # DOCKER_HOST=ssh://... -- https://github.com/docker/cli/pull/1014
 		openssh-client \
 	; \
-	apt-get dist-clean
+	{{ dist_clean }}
 
 # https://apt.tianon.xyz/moby
 # https://apt.tianon.xyz/moby/dists/{{ .debian.version }}/tianon-moby.sources
@@ -41,7 +42,7 @@ RUN set -eux; \
 		"moby-cli=$MOBY_CLI_VERSION" \
 		"moby-cli-plugin-buildx=$MOBY_BUILDX_VERSION" \
 	; \
-	apt-get dist-clean; \
+	{{ dist_clean }}; \
 	\
 	dockerd --version; \
 	containerd --version; \
@@ -77,7 +78,7 @@ RUN set -eux; \
 # pigz: https://github.com/moby/moby/pull/35697 (faster gzip implementation)
 		pigz \
 	; \
-	apt-get dist-clean
+	{{ dist_clean }}
 
 # set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
 RUN set -eux; \

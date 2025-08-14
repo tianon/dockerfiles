@@ -15,7 +15,7 @@ RUN set -eux; \
 # DOCKER_HOST=ssh://... -- https://github.com/docker/cli/pull/1014
 		openssh-client \
 	; \
-	apt-get dist-clean
+	rm -rf /var/lib/apt/lists/*
 
 # https://apt.tianon.xyz/moby
 # https://apt.tianon.xyz/moby/dists/trixie/tianon-moby.sources
@@ -45,7 +45,7 @@ RUN set -eux; \
 		"moby-cli=$MOBY_CLI_VERSION" \
 		"moby-cli-plugin-buildx=$MOBY_BUILDX_VERSION" \
 	; \
-	apt-get dist-clean; \
+	rm -rf /var/lib/apt/lists/*; \
 	\
 	dockerd --version; \
 	containerd --version; \
@@ -81,7 +81,7 @@ RUN set -eux; \
 # pigz: https://github.com/moby/moby/pull/35697 (faster gzip implementation)
 		pigz \
 	; \
-	apt-get dist-clean
+	rm -rf /var/lib/apt/lists/*
 
 # set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
 RUN set -eux; \
