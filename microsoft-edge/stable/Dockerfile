@@ -17,7 +17,7 @@ RUN set -eux; \
 		libpulse0 \
 # TODO mesa-vulkan-drivers ? ("Warning: vkCreateInstance: Found no drivers!") -- adding didn't seem to change anything except remove the warning (still "Disabled" in "about:gpu") 🤷
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 # https://www.microsoftedgeinsider.com/en-us/download/?platform=linux-deb
 
@@ -25,7 +25,7 @@ RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends gnupg; \
-	rm -rf /var/lib/apt/lists/*; \
+	apt-get dist-clean; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys BC528686B50D79E339D3721CEB3E94ADBE1229CF; \
 	mkdir -p /etc/apt/untrusted.gpg.d; \
@@ -40,7 +40,7 @@ RUN set -eux; \
 # https://packages.microsoft.com/repos/edge/dists/stable/main/
 	echo 'deb [ arch=amd64 signed-by=/etc/apt/untrusted.gpg.d/microsoft.gpg.asc ] https://packages.microsoft.com/repos/edge stable main' > /etc/apt/sources.list.d/microsoft-edge.list; \
 	apt-get update; \
-	rm -rf /var/lib/apt/lists/*; \
+	apt-get dist-clean; \
 	\
 # disable/exclude some key auto-update behavior
 	echo 'path-exclude /etc/cron*/microsoft-edge*' | tee /etc/dpkg/dpkg.cfg.d/microsoft-edge; \
@@ -57,7 +57,7 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends \
 		"microsoft-edge-stable=$EDGE_VERSION" \
 	; \
-	rm -rf /var/lib/apt/lists/*; \
+	apt-get dist-clean; \
 	microsoft-edge-stable --version; \
 	microsoft-edge --version
 

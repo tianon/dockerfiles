@@ -21,7 +21,7 @@ RUN set -eux; \
 		patch \
 		wget ca-certificates \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 WORKDIR /virtiofsd
 
@@ -92,7 +92,7 @@ RUN set -eux; \
 	; \
 	\
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 # smoke test
 RUN set -eux; \
 	find /opt/docker-desktop -type f -executable -exec bash -Eeuo pipefail -xc 'ldd "$@" || :' -- '{}' + > /tmp/ldd.txt; \

@@ -12,7 +12,7 @@ RUN set -eux; \
 		iproute2 \
 		iptables \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 # https://pkgs.tailscale.com/stable/#static
 ENV TAILSCALE_VERSION 1.86.2
@@ -89,7 +89,7 @@ RUN set -eux; \
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark > /dev/null; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	rm -rf /var/lib/apt/lists/*; \
+	apt-get dist-clean; \
 	\
 	ln -sv /opt/tailscale/tailscale* /usr/local/bin/; \
 	tailscaled --version; \

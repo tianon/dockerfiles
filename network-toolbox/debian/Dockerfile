@@ -40,6 +40,6 @@ RUN set -eux; \
 		wireguard-tools \
 # git is large on Debian (~20MiB), so isn't included
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 CMD ["bash", "--login", "-i"]

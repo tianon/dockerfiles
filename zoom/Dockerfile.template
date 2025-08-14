@@ -29,7 +29,7 @@ RUN set -eux; \
 # TODO test whether this one's still necessary
 		libxkbcommon-x11-0 \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 # https://zoom.us/download#client_4meeting ("Debian", "64 bit", "8.0+", "Version X.Y.ZZZ.ZZZ")
 # https://support.zoom.us/hc/en-us/articles/205759689-Release-notes-for-Linux
@@ -52,7 +52,7 @@ RUN set -eux; \
 	rm zoom.deb; \
 	\
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	rm -rf /var/lib/apt/lists/*; \
+	apt-get dist-clean; \
 	\
 # check for missing dependencies
 	LD_LIBRARY_PATH='/opt/zoom:/opt/zoom/cef' ldd /opt/zoom/zoom | grep 'not found' && exit 1 || :; \

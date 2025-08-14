@@ -12,7 +12,7 @@ RUN set -eux; \
 		ca-certificates \
 		rtl-sdr \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 # https://github.com/merbanan/rtl_433/releases
 ENV RTL_433_VERSION 25.02
@@ -50,7 +50,7 @@ RUN set -eux; \
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark > /dev/null; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	rm -rf /var/lib/apt/lists/*; \
+	apt-get dist-clean; \
 	\
 	rtl_433 -V
 

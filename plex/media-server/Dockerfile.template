@@ -6,7 +6,7 @@ RUN set -eux; \
 		ca-certificates \
 		wget \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 # https://github.com/plexinc/pms-docker/blob/46a0358f8e00d5ba7be9d059449b617f189d6348/root/etc/services.d/plex/run
 # https://support.plex.tv/articles/200273978-linux-user-and-storage-configuration/
@@ -40,7 +40,7 @@ RUN set -eux; \
 	dpkg-deb --vextract /tmp/plex.deb /; \
 #	apt-get update; \
 #	apt-get install /tmp/plex.deb; \
-#	rm -rf /var/lib/apt/lists/*; \
+#	apt-get dist-clean; \
 	rm /tmp/plex.deb; \
 	'Plex Media Server' --version
 

@@ -1,11 +1,11 @@
 FROM debian:trixie-slim AS base
-RUN apt-get update && apt-get install -y --no-install-recommends make && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends make && apt-get dist-clean
 WORKDIR /true
 COPY Makefile true*.* ./
 RUN make clean # just to be sure
 
 FROM base AS asm
-RUN apt-get update && apt-get install -y --no-install-recommends nasm && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends nasm && apt-get dist-clean
 RUN make -C /true true-asm true-yolo
 
 FROM gcc AS gcc

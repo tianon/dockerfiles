@@ -18,7 +18,7 @@ RUN set -eux; \
 # java.lang.UnsatisfiedLinkError: /opt/java/openjdk/lib/libfontmanager.so: libfreetype.so.6: cannot open shared object file: No such file or directory
 		fontconfig \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 # https://www.jenkins.io/doc/administration/requirements/java/ ("Jenkins requires Java 11 or 17 since Jenkins 2.357 and LTS 2.361.1.")
 ENV JAVA_HOME /opt/java/openjdk
@@ -54,7 +54,7 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends \
 		jenkins="$JENKINS_VERSION" \
 	; \
-	rm -rf /var/lib/apt/lists/*; \
+	apt-get dist-clean; \
 	java -jar /usr/share/java/jenkins.war --version
 
 ENV JENKINS_HOME /var/lib/jenkins

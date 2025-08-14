@@ -8,7 +8,7 @@ RUN set -eux; \
 		ca-certificates \
 		rtorrent \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 RUN mkdir -p /torrents/session \
 	&& touch /torrents/.rtorrent.rc \

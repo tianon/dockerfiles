@@ -72,7 +72,7 @@ FROM --platform=$TARGETPLATFORM infosiftr/moby
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends git; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 COPY --from=build --link /buildkitd /buildctl /dockerfile-frontend /usr/local/bin/
 COPY buildkitd-entrypoint.sh /usr/local/bin/

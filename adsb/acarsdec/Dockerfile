@@ -25,7 +25,7 @@ RUN set -eux; \
 		libxml2-dev \
 		zlib1g-dev \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 WORKDIR /libacars
 
@@ -91,7 +91,7 @@ RUN set -eux; \
 	xargs -rt < ./apt-deps.txt \
 		apt-get install -y --no-install-recommends \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 COPY --from=build /out/ ./
 RUN set -eux; \
 	ret=0 && acarsdec --version || ret="$?"; \

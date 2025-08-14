@@ -19,7 +19,7 @@ RUN set -eux; \
 		wget \
 		xz-utils \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 # https://kernel.org/
 # https://kernel.org/releases.json
@@ -67,7 +67,7 @@ RUN set -eux; \
 		OUTPUT='/tmp/' \
 		V=1 \
 	; \
-	apt-get purge -y --auto-remove libc6-dev rsync && rm -rf /var/lib/apt/lists/*; \
+	apt-get purge -y --auto-remove libc6-dev rsync && apt-get dist-clean; \
 	\
 	rm -rf /tmp/linux /tmp/sysroot; \
 	\

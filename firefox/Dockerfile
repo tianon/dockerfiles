@@ -18,7 +18,7 @@ RUN set -eux; \
 # without this, we have no sound (so we cannot scream)
 		libpulse0 \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 # https://support.mozilla.org/kb/install-firefox-linux#w_install-firefox-deb-package-for-debian-based-distributions
 # https://www.mozilla.org/en-US/firefox/releases/
@@ -62,7 +62,7 @@ RUN set -eux; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 # make sure "apt-get update" still works after purging image-build-time deps
 	apt-get update; \
-	rm -rf /var/lib/apt/lists/*; \
+	apt-get dist-clean; \
 	\
 # smoke test firefox itself
 	firefox --version
