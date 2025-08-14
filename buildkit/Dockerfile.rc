@@ -67,7 +67,11 @@ FROM --platform=$TARGETPLATFORM infosiftr/moby
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends git; \
-	apt-get dist-clean
+	if grep -q bookworm /etc/os-release; then \
+		rm -rf /var/lib/apt/lists/*; \
+	else \
+		apt-get dist-clean; \
+	fi
 
 COPY --from=build --link /buildkitd /buildctl /dockerfile-frontend /usr/local/bin/
 COPY buildkitd-entrypoint.sh /usr/local/bin/
