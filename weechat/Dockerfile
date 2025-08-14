@@ -11,7 +11,7 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends \
 		ca-certificates \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 ENV HOME /home/user
 RUN set -eux; \
@@ -42,7 +42,7 @@ RUN set -eux; \
 	echo "deb [signed-by=/usr/local/share/weechat-keyring.gpg.asc] https://weechat.org/debian $suite main" > /etc/apt/sources.list.d/weechat.list; \
 	\
 	apt-get update; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 # https://weechat.org/download/stable/
 # https://weechat.org/download/debian/active/#debian_trixie
@@ -55,7 +55,7 @@ RUN set -eux; \
 		weechat-curses="$WEECHAT_VERSION" \
 		weechat-plugins="$WEECHAT_VERSION" \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 WORKDIR $HOME
 USER user

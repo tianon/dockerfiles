@@ -12,7 +12,7 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends \
 		default-jre-headless \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 # http://www.makemkv.com/forum2/viewtopic.php?f=3&t=224
 ENV MAKEMKV_VERSION 1.18.1
@@ -38,7 +38,7 @@ RUN set -ex; \
 		wget \
 		zlib1g-dev \
 	; \
-	rm -rf /var/lib/apt/lists/*; \
+	apt-get dist-clean; \
 	\
 	wget -O 'sha256sums.txt.sig' "https://www.makemkv.com/download/makemkv-sha-${MAKEMKV_VERSION}.txt"; \
 # TODO pre-download (in versions.sh)/verify sha256sums

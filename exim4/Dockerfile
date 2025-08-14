@@ -6,7 +6,7 @@ RUN set -eux; \
 		exim4-daemon-light \
 		tini \
 	; \
-	rm -rf /var/lib/apt/lists/*; \
+	apt-get dist-clean; \
 	ln -svfT /etc/hostname /etc/mailname
 
 # https://blog.dhampir.no/content/exim4-line-length-in-debian-stretch-mail-delivery-failed-returning-message-to-sender

@@ -13,7 +13,7 @@ RUN set -eux; \
 		ca-certificates \
 		wget \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 # https://github.com/docker/docker/tree/HEAD/hack/dind
 ENV DIND_COMMIT 8d9e3502aba39127e4d12196dae16d306f76993d

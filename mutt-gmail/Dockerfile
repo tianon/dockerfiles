@@ -19,7 +19,7 @@ RUN set -eux; \
 # "GPGME: CMS protocol not available"
 		gpgsm \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 ENV BROWSER lynx
 

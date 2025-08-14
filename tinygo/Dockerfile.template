@@ -19,8 +19,9 @@ RUN set -eux; \
 	\
 	wget --progress=dot:giga -O tinygo.deb "https://github.com/tinygo-org/tinygo/releases/download/v$TINYGO_VERSION/tinygo_${TINYGO_VERSION}_amd64.deb"; \
 	apt-get install -y --no-install-recommends ./tinygo.deb; \
-	rm -rf tinygo.deb /var/lib/apt/lists/*; \
+	rm -rf tinygo.deb; \
 	\
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	apt-get dist-clean; \
 	\
 	tinygo version

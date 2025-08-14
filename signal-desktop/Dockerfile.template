@@ -23,7 +23,7 @@ RUN set -eux; \
 	echo 'deb [ arch=amd64 signed-by=/usr/local/share/keyrings/signal-desktop.gpg ] https://updates.signal.org/desktop/apt xenial main' > /etc/apt/sources.list.d/signal-desktop.list; \
 	\
 	apt-get update; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 # https://github.com/signalapp/Signal-Desktop/releases
 ENV SIGNAL_DESKTOP_VERSION {{ .version }}
@@ -43,7 +43,7 @@ RUN set -eux; \
 # LaunchProcess: failed to execvp: xdg-settings
 		xdg-utils \
 	; \
-	rm -rf /var/lib/apt/lists/*; \
+	apt-get dist-clean; \
 	signal="$(command -v signal-desktop)"; \
 	signal="$(readlink -ev "$signal")"; \
 	! { ldd "$signal" | grep 'not found'; }

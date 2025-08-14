@@ -18,7 +18,7 @@ RUN set -eux; \
 # readelf ('readelf' not available in path. Falling back to binary comparison.)
 		binutils-multiarch \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 # https://pypi.org/project/diffoscope/
 ENV DIFFOSCOPE_VERSION 303
