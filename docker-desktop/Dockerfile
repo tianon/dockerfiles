@@ -48,9 +48,9 @@ FROM debian:trixie-slim
 
 # https://docs.docker.com/desktop/release-notes/
 # https://docs.docker.com/desktop/linux/install/
-ENV DOCKER_DESKTOP_VERSION 4.44.1
+ENV DOCKER_DESKTOP_VERSION 4.44.2
 ENV DOCKER_DESKTOP_URL https://desktop.docker.com/linux/main/amd64/docker-desktop-amd64.deb
-ENV DOCKER_DESKTOP_SHA256 5c7e8f61622d5b4aadbdae85821a99d936fc1792ed864e2cf9da991f76aee1c5
+ENV DOCKER_DESKTOP_SHA256 7b307dd79a26a6213e1f1a3bdaeb69ed81ca24063a8c36386eb09d484be5722c
 
 RUN set -eux; \
 	apt-get update; \
