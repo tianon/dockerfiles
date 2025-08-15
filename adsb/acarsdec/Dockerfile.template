@@ -56,9 +56,17 @@ RUN set -eux; \
 
 # https://github.com/f00b4r0/acarsdec#compilation
 
+# make sure "-DVERSION" gets used instead of "git describe" (which won't work)
+RUN set -eux; \
+	grep 'OUTPUT_VARIABLE VERSION' CMakeLists.txt; \
+	sed -ri -e '/OUTPUT_VARIABLE VERSION/d' CMakeLists.txt
+
 WORKDIR build
 
-RUN cmake .. -DRTLSDR=ON -DLIBACARS=ON -DCJSON=ON
+RUN cmake .. -DVERSION="$ACARSDEC_VERSION" -DRTLSDR=ON -DLIBACARS=ON -DCJSON=ON
+
+# verify that "VERSION" got embedded correctly
+RUN grep -F "VERSION=\\\"$ACARSDEC_VERSION\\\"" CMakeFiles/acarsdec.dir/flags.make
 
 RUN set -eux; \
 	nproc="$(nproc)"; \
@@ -89,8 +97,8 @@ RUN set -eux; \
 	apt-get dist-clean
 COPY --from=build /out/ ./
 RUN set -eux; \
-	ret=0 && acarsdec --version || ret="$?"; \
-	test "$ret" = 1 # https://github.com/TLeconte/acarsserv/blob/a191e1f3eea3e476500333740a03c20b6933b3fd/acarsserv.c#L273
+	ret=0 && acarsdec --help || ret="$?"; \
+	test "$ret" = 1 # https://github.com/f00b4r0/acarsdec/blob/9b2d04e101340b397d8fd4862ff82a35f3cc6de3/acarsdec.c#L189
 
 COPY docker-entrypoint.sh /usr/local/bin/
 
