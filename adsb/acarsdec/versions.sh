@@ -7,11 +7,10 @@ dir="$(readlink -ve "$BASH_SOURCE")"
 dir="$(dirname "$dir")"
 source "$dir/../../.libs/git.sh"
 
-json="$(git-tags 'https://github.com/TLeconte/acarsdec.git')"
+json="$(git-tags 'https://github.com/f00b4r0/acarsdec.git')"
 
 libacars="$(git-tags 'https://github.com/szpajder/libacars.git')"
 
 jq <<<"$json" --argjson libacars "$libacars" '
-	.version |= ltrimstr("acarsdec-") # lol wtf
-	| .libacars = $libacars
+	.libacars = $libacars
 ' > versions.json

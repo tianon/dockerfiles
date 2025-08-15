@@ -9,6 +9,7 @@ RUN set -eux; \
 		cmake \
 		gcc \
 		libc6-dev \
+		libcjson-dev \
 		librtlsdr-dev \
 		make \
 		pkg-config \
@@ -45,19 +46,19 @@ RUN set -eux; \
 
 WORKDIR /acarsdec
 
-# https://github.com/TLeconte/acarsdec/releases
+# https://github.com/f00b4r0/acarsdec/releases
 ENV ACARSDEC_VERSION {{ .version }}
 
 RUN set -eux; \
-	wget -O src.tgz "https://github.com/TLeconte/acarsdec/archive/refs/tags/acarsdec-$ACARSDEC_VERSION.tar.gz"; \
+	wget -O src.tgz "https://github.com/f00b4r0/acarsdec/archive/refs/tags/v$ACARSDEC_VERSION.tar.gz"; \
 	tar -xvf src.tgz --strip-components=1; \
 	rm src.tgz
 
-# https://github.com/TLeconte/acarsdec#compilation
+# https://github.com/f00b4r0/acarsdec#compilation
 
 WORKDIR build
 
-RUN cmake .. -Drtl=ON
+RUN cmake .. -DRTLSDR=ON -DLIBACARS=ON -DCJSON=ON
 
 RUN set -eux; \
 	nproc="$(nproc)"; \

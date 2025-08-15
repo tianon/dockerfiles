@@ -1,8 +1,8 @@
 {
-  "commit": "9edcce08838634c9452c6c9e2453136ee20a6ea8",
-  "ref": "refs/tags/acarsdec-3.7",
-  "tag": "acarsdec-3.7",
-  "version": "3.7",
+  "commit": "dde850b0a63774a8af469def676fb491b4391947",
+  "ref": "refs/tags/v4.3.1",
+  "tag": "v4.3.1",
+  "version": "4.3.1",
   "libacars": {
     "commit": "3147aa0857b6d0fb8989b27445ce46278cb4bae8",
     "ref": "refs/tags/v2.2.0",
