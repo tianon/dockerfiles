@@ -63,10 +63,10 @@ RUN set -eux; \
 
 WORKDIR build
 
-RUN cmake .. -DVERSION="$ACARSDEC_VERSION" -DRTLSDR=ON -DLIBACARS=ON -DCJSON=ON
+RUN cmake .. -DVERSION="$ACARSDEC_VERSION tianon" -DRTLSDR=ON -DLIBACARS=ON -DCJSON=ON
 
 # verify that "VERSION" got embedded correctly
-RUN grep -F "VERSION=\\\"$ACARSDEC_VERSION\\\"" CMakeFiles/acarsdec.dir/flags.make
+RUN grep -F "VERSION=\"\\\"$ACARSDEC_VERSION tianon\\\"\"" CMakeFiles/acarsdec.dir/flags.make
 
 RUN set -eux; \
 	nproc="$(nproc)"; \
@@ -97,6 +97,7 @@ RUN set -eux; \
 	apt-get dist-clean
 COPY --from=build /out/ ./
 RUN set -eux; \
+	{ acarsdec --help || :; } 2>&1 | grep 'tianon'; \
 	ret=0 && acarsdec --help || ret="$?"; \
 	test "$ret" = 1 # https://github.com/f00b4r0/acarsdec/blob/9b2d04e101340b397d8fd4862ff82a35f3cc6de3/acarsdec.c#L189
 
