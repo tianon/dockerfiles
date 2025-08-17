@@ -27,10 +27,10 @@
     "version": "23.0.15-2~deb13u0"
   },
   "cli-plugin-buildx": {
-    "filename": "pool/trixie/main/moby-buildx/moby-cli-plugin-buildx_0.17.1-2~deb13u0_amd64.deb",
-    "sha256": "9720d6823646ceb24557d7581f2183e5985d0fc316f2a7c5ad0150b7d434284e",
-    "url": "https://apt.tianon.xyz/moby/pool/trixie/main/moby-buildx/moby-cli-plugin-buildx_0.17.1-2~deb13u0_amd64.deb",
-    "version": "0.17.1-2~deb13u0"
+    "filename": "pool/trixie/main/moby-buildx/moby-cli-plugin-buildx_0.17.1-3~deb13u0_amd64.deb",
+    "sha256": "bfcb3e7224b9da1764627388092e7ed1334f789cc41831c5788d469863b272c1",
+    "url": "https://apt.tianon.xyz/moby/pool/trixie/main/moby-buildx/moby-cli-plugin-buildx_0.17.1-3~deb13u0_amd64.deb",
+    "version": "0.17.1-3~deb13u0"
   },
   "bookworm": {
     "engine": {
@@ -58,10 +58,10 @@
       "version": "23.0.15-2~deb12u0"
     },
     "cli-plugin-buildx": {
-      "filename": "pool/bookworm/main/moby-buildx/moby-cli-plugin-buildx_0.17.1-2~deb12u0_mips64el.deb",
-      "sha256": "4d7e6e55f38ae322c917ef88520a0bbe87843a86439a29e94a2f1f570b9e2f88",
-      "url": "https://apt.tianon.xyz/moby/pool/bookworm/main/moby-buildx/moby-cli-plugin-buildx_0.17.1-2~deb12u0_mips64el.deb",
-      "version": "0.17.1-2~deb12u0"
+      "filename": "pool/bookworm/main/moby-buildx/moby-cli-plugin-buildx_0.17.1-3~deb12u0_mips64el.deb",
+      "sha256": "882e106af68500c84346bf85038aaea770599377285e8fe5b9b86e82b78fa4f2",
+      "url": "https://apt.tianon.xyz/moby/pool/bookworm/main/moby-buildx/moby-cli-plugin-buildx_0.17.1-3~deb12u0_mips64el.deb",
+      "version": "0.17.1-3~deb12u0"
     }
   },
   "dind": {
