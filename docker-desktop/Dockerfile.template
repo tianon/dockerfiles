@@ -8,8 +8,7 @@
 FROM rust:1.89-slim-trixie AS virtiofsd
 
 RUN set -eux; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
+	apt-get install --update -y --no-install-recommends \
 		libcap-ng-dev \
 		libseccomp-dev \
 		patch \
@@ -43,12 +42,9 @@ FROM debian:trixie-slim
 # https://docs.docker.com/desktop/release-notes/
 # https://docs.docker.com/desktop/linux/install/
 ENV DOCKER_DESKTOP_VERSION {{ .version }}
-ENV DOCKER_DESKTOP_URL {{ .url }}
-ENV DOCKER_DESKTOP_SHA256 {{ .sha256 }}
 
 RUN set -eux; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
+	apt-get install --update -y --no-install-recommends \
 		ca-certificates \
 # https://docs.docker.com/desktop/linux/#credentials-management
 		pass \
@@ -69,12 +65,19 @@ RUN set -eux; \
 	rm -rf "$GNUPGHOME"; \
 	\
 	. /etc/os-release; \
-	echo "deb [ arch=amd64 signed-by=/usr/local/share/keyrings/docker-archive.gpg.asc ] https://download.docker.com/linux/debian $VERSION_CODENAME stable" > /etc/apt/sources.list.d/docker.list; \
-	\
+	dpkgArch="$(dpkg --print-architecture)"; \
+	echo "deb [ arch=$dpkgArch signed-by=/usr/local/share/keyrings/docker-archive.gpg.asc ] https://download.docker.com/linux/debian $VERSION_CODENAME stable" > /etc/apt/sources.list.d/docker.list; \
 	apt-get update; \
 	\
-	wget -O docker-desktop.deb --progress=dot:giga "$DOCKER_DESKTOP_URL"; \
-	echo "$DOCKER_DESKTOP_SHA256 *docker-desktop.deb" | sha256sum --strict --check -; \
+	case "$dpkgArch" in \
+{{ .arches | map( -}}
+		{{ .dpkgArch | @sh }}) url={{ .url | @sh }}; sha256={{ .sha256 | @sh }} ;; \
+{{ ) | add -}}
+		*) echo >&2 "error: unsupported architecture: '$dpkgArch'"; exit 1 ;; \
+	esac; \
+	\
+	wget -O docker-desktop.deb --progress=dot:giga "$url"; \
+	echo "$sha256 *docker-desktop.deb" | sha256sum --strict --check -; \
 	\
 	apt-get install -y --no-install-recommends ./docker-desktop.deb; \
 	rm docker-desktop.deb; \
