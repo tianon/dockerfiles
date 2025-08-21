@@ -1,5 +1,20 @@
 {
-  "sha256": "7b307dd79a26a6213e1f1a3bdaeb69ed81ca24063a8c36386eb09d484be5722c",
-  "url": "https://desktop.docker.com/linux/main/amd64/docker-desktop-amd64.deb",
-  "version": "4.44.2"
+  "version": "4.44.3",
+  "build": "202357",
+  "arches": {
+    "amd64": {
+      "build": "202357",
+      "date": "2025-08-20T13:13:02Z",
+      "url": "https://desktop.docker.com/linux/main/amd64/202357/docker-desktop-amd64.deb",
+      "sha256": "49ec4d75c0189fb2ba1774a4a652a56cb4614d035162b0209ad9f7efee43d12e",
+      "dpkgArch": "amd64"
+    },
+    "arm64v8": {
+      "build": "202357",
+      "date": "2025-08-20T13:13:02Z",
+      "url": "https://desktop.docker.com/linux/main/arm64/202357/docker-desktop-arm64.deb",
+      "sha256": "c988573be1e63467a81749f99da59696b751e5bfe28dff08bd377c51756b48a9",
+      "dpkgArch": "arm64"
+    }
+  }
 }

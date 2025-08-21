@@ -14,8 +14,7 @@
 FROM rust:1.89-slim-trixie AS virtiofsd
 
 RUN set -eux; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
+	apt-get install --update -y --no-install-recommends \
 		libcap-ng-dev \
 		libseccomp-dev \
 		patch \
@@ -48,13 +47,10 @@ FROM debian:trixie-slim
 
 # https://docs.docker.com/desktop/release-notes/
 # https://docs.docker.com/desktop/linux/install/
-ENV DOCKER_DESKTOP_VERSION 4.44.2
-ENV DOCKER_DESKTOP_URL https://desktop.docker.com/linux/main/amd64/docker-desktop-amd64.deb
-ENV DOCKER_DESKTOP_SHA256 7b307dd79a26a6213e1f1a3bdaeb69ed81ca24063a8c36386eb09d484be5722c
+ENV DOCKER_DESKTOP_VERSION 4.44.3
 
 RUN set -eux; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
+	apt-get install --update -y --no-install-recommends \
 		ca-certificates \
 # https://docs.docker.com/desktop/linux/#credentials-management
 		pass \
@@ -75,12 +71,18 @@ RUN set -eux; \
 	rm -rf "$GNUPGHOME"; \
 	\
 	. /etc/os-release; \
-	echo "deb [ arch=amd64 signed-by=/usr/local/share/keyrings/docker-archive.gpg.asc ] https://download.docker.com/linux/debian $VERSION_CODENAME stable" > /etc/apt/sources.list.d/docker.list; \
-	\
+	dpkgArch="$(dpkg --print-architecture)"; \
+	echo "deb [ arch=$dpkgArch signed-by=/usr/local/share/keyrings/docker-archive.gpg.asc ] https://download.docker.com/linux/debian $VERSION_CODENAME stable" > /etc/apt/sources.list.d/docker.list; \
 	apt-get update; \
 	\
-	wget -O docker-desktop.deb --progress=dot:giga "$DOCKER_DESKTOP_URL"; \
-	echo "$DOCKER_DESKTOP_SHA256 *docker-desktop.deb" | sha256sum --strict --check -; \
+	case "$dpkgArch" in \
+		'amd64') url='https://desktop.docker.com/linux/main/amd64/202357/docker-desktop-amd64.deb'; sha256='49ec4d75c0189fb2ba1774a4a652a56cb4614d035162b0209ad9f7efee43d12e' ;; \
+		'arm64') url='https://desktop.docker.com/linux/main/arm64/202357/docker-desktop-arm64.deb'; sha256='c988573be1e63467a81749f99da59696b751e5bfe28dff08bd377c51756b48a9' ;; \
+		*) echo >&2 "error: unsupported architecture: '$dpkgArch'"; exit 1 ;; \
+	esac; \
+	\
+	wget -O docker-desktop.deb --progress=dot:giga "$url"; \
+	echo "$sha256 *docker-desktop.deb" | sha256sum --strict --check -; \
 	\
 	apt-get install -y --no-install-recommends ./docker-desktop.deb; \
 	rm docker-desktop.deb; \

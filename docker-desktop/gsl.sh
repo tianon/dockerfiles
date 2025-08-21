@@ -11,5 +11,6 @@ globalEntry
 env="${dir^^}_VERSION"
 env="${env//-/_}"
 versionedEnvTagsEntry "$dir" "$env" latest
+jq --raw-output '.arches | keys | join(", ") | "Architectures: \(.)"' "$dir/versions.json"
 echo '# ironically, this cannot use BuildKit: https://github.com/moby/buildkit/issues/1267'
 echo 'Builder: classic'
