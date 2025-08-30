@@ -1,20 +1,29 @@
-Description: disable recursive cloning of submodules given a Git URL
-Forwarded: https://github.com/moby/buildkit/issues/4974, https://github.com/moby/moby/pull/3463#issuecomment-31778263
+Description: disable recursive cloning of submodules by default
+Forwarded: no (upstream's default makes sense for them)
 
-diff --git a/source/git/source.go b/source/git/source.go
-index d139942fc..a3e251e41 100644
---- a/source/git/source.go
-+++ b/source/git/source.go
-@@ -619,12 +619,6 @@ func (gs *gitSourceHandler) Snapshot(ctx context.Context, g session.Group) (out
- 		}
+diff --git a/frontend/dockerfile/dockerfile2llb/convert.go b/frontend/dockerfile/dockerfile2llb/convert.go
+index 665bdb399..271ef0852 100644
+--- a/frontend/dockerfile/dockerfile2llb/convert.go
++++ b/frontend/dockerfile/dockerfile2llb/convert.go
+@@ -1545,7 +1545,7 @@ func dispatchCopy(d *dispatchState, cfg copyConfig) error {
+ 			if gitRef.SubDir != "" {
+ 				gitOptions = append(gitOptions, llb.GitSubDir(gitRef.SubDir))
+ 			}
+-			if gitRef.Submodules != nil && !*gitRef.Submodules {
++			if gitRef.Submodules == nil || !*gitRef.Submodules {
+ 				gitOptions = append(gitOptions, llb.GitSkipSubmodules())
+ 			}
+ 
+diff --git a/frontend/dockerui/context.go b/frontend/dockerui/context.go
+index 88d68569b..19a3a0b88 100644
+--- a/frontend/dockerui/context.go
++++ b/frontend/dockerui/context.go
+@@ -164,7 +164,7 @@ func DetectGitContext(ref string, keepGit *bool) (*llb.State, bool, error) {
+ 	if g.Checksum != "" {
+ 		gitOpts = append(gitOpts, llb.GitChecksum(g.Checksum))
+ 	}
+-	if g.Submodules != nil && !*g.Submodules {
++	if g.Submodules == nil || !*g.Submodules {
+ 		gitOpts = append(gitOpts, llb.GitSkipSubmodules())
  	}
  
--	git = git.New(gitutil.WithWorkTree(checkoutDir), gitutil.WithGitDir(gitDir))
--	_, err = git.Run(ctx, "submodule", "update", "--init", "--recursive", "--depth=1")
--	if err != nil {
--		return nil, errors.Wrapf(err, "failed to update submodules for %s", urlutil.RedactCredentials(gs.src.Remote))
--	}
--
- 	if idmap := mount.IdentityMapping(); idmap != nil {
- 		uid, gid := idmap.RootPair()
- 		err := filepath.WalkDir(gitDir, func(p string, _ os.DirEntry, _ error) error {
