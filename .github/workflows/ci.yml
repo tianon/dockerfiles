@@ -3,6 +3,10 @@ name: GitHub CI
 on:
   pull_request:
   push:
+    branches-ignore:
+      # see "update.yml"
+      - update-versions
+      - update/*
   workflow_dispatch:
   schedule:
     - cron: 0 0 * * 0
