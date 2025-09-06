@@ -7,7 +7,7 @@
 FROM debian:trixie-slim
 
 # https://github.com/HandBrake/HandBrake/releases
-ENV HANDBRAKE_VERSION 1.10.1
+ENV HANDBRAKE_VERSION 1.10.2
 
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
