@@ -110,7 +110,7 @@ RUN set -eux; \
 
 FROM golang:1.24-trixie AS buildx
 
-ARG BUILDX_GITCOMMIT=3922da80293ad6fce6b6b0fab75f2de7b35a21ad
+ARG BUILDX_GITCOMMIT=f4e02addf14b5cc299aeac89df9fff0a0eccffff
 ENV BUILDX_GITCOMMIT $BUILDX_GITCOMMIT
 
 RUN set -eux; \
