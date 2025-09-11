@@ -23,9 +23,9 @@ RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://apt.tianon.xyz/moby tri
 # TODO deb822
 
 # http://apt.tianon.xyz/moby/pool/trixie/main/moby-engine/
-ENV MOBY_ENGINE_VERSION 23.0.18-1~deb13u0
+ENV MOBY_ENGINE_VERSION 23.0.18-2~deb13u0
 # http://apt.tianon.xyz/moby/pool/trixie/main/moby-containerd/
-ENV MOBY_CONTAINERD_VERSION 1.6.38-1~deb13u0
+ENV MOBY_CONTAINERD_VERSION 1.6.38-2~deb13u0
 # http://apt.tianon.xyz/moby/pool/trixie/main/moby-runc/
 ENV MOBY_RUNC_VERSION 1.1.15-2~deb13u0
 
