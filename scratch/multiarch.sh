@@ -9,7 +9,7 @@ list="$(jq --raw-output --null-input '
 ')"
 eval "platforms=( $list )"
 
-export PATH="$PATH:$HOME/docker/bin/jq-oci" # TODO asdflkjoasdfhasdhfkljasdjfklasdf
+export PATH="$PATH:$HOME/docker/bin/jq-oci" # TODO asdflkjoasdfhasdhfkljasdjfklasdf (this is https://gist.github.com/tianon/35528d9851ebf0b0767c04cec5e01bcf which I'm not actually *happy* with but it works and beats redoing all that here)
 
 mkdir -p multiarch
 cd multiarch
