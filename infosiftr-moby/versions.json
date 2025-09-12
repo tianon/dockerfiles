@@ -3,10 +3,10 @@
     "version": "trixie"
   },
   "engine": {
-    "filename": "pool/trixie/main/moby-engine/moby-engine_23.0.18-2~deb13u0_amd64.deb",
-    "sha256": "2bb83e35ac3d0972751a629587854cd7dca121684c5be4f1e73120e664e2229b",
-    "url": "https://apt.tianon.xyz/moby/pool/trixie/main/moby-engine/moby-engine_23.0.18-2~deb13u0_amd64.deb",
-    "version": "23.0.18-2~deb13u0"
+    "filename": "pool/trixie/main/moby-engine/moby-engine_23.0.18-3~deb13u0_amd64.deb",
+    "sha256": "30cabc9422fa9750423528c33440581804463ee9b11c8c6428a9cf044b753457",
+    "url": "https://apt.tianon.xyz/moby/pool/trixie/main/moby-engine/moby-engine_23.0.18-3~deb13u0_amd64.deb",
+    "version": "23.0.18-3~deb13u0"
   },
   "containerd": {
     "filename": "pool/trixie/main/moby-containerd/moby-containerd_1.6.38-2~deb13u0_amd64.deb",
@@ -34,10 +34,10 @@
   },
   "bookworm": {
     "engine": {
-      "filename": "pool/bookworm/main/moby-engine/moby-engine_23.0.18-2~deb12u0_mips64el.deb",
-      "sha256": "bccfed8a009edb30a6b38e928ac1e2ece1721c7cbb1dd0d69a14e0a5ef4999ce",
-      "url": "https://apt.tianon.xyz/moby/pool/bookworm/main/moby-engine/moby-engine_23.0.18-2~deb12u0_mips64el.deb",
-      "version": "23.0.18-2~deb12u0"
+      "filename": "pool/bookworm/main/moby-engine/moby-engine_23.0.18-3~deb12u0_mips64el.deb",
+      "sha256": "8ded65541c4cc46f2fc297431093435cd5eabbd1ed065ae2f3d1f9f8ba48d610",
+      "url": "https://apt.tianon.xyz/moby/pool/bookworm/main/moby-engine/moby-engine_23.0.18-3~deb12u0_mips64el.deb",
+      "version": "23.0.18-3~deb12u0"
     },
     "containerd": {
       "filename": "pool/bookworm/main/moby-containerd/moby-containerd_1.6.38-2~deb12u0_mips64el.deb",
