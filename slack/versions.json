@@ -1,6 +1,6 @@
 {
-  "filename": "pool/jessie/main/s/slack-desktop/slack-desktop_4.45.69_amd64.deb",
-  "sha256": "0b033ca04c9106413915204ee6b978ca046e2ed69179f5556690041cac5729cc",
-  "url": "https://packagecloud.io/slacktechnologies/slack/debian/pool/jessie/main/s/slack-desktop/slack-desktop_4.45.69_amd64.deb",
-  "version": "4.45.69"
+  "filename": "pool/jessie/main/s/slack-desktop/slack-desktop_4.46.96_amd64.deb",
+  "sha256": "3c3528131efe6561b7f93fddfb3127dfdb0f17dc1807435bce584ac3a95797d8",
+  "url": "https://packagecloud.io/slacktechnologies/slack/debian/pool/jessie/main/s/slack-desktop/slack-desktop_4.46.96_amd64.deb",
+  "version": "4.46.96"
 }
