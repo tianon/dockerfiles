@@ -1,21 +1,21 @@
 {
   "linux": {
     "moniker": "stable",
-    "version": "6.16.10",
+    "version": "6.17.1",
     "iseol": false,
     "released": {
-      "timestamp": 1759405725,
-      "isodate": "2025-10-02"
+      "timestamp": 1759742411,
+      "isodate": "2025-10-06"
     },
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.16.10.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.16.10.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.17.1.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.17.1.tar.sign",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.16.10.xz",
-      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.16.9-10.xz"
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.17.1.xz",
+      "incremental": null
     },
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.16.10",
-    "gitweb": "https://git.kernel.org/stable/h/v6.16.10",
-    "diffview": "https://git.kernel.org/stable/ds/v6.16.10/v6.16.9"
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.17.1",
+    "gitweb": "https://git.kernel.org/stable/h/v6.17.1",
+    "diffview": "https://git.kernel.org/stable/ds/v6.17.1/v6.17"
   },
   "arches": {
     "amd64": {
