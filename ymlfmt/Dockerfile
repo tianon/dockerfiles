@@ -9,7 +9,7 @@ FROM python:3.13-alpine3.22
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps gcc libc-dev; \
 # https://pypi.org/project/ruamel.yaml/
-	pip install --no-cache-dir 'ruamel.yaml == 0.18.15'; \
+	pip install --no-cache-dir 'ruamel.yaml == 0.18.16'; \
 	apk del --no-network .build-deps
 
 COPY ymlfmt /usr/local/bin/
