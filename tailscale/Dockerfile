@@ -15,7 +15,7 @@ RUN set -eux; \
 	apt-get dist-clean
 
 # https://pkgs.tailscale.com/stable/#static
-ENV TAILSCALE_VERSION 1.90.3
+ENV TAILSCALE_VERSION 1.90.4
 
 RUN set -eux; \
 	dpkgArch="$(dpkg --print-architecture)"; \
