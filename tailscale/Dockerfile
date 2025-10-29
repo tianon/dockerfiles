@@ -12,7 +12,11 @@ RUN set -eux; \
 		iproute2 \
 		iptables \
 	; \
-	apt-get dist-clean
+	if grep -q bookworm /etc/os-release; then \
+		rm -rf /var/lib/apt/lists/*; \
+	else \
+		apt-get dist-clean; \
+	fi
 
 # https://pkgs.tailscale.com/stable/#static
 ENV TAILSCALE_VERSION 1.90.4
@@ -89,7 +93,11 @@ RUN set -eux; \
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark > /dev/null; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	apt-get dist-clean; \
+	if grep -q bookworm /etc/os-release; then \
+		rm -rf /var/lib/apt/lists/*; \
+	else \
+		apt-get dist-clean; \
+	fi; \
 	\
 	ln -sv /opt/tailscale/tailscale* /usr/local/bin/; \
 	tailscaled --version; \
