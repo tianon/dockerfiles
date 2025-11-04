@@ -30,20 +30,20 @@ RUN set -eux; \
 	\
 	filename="alertmanager-${ALERTMANAGER_VERSION}.linux-${promArch}.tar.gz"; \
 	case "$filename" in \
-		'alertmanager-0.29.0.linux-386.tar.gz') sha256='ae05385383bf0ae68c11c9bb36f2b9f1f5c333e7ee1eaec5c915778330e4cfc8' ;; \
-		'alertmanager-0.29.0.linux-amd64.tar.gz') sha256='74e8f141d61a8157d957e2856a9861a5a923827d70e2d4abdd36276bcd66d2f3' ;; \
-		'alertmanager-0.29.0.linux-arm64.tar.gz') sha256='45f4ad029cb09a77c092daa09dd064bd22932e84ce22f58fc4d043ac460204bf' ;; \
-		'alertmanager-0.29.0.linux-armv5.tar.gz') sha256='abec3bf29c11a8e2ef7017e6b2272427158f695b6f3fdbc0b291468a97787c67' ;; \
-		'alertmanager-0.29.0.linux-armv6.tar.gz') sha256='62dc9d34e340e18d03a23d6efc9db52b3c51d31dd39191720ad9ef8c27c5aaa2' ;; \
-		'alertmanager-0.29.0.linux-armv7.tar.gz') sha256='1d5943d51b045b1b958405f11c6810371e37d42b92e1e8d22e762040d02919ad' ;; \
-		'alertmanager-0.29.0.linux-mips.tar.gz') sha256='0a31b6b6af2ab817fba823d9c3f41ca86e85b3cd77fd95cce4ba6a06bde03d89' ;; \
-		'alertmanager-0.29.0.linux-mips64.tar.gz') sha256='c39be2c1ec511bdcea9bd68687f466c3ff34349c3271c968aa8b9ca0f03e9f6d' ;; \
-		'alertmanager-0.29.0.linux-mips64le.tar.gz') sha256='b18766f69d5cb2ba5ff77ee4be4612874e91ae3b34fa2884565f6fab525d0bb0' ;; \
-		'alertmanager-0.29.0.linux-mipsle.tar.gz') sha256='43f0415d4c645d88dfedfca3c3f572483079725faafe25c7ba9ca06aec3bc988' ;; \
-		'alertmanager-0.29.0.linux-ppc64.tar.gz') sha256='1564db6579c5e2a8b10fe0b3f42ebbd8073167cb1f63447890aa082b1b7f3bc6' ;; \
-		'alertmanager-0.29.0.linux-ppc64le.tar.gz') sha256='73be6e7d4dae78a72ec24921a85e442fefe20fdf6834834675de5a7110cbf6a8' ;; \
-		'alertmanager-0.29.0.linux-riscv64.tar.gz') sha256='a68f27c491c3915bb9b1c88ee470d0b5bdfd0f26e8833ecfc498a800e06b660b' ;; \
-		'alertmanager-0.29.0.linux-s390x.tar.gz') sha256='15207809eb0df8330c110a75e929090ca55efcc0c85762837b71082a9f86ba5f' ;; \
+		'alertmanager-0.29.0.linux-386.tar.gz') sha256='c837766bc2f131011c96de8c1cda8b79220fa43749fb592cbf7d473460350d8b' ;; \
+		'alertmanager-0.29.0.linux-amd64.tar.gz') sha256='3b12d6dac67eef1cfbe42c6153f156e7b968e6f04298b4d966d51ba5e271a1b3' ;; \
+		'alertmanager-0.29.0.linux-arm64.tar.gz') sha256='1fee609a753abc91c06b120f19d0f47cd7ae127210c546ffb6afb2819ce62913' ;; \
+		'alertmanager-0.29.0.linux-armv5.tar.gz') sha256='17c2f395619fe7bb84560af81eb51dc3f082ccaab557451477769f53e457188e' ;; \
+		'alertmanager-0.29.0.linux-armv6.tar.gz') sha256='f5bdb05cb412682c174140f62a2677e21675f861e62420ca05cfec81cac97704' ;; \
+		'alertmanager-0.29.0.linux-armv7.tar.gz') sha256='f5b7a2309763a0f8646b39af33c8778c1af989db939656ea1234142038d8998d' ;; \
+		'alertmanager-0.29.0.linux-mips.tar.gz') sha256='fbe645d4d321de8e7eb35b6a986a0bcd302663ef14329672d944eb2ae275b9db' ;; \
+		'alertmanager-0.29.0.linux-mips64.tar.gz') sha256='c835ddff6686f63812d59598efdf5de32590b1afd5c662942ea3b1159706c106' ;; \
+		'alertmanager-0.29.0.linux-mips64le.tar.gz') sha256='ee26e1a7abafbaffc4aecefc5a7502bb5a8219b98742aa6cb66ac64cb099e594' ;; \
+		'alertmanager-0.29.0.linux-mipsle.tar.gz') sha256='492893c21895fb7e2256b87ccdcd267a21d4a342e8202eabd3f9264eb552b48a' ;; \
+		'alertmanager-0.29.0.linux-ppc64.tar.gz') sha256='44e47bbb5b59872e107168f5bfdb578874b257a3f5e4b2db58e522f28499f96b' ;; \
+		'alertmanager-0.29.0.linux-ppc64le.tar.gz') sha256='6cacbadb7bb669df008f7a3a94c3eae99098d6af3667068bdac76a86263e5af8' ;; \
+		'alertmanager-0.29.0.linux-riscv64.tar.gz') sha256='704ec75762609686bf345b0cd410ab99dcfb1b5508a4dc5778089eeb49b40535' ;; \
+		'alertmanager-0.29.0.linux-s390x.tar.gz') sha256='f982300a1143903eaac226a8baddd225203364264f18e64642b273d4b436c325' ;; \
 		*) echo >&2 "error: unknown file: $filename"; exit 1 ;; \
 	esac; \
 	wget -O /tmp/alertmanager.tar.gz "https://github.com/prometheus/alertmanager/releases/download/v${ALERTMANAGER_VERSION}/$filename"; \
