@@ -27,7 +27,7 @@ ENV MOBY_ENGINE_VERSION 23.0.18-3~deb13u0
 # http://apt.tianon.xyz/moby/pool/trixie/main/moby-containerd/
 ENV MOBY_CONTAINERD_VERSION 1.6.38-2~deb13u0
 # http://apt.tianon.xyz/moby/pool/trixie/main/moby-runc/
-ENV MOBY_RUNC_VERSION 1.1.15-2~deb13u0
+ENV MOBY_RUNC_VERSION 1.2.8-1~deb13u0
 
 # http://apt.tianon.xyz/moby/pool/trixie/main/moby-cli/
 ENV MOBY_CLI_VERSION 23.0.15-2~deb13u0
