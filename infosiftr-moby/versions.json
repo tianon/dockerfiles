@@ -9,16 +9,16 @@
     "version": "23.0.18-3~deb13u0"
   },
   "containerd": {
-    "filename": "pool/trixie/main/moby-containerd/moby-containerd_1.6.38-2~deb13u0_amd64.deb",
-    "sha256": "7c7d1f3766d93df35c6fa28648f44f81ef1dbca99db02cf6a6c171d1089b9208",
-    "url": "https://apt.tianon.xyz/moby/pool/trixie/main/moby-containerd/moby-containerd_1.6.38-2~deb13u0_amd64.deb",
-    "version": "1.6.38-2~deb13u0"
+    "filename": "pool/trixie/main/moby-containerd/moby-containerd_1.7.29-1~deb13u0_amd64.deb",
+    "sha256": "0c47d13df74d070a3f8038325219c857ef392adcde6492c64859779deee8c9ce",
+    "url": "https://apt.tianon.xyz/moby/pool/trixie/main/moby-containerd/moby-containerd_1.7.29-1~deb13u0_amd64.deb",
+    "version": "1.7.29-1~deb13u0"
   },
   "runc": {
-    "filename": "pool/trixie/main/moby-runc/moby-runc_1.2.8-1~deb13u0_amd64.deb",
-    "sha256": "3c50ff4c5ec3adee29ab90c3be34fd560b6414a22622cbea97ba2a8becab7fb6",
-    "url": "https://apt.tianon.xyz/moby/pool/trixie/main/moby-runc/moby-runc_1.2.8-1~deb13u0_amd64.deb",
-    "version": "1.2.8-1~deb13u0"
+    "filename": "pool/trixie/main/moby-runc/moby-runc_1.2.8-2~deb13u0_amd64.deb",
+    "sha256": "e6b924bc106dfb0a6c21e92a89e87e04c15ff3a8bc3fbf1fd0cbbf73e7d8385c",
+    "url": "https://apt.tianon.xyz/moby/pool/trixie/main/moby-runc/moby-runc_1.2.8-2~deb13u0_amd64.deb",
+    "version": "1.2.8-2~deb13u0"
   },
   "cli": {
     "filename": "pool/trixie/main/moby-cli/moby-cli_23.0.15-2~deb13u0_amd64.deb",
@@ -40,10 +40,10 @@
       "version": "23.0.18-3~deb12u0"
     },
     "containerd": {
-      "filename": "pool/bookworm/main/moby-containerd/moby-containerd_1.6.38-2~deb12u0_mips64el.deb",
-      "sha256": "f215a234baa46f68cd55e562c748bfc71db8d53ac6229b474c8e687ec017c7bb",
-      "url": "https://apt.tianon.xyz/moby/pool/bookworm/main/moby-containerd/moby-containerd_1.6.38-2~deb12u0_mips64el.deb",
-      "version": "1.6.38-2~deb12u0"
+      "filename": "pool/bookworm/main/moby-containerd/moby-containerd_1.7.29-1~deb12u0_mips64el.deb",
+      "sha256": "8db7e76d48f47a07245612aedc9ac892924552830b59d2184d4f93f60e8bd2e5",
+      "url": "https://apt.tianon.xyz/moby/pool/bookworm/main/moby-containerd/moby-containerd_1.7.29-1~deb12u0_mips64el.deb",
+      "version": "1.7.29-1~deb12u0"
     },
     "runc": {
       "filename": "pool/bookworm/main/moby-runc/moby-runc_1.1.15-2~deb12u0_mips64el.deb",
