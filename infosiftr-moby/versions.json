@@ -46,10 +46,10 @@
       "version": "1.7.29-1~deb12u0"
     },
     "runc": {
-      "filename": "pool/bookworm/main/moby-runc/moby-runc_1.1.15-2~deb12u0_mips64el.deb",
-      "sha256": "0c17dce063f1857bcc8b02555adea62ab242aebd9f8af7cbeb6315bd1a8eaf9d",
-      "url": "https://apt.tianon.xyz/moby/pool/bookworm/main/moby-runc/moby-runc_1.1.15-2~deb12u0_mips64el.deb",
-      "version": "1.1.15-2~deb12u0"
+      "filename": "pool/bookworm/main/moby-runc/moby-runc_1.2.8-2~deb12u0_mips64el.deb",
+      "sha256": "30808dd7aded4268a9cafa4c3656990c074881e88f4de79afded4a0b26956a0e",
+      "url": "https://apt.tianon.xyz/moby/pool/bookworm/main/moby-runc/moby-runc_1.2.8-2~deb12u0_mips64el.deb",
+      "version": "1.2.8-2~deb12u0"
     },
     "cli": {
       "filename": "pool/bookworm/main/moby-cli/moby-cli_23.0.15-2~deb12u0_mips64el.deb",
