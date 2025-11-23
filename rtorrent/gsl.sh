@@ -1,1 +1,1 @@
-../.gsl-common/gsl-latest.sh
+../.gsl-common/gsl-version-env.sh
