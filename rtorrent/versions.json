@@ -1,10 +1,10 @@
 {
-  "commit": "a526ba58e94e9d38e2e5230e7a299c41cec9e9ed",
-  "ref": "refs/tags/v0.16.4",
-  "tag": "v0.16.4",
-  "version": "0.16.4",
+  "commit": "60cfcd37c4fb4a4ec31837a8f2127b4330e01bce",
+  "ref": "refs/tags/v0.16.5",
+  "tag": "v0.16.5",
+  "version": "0.16.5",
   "components": {
-    "libtorrent": "d80e06080a70c796cfd8d1831ca751eb33ab01c2f3269c7fe6966b44c46b517d",
-    "rtorrent": "4fd458f025544c77eea63962a7866848bf06fb420a2b8cee12978b8e2d2add8f"
+    "libtorrent": "9c604b851381bfe68e122995b6a2e7e3f16d2438b715e41d967c5b5e503062a9",
+    "rtorrent": "62ebd7662d02bdff005bc29a4b3385238e703bbe2b0c845ea7ae1ffaf9cb66c8"
   }
 }
