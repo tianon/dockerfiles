@@ -7,7 +7,7 @@
 # ideally, we'd use official static binary releases from http://landley.net/toybox/downloads/binaries/ but they don't include the (pending) "sh" implementation so they're not quite enough for a full system yet
 # https://github.com/landley/toybox/commits/master/toys/pending/sh.c
 
-FROM alpine:3.22 AS build
+FROM alpine:3.23 AS build
 
 RUN set -eux; \
 	apk add --no-cache \
