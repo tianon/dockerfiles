@@ -9,7 +9,7 @@ source "$dir/../.libs/pypi.sh"
 
 versions_hooks+=( hook_no-prereleases )
 
-export TIANON_PYTHON_FROM_TEMPLATE='python:%%PYTHON%%-alpine3.22'
+export TIANON_PYTHON_FROM_TEMPLATE='python:%%PYTHON%%-alpine3.23'
 
 json="$(pypi 'ruamel.yaml')"
 
