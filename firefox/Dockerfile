@@ -22,8 +22,8 @@ RUN set -eux; \
 
 # https://support.mozilla.org/kb/install-firefox-linux#w_install-firefox-deb-package-for-debian-based-distributions
 # https://www.mozilla.org/en-US/firefox/releases/
-ENV FIREFOX_VERSION 145.0.2
-ENV FIREFOX_DEB_VERSION 145.0.2~build1
+ENV FIREFOX_VERSION 146.0
+ENV FIREFOX_DEB_VERSION 146.0~build2
 
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
