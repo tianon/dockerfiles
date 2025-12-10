@@ -4,17 +4,17 @@
     "lts"
   ],
   "weekly": {
-    "filename": "binary/jenkins_2.540_all.deb",
-    "sha256": "2db5a3f3b691bd75101f59d0e30518ae59037f5036da905ed90ece9f1fe25561",
-    "url": "https://pkg.jenkins.io/debian/binary/jenkins_2.540_all.deb",
-    "version": "2.540",
+    "filename": "binary/jenkins_2.541_all.deb",
+    "sha256": "2ee4d030c417e074120055a7d49683d1eeb251aa8d5b003d424270d3de492161",
+    "url": "https://pkg.jenkins.io/debian/binary/jenkins_2.541_all.deb",
+    "version": "2.541",
     "repo": "https://pkg.jenkins.io/debian"
   },
   "lts": {
-    "filename": "binary/jenkins_2.528.2_all.deb",
-    "sha256": "f693af0896a116dbf84f7506d55770231db1835d905c9e7b3cafc562154ba4dc",
-    "url": "https://pkg.jenkins.io/debian-stable/binary/jenkins_2.528.2_all.deb",
-    "version": "2.528.2",
+    "filename": "binary/jenkins_2.528.3_all.deb",
+    "sha256": "64f12f67d59fe4df7ca40863b58b78f95f5c36352f59b688a023f9f1a759d13b",
+    "url": "https://pkg.jenkins.io/debian-stable/binary/jenkins_2.528.3_all.deb",
+    "version": "2.528.3",
     "repo": "https://pkg.jenkins.io/debian-stable"
   }
 }
