@@ -67,18 +67,6 @@ RUN set -eux; \
 
 RUN set -eux; \
 	cd engine; \
-	export TMP_GOPATH=/tmp/gopath; \
-# https://github.com/containerd/containerd/issues/5824
-# https://github.com/containerd/containerd/commit/00eb74a4ca47d5ad9c7d1171a2929a3da39deee6
-	export STATIC=1; \
-# TODO ^^ figure out why this is still necessary (because it actually shouldn't be 😭)
-	for comp in containerd runc tini; do \
-		hack/dockerfile/install/install.sh "$comp"; \
-	done; \
-	ldd /usr/local/bin/* || :
-
-RUN set -eux; \
-	cd engine; \
 	sed -ri '/^[[:space:]]*copy_binaries /d' hack/make/binary-daemon; \
 	GOFLAGS='-mod=vendor' DOCKER_GITCOMMIT="$MOBY_GITCOMMIT" hack/make.sh binary; \
 	cp -avlL \
@@ -94,10 +82,10 @@ RUN set -eux; \
 RUN set -eux; \
 	mkdir -p /artifacts; \
 	cp -avlL \
-		/usr/local/bin/containerd* \
-		/usr/local/bin/ctr \
+#		/usr/local/bin/containerd* \
+#		/usr/local/bin/ctr \
 		/usr/local/bin/docker* \
-		/usr/local/bin/runc \
+#		/usr/local/bin/runc \
 		/artifacts/
 
 # verify that every binary can run ~standalone
@@ -135,24 +123,37 @@ RUN set -eux; \
 
 # TODO compose?
 
-FROM alpine:3.23
+FROM tianon/containerd
 
 RUN set -eux; \
-	apk add --no-cache \
+	containerd --version; \
+	ctr --version; \
+	runc --version; \
+	command -v dind
+
+RUN set -eux; \
+	apt-get install --update -y --no-install-recommends \
 		ca-certificates \
 		openssh-client \
 		\
-		ip6tables \
+		iproute2 \
 		iptables \
 		openssl \
 		pigz \
-		shadow-uidmap \
-		xz \
-	;
+		procps \
+		psmisc \
+		xz-utils \
+		\
+# TODO someday, install tini-static instead
+		tini \
+	; \
+	apt-get dist-clean; \
+	tini="$(command -v tini-static)"; \
+	ln -svfT "$tini" /usr/local/bin/docker-init
 
 RUN set -eux; \
-	addgroup -S dockremap; \
-	adduser -S -G dockremap dockremap; \
+	addgroup --system dockremap; \
+	adduser --system --ingroup dockremap dockremap; \
 	echo 'dockremap:165536:65536' >> /etc/subuid; \
 	echo 'dockremap:165536:65536' >> /etc/subgid
 
@@ -164,13 +165,9 @@ COPY --from=buildx /artifacts/docker-buildx /usr/local/libexec/docker/cli-plugin
 COPY docker*-entrypoint.sh modprobe.sh /usr/local/bin/
 
 RUN set -eux; \
-	containerd --version; \
-	containerd-shim-runc-v2 -v; \
-	ctr --version; \
 	docker --version; \
 	docker-init --version; \
 	dockerd --version; \
-	runc --version; \
 	docker buildx version; \
 	for sh in /usr/local/bin/*.sh; do \
 		sh -n "$sh"; \
