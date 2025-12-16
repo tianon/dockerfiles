@@ -1,8 +1,8 @@
 {
-  "commit": "be1f38efe73c6a93cc429a0488ad6e1db663398c",
-  "ref": "refs/tags/v0.26.2^{}",
-  "tag": "v0.26.2",
-  "version": "0.26.2",
+  "commit": "c70e8e666f8f6ee3c0d83b20c338be5aedeaa97a",
+  "ref": "refs/tags/v0.26.3^{}",
+  "tag": "v0.26.3",
+  "version": "0.26.3",
   "go": {
     "version": "1.24"
   },
