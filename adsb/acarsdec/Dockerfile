@@ -53,7 +53,7 @@ RUN set -eux; \
 WORKDIR /acarsdec
 
 # https://github.com/f00b4r0/acarsdec/releases
-ENV ACARSDEC_VERSION 4.4
+ENV ACARSDEC_VERSION 4.4.1
 
 RUN set -eux; \
 	wget -O src.tgz "https://github.com/f00b4r0/acarsdec/archive/refs/tags/v$ACARSDEC_VERSION.tar.gz"; \

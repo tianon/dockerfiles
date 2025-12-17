@@ -4,12 +4,12 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM python:3.13-alpine3.23
+FROM python:3.14-alpine3.23
 
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps gcc libc-dev; \
 # https://pypi.org/project/ruamel.yaml/
-	pip install --no-cache-dir 'ruamel.yaml == 0.18.16'; \
+	pip install --no-cache-dir 'ruamel.yaml == 0.18.17'; \
 	apk del --no-network .build-deps
 
 COPY ymlfmt /usr/local/bin/
