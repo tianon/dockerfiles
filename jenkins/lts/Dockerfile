@@ -35,7 +35,6 @@ RUN set -eux; \
 	fi; \
 	java --version
 
-# https://www.jenkins.io/blog/2023/03/27/repository-signing-keys-changing/
 # https://pkg.jenkins.io/debian/
 ENV JENKINS_GPG_KEY 63667EE74BBA1F0A08A698725BA31D57EF5975CA
 RUN set -eux; \

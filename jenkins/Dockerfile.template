@@ -29,9 +29,18 @@ RUN set -eux; \
 	fi; \
 	java --version
 
-# https://www.jenkins.io/blog/2023/03/27/repository-signing-keys-changing/
 # https://pkg.jenkins.io/debian/
-ENV JENKINS_GPG_KEY 63667EE74BBA1F0A08A698725BA31D57EF5975CA
+ENV JENKINS_GPG_KEY {{
+	.[env.variant].version
+	| split(".") | map(tonumber? // .)
+	| if . >= [ 2, 543 ] or (. < [ 2, 542 ] and . >= [ 2, 541, 1 ]) then
+		# https://www.jenkins.io/blog/2025/12/23/repository-signing-keys-changing/
+		"5E386EADB55F01504CAE8BCF7198F4B714ABFC68"
+	else
+		# https://www.jenkins.io/blog/2023/03/27/repository-signing-keys-changing/
+		"63667EE74BBA1F0A08A698725BA31D57EF5975CA"
+	end
+}}
 RUN set -eux; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$JENKINS_GPG_KEY"; \

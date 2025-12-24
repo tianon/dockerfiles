@@ -35,9 +35,8 @@ RUN set -eux; \
 	fi; \
 	java --version
 
-# https://www.jenkins.io/blog/2023/03/27/repository-signing-keys-changing/
 # https://pkg.jenkins.io/debian/
-ENV JENKINS_GPG_KEY 63667EE74BBA1F0A08A698725BA31D57EF5975CA
+ENV JENKINS_GPG_KEY 5E386EADB55F01504CAE8BCF7198F4B714ABFC68
 RUN set -eux; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$JENKINS_GPG_KEY"; \
@@ -47,7 +46,7 @@ RUN set -eux; \
 
 RUN echo 'deb [ signed-by=/etc/apt/keyrings/jenkins.gpg.asc ] https://pkg.jenkins.io/debian binary/' > /etc/apt/sources.list.d/jenkins.list
 
-ENV JENKINS_VERSION 2.542
+ENV JENKINS_VERSION 2.543
 
 RUN set -eux; \
 	apt-get update; \
