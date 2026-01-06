@@ -14,9 +14,9 @@ RUN set -eux; \
 	; \
 	apt-get dist-clean
 
-# https://www.jenkins.io/doc/administration/requirements/java/ ("Jenkins requires Java 11 or 17 since Jenkins 2.357 and LTS 2.361.1.")
+# https://www.jenkins.io/doc/administration/requirements/java/
 ENV JAVA_HOME /opt/java/openjdk
-COPY --from=eclipse-temurin:17-jre $JAVA_HOME $JAVA_HOME
+COPY --from=eclipse-temurin:21-jre $JAVA_HOME $JAVA_HOME
 ENV PATH $JAVA_HOME/bin:$PATH
 RUN set -eux; \
 	if \
