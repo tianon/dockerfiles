@@ -10,7 +10,7 @@
     }
   },
   "buildx": {
-    "version": "1fa2ad4fa421ab35ac792516c3d9ff5472ba05b0",
+    "version": "752e0b2227b3039c4bd9694a6e8578b350b95723",
     "go": {
       "version": "1.24.3"
     }
