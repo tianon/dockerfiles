@@ -4,10 +4,10 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM python:3.13-alpine3.23
+FROM python:3.14-alpine3.23
 
 # https://pypi.org/project/b2/
-ENV BACKBLAZE_B2_VERSION 4.4.2
+ENV BACKBLAZE_B2_VERSION 4.5.0
 
 RUN set -eux; \
 	pip install --no-cache-dir "b2 == $BACKBLAZE_B2_VERSION"; \
