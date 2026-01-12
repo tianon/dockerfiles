@@ -1,21 +1,21 @@
 {
   "linux": {
     "moniker": "stable",
-    "version": "6.18.4",
+    "version": "6.18.5",
     "iseol": false,
     "released": {
-      "timestamp": 1767863958,
-      "isodate": "2026-01-08"
+      "timestamp": 1768141650,
+      "isodate": "2026-01-11"
     },
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.18.4.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.18.4.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.18.5.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.18.5.tar.sign",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.18.4.xz",
-      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.18.3-4.xz"
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.18.5.xz",
+      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.18.4-5.xz"
     },
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.18.4",
-    "gitweb": "https://git.kernel.org/stable/h/v6.18.4",
-    "diffview": "https://git.kernel.org/stable/ds/v6.18.4/v6.18.3"
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.18.5",
+    "gitweb": "https://git.kernel.org/stable/h/v6.18.5",
+    "diffview": "https://git.kernel.org/stable/ds/v6.18.5/v6.18.4"
   },
   "arches": {
     "amd64": {
