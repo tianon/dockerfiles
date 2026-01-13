@@ -33,7 +33,7 @@ ENV DOCKER_BUILDTAGS \
 
 WORKDIR /moby
 
-ARG CLI_GITCOMMIT=debbf2d4f9f7ac47326b51b66a6387cbc5cacb93
+ARG CLI_GITCOMMIT=bd1b1a1590be44a38849967d160172c1f82b5af7
 ENV CLI_GITCOMMIT $CLI_GITCOMMIT
 
 RUN set -eux; \
@@ -51,7 +51,7 @@ RUN set -eux; \
 	docker --version; \
 	ldd /usr/local/bin/docker || :
 
-ARG MOBY_GITCOMMIT=77487cdea573556051dc8f7c6495a0c7a24f7a1b
+ARG MOBY_GITCOMMIT=4d09d8c7b8bec471a428527f3ac099d918cd1341
 ENV MOBY_GITCOMMIT $MOBY_GITCOMMIT
 
 RUN set -eux; \
@@ -98,7 +98,7 @@ RUN set -eux; \
 
 FROM golang:1.25-trixie AS buildx
 
-ARG BUILDX_GITCOMMIT=ffe9b27c99aeb945167e47e44a1171dde9f225a9
+ARG BUILDX_GITCOMMIT=d24f69f1ad5698923f880e082f2e847981c4fa77
 ENV BUILDX_GITCOMMIT $BUILDX_GITCOMMIT
 
 RUN set -eux; \
@@ -110,7 +110,11 @@ RUN set -eux; \
 
 RUN set -eux; \
 	cd buildx; \
-	GOFLAGS='-mod=vendor' CGO_ENABLED=0 VERSION=HEAD REVISION="$BUILDX_GITCOMMIT" DESTDIR=/usr/local/bin ./hack/build; \
+	CGO_ENABLED=0 go build -trimpath -mod=vendor -ldflags "-w \
+		-X github.com/docker/buildx/version.Version=HEAD \
+		-X github.com/docker/buildx/version.Revision=$BUILDX_GITCOMMIT \
+		-X github.com/docker/buildx/version.Package=github.com/docker/buildx \
+	" -o /usr/local/bin/docker-buildx ./cmd/buildx; \
 	docker-buildx version; \
 	ldd /usr/local/bin/docker-buildx || :; \
 	mkdir -p /artifacts; \
