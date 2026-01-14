@@ -1,9 +1,9 @@
 {
-  "version": "10.0.0.0",
+  "version": "11.0.0.0",
   "debian": {
-    "filename": "pool/main/w/wine/winehq-stable_10.0.0.0~trixie-1_amd64.deb",
-    "sha256": "4c1a4e0db2217ad7443126ac39276bee80de1e7905faeee3b2cb1b1e28cc4eca",
-    "url": "https://dl.winehq.org/wine-builds/debian/pool/main/w/wine/winehq-stable_10.0.0.0~trixie-1_amd64.deb",
-    "version": "10.0.0.0~trixie-1"
+    "filename": "pool/main/w/wine/winehq-stable_11.0.0.0~trixie-1_amd64.deb",
+    "sha256": "756ccd02c6a8c7d9de3ca398c22e4ae6b5dfc3a7f6e751e7b706b031d1ad6fed",
+    "url": "https://dl.winehq.org/wine-builds/debian/pool/main/w/wine/winehq-stable_11.0.0.0~trixie-1_amd64.deb",
+    "version": "11.0.0.0~trixie-1"
   }
 }
