@@ -23,16 +23,16 @@ RUN echo 'deb [ allow-insecure=yes trusted=yes ] https://apt.tianon.xyz/moby boo
 # TODO deb822
 
 # http://apt.tianon.xyz/moby/pool/bookworm/main/moby-engine/
-ENV MOBY_ENGINE_VERSION 23.0.18-3~deb12u0
+ENV MOBY_ENGINE_VERSION 23.0.18-4~deb12u0
 # http://apt.tianon.xyz/moby/pool/bookworm/main/moby-containerd/
-ENV MOBY_CONTAINERD_VERSION 1.7.29-1~deb12u0
+ENV MOBY_CONTAINERD_VERSION 1.7.30-1~deb12u0
 # http://apt.tianon.xyz/moby/pool/bookworm/main/moby-runc/
-ENV MOBY_RUNC_VERSION 1.2.8-3~deb12u0
+ENV MOBY_RUNC_VERSION 1.2.9-1~deb12u0
 
 # http://apt.tianon.xyz/moby/pool/bookworm/main/moby-cli/
-ENV MOBY_CLI_VERSION 23.0.15-2~deb12u0
+ENV MOBY_CLI_VERSION 23.0.15-3~deb12u0
 # http://apt.tianon.xyz/moby/pool/bookworm/main/moby-buildx/
-ENV MOBY_BUILDX_VERSION 0.17.1-3~deb12u0
+ENV MOBY_BUILDX_VERSION 0.17.1-4~deb12u0
 
 RUN set -eux; \
 	\
