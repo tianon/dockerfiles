@@ -1,8 +1,6 @@
 FROM debian:trixie-slim
 
 RUN set -eux; \
-# dangit, wireshark-common!  *shakes fist*
-	export DEBIAN_FRONTEND='noninteractive'; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		bash-completion \
