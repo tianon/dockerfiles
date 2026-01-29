@@ -6,11 +6,15 @@
 
 FROM debian:trixie-slim
 
-# This disc requires Java runtime (JRE), but none was found. Certain functions will fail, please install Java. See http://www.makemkv.com/bdjava/ for details.
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
+# This disc requires Java runtime (JRE), but none was found. Certain functions will fail, please install Java. See http://www.makemkv.com/bdjava/ for details.
 		default-jre-headless \
+# > openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/libcurl.so.4", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+# this is apparently used (loaded at runtime) for "Downloading latest HK to $HOME/.MakeMKV ..."
+		libcurl4t64 \
+		ca-certificates \
 	; \
 	apt-get dist-clean
 
