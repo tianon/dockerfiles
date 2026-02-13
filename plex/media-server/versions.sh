@@ -12,12 +12,6 @@ json="$(wget -qO- 'https://plex.tv/api/downloads/1.json' | jq -c '.computer.Linu
 
 version="$(jq <<<"$json" -r '.version')"
 
-# https://forums.plex.tv/t/issue-upgrading-to-pms-1-43-0-10467-on-debian-and-rhel/935847
-if [ "$version" = '1.42.2.10156-f737b826c' ]; then
-	echo >&2 "SKIPPING PLEX DOWNGRADE TO '$version' -- it does not matter for our purposes"
-	exit 0
-fi
-
 echo "plex-media-server: $version"
 
 json="$(jq <<<"$json" -c -L../../.libs '
