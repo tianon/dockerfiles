@@ -1,6 +1,6 @@
 {
-  "commit": "70adad87231e57b73c838bcd20f084f242d6ae4c",
-  "ref": "refs/tags/v0.5.18",
-  "tag": "v0.5.18",
-  "version": "0.5.18"
+  "commit": "c45a98a42b71b799d7169abd6ef3bd25f0065f9b",
+  "ref": "refs/tags/v0.5.20^{}",
+  "tag": "v0.5.20",
+  "version": "0.5.20"
 }
