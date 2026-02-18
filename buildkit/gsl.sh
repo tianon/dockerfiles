@@ -23,7 +23,8 @@ exec jq -r '
 			Builder: "buildkit",
 		},
 		(
-			(
+			.dev as $dev
+			| (
 				[
 					.variants[] as $variant
 					| {
@@ -48,7 +49,14 @@ exec jq -r '
 				| .value as $version
 				| .value = (
 					if $variant == "dev" then
-						[]
+						[
+							$dev.unix
+							| strftime("dev-%Y%m%d-%H%M%S"),
+								strftime("dev-%Y%m%d"),
+								"dev-\($version)",
+								"dev-\($version[:7])",
+								empty
+						]
 					else
 						$version
 						| [ scan("(?:[.-]+|^)[^.-]*") ]
