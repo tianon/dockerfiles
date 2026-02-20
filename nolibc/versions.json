@@ -1,21 +1,21 @@
 {
   "linux": {
     "moniker": "stable",
-    "version": "6.19.2",
+    "version": "6.19.3",
     "iseol": false,
     "released": {
-      "timestamp": 1771258310,
-      "isodate": "2026-02-16"
+      "timestamp": 1771515219,
+      "isodate": "2026-02-19"
     },
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.19.2.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.19.2.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.19.3.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.19.3.tar.sign",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.19.2.xz",
-      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.19.1-2.xz"
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.19.3.xz",
+      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.19.2-3.xz"
     },
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.19.2",
-    "gitweb": "https://git.kernel.org/stable/h/v6.19.2",
-    "diffview": "https://git.kernel.org/stable/ds/v6.19.2/v6.19.1"
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.19.3",
+    "gitweb": "https://git.kernel.org/stable/h/v6.19.3",
+    "diffview": "https://git.kernel.org/stable/ds/v6.19.3/v6.19.2"
   },
   "arches": {
     "amd64": {
