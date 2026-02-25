@@ -50,7 +50,7 @@ RUN set -eux; \
 	} | tee /etc/default/microsoft-edge-dev
 
 # https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-dev/
-ENV EDGE_VERSION 146.0.3856.20-1
+ENV EDGE_VERSION 147.0.3878.0-1
 
 RUN set -eux; \
 	apt-get update; \
