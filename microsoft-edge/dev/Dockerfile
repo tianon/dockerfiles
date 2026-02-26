@@ -50,13 +50,26 @@ RUN set -eux; \
 	} | tee /etc/default/microsoft-edge-dev
 
 # https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-dev/
-ENV EDGE_VERSION 146.0.3856.20-1
+ENV EDGE_VERSION 147.0.3878.0-1
 
 RUN set -eux; \
 	apt-get update; \
+# https://github.com/tianon/dockerfiles/pull/1220#issuecomment-3964577151 💩 (deal with pathological postinst)
+	/usr/bin/true; \
+	set --; \
+	for tool in curl wget gpg; do \
+		for dir in /usr/sbin /usr/bin; do \
+			dpkg-divert --add --rename "$dir/$tool"; \
+			set -- "$@" "$dir/$tool"; \
+		done; \
+	done; \
+	set -- "$@" /usr/bin/install_deb822_sources; \
+	for f; do ln -svfT /usr/bin/true "$f"; done; \
 	apt-get install -y --no-install-recommends \
 		"microsoft-edge-dev=$EDGE_VERSION" \
 	; \
+	rm -vf "$@"; \
+	for f; do dpkg-divert --remove --rename "$f"; done; \
 	apt-get dist-clean; \
 	microsoft-edge-dev --version; \
 	microsoft-edge --version

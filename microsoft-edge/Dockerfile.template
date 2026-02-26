@@ -52,9 +52,26 @@ ENV EDGE_VERSION {{ .version }}
 
 RUN set -eux; \
 	apt-get update; \
+{{ if .version == "147.0.3878.0-1" then ( -}}
+# https://github.com/tianon/dockerfiles/pull/1220#issuecomment-3964577151 💩 (deal with pathological postinst)
+	/usr/bin/true; \
+	set --; \
+	for tool in curl wget gpg; do \
+		for dir in /usr/sbin /usr/bin; do \
+			dpkg-divert --add --rename "$dir/$tool"; \
+			set -- "$@" "$dir/$tool"; \
+		done; \
+	done; \
+	set -- "$@" /usr/bin/install_deb822_sources; \
+	for f; do ln -svfT /usr/bin/true "$f"; done; \
+{{ ) else "" end -}}
 	apt-get install -y --no-install-recommends \
 		"microsoft-edge-{{ channel }}=$EDGE_VERSION" \
 	; \
+{{ if .version == "147.0.3878.0-1" then ( -}}
+	rm -vf "$@"; \
+	for f; do dpkg-divert --remove --rename "$f"; done; \
+{{ ) else "" end -}}
 	apt-get dist-clean; \
 	microsoft-edge-{{ channel }} --version; \
 	microsoft-edge --version
