@@ -47,7 +47,7 @@ FROM debian:trixie-slim
 
 # https://docs.docker.com/desktop/release-notes/
 # https://docs.docker.com/desktop/linux/install/
-ENV DOCKER_DESKTOP_VERSION 4.62.0
+ENV DOCKER_DESKTOP_VERSION 4.63.0
 
 RUN set -eux; \
 	apt-get install --update -y --no-install-recommends \
@@ -76,8 +76,8 @@ RUN set -eux; \
 	apt-get update; \
 	\
 	case "$dpkgArch" in \
-		'amd64') url='https://desktop.docker.com/linux/main/amd64/219486/docker-desktop-amd64.deb'; sha256='526980fa275e38834cc80607badd7c8d56a6068670af49acc7923fff8e26019e' ;; \
-		'arm64') url='https://desktop.docker.com/linux/main/arm64/219486/docker-desktop-arm64.deb'; sha256='fe725e4437c858d9a4ee376fed1ff8334170558d4cb5b9d8bdbc92c6e17c754a' ;; \
+		'amd64') url='https://desktop.docker.com/linux/main/amd64/220185/docker-desktop-amd64.deb'; sha256='8fbdb339df64a7ba66e42ba869e2c2a4bcb361c9a7995ad5e2fd88e362687a3f' ;; \
+		'arm64') url='https://desktop.docker.com/linux/main/arm64/220185/docker-desktop-arm64.deb'; sha256='ed5076939e219f814e422c4c187fdedeb37250a12159c5cd1f28451f6b83bed3' ;; \
 		*) echo >&2 "error: unsupported architecture: '$dpkgArch'"; exit 1 ;; \
 	esac; \
 	\
