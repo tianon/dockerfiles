@@ -54,9 +54,23 @@ ENV EDGE_VERSION 147.0.3890.0-1
 
 RUN set -eux; \
 	apt-get update; \
+# https://github.com/tianon/dockerfiles/pull/1220#issuecomment-3964577151 💩 (deal with pathological postinst)
+# https://github.com/tianon/dockerfiles/pull/1226 (still broken)
+	/usr/bin/true; \
+	set --; \
+	for tool in curl wget gpg; do \
+		for dir in /usr/sbin /usr/bin; do \
+			dpkg-divert --add --rename "$dir/$tool"; \
+			set -- "$@" "$dir/$tool"; \
+		done; \
+	done; \
+	set -- "$@" /usr/bin/install_deb822_sources; \
+	for f; do ln -svfT /usr/bin/true "$f"; done; \
 	apt-get install -y --no-install-recommends \
 		"microsoft-edge-dev=$EDGE_VERSION" \
 	; \
+	rm -vf "$@"; \
+	for f; do dpkg-divert --remove --rename "$f"; done; \
 	apt-get dist-clean; \
 	microsoft-edge-dev --version; \
 	microsoft-edge --version
