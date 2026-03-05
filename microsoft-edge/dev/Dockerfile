@@ -50,11 +50,12 @@ RUN set -eux; \
 	} | tee /etc/default/microsoft-edge-dev
 
 # https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-dev/
-ENV EDGE_VERSION 147.0.3878.0-1
+ENV EDGE_VERSION 147.0.3890.0-1
 
 RUN set -eux; \
 	apt-get update; \
 # https://github.com/tianon/dockerfiles/pull/1220#issuecomment-3964577151 💩 (deal with pathological postinst)
+# https://github.com/tianon/dockerfiles/pull/1226 (still broken)
 	/usr/bin/true; \
 	set --; \
 	for tool in curl wget gpg; do \
