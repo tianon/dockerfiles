@@ -17,6 +17,7 @@ RUN set -eux; \
 		libhackrf-dev \
 		libncurses-dev \
 		librtlsdr-dev \
+		libsoapysdr-dev \
 		libzstd-dev \
 		make \
 		pkg-config \
@@ -45,6 +46,7 @@ RUN set -eux; \
 		READSB_VERSION="\"$READSB_VERSION tianon\"" \
 		HACKRF='yes' \
 		RTLSDR='yes' \
+		SOAPYSDR='yes' \
 		PRINT_UUIDS=yes TRACKS_UUID=yes
 
 RUN set -eux; \
