@@ -52,10 +52,11 @@ ENV EDGE_VERSION {{ .version }}
 
 RUN set -eux; \
 	apt-get update; \
-{{ def pathological: IN(.version; "147.0.3878.0-1", "147.0.3890.0-1") -}}
+{{ def pathological: IN(.version; "147.0.3878.0-1", "147.0.3890.0-1", "147.0.3912.10-1") -}}
 {{ if pathological then ( -}}
 # https://github.com/tianon/dockerfiles/pull/1220#issuecomment-3964577151 💩 (deal with pathological postinst)
 # https://github.com/tianon/dockerfiles/pull/1226 (still broken)
+# https://github.com/tianon/dockerfiles/pull/1237 (still broken 😭)
 	/usr/bin/true; \
 	set --; \
 	for tool in curl wget gpg; do \
