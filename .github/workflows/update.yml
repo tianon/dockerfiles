@@ -2,8 +2,9 @@ name: Auto-Update
 
 on:
   schedule:
-    # roughly 4:23pm PDT (3:23pm PST)
-    - cron: 20 23 * * *
+    # ~4:13pm PT
+    - cron: 13 16 * * *
+      timezone: America/Los_Angeles
   workflow_dispatch:
 
 defaults:
