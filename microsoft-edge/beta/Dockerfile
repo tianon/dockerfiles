@@ -54,9 +54,29 @@ ENV EDGE_VERSION 147.0.3912.16-1
 
 RUN set -eux; \
 	apt-get update; \
+	\
+# deal with pathological postinst behavior (using curl/wget/gpg to download and install PGP keys 🙃)
+# https://github.com/tianon/dockerfiles/pull/1220
+# https://github.com/tianon/dockerfiles/pull/1226
+# https://github.com/tianon/dockerfiles/pull/1237
+# https://github.com/tianon/dockerfiles/pull/1242
+	/usr/bin/true; \
+	set --; \
+	for tool in curl wget gpg; do \
+		for dir in /usr/sbin /usr/bin; do \
+			dpkg-divert --add --rename "$dir/$tool"; \
+			set -- "$@" "$dir/$tool"; \
+		done; \
+	done; \
+	for f; do ln -svfT /usr/bin/true "$f"; done; \
+	\
 	apt-get install -y --no-install-recommends \
 		"microsoft-edge-beta=$EDGE_VERSION" \
 	; \
+	\
+	rm -vf "$@"; \
+	for f; do dpkg-divert --remove --rename "$f"; done; \
+	\
 	apt-get dist-clean; \
 	microsoft-edge-beta --version; \
 	microsoft-edge --version

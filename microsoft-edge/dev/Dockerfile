@@ -54,9 +54,12 @@ ENV EDGE_VERSION 147.0.3912.10-1
 
 RUN set -eux; \
 	apt-get update; \
-# https://github.com/tianon/dockerfiles/pull/1220#issuecomment-3964577151 💩 (deal with pathological postinst)
-# https://github.com/tianon/dockerfiles/pull/1226 (still broken)
-# https://github.com/tianon/dockerfiles/pull/1237 (still broken 😭)
+	\
+# deal with pathological postinst behavior (using curl/wget/gpg to download and install PGP keys 🙃)
+# https://github.com/tianon/dockerfiles/pull/1220
+# https://github.com/tianon/dockerfiles/pull/1226
+# https://github.com/tianon/dockerfiles/pull/1237
+# https://github.com/tianon/dockerfiles/pull/1242
 	/usr/bin/true; \
 	set --; \
 	for tool in curl wget gpg; do \
@@ -65,13 +68,15 @@ RUN set -eux; \
 			set -- "$@" "$dir/$tool"; \
 		done; \
 	done; \
-	set -- "$@" /usr/bin/install_deb822_sources; \
 	for f; do ln -svfT /usr/bin/true "$f"; done; \
+	\
 	apt-get install -y --no-install-recommends \
 		"microsoft-edge-dev=$EDGE_VERSION" \
 	; \
+	\
 	rm -vf "$@"; \
 	for f; do dpkg-divert --remove --rename "$f"; done; \
+	\
 	apt-get dist-clean; \
 	microsoft-edge-dev --version; \
 	microsoft-edge --version
