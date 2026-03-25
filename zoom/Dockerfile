@@ -13,33 +13,22 @@ RUN set -eux; \
 # used as a fake browser so clicked URLs pop up with a URL + clipboard instead of silently doing nothing
 		zenity xclip \
 # missing Depends:
-# "sh: 1: pactl: not found"
-		pulseaudio-utils \
-# "sh: 1: ps: not found"
-		procps \
 # Cannot load xxx: (yyy.so.0: cannot open shared object file: No such file or directory)
-		libasound2 \
-		libnspr4 \
-		libnss3 \
-		libqt5core5a \
-		libqt5dbus5 \
-		libqt5gui5 \
-		libqt5network5 \
-		libqt5qml5 \
-		libqt5quick5 \
-		libqt5quickwidgets5 \
-		libqt5svg5 \
-		libqt5widgets5 \
-		libqt5x11extras5 \
-		libqt5xml5 \
-# TODO test whether this one's still necessary
-		libxkbcommon-x11-0 \
+		libgl1 \
+		libqt6core5compat6 \
+		libqt6network6 \
+		libqt6qml6 \
+		libqt6quick6 \
+		libqt6quickwidgets6 \
+		libqt6svg6 \
+		libqt6widgets6 \
+		libqt6xml6 \
 	; \
 	apt-get dist-clean
 
 # https://zoom.us/download#client_4meeting ("Debian", "64 bit", "8.0+", "Version X.Y.ZZZ.ZZZ")
 # https://support.zoom.us/hc/en-us/articles/205759689-Release-notes-for-Linux
-ENV ZOOM_VERSION 6.7.5.6891
+ENV ZOOM_VERSION 7.0.0.1666
 # curl -fsS --head 'https://zoom.us/client/latest/zoom_amd64.deb' | grep '^location: '
 
 RUN set -eux; \
