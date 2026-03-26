@@ -1,11 +1,11 @@
 Description: disable recursive cloning of submodules by default
 Forwarded: no (upstream's default makes sense for them)
 
-diff --git a/frontend/dockerfile/dockerfile2llb/convert_copy.go b/frontend/dockerfile/dockerfile2llb/convert_copy.go
-index 37c3d4e7e..a55a3a086 100644
---- a/frontend/dockerfile/dockerfile2llb/convert_copy.go
-+++ b/frontend/dockerfile/dockerfile2llb/convert_copy.go
-@@ -164,7 +164,7 @@ func dispatchCopy(d *dispatchState, cfg copyConfig) error {
+diff --git a/frontend/dockerfile/dockerfile2llb/convert.go b/frontend/dockerfile/dockerfile2llb/convert.go
+index 665bdb399..271ef0852 100644
+--- a/frontend/dockerfile/dockerfile2llb/convert.go
++++ b/frontend/dockerfile/dockerfile2llb/convert.go
+@@ -1545,7 +1545,7 @@ func dispatchCopy(d *dispatchState, cfg copyConfig) error {
  			if gitRef.SubDir != "" {
  				gitOptions = append(gitOptions, llb.GitSubDir(gitRef.SubDir))
  			}
@@ -15,10 +15,10 @@ index 37c3d4e7e..a55a3a086 100644
  			}
  
 diff --git a/frontend/dockerui/context.go b/frontend/dockerui/context.go
-index 3bd5094f6..27c34f454 100644
+index 88d68569b..19a3a0b88 100644
 --- a/frontend/dockerui/context.go
 +++ b/frontend/dockerui/context.go
-@@ -169,7 +169,7 @@ func DetectGitContext(ref string, keepGit *bool, opts ...llb.GitOption) (*llb.St
+@@ -164,7 +164,7 @@ func DetectGitContext(ref string, keepGit *bool) (*llb.State, bool, error) {
  	if g.Checksum != "" {
  		gitOpts = append(gitOpts, llb.GitChecksum(g.Checksum))
  	}
@@ -26,4 +26,4 @@ index 3bd5094f6..27c34f454 100644
 +	if g.Submodules == nil || !*g.Submodules {
  		gitOpts = append(gitOpts, llb.GitSkipSubmodules())
  	}
- 	if g.MTime != "" {
+ 
