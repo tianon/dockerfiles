@@ -12,7 +12,7 @@ ENV BUILDKIT_VERSION 0.28.1
 COPY \
 	argsescaped.patch \
 	containerd-arm64-v8.patch \
-	git-no-submodules.patch \
+	git-no-submodules-pre-0.29.patch \
 	mips64le.patch \
 	noclip.patch \
 	nolint.patch \
