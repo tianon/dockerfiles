@@ -4,7 +4,7 @@
   "tag": "v1.11.0",
   "version": "1.11.0",
   "sha256": {
-    "node_exporter-1.11.0.aix.ppc.tar.gz": "fd737d2263f4c072d3cb5dcc0d42e5d8957a45f7607747550aadc8198d80131a",
+    "node_exporter-1.11.0.aix-ppc64.tar.gz": "e2523ccfe850afb05c1646ab63da1fa55d485270e7964b7418c065c9394dee22",
     "node_exporter-1.11.0.darwin-amd64.tar.gz": "82193b62d96c778a30767f95073649243d9775422a7d4204e6b0ce3e18fedecb",
     "node_exporter-1.11.0.darwin-arm64.tar.gz": "e1454f16bc75064cf436e2404212796c04c6a37db9f9e43d9f2df320a1e52235",
     "node_exporter-1.11.0.linux-386.tar.gz": "b19113e5c6b5af4f677614b23d2e609cd2d2c4ca1cca792b9d507a83ce7594c1",
