@@ -1,8 +1,8 @@
 {
-  "commit": "c73c379356bd6d1f08fb98a762d72eaf10cc8ec4",
-  "ref": "refs/tags/v4.4.1",
-  "tag": "v4.4.1",
-  "version": "4.4.1",
+  "commit": "ea4f484c9439af1c9aac7ec5504b3273c20ff44a",
+  "ref": "refs/tags/v4.5",
+  "tag": "v4.5",
+  "version": "4.5",
   "libacars": {
     "commit": "9af09a0121d4ec577339cbd4c7420d7519da48fa",
     "ref": "refs/tags/v2.2.1",
