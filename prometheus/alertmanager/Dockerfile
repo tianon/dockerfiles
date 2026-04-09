@@ -12,7 +12,7 @@ WORKDIR /opt/alertmanager
 ENV PATH /opt/alertmanager:$PATH
 
 # https://github.com/prometheus/alertmanager/releases
-ENV ALERTMANAGER_VERSION 0.31.1
+ENV ALERTMANAGER_VERSION 0.32.0
 
 RUN set -eux; \
 	\
@@ -30,20 +30,20 @@ RUN set -eux; \
 	\
 	filename="alertmanager-${ALERTMANAGER_VERSION}.linux-${promArch}.tar.gz"; \
 	case "$filename" in \
-		'alertmanager-0.31.1.linux-386.tar.gz') sha256='a9ece1d75f2f910c5ab5da0ab5d1c5e7444ce8902547e500ae5ea0f01592790e' ;; \
-		'alertmanager-0.31.1.linux-amd64.tar.gz') sha256='35191cbd9d4f8162458b78dd7e93990cccd246044d9a6f788adb1c66ac3ea07b' ;; \
-		'alertmanager-0.31.1.linux-arm64.tar.gz') sha256='266dda88b64318c27847ef9af4ff450fc178c827550a8039420c5ca8657a4a8b' ;; \
-		'alertmanager-0.31.1.linux-armv5.tar.gz') sha256='c6ff2e054b8155aa942420e97d37a3580ee5a282e0df3a38ce6cebee7eadd51f' ;; \
-		'alertmanager-0.31.1.linux-armv6.tar.gz') sha256='1728841f68b845dfabb8a4369d33a9afb24bd9a5e9480830e0022b6bf69c15b6' ;; \
-		'alertmanager-0.31.1.linux-armv7.tar.gz') sha256='553db369f6266c47b9f5f2259d9fa3e1b765ea2f9dae91c877bad96d441f8643' ;; \
-		'alertmanager-0.31.1.linux-mips.tar.gz') sha256='48eba0cf15bf62f59ce9a431efefaa061d8bc5c4b232e30cbb048c7c90eac796' ;; \
-		'alertmanager-0.31.1.linux-mips64.tar.gz') sha256='289283ebbd5c4aefb72b5dbfdce55fc07a0c467cc37c8af3b9d8127fbe6ac8d5' ;; \
-		'alertmanager-0.31.1.linux-mips64le.tar.gz') sha256='2d21fc77f41d98bd2ca0316461f91a2781149f40cbdd8fce92d6ed72aeb8afbb' ;; \
-		'alertmanager-0.31.1.linux-mipsle.tar.gz') sha256='1882a0a7a2a709aeb77f96849a3e6e88716359119de5e2408335cfe49249fcfd' ;; \
-		'alertmanager-0.31.1.linux-ppc64.tar.gz') sha256='2d627e4782896a8227430b273704ac57f011f15ad586e1e77e332d2c7dea53f3' ;; \
-		'alertmanager-0.31.1.linux-ppc64le.tar.gz') sha256='acec8f83000749b2c74fc77a0e5ce1da75d4daadfc1ff4e29ef584a2341927ae' ;; \
-		'alertmanager-0.31.1.linux-riscv64.tar.gz') sha256='e2821a586edbeb31e9d814172cc57106948168c6d49bb09e9aeef75fa55ba752' ;; \
-		'alertmanager-0.31.1.linux-s390x.tar.gz') sha256='ea6b1e7e170982ebd6870e0cfce4790d222130c358ff317fb7c6c944acd9ba23' ;; \
+		'alertmanager-0.32.0.linux-386.tar.gz') sha256='ac4e0d8b0ea4fb2fa6e7857053799e4ed5a8c540bfe1c4c2c028e6c7a077083c' ;; \
+		'alertmanager-0.32.0.linux-amd64.tar.gz') sha256='be72f50f6124ec53d944c0f100f8ec8108d969bade02fcc9f06a3068ff6c726f' ;; \
+		'alertmanager-0.32.0.linux-arm64.tar.gz') sha256='7812e12699694974f57ecc0b0400913c6c0d90190630d4332a7994a44982b1ed' ;; \
+		'alertmanager-0.32.0.linux-armv5.tar.gz') sha256='48006931dbf25f26dd27f56546ba8ed86712ad7eb5cb3e335ff85a892b9e29bf' ;; \
+		'alertmanager-0.32.0.linux-armv6.tar.gz') sha256='fed428978d6a9cb7404f100d5a32871c7e3da993c0603b03b6d15c5c49cae5d3' ;; \
+		'alertmanager-0.32.0.linux-armv7.tar.gz') sha256='1be0e4ffb5b2846f2f56edc19ac1e7b579eecc8d453f6098c227b0da8d92edf3' ;; \
+		'alertmanager-0.32.0.linux-mips.tar.gz') sha256='a5e6907fdda07fa37ba0bcde00d9d9dfbc08a6a002cf81bed4e8e6f6577933f3' ;; \
+		'alertmanager-0.32.0.linux-mips64.tar.gz') sha256='d00c82dbe1ad68505e92720a4c7e99895391da440c96da82b3ec47363416455b' ;; \
+		'alertmanager-0.32.0.linux-mips64le.tar.gz') sha256='67133a1292d042db2617936574683acd3b80caf1030a2e397744b31b0f2a45e7' ;; \
+		'alertmanager-0.32.0.linux-mipsle.tar.gz') sha256='8d4534b40dcc884971bfd706f071ee3b0415cabf918d7621b2b5bafc4c5fb485' ;; \
+		'alertmanager-0.32.0.linux-ppc64.tar.gz') sha256='469a1912ff5a66d2fd070cdf2df1de9b90ee58f141e3235e258d8e526522300e' ;; \
+		'alertmanager-0.32.0.linux-ppc64le.tar.gz') sha256='b4f255d9ce4855184fe29c2c161b8d51f21cc9239c0e7fe4865b9755206aad95' ;; \
+		'alertmanager-0.32.0.linux-riscv64.tar.gz') sha256='b064e9efe80f85534cda72b6a6c5b79abfdf6e3b8740f83b014db88ad625a9e8' ;; \
+		'alertmanager-0.32.0.linux-s390x.tar.gz') sha256='d9089c316538f3083029a9279f75ab822e2ca9a186ff965e55e582976d724b2e' ;; \
 		*) echo >&2 "error: unknown file: $filename"; exit 1 ;; \
 	esac; \
 	wget -O /tmp/alertmanager.tar.gz "https://github.com/prometheus/alertmanager/releases/download/v${ALERTMANAGER_VERSION}/$filename"; \
