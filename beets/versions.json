@@ -1,8 +1,8 @@
 {
-  "version": "2.8.0",
+  "version": "2.9.0",
   "python": {
-    "version": "3.13",
-    "from": "python:3.13-slim-trixie",
+    "version": "3.14",
+    "from": "python:3.14-slim-trixie",
     "arches": [
       "amd64",
       "arm32v5",
