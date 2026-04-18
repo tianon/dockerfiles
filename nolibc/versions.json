@@ -1,21 +1,21 @@
 {
   "linux": {
     "moniker": "stable",
-    "version": "6.19.12",
+    "version": "6.19.13",
     "iseol": false,
     "released": {
-      "timestamp": 1775910605,
-      "isodate": "2026-04-11"
+      "timestamp": 1776502029,
+      "isodate": "2026-04-18"
     },
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.19.12.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.19.12.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.19.13.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.19.13.tar.sign",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.19.12.xz",
-      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.19.11-12.xz"
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.19.13.xz",
+      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.19.12-13.xz"
     },
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.19.12",
-    "gitweb": "https://git.kernel.org/stable/h/v6.19.12",
-    "diffview": "https://git.kernel.org/stable/ds/v6.19.12/v6.19.11"
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.19.13",
+    "gitweb": "https://git.kernel.org/stable/h/v6.19.13",
+    "diffview": "https://git.kernel.org/stable/ds/v6.19.13/v6.19.12"
   },
   "arches": {
     "amd64": {
