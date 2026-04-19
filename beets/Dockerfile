@@ -6,7 +6,7 @@
 
 FROM python:3.14-slim-trixie
 
-ENV BEETS_VERSION 2.9.0
+ENV BEETS_VERSION 2.10.0
 
 RUN set -eux; \
 	pip install --no-cache-dir "beets == $BEETS_VERSION"; \

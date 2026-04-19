@@ -1,5 +1,5 @@
 {
-  "version": "2.9.0",
+  "version": "2.10.0",
   "python": {
     "version": "3.14",
     "from": "python:3.14-slim-trixie",
