@@ -1,14 +1,14 @@
 {
-  "commit": "db9f1182f5f2a64ea496752899626578d2b313a7",
-  "ref": "refs/tags/v0.40.1",
-  "tag": "v0.40.1",
-  "version": "0.40.1",
+  "commit": "1f114b2acff247f52eb77a92363119e7327107b3",
+  "ref": "refs/tags/v0.41.0",
+  "tag": "v0.41.0",
+  "version": "0.41.0",
   "go": {
     "min": {
       "version": "1.19"
     },
     "max": {
-      "version": "1.25"
+      "version": "1.26"
     }
   }
 }
