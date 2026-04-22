@@ -1,21 +1,21 @@
 {
   "linux": {
     "moniker": "stable",
-    "version": "6.19.13",
+    "version": "7.0.1",
     "iseol": false,
     "released": {
-      "timestamp": 1776502029,
-      "isodate": "2026-04-18"
+      "timestamp": 1776857620,
+      "isodate": "2026-04-22"
     },
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.19.13.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.19.13.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.0.1.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.0.1.tar.sign",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.19.13.xz",
-      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v6.x/incr/patch-6.19.12-13.xz"
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v7.x/patch-7.0.1.xz",
+      "incremental": null
     },
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.19.13",
-    "gitweb": "https://git.kernel.org/stable/h/v6.19.13",
-    "diffview": "https://git.kernel.org/stable/ds/v6.19.13/v6.19.12"
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v7.x/ChangeLog-7.0.1",
+    "gitweb": "https://git.kernel.org/stable/h/v7.0.1",
+    "diffview": "https://git.kernel.org/stable/ds/v7.0.1/v7.0"
   },
   "arches": {
     "amd64": {
