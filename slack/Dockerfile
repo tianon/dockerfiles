@@ -4,16 +4,15 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 RUN set -eux; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
+	apt-get install --update -y --no-install-recommends \
 		ca-certificates \
 # used as a fake browser so clicked URLs (and internal Slack behavior that wants to open a browser) pop up with a URL + clipboard instead of silently doing nothing
 		zenity xclip \
 	; \
-	rm -rf /var/lib/apt/lists/*
+	apt-get dist-clean
 
 ENV LANG C.UTF-8
 
@@ -28,30 +27,28 @@ ENV SLACK_GPG_KEY DB085A08CA13B8ACB917E0F6D938EC0D038651BD
 RUN set -eux; \
 	\
 	savedAptMark="$(apt-mark showmanual)"; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
+	apt-get install --update -y --no-install-recommends \
 		gnupg \
 	; \
-	rm -rf /var/lib/apt/lists; \
 	\
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$SLACK_GPG_KEY"; \
-	gpg --batch --export --armor "$SLACK_GPG_KEY" > /etc/apt/trusted.gpg.d/slack.gpg.asc; \
+	gpg --batch --export --armor "$SLACK_GPG_KEY" > /etc/apt/keyrings/slack.asc; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME"; \
-	apt-key list; \
 	\
 	apt-mark auto '.*' > /dev/null; \
 	[ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	\
-	echo 'deb https://packagecloud.io/slacktechnologies/slack/debian jessie main' > /etc/apt/sources.list.d/slack.list
+	echo 'deb [ signed-by=/etc/apt/keyrings/slack.asc ] https://packagecloud.io/slacktechnologies/slack/debian jessie main' > /etc/apt/sources.list.d/slack.list; \
+	apt-get update; \
+	apt-get dist-clean
 
 ENV SLACK_VERSION 4.47.69
 
 RUN set -eux; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
+	apt-get install --update -y --no-install-recommends \
 		slack-desktop="$SLACK_VERSION" \
 # 3.0.2: slack: error while loading shared libraries: libX11-xcb.so.1: cannot open shared object file: No such file or directory
 		libx11-xcb1 \
@@ -64,10 +61,10 @@ RUN set -eux; \
 # 4.4.0: libGL error: failed to load driver: (i915_dri.so, i194, i965, swrast_dir.so, swrast)
 		libgl1-mesa-dri \
 	; \
-	rm -rf /var/lib/apt/lists/*; \
+	apt-get dist-clean; \
 	slack="$(command -v slack)"; \
 	slack="$(readlink -ev "$slack")"; \
-	! { ldd "$slack" | grep 'not found'; }
+	if ldd "$slack" | grep 'not found'; then exit 1; fi
 
 COPY browser.sh /usr/local/bin/
 ENV BROWSER /usr/local/bin/browser.sh
