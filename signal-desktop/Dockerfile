@@ -32,7 +32,7 @@ RUN set -eux; \
 	apt-get dist-clean
 
 # https://github.com/signalapp/Signal-Desktop/releases
-ENV SIGNAL_DESKTOP_VERSION 8.7.0
+ENV SIGNAL_DESKTOP_VERSION 8.8.0
 
 RUN set -eux; \
 	apt-get update; \
