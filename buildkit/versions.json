@@ -13,10 +13,10 @@
     "0.13"
   ],
   "rc": {
-    "commit": "7ea9fa1c7cd9eacf8551661793191f2aac09863d",
-    "ref": "refs/tags/v0.29.0-rc1^{}",
-    "tag": "v0.29.0-rc1",
-    "version": "0.29.0-rc1",
+    "commit": "6baf355a08f32b7a13b2cd38dd2bfcf4e9b49c15",
+    "ref": "refs/tags/v0.30.0-rc1^{}",
+    "tag": "v0.30.0-rc1",
+    "version": "0.30.0-rc1",
     "go": {
       "version": "1.25"
     }
