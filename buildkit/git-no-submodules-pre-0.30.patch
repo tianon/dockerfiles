@@ -13,7 +13,7 @@ index 37c3d4e7e..a55a3a086 100644
 +			if gitRef.Submodules == nil || !*gitRef.Submodules {
  				gitOptions = append(gitOptions, llb.GitSkipSubmodules())
  			}
- 			if gitRef.FetchByCommit {
+ 
 diff --git a/frontend/dockerui/context.go b/frontend/dockerui/context.go
 index 3bd5094f6..27c34f454 100644
 --- a/frontend/dockerui/context.go
