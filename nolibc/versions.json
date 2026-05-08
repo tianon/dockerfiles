@@ -1,21 +1,21 @@
 {
   "linux": {
     "moniker": "stable",
-    "version": "7.0.4",
+    "version": "7.0.5",
     "iseol": false,
     "released": {
-      "timestamp": 1778127317,
-      "isodate": "2026-05-07"
+      "timestamp": 1778222692,
+      "isodate": "2026-05-08"
     },
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.0.4.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.0.4.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.0.5.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.0.5.tar.sign",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v7.x/patch-7.0.4.xz",
-      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v7.x/incr/patch-7.0.3-4.xz"
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v7.x/patch-7.0.5.xz",
+      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v7.x/incr/patch-7.0.4-5.xz"
     },
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v7.x/ChangeLog-7.0.4",
-    "gitweb": "https://git.kernel.org/stable/h/v7.0.4",
-    "diffview": "https://git.kernel.org/stable/ds/v7.0.4/v7.0.3"
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v7.x/ChangeLog-7.0.5",
+    "gitweb": "https://git.kernel.org/stable/h/v7.0.5",
+    "diffview": "https://git.kernel.org/stable/ds/v7.0.5/v7.0.4"
   },
   "arches": {
     "amd64": {
