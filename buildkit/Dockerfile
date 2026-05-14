@@ -7,12 +7,12 @@
 FROM --platform=$BUILDPLATFORM golang:1.25 AS build
 
 # https://github.com/moby/buildkit/releases
-ENV BUILDKIT_VERSION 0.29.0
+ENV BUILDKIT_VERSION 0.30.0
 
 COPY \
 	argsescaped.patch \
 	containerd-arm64-v8.patch \
-	git-no-submodules-pre-0.30.patch \
+	git-no-submodules.patch \
 	mips64le.patch \
 	noclip.patch \
 	nolint.patch \
