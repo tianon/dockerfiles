@@ -1,21 +1,21 @@
 {
   "linux": {
     "moniker": "stable",
-    "version": "7.0.8",
+    "version": "7.0.9",
     "iseol": false,
     "released": {
-      "timestamp": 1778849772,
-      "isodate": "2026-05-15"
+      "timestamp": 1779030999,
+      "isodate": "2026-05-17"
     },
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.0.8.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.0.8.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.0.9.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.0.9.tar.sign",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v7.x/patch-7.0.8.xz",
-      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v7.x/incr/patch-7.0.7-8.xz"
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v7.x/patch-7.0.9.xz",
+      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v7.x/incr/patch-7.0.8-9.xz"
     },
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v7.x/ChangeLog-7.0.8",
-    "gitweb": "https://git.kernel.org/stable/h/v7.0.8",
-    "diffview": "https://git.kernel.org/stable/ds/v7.0.8/v7.0.7"
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v7.x/ChangeLog-7.0.9",
+    "gitweb": "https://git.kernel.org/stable/h/v7.0.9",
+    "diffview": "https://git.kernel.org/stable/ds/v7.0.9/v7.0.8"
   },
   "arches": {
     "amd64": {
