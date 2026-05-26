@@ -1,5 +1,5 @@
 {
-  "version": "56f28965b15d9336b93db6b4300343b1d30d1319",
+  "version": "ad6b80a888d3248fba66ce149f1f072487f7697b",
   "go": {
     "version": "1.25.5"
   },
@@ -10,7 +10,7 @@
     }
   },
   "buildx": {
-    "version": "3f3f6811ac2e9a6a58f313caad42cfd0a96649fb",
+    "version": "709b33d3f11d0050bc7c5fa69515fde9837be284",
     "go": {
       "version": "1.25.5"
     }
