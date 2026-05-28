@@ -51,7 +51,7 @@ RUN set -eux; \
 	docker --version; \
 	ldd /usr/local/bin/docker || :
 
-ARG MOBY_GITCOMMIT=ea113b68f8e5dfe8bc9815311d4ac88fbc1102d1
+ARG MOBY_GITCOMMIT=19592a8ad2ece47d8226e6330d8a2ccad886cb3d
 ENV MOBY_GITCOMMIT $MOBY_GITCOMMIT
 
 RUN set -eux; \
