@@ -23,7 +23,7 @@ jobs:
     outputs:
       strategy: ${{ steps.generate-jobs.outputs.strategy }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: tianon/actions/checkout/composite@581498642ee39d41dc3a801d22b3f7f42a95acc7 # HEAD
       - id: generate-jobs
         name: Generate Jobs
         run: |
@@ -57,7 +57,7 @@ jobs:
       dir: ${{ matrix.dir }}
       branch: update/${{ matrix.dir }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: tianon/actions/checkout/composite@581498642ee39d41dc3a801d22b3f7f42a95acc7 # HEAD
         with:
           fetch-depth: 0
       - name: Install Bashbrew
@@ -111,7 +111,7 @@ jobs:
     env:
       branch: 'update-versions'
     steps:
-      - uses: actions/checkout@v6
+      - uses: tianon/actions/checkout/composite@581498642ee39d41dc3a801d22b3f7f42a95acc7 # HEAD
         with:
           fetch-depth: 0
       - name: Config
