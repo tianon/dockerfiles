@@ -57,9 +57,10 @@ jobs:
       dir: ${{ matrix.dir }}
       branch: update/${{ matrix.dir }}
     steps:
-      - uses: tianon/actions/checkout/composite@581498642ee39d41dc3a801d22b3f7f42a95acc7 # HEAD
+      - uses: tianon/actions/checkout@581498642ee39d41dc3a801d22b3f7f42a95acc7 # HEAD
         with:
           fetch-depth: 0
+          persist-credentials: true
       - name: Install Bashbrew
         run: |
           mkdir -p "$RUNNER_TEMP/bin"
@@ -111,9 +112,10 @@ jobs:
     env:
       branch: 'update-versions'
     steps:
-      - uses: tianon/actions/checkout/composite@581498642ee39d41dc3a801d22b3f7f42a95acc7 # HEAD
+      - uses: tianon/actions/checkout@581498642ee39d41dc3a801d22b3f7f42a95acc7 # HEAD
         with:
           fetch-depth: 0
+          persist-credentials: true
       - name: Config
         run: |
           git config user.name 'Tianon (automated)'
