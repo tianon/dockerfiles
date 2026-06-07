@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: tianon/actions/checkout/composite@581498642ee39d41dc3a801d22b3f7f42a95acc7 # HEAD
+      - uses: tianon/actions/checkout/composite@49d5ed3a918c60d4e9b700e7e6f4c7c7a0617480 # HEAD
         with:
           fetch-depth: ${{ !matrix.fetchAllCommits && 1 || 0 }}
 
