@@ -1,19 +1,19 @@
 {
-  "version": "4.76.0",
-  "build": "228118",
+  "version": "4.77.0",
+  "build": "228796",
   "arches": {
     "amd64": {
-      "build": "228118",
-      "date": "2026-06-01T16:40:03Z",
+      "build": "228796",
+      "date": "2026-06-08T16:02:37Z",
       "url": "https://desktop.docker.com/linux/main/amd64/docker-desktop-amd64.deb",
-      "sha256": "b59dac8fe87842f0c25b32cf7f72d5ceaa4ffa292a9b81a1df9fd681a0e209ec",
+      "sha256": "e2155e4d30b45ebb4dc1fe40bb98a1f2b8c2b2058abbaa0b2abc1f918abbc6ea",
       "dpkgArch": "amd64"
     },
     "arm64v8": {
-      "build": "228118",
-      "date": "2026-06-01T16:40:03Z",
+      "build": "228796",
+      "date": "2026-06-08T16:03:14Z",
       "url": "https://desktop.docker.com/linux/main/arm64/docker-desktop-arm64.deb",
-      "sha256": "4b67450b32704ab34f7f082a6478ce52e2bb40b85abb587af58ef01bdcf75e94",
+      "sha256": "3bebc6a8e19497c32daa33c68585985b8c15060b3926137f8e3adb40474a7ef7",
       "dpkgArch": "arm64"
     }
   }
