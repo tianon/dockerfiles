@@ -96,7 +96,7 @@ jobs:
           git commit -m "$message" "$dir" || :
           after="$(git rev-parse HEAD)"
           if [ "$before" != "$after" ]; then
-            git push -f origin HEAD:"$branch"
+            git push -f origin HEAD:"refs/heads/$branch"
           else
             head="$(git rev-parse origin/master)"
             if [ "$after" = "$head" ]; then
@@ -142,7 +142,7 @@ jobs:
           head="$(git rev-parse origin/master)"
           cur="$(git rev-parse HEAD)"
           if [ "$cur" != "$head" ]; then
-            git push -f origin HEAD:"$branch"
+            git push -f origin HEAD:"refs/heads/$branch"
           else
             git push origin --delete "$branch" || :
           fi
