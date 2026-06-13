@@ -151,44 +151,44 @@
     }
   },
   "runc": {
-    "commit": "c241c0bb5e60a8e8c1b2e53d4eca8d0068d8d57e",
-    "ref": "refs/tags/v1.4.2^{}",
-    "tag": "v1.4.2",
-    "version": "1.4.2",
+    "commit": "bb14dabeb7185bb72c8c86735d090dcb20f36587",
+    "ref": "refs/tags/v1.4.3^{}",
+    "tag": "v1.4.3",
+    "version": "1.4.3",
     "arches": {
       "amd64": {
-        "url": "https://github.com/opencontainers/runc/releases/download/v1.4.2/runc.amd64",
-        "sha256": "ac8a90f9e225bb9322189937b230cdc5478d5753f0e31e1bda98a5cf06bd9539",
+        "url": "https://github.com/opencontainers/runc/releases/download/v1.4.3/runc.amd64",
+        "sha256": "f6ae8efc0fa40079e1475e97cbe9d1bd3f106a28d6af78a11d9f1bd565515e60",
         "dpkgArch": "amd64"
       },
       "i386": {
-        "url": "https://github.com/opencontainers/runc/releases/download/v1.4.2/runc.386",
-        "sha256": "24454febf87cc3443116e1a04eb7f09569bfd90f0159da9f9594e0d26cf1496d",
+        "url": "https://github.com/opencontainers/runc/releases/download/v1.4.3/runc.386",
+        "sha256": "d552b592e4c0382eee7eaab0dfd6707f33f218a26f6a8ab578298f8f7bb41d62",
         "dpkgArch": "i386"
       },
       "arm64v8": {
-        "url": "https://github.com/opencontainers/runc/releases/download/v1.4.2/runc.arm64",
-        "sha256": "ea54032310588e115633aa2f4bba8bf9500257f657e1deca88df5778775138db",
+        "url": "https://github.com/opencontainers/runc/releases/download/v1.4.3/runc.arm64",
+        "sha256": "633301e2e32f8a5ad54031aab4901eb00308bec677dd15faa2751e8f9dab5ca4",
         "dpkgArch": "arm64"
       },
       "arm32v7": {
-        "url": "https://github.com/opencontainers/runc/releases/download/v1.4.2/runc.armhf",
-        "sha256": "0a1caac39e8b413ee6a807a7ee1f9207cadf8aa2c7d99bd6c3637362209cbc38",
+        "url": "https://github.com/opencontainers/runc/releases/download/v1.4.3/runc.armhf",
+        "sha256": "7246fd0289494b29161afbdd49df44534e0ce4157e011407399c24922bdb2a9e",
         "dpkgArch": "armhf"
       },
       "ppc64le": {
-        "url": "https://github.com/opencontainers/runc/releases/download/v1.4.2/runc.ppc64le",
-        "sha256": "572a4b78f7cb55569f12c4b3999fbc44e6d3c2c7e94ec0024cf7ae09922438b4",
+        "url": "https://github.com/opencontainers/runc/releases/download/v1.4.3/runc.ppc64le",
+        "sha256": "9a10f813733a5bdf740e9513a210d817bec08cab6939913a25362e5c5915fbdc",
         "dpkgArch": "ppc64el"
       },
       "riscv64": {
-        "url": "https://github.com/opencontainers/runc/releases/download/v1.4.2/runc.riscv64",
-        "sha256": "0e67d59c9bfd3152c2b4038b041a93a81c3fa93cafe884d4b73df8fdaf271cdf",
+        "url": "https://github.com/opencontainers/runc/releases/download/v1.4.3/runc.riscv64",
+        "sha256": "187cf94df7043d4f385384a8fcc7eb163a33e3516464e41dec500f303f4a79d5",
         "dpkgArch": "riscv64"
       },
       "s390x": {
-        "url": "https://github.com/opencontainers/runc/releases/download/v1.4.2/runc.s390x",
-        "sha256": "1fd2733349266289d53cdd8067ff3e67449bc15466a1a2eeb049388aa9bb79f2",
+        "url": "https://github.com/opencontainers/runc/releases/download/v1.4.3/runc.s390x",
+        "sha256": "b6d50cf2aa51057a4c94e660b0a0512974c8a2a78a46874b07cf58c0c4f2a5da",
         "dpkgArch": "s390x"
       }
     }
