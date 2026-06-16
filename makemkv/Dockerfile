@@ -19,7 +19,7 @@ RUN set -eux; \
 	apt-get dist-clean
 
 # http://www.makemkv.com/forum2/viewtopic.php?f=3&t=224
-ENV MAKEMKV_VERSION 1.18.3
+ENV MAKEMKV_VERSION 1.18.4
 # http://makemkv.com/download/ (release notes)
 
 # beta code: http://www.makemkv.com/forum2/viewtopic.php?f=5&t=1053
