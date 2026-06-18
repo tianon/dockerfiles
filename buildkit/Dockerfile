@@ -7,7 +7,7 @@
 FROM --platform=$BUILDPLATFORM golang:1.25 AS build
 
 # https://github.com/moby/buildkit/releases
-ENV BUILDKIT_VERSION 0.30.0
+ENV BUILDKIT_VERSION 0.31.0
 
 COPY \
 	argsescaped.patch \
