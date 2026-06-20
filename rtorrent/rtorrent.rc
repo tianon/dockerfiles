@@ -1,5 +1,4 @@
 directory = /torrents
 session = /torrents/session
-dht = auto
 
 try_import = /torrents/.rtorrent.rc
