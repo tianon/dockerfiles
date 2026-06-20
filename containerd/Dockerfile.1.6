@@ -24,17 +24,17 @@ RUN set -eux; \
 	chmod +x /usr/local/bin/dind
 
 # https://github.com/opencontainers/runc/releases
-ENV RUNC_VERSION 1.4.3
+ENV RUNC_VERSION 1.5.0
 RUN set -eux; \
 	dpkgArch="$(dpkg --print-architecture)"; \
 	case "$dpkgArch" in \
-		'amd64') url='https://github.com/opencontainers/runc/releases/download/v1.4.3/runc.amd64'; sha256='f6ae8efc0fa40079e1475e97cbe9d1bd3f106a28d6af78a11d9f1bd565515e60' ;; \
-		'i386') url='https://github.com/opencontainers/runc/releases/download/v1.4.3/runc.386'; sha256='d552b592e4c0382eee7eaab0dfd6707f33f218a26f6a8ab578298f8f7bb41d62' ;; \
-		'arm64') url='https://github.com/opencontainers/runc/releases/download/v1.4.3/runc.arm64'; sha256='633301e2e32f8a5ad54031aab4901eb00308bec677dd15faa2751e8f9dab5ca4' ;; \
-		'armhf') url='https://github.com/opencontainers/runc/releases/download/v1.4.3/runc.armhf'; sha256='7246fd0289494b29161afbdd49df44534e0ce4157e011407399c24922bdb2a9e' ;; \
-		'ppc64el') url='https://github.com/opencontainers/runc/releases/download/v1.4.3/runc.ppc64le'; sha256='9a10f813733a5bdf740e9513a210d817bec08cab6939913a25362e5c5915fbdc' ;; \
-		'riscv64') url='https://github.com/opencontainers/runc/releases/download/v1.4.3/runc.riscv64'; sha256='187cf94df7043d4f385384a8fcc7eb163a33e3516464e41dec500f303f4a79d5' ;; \
-		's390x') url='https://github.com/opencontainers/runc/releases/download/v1.4.3/runc.s390x'; sha256='b6d50cf2aa51057a4c94e660b0a0512974c8a2a78a46874b07cf58c0c4f2a5da' ;; \
+		'amd64') url='https://github.com/opencontainers/runc/releases/download/v1.5.0/runc.amd64'; sha256='0363e69bebd3a027d1239364ab9b4f4873f6bc4e7a7878e94b4ea59f08551297' ;; \
+		'i386') url='https://github.com/opencontainers/runc/releases/download/v1.5.0/runc.386'; sha256='004c84cba333247cd15a5ea148b1c2c778f644e2836acf0c26196c56a2de4e38' ;; \
+		'arm64') url='https://github.com/opencontainers/runc/releases/download/v1.5.0/runc.arm64'; sha256='1f6d8c553add066a6aaf838d3172d4c5ed3c6b065b6f7eed2f4a4aa4af261e59' ;; \
+		'armhf') url='https://github.com/opencontainers/runc/releases/download/v1.5.0/runc.armhf'; sha256='283e85880170bd92eb430b2e458aa7f57b85e613a8ae69572d6d13d0ad34dee8' ;; \
+		'ppc64el') url='https://github.com/opencontainers/runc/releases/download/v1.5.0/runc.ppc64le'; sha256='e20482d620d1f4b80843251d16b407ec06e1d76dd592e6c7892541e9174a20b7' ;; \
+		'riscv64') url='https://github.com/opencontainers/runc/releases/download/v1.5.0/runc.riscv64'; sha256='00717739ec2cbdb0883fe6f4eab0aa39bdc6d55eeeb5c8462d2a105112b8cca8' ;; \
+		's390x') url='https://github.com/opencontainers/runc/releases/download/v1.5.0/runc.s390x'; sha256='46085ecf785f8860121735986a37880ebd8de07202ac29fca095722f475517df' ;; \
 		*) echo >&2 "error: unsupported architecture: '$dpkgArch'"; exit 1 ;; \
 	esac; \
 # TODO $url.asc (see https://github.com/opencontainers/runc/releases)
