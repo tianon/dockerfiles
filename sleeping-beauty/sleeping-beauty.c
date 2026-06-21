@@ -1,3 +1,8 @@
+#ifndef my_syscall0
+// https://lore.kernel.org/all/aZ0bf8tJStmVTxZ1@1wt.eu/T/#u
+// https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/tools/include/nolibc?h=linux-7.1.y&id=55f1d6a9d6780e779e882a4d2d1b3db311835798
+#  define my_syscall0 __nolibc_syscall0
+#endif
 int main() {
 	for(;;) { // tight loop because jpetazzo is trolling
 #ifdef __NR_pause
