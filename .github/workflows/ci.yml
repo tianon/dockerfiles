@@ -50,6 +50,7 @@ jobs:
     steps:
       - uses: tianon/actions/checkout/composite@49d5ed3a918c60d4e9b700e7e6f4c7c7a0617480 # HEAD
       # TODO something clever with https://github.com/marketplace/actions/changed-files
+      - uses: tianon/debian-moby-action@HEAD
       - name: Prepare Environment
         run: ${{ matrix.runs.prepare }}
       - name: Pull Dependencies
