@@ -85,3 +85,49 @@ github-file-commit() {
 		unix: ($unix | tonumber),
 	}'
 }
+
+github-clamp-commit() {
+	local repo="$1" # "containerd/containerd"
+	local date="${2:-last monday 00:00:00}" # something date(1) can parse
+	local ref="${3:-HEAD}" # ref to start walking backwards from
+
+	local clampUnix
+	clampUnix="$(date --utc --date "$date" '+%s')" || return 1
+
+	local commit= date unix
+	while [ -z "$commit" ]; do
+		local commits
+		commits="$(
+			wget -qO- --header 'Accept: application/json' "https://github.com/$repo/commits/$ref.atom" \
+				| jq -r '
+					.payload.commitGroups[].commits[]
+					| first([ .committedDate, .authoredDate ] | sort | reverse[]) as $date
+					| "\(.oid) \($date)"
+					| @sh
+				'
+		)"
+		eval "local commitDates=( $commits ) commitDate"
+		[ "${#commitDates[@]}" -gt 0 ] || return 1 # TODO error message?
+		for commitDate in "${commitDates[@]}"; do
+			ref="${commitDate%%[[:space:]]*}"
+			date="${commitDate#$ref[[:space:]]}"
+			[ "$ref" != "$date" ] || return 1 # TODO error message?
+			unix="$(date --utc --date "$date" '+%s')" || return 1 # TODO error message?
+			if [ "$unix" -le "$clampUnix" ]; then
+				commit="$ref"
+				break 2
+			fi
+		done
+	done
+	[ -n "$commit" ] || return 1 # TODO error message?
+	[ -n "$date" ] || return 1
+	[ -n "$unix" ] || return 1
+
+	echo >&2 "github $repo: $commit ($date -- @$unix)"
+
+	jq -nc --arg commit "$commit" --arg date "$date" --arg unix "$unix" '{
+		version: $commit,
+		$date,
+		unix: ($unix | tonumber),
+	}'
+}
