@@ -19,6 +19,7 @@ RUN set -eux; \
 		libqt6network6 \
 		libqt6qml6 \
 		libqt6quick6 \
+		libqt6quickcontrols2-6 \
 		libqt6quickwidgets6 \
 		libqt6svg6 \
 		libqt6widgets6 \
@@ -28,7 +29,7 @@ RUN set -eux; \
 
 # https://zoom.us/download#client_4meeting ("Debian", "64 bit", "8.0+", "Version X.Y.ZZZ.ZZZ")
 # https://support.zoom.us/hc/en-us/articles/205759689-Release-notes-for-Linux
-ENV ZOOM_VERSION 7.0.5.3034
+ENV ZOOM_VERSION 7.1.0.3715
 # curl -fsS --head 'https://zoom.us/client/latest/zoom_amd64.deb' | grep '^location: '
 
 RUN set -eux; \
