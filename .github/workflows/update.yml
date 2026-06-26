@@ -23,7 +23,7 @@ jobs:
     outputs:
       strategy: ${{ steps.generate-jobs.outputs.strategy }}
     steps:
-      - uses: tianon/actions/checkout/composite@49d5ed3a918c60d4e9b700e7e6f4c7c7a0617480 # HEAD
+      - uses: tianon/actions/checkout/composite@64e41cf7037bd50d75e40a6f9f54aa5d07fb59ca # HEAD
       - id: generate-jobs
         name: Generate Jobs
         run: |
@@ -57,7 +57,7 @@ jobs:
       dir: ${{ matrix.dir }}
       branch: update/${{ matrix.dir }}
     steps:
-      - uses: tianon/actions/checkout@49d5ed3a918c60d4e9b700e7e6f4c7c7a0617480 # HEAD
+      - uses: tianon/actions/checkout@64e41cf7037bd50d75e40a6f9f54aa5d07fb59ca # HEAD
         with:
           fetch-depth: 0
           persist-credentials: true
@@ -112,7 +112,7 @@ jobs:
     env:
       branch: 'update-versions'
     steps:
-      - uses: tianon/actions/checkout@49d5ed3a918c60d4e9b700e7e6f4c7c7a0617480 # HEAD
+      - uses: tianon/actions/checkout@64e41cf7037bd50d75e40a6f9f54aa5d07fb59ca # HEAD
         with:
           fetch-depth: 0
           persist-credentials: true
