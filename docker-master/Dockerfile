@@ -51,7 +51,7 @@ RUN set -eux; \
 	docker --version; \
 	ldd /usr/local/bin/docker || :
 
-ARG MOBY_GITCOMMIT=53f682590c4aa49a04b3c1cf1ad7a1b379a22f17
+ARG MOBY_GITCOMMIT=2f5f9d08df56fc877bbf9afd8c717cc08f6e1432
 ENV MOBY_GITCOMMIT $MOBY_GITCOMMIT
 
 RUN set -eux; \
@@ -98,7 +98,7 @@ RUN set -eux; \
 
 FROM golang:1.25-trixie AS buildx
 
-ARG BUILDX_GITCOMMIT=dc8fa3045b85a9e53dd25203cc8c5f3f210544b0
+ARG BUILDX_GITCOMMIT=cd58eac2cb1335fc589f2f59ad62f4d48afe447a
 ENV BUILDX_GITCOMMIT $BUILDX_GITCOMMIT
 
 RUN set -eux; \
