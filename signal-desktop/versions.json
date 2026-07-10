@@ -1,6 +1,6 @@
 {
-  "filename": "pool/s/signal-desktop/signal-desktop_8.17.0_amd64.deb",
-  "sha256": "ed150c06f3309851e8b1fd22e709aa6e11fbdc3262f87c40701a3163f87218a4",
-  "url": "https://updates.signal.org/desktop/apt/pool/s/signal-desktop/signal-desktop_8.17.0_amd64.deb",
-  "version": "8.17.0"
+  "filename": "pool/s/signal-desktop/signal-desktop_8.18.0_amd64.deb",
+  "sha256": "8ee4e5de58d55c1b84a525bda9b26308b2efed050f58cc6d5fd16367d4b50477",
+  "url": "https://updates.signal.org/desktop/apt/pool/s/signal-desktop/signal-desktop_8.18.0_amd64.deb",
+  "version": "8.18.0"
 }
