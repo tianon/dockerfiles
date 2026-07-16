@@ -1,6 +1,6 @@
 {
-  "filename": "pool/steam/s/steam/steam-launcher_1.0.0.85_amd64.deb",
-  "sha256": "b44634a6a604ca7c8b23809d0f2a921a0348bb2081c8cb8944116d0799872b70",
-  "url": "https://repo.steampowered.com/steam/pool/steam/s/steam/steam-launcher_1.0.0.85_amd64.deb",
-  "version": "1.0.0.85"
+  "filename": "pool/steam/s/steam/steam-launcher_1.0.0.87_amd64.deb",
+  "sha256": "765aba9a0ed339a50226ceb614fcc9879a991ba184098bc8de920efb12c714a4",
+  "url": "https://repo.steampowered.com/steam/pool/steam/s/steam/steam-launcher_1.0.0.87_amd64.deb",
+  "version": "1.0.0.87"
 }
