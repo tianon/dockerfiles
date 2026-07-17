@@ -10,7 +10,7 @@
 #
 #   $ docker run -d --name dind --privileged --volume dind:/var/lib/docker tianon/docker-master
 
-FROM golang:1.25-trixie AS build
+FROM golang:1.26-trixie AS build
 
 RUN set -eux; \
 	apt-get update; \
@@ -51,7 +51,7 @@ RUN set -eux; \
 	docker --version; \
 	ldd /usr/local/bin/docker || :
 
-ARG MOBY_GITCOMMIT=8eac4aa78ec63cccd11dd81b78340c01c4d6fdb5
+ARG MOBY_GITCOMMIT=11ee7e07df4203b65b9cb23302aed9f8d81af0b6
 ENV MOBY_GITCOMMIT $MOBY_GITCOMMIT
 
 RUN set -eux; \
