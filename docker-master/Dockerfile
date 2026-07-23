@@ -96,9 +96,9 @@ RUN set -eux; \
 		chroot . "./$bin" --version; \
 	done
 
-FROM golang:1.25-trixie AS buildx
+FROM golang:1.26-trixie AS buildx
 
-ARG BUILDX_GITCOMMIT=efd9aa1deab08c1518769cd59a67b373df57492c
+ARG BUILDX_GITCOMMIT=4e15a5aca0e63b9c504b8a1c4e67993bc3e289b3
 ENV BUILDX_GITCOMMIT $BUILDX_GITCOMMIT
 
 RUN set -eux; \
