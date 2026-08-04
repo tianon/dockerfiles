@@ -19,7 +19,7 @@ RUN set -eux; \
 	fi
 
 # https://pkgs.tailscale.com/stable/#static
-ENV TAILSCALE_VERSION 1.98.10
+ENV TAILSCALE_VERSION 1.102.1
 
 RUN set -eux; \
 	dpkgArch="$(dpkg --print-architecture)"; \
