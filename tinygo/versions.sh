@@ -18,7 +18,20 @@ go="$(
 	wget -qO- "https://github.com/tinygo-org/tinygo/raw/$tag/builder/config.go" \
 		| jq -csR '
 			[
-				capture("((?<=\n)|^)[[:space:]]*const[[:space:]]+minor(?<key>Min|Max)[[:space:]]*=[[:space:]]*(?<value>[0-9]+)[[:space:]]*((?=\n)|$)"; "g")
+				capture("(?x)
+					( (?<=\n) | ^ )
+					[[:space:]]*
+					const
+					[[:space:]]+
+					minor(?<key>Min|Max)
+					[[:space:]]*
+					=
+					[[:space:]]*
+					(?<value>[0-9]+)
+					[[:space:]]*
+					(?: // [^\n]* )
+					( (?=\n) | $ )
+				"; "g")
 				| .key |= ascii_downcase
 				| .value |= { version: "1.\(.)" }
 			]
