@@ -68,7 +68,8 @@ github-file-commit() {
 	atom="$(wget -qO- --header 'Accept: application/json' "https://github.com/$repo/commits/$branch/$file.atom")"
 	local shell
 	shell="$(jq <<<"$atom" -r '
-		first(.payload.commitGroups[].commits[])
+		.payload
+		| first(.. | .commits?[]? | select(has("oid")))
 		| @sh "local commit=\(.oid) date=\(first([ .committedDate, .authoredDate ] | sort | reverse[]))"
 	')"
 	eval "$shell"
