@@ -1,24 +1,24 @@
 {
-  "version": "1.43.3.10896-cb3ebc72d",
+  "version": "1.43.4.10903-e5521bd8c",
   "arches": {
     "i386": {
-      "url": "https://downloads.plex.tv/plex-media-server-new/1.43.3.10896-cb3ebc72d/debian/plexmediaserver_1.43.3.10896-cb3ebc72d_i386.deb",
-      "sha1": "12c47608d3e04546028014e2e3905525b39760aa",
+      "url": "https://downloads.plex.tv/plex-media-server-new/1.43.4.10903-e5521bd8c/debian/plexmediaserver_1.43.4.10903-e5521bd8c_i386.deb",
+      "sha1": "082746087cca6e84ce2b3a406f08181dcc3bac78",
       "dpkgArch": "i386"
     },
     "amd64": {
-      "url": "https://downloads.plex.tv/plex-media-server-new/1.43.3.10896-cb3ebc72d/debian/plexmediaserver_1.43.3.10896-cb3ebc72d_amd64.deb",
-      "sha1": "3c6a6b6e348f373bd9eaeaaaa533b8cf1ade5212",
+      "url": "https://downloads.plex.tv/plex-media-server-new/1.43.4.10903-e5521bd8c/debian/plexmediaserver_1.43.4.10903-e5521bd8c_amd64.deb",
+      "sha1": "15b047e6eae77bbbc61573ae8bf728fdcc0e40f5",
       "dpkgArch": "amd64"
     },
     "arm64v8": {
-      "url": "https://downloads.plex.tv/plex-media-server-new/1.43.3.10896-cb3ebc72d/debian/plexmediaserver_1.43.3.10896-cb3ebc72d_arm64.deb",
-      "sha1": "02aaee24f0eb91de818c31aa8a21ed3bf23187ca",
+      "url": "https://downloads.plex.tv/plex-media-server-new/1.43.4.10903-e5521bd8c/debian/plexmediaserver_1.43.4.10903-e5521bd8c_arm64.deb",
+      "sha1": "f7b69652b569984826d6c3c34b12ad1b45c707f5",
       "dpkgArch": "arm64"
     },
     "arm32v7": {
-      "url": "https://downloads.plex.tv/plex-media-server-new/1.43.3.10896-cb3ebc72d/debian/plexmediaserver_1.43.3.10896-cb3ebc72d_armhf.deb",
-      "sha1": "d84236b2839a72d2cc93af40d74e20d54b5323a3",
+      "url": "https://downloads.plex.tv/plex-media-server-new/1.43.4.10903-e5521bd8c/debian/plexmediaserver_1.43.4.10903-e5521bd8c_armhf.deb",
+      "sha1": "0016132eca081ced2e71213d2ff3e47d3df93329",
       "dpkgArch": "armhf"
     }
   }
