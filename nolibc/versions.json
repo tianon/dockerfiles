@@ -1,21 +1,21 @@
 {
   "linux": {
     "moniker": "stable",
-    "version": "7.2.5",
+    "version": "7.2.6",
     "iseol": false,
     "released": {
-      "timestamp": 1789120300,
-      "isodate": "2026-09-11"
+      "timestamp": 1789386106,
+      "isodate": "2026-09-14"
     },
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.2.5.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.2.5.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.2.6.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.2.6.tar.sign",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v7.x/patch-7.2.5.xz",
-      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v7.x/incr/patch-7.2.4-5.xz"
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v7.x/patch-7.2.6.xz",
+      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v7.x/incr/patch-7.2.5-6.xz"
     },
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v7.x/ChangeLog-7.2.5",
-    "gitweb": "https://git.kernel.org/stable/h/v7.2.5",
-    "diffview": "https://git.kernel.org/stable/ds/v7.2.5/v7.2.4"
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v7.x/ChangeLog-7.2.6",
+    "gitweb": "https://git.kernel.org/stable/h/v7.2.6",
+    "diffview": "https://git.kernel.org/stable/ds/v7.2.6/v7.2.5"
   },
   "arches": {
     "amd64": {
