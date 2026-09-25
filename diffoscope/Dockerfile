@@ -21,7 +21,7 @@ RUN set -eux; \
 	apt-get dist-clean
 
 # https://pypi.org/project/diffoscope/
-ENV DIFFOSCOPE_VERSION 330
+ENV DIFFOSCOPE_VERSION 331
 
 RUN set -eux; \
 	pip install --no-cache-dir "diffoscope[distro_detection,cmdline] == $DIFFOSCOPE_VERSION"; \
