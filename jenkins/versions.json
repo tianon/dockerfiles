@@ -11,10 +11,10 @@
     "repo": "https://pkg.jenkins.io/debian"
   },
   "lts": {
-    "filename": "binary/jenkins_2.568.3_all.deb",
-    "sha256": "05d00283415f902f85602eda67913cb874d7493119d109fe47122e287d24497c",
-    "url": "https://pkg.jenkins.io/debian-stable/binary/jenkins_2.568.3_all.deb",
-    "version": "2.568.3",
+    "filename": "binary/jenkins_2.580.1_all.deb",
+    "sha256": "4a38146ee45ab16c6af227bcb8e7972f0cc6c27212132abc162c1243d8437123",
+    "url": "https://pkg.jenkins.io/debian-stable/binary/jenkins_2.580.1_all.deb",
+    "version": "2.580.1",
     "repo": "https://pkg.jenkins.io/debian-stable"
   }
 }
