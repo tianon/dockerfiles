@@ -17,9 +17,9 @@ RUN set -eux; \
 	useradd --uid 1000 --gid user --create-home user
 
 # https://github.com/rakshasa/rtorrent/releases
-ENV RTORRENT_VERSION 0.16.24
-ENV LIBTORRENT_SHA256 24a2c4e844290adab1208956fc404343662ac5c95241f3d15ac70a9172fd525b
-ENV RTORRENT_SHA256 269d82054bdf3862194722c5e27bddc12abb51d45045bf6df1bd7ee3a2837bab
+ENV RTORRENT_VERSION 0.16.25
+ENV LIBTORRENT_SHA256 6266db1d5575d3b99846a4caad98e4c2a8aa6ad034d8b09e566d610123deb569
+ENV RTORRENT_SHA256 d9c17e0fae59f0cb7533966f3ed778e9df701ad84d5dd50e9bae2aefe0f00a2a
 
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
