@@ -32,7 +32,8 @@ RUN set -eux; \
 	rm toybox.tgz
 
 # pre-build toybox for the build to use 👀
-RUN sh -eux scripts/prereq/build.sh
+RUN SKIP='' sh -eux scripts/prereq/build.sh
+# (`SKIP=''` is a workaround for the `set -u` failure introduced by https://github.com/landley/toybox/commit/f3fcefd8934ffc4d228532e0c180ea1298409c6f)
 
 RUN make root
 
