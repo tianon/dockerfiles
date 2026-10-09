@@ -1,6 +1,6 @@
 {
-  "filename": "pool/main/m/microsoft-edge-beta/microsoft-edge-beta_156.0.4314.8-1_amd64.deb",
-  "sha256": "4a56fa4194d6a3b8c3e7478ad0d414113b980edf9379081949e866a2d6b6584b",
-  "url": "https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-beta/microsoft-edge-beta_156.0.4314.8-1_amd64.deb",
-  "version": "156.0.4314.8-1"
+  "filename": "pool/main/m/microsoft-edge-beta/microsoft-edge-beta_156.0.4314.15-1_amd64.deb",
+  "sha256": "c10572eb37e779d527722cc3e94cd964285a162d488fdab53b97868b8f1a3422",
+  "url": "https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-beta/microsoft-edge-beta_156.0.4314.15-1_amd64.deb",
+  "version": "156.0.4314.15-1"
 }
