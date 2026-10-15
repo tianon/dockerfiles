@@ -1,37 +1,37 @@
 {
-  "commit": "f2551031d7276a770f65f98c9b52e57e7dad07e8",
-  "ref": "refs/tags/v2.4.1^{}",
-  "tag": "v2.4.1",
-  "version": "2.4.1",
+  "commit": "b7a25261e029d68978bbf290df0a62fc819b3c51",
+  "ref": "refs/tags/v2.4.2^{}",
+  "tag": "v2.4.2",
+  "version": "2.4.2",
   "arches": {
     "amd64": {
-      "url": "https://github.com/containerd/containerd/releases/download/v2.4.1/containerd-2.4.1-linux-amd64.tar.gz",
-      "sha256": "d65eda6a188aac1006848d8060099be88ba9c4bcddbfd9a23a961194710d0dd4",
+      "url": "https://github.com/containerd/containerd/releases/download/v2.4.2/containerd-2.4.2-linux-amd64.tar.gz",
+      "sha256": "35880c1dd4627e8ce56526bfabb39c144e83458ffdb197ce6f05d17d94d7d91e",
       "dpkgArch": "amd64"
     },
     "arm64v8": {
-      "url": "https://github.com/containerd/containerd/releases/download/v2.4.1/containerd-2.4.1-linux-arm64.tar.gz",
-      "sha256": "67f9b0a81c7140aaf15fe69053e88175270fadd33aeaffc1b9017123c1f55cea",
+      "url": "https://github.com/containerd/containerd/releases/download/v2.4.2/containerd-2.4.2-linux-arm64.tar.gz",
+      "sha256": "fdfab81a86192ddb8165d72f116ec985485c9e12505e323c4f4579c48020f276",
       "dpkgArch": "arm64"
     },
     "ppc64le": {
-      "url": "https://github.com/containerd/containerd/releases/download/v2.4.1/containerd-2.4.1-linux-ppc64le.tar.gz",
-      "sha256": "eab9c7fcdb966414f56aa8ea7db44fb46ad0c3e48716e60f18dce94b853f4eef",
+      "url": "https://github.com/containerd/containerd/releases/download/v2.4.2/containerd-2.4.2-linux-ppc64le.tar.gz",
+      "sha256": "0b9dbbec5fae67a4fc989a4444d750b5bb298f1fd253218208e379aa7128cb99",
       "dpkgArch": "ppc64el"
     },
     "riscv64": {
-      "url": "https://github.com/containerd/containerd/releases/download/v2.4.1/containerd-2.4.1-linux-riscv64.tar.gz",
-      "sha256": "2659d75d0bd65ae20daef9946399ae83dfe3a8f30c9de0ac361588dc162c4b61",
+      "url": "https://github.com/containerd/containerd/releases/download/v2.4.2/containerd-2.4.2-linux-riscv64.tar.gz",
+      "sha256": "1f4baca71f1576c6c27975964028597859da3a7a1c8427789bbc4c44418341f1",
       "dpkgArch": "riscv64"
     },
     "s390x": {
-      "url": "https://github.com/containerd/containerd/releases/download/v2.4.1/containerd-2.4.1-linux-s390x.tar.gz",
-      "sha256": "1a0e9583e5da3ee206fffbf1f27eec10fb75be15353f8b3dd4d138603cd2c799",
+      "url": "https://github.com/containerd/containerd/releases/download/v2.4.2/containerd-2.4.2-linux-s390x.tar.gz",
+      "sha256": "0aa23d24ff93a10a01b8c9b48a83e13c1f9c97035cdd104da14f3ff5f2fe4b8a",
       "dpkgArch": "s390x"
     },
     "windows-amd64": {
-      "url": "https://github.com/containerd/containerd/releases/download/v2.4.1/containerd-2.4.1-windows-amd64.tar.gz",
-      "sha256": "57ebdac7c130dc6d17869c261325ae4282362304a6d38a2503de9da5524a4a05",
+      "url": "https://github.com/containerd/containerd/releases/download/v2.4.2/containerd-2.4.2-windows-amd64.tar.gz",
+      "sha256": "cae2a5caf41b32ebb9b741461c163e36ebfa1a9afea8d47c66b66a27b1eb2303",
       "dpkgArch": null
     }
   },
