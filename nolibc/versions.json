@@ -1,21 +1,21 @@
 {
   "linux": {
     "moniker": "stable",
-    "version": "7.2.11",
+    "version": "7.2.12",
     "iseol": false,
     "released": {
-      "timestamp": 1792058622,
-      "isodate": "2026-10-15"
+      "timestamp": 1792571624,
+      "isodate": "2026-10-21"
     },
-    "source": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.2.11.tar.xz",
-    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.2.11.tar.sign",
+    "source": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.2.12.tar.xz",
+    "pgp": "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.2.12.tar.sign",
     "patch": {
-      "full": "https://cdn.kernel.org/pub/linux/kernel/v7.x/patch-7.2.11.xz",
-      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v7.x/incr/patch-7.2.10-11.xz"
+      "full": "https://cdn.kernel.org/pub/linux/kernel/v7.x/patch-7.2.12.xz",
+      "incremental": "https://cdn.kernel.org/pub/linux/kernel/v7.x/incr/patch-7.2.11-12.xz"
     },
-    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v7.x/ChangeLog-7.2.11",
-    "gitweb": "https://git.kernel.org/stable/h/v7.2.11",
-    "diffview": "https://git.kernel.org/stable/ds/v7.2.11/v7.2.10"
+    "changelog": "https://cdn.kernel.org/pub/linux/kernel/v7.x/ChangeLog-7.2.12",
+    "gitweb": "https://git.kernel.org/stable/h/v7.2.12",
+    "diffview": "https://git.kernel.org/stable/ds/v7.2.12/v7.2.11"
   },
   "arches": {
     "amd64": {
