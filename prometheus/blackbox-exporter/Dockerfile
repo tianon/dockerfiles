@@ -12,7 +12,7 @@ WORKDIR /opt/blackbox-exporter
 ENV PATH /opt/blackbox-exporter:$PATH
 
 # https://github.com/prometheus/blackbox_exporter/releases
-ENV BLACKBOX_EXPORTER_VERSION 0.29.0
+ENV BLACKBOX_EXPORTER_VERSION 0.29.1
 
 RUN set -ex; \
 	\
@@ -31,20 +31,20 @@ RUN set -ex; \
 	\
 	filename="blackbox_exporter-${BLACKBOX_EXPORTER_VERSION}.linux-$promArch.tar.gz"; \
 	case "$filename" in \
-		'blackbox_exporter-0.29.0.linux-386.tar.gz') sha256='9be89a12a0925904e329f425ea8b880b200a12e386903c7d6baf2975464e596f' ;; \
-		'blackbox_exporter-0.29.0.linux-amd64.tar.gz') sha256='5512929259bb6164f68ebe20ce433ec43b8609e3a79c95324f5020e931488fb4' ;; \
-		'blackbox_exporter-0.29.0.linux-arm64.tar.gz') sha256='743c490a2386c5b77ad13e7af30cde48651c03ffe9f61d39b99c578baa7e8e34' ;; \
-		'blackbox_exporter-0.29.0.linux-armv5.tar.gz') sha256='f07132551e27e046fce171207edd20cd5bc8ade14f617bdc4202a1cc9c284beb' ;; \
-		'blackbox_exporter-0.29.0.linux-armv6.tar.gz') sha256='1e990b53354081e673c9bd7477e33ea90e2156594e19011fe417a385fea93e59' ;; \
-		'blackbox_exporter-0.29.0.linux-armv7.tar.gz') sha256='8f8a318cf3be2eed347c52d0e91e3297f8eaedb6d03720cc10868b7c753f38cb' ;; \
-		'blackbox_exporter-0.29.0.linux-mips.tar.gz') sha256='4a9748fbe168cc325e5d4610a77bb4f5b2b8050016e91fb24bbc14edc2500441' ;; \
-		'blackbox_exporter-0.29.0.linux-mips64.tar.gz') sha256='a0351a0562a8e299d58396eca8e70022d6d19d36b245b9b2d013162c7cbf6650' ;; \
-		'blackbox_exporter-0.29.0.linux-mips64le.tar.gz') sha256='d072a21c7d7dba36f7bf6f4e084f6bfc9fb32feadd0e0cb8b282a396d7ad69fa' ;; \
-		'blackbox_exporter-0.29.0.linux-mipsle.tar.gz') sha256='18ecd2e014c6b48006e8b1608b54e96e094781f26937e7af4e3c865fee7473f0' ;; \
-		'blackbox_exporter-0.29.0.linux-ppc64.tar.gz') sha256='fc3b7034935ff99ea5397544fe0a73ad4159de96f0856bc6cfbb5496474e1bf0' ;; \
-		'blackbox_exporter-0.29.0.linux-ppc64le.tar.gz') sha256='05e36bec8556d408d373d0cf8878cc0cd5c8e2b9c81a9fae7ff70413b2f6e84b' ;; \
-		'blackbox_exporter-0.29.0.linux-riscv64.tar.gz') sha256='3c3c5f787b36ae4a12c3e40a597bb65f3b243300a1ffa9e1be8b52ccf54c1020' ;; \
-		'blackbox_exporter-0.29.0.linux-s390x.tar.gz') sha256='e06969fdc0a225a0ead783f6a3d3ac7b650e8e1aaa4473161bf8f704e0f28419' ;; \
+		'blackbox_exporter-0.29.1.linux-386.tar.gz') sha256='7858d88d41a6679e2bf3bfb711d59d91f717bab3532ded5b10a215848621a95e' ;; \
+		'blackbox_exporter-0.29.1.linux-amd64.tar.gz') sha256='b82b81839e6317e84fdd367f46d7ddd3b773fa09cbe2e3d5633a59171d741e76' ;; \
+		'blackbox_exporter-0.29.1.linux-arm64.tar.gz') sha256='c597b0d442c02c0f2c8f691cbc7784216c786fada28f300c7b914e1f94523834' ;; \
+		'blackbox_exporter-0.29.1.linux-armv5.tar.gz') sha256='d542dbb0af24f776d055e13c8d55b08d95ace45cf2068dfa54ccbd6905296411' ;; \
+		'blackbox_exporter-0.29.1.linux-armv6.tar.gz') sha256='e30d79f288f187880a3708382de49eb7f77070b063bbe35e5ada0553f08b0ff3' ;; \
+		'blackbox_exporter-0.29.1.linux-armv7.tar.gz') sha256='a19d2fc14f49a480dd2f083ac6a5f81da1ae23473db41e5e7c8773b786e22930' ;; \
+		'blackbox_exporter-0.29.1.linux-mips.tar.gz') sha256='662c4c3d0b981b86bcd80c632e30105639173974091d146c8b2afef5968b8fe9' ;; \
+		'blackbox_exporter-0.29.1.linux-mips64.tar.gz') sha256='4a1c1e45f4ebf628890fbc660f0675f40b1ddb122648a1df6c95aab8504c0d3e' ;; \
+		'blackbox_exporter-0.29.1.linux-mips64le.tar.gz') sha256='8d17ef807f13a1224e1a10c0e95098ef74c795990b2c9d9fc096e3cc7892a1be' ;; \
+		'blackbox_exporter-0.29.1.linux-mipsle.tar.gz') sha256='75ecb91f8a97bd3d85e56ce157f945e3299c8ddc48f0d45541289824093d80b8' ;; \
+		'blackbox_exporter-0.29.1.linux-ppc64.tar.gz') sha256='08e44283d9c5e04a3154c52616b22ee950c8a5972c898d5f872de186fb7bd755' ;; \
+		'blackbox_exporter-0.29.1.linux-ppc64le.tar.gz') sha256='2feeab191ce4af282a0e4d17bd648f58ac5cbd82f6e8c0d79f883116501b5246' ;; \
+		'blackbox_exporter-0.29.1.linux-riscv64.tar.gz') sha256='f05f4882e1eab07406132d17b7baa16ab52ab20c156b338e6bd2d2ea8f09c796' ;; \
+		'blackbox_exporter-0.29.1.linux-s390x.tar.gz') sha256='8e5ab6e580b2439d237a3e17b5e60be6c126cb1a478670731122f7325452efe0' ;; \
 		*) echo >&2 "error: unknown file: $filename"; exit 1 ;; \
 	esac; \
 	wget -O /tmp/blackbox-exporter.tar.gz "https://github.com/prometheus/blackbox_exporter/releases/download/v${BLACKBOX_EXPORTER_VERSION}/$filename"; \
