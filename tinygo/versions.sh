@@ -13,24 +13,22 @@ json="$(git-tags 'https://github.com/tinygo-org/tinygo.git')"
 
 tag="$(jq <<<"$json" -r '.tag')"
 
-# parse https://github.com/tinygo-org/tinygo/blob/v0.34.0/builder/config.go#L27-L29 to get the "range" of Go versions supported
+# parse https://github.com/tinygo-org/tinygo/blob/v0.44.0/compileopts/config.go#L21-L24 to get the "range" of Go versions supported
 go="$(
-	wget -qO- "https://github.com/tinygo-org/tinygo/raw/$tag/builder/config.go" \
+	wget -qO- "https://github.com/tinygo-org/tinygo/raw/$tag/compileopts/config.go" \
 		| jq -csR '
 			[
 				capture("(?x)
-					( (?<=\n) | ^ )
+					(?: (?<=\n) | ^ )
 					[[:space:]]*
-					const
-					[[:space:]]+
-					minor(?<key>Min|Max)
+					(?<key>Min|Max)imumGoMinorVersion
 					[[:space:]]*
 					=
 					[[:space:]]*
 					(?<value>[0-9]+)
 					[[:space:]]*
-					(?: // [^\n]* )
-					( (?=\n) | $ )
+					(?: // [^\n]* )?
+					(?: (?=\n) | $ )
 				"; "g")
 				| .key |= ascii_downcase
 				| .value |= { version: "1.\(.)" }
