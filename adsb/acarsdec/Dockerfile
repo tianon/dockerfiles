@@ -53,7 +53,7 @@ RUN set -eux; \
 WORKDIR /acarsdec
 
 # https://github.com/f00b4r0/acarsdec/releases
-ENV ACARSDEC_VERSION 4.6
+ENV ACARSDEC_VERSION 4.7
 
 RUN set -eux; \
 	wget -O src.tgz "https://github.com/f00b4r0/acarsdec/archive/refs/tags/v$ACARSDEC_VERSION.tar.gz"; \
@@ -103,8 +103,8 @@ RUN set -eux; \
 	apt-get dist-clean
 COPY --from=build /out/ ./
 RUN set -eux; \
-	{ acarsdec --help || :; } 2>&1 | grep 'tianon'; \
-	ret=0 && acarsdec --help || ret="$?"; \
+	acarsdec -V 2>&1 | tee /dev/stderr | grep 'tianon'; \
+	ret=0 && acarsdec -h || ret="$?"; \
 	test "$ret" = 1 # https://github.com/f00b4r0/acarsdec/blob/9b2d04e101340b397d8fd4862ff82a35f3cc6de3/acarsdec.c#L189
 
 COPY docker-entrypoint.sh /usr/local/bin/
