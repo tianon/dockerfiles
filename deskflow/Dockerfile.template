@@ -1,0 +1,30 @@
+FROM debian:{{ .debian }}-slim
+
+# https://github.com/deskflow/deskflow/releases
+ENV DESKFLOW_VERSION {{ .version }}
+
+RUN set -eux; \
+	savedAptMark="$(apt-mark showmanual)"; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends ca-certificates wget; \
+	apt-mark auto '.*' > /dev/null; \
+	[ -z "$savedAptMark" ] || apt-mark manual $savedAptMark > /dev/null; \
+	\
+	dpkgArch="$(dpkg --print-architecture)"; \
+	case "$dpkgArch" in \
+{{ [ .arches[] | ( -}}
+		{{ .dpkgArch // empty | @sh }}) url={{ .url | @sh }}; sha256={{ .sha256 | @sh }} ;; \
+{{ ) ] | add -}}
+		*) echo >&2 "error: unsupported architecture: '$dpkgArch'"; exit 1 ;; \
+	esac; \
+	\
+	wget -O deskflow.deb "$url"; \
+	echo "$sha256 *deskflow.deb" | sha256sum --strict --check -; \
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	\
+	apt-get install -y ./deskflow.deb; \
+	rm deskflow.deb; \
+	\
+	apt-get dist-clean
+
+CMD ["deskflow"]

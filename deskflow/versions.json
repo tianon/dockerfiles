@@ -1,0 +1,19 @@
+{
+  "commit": "081f6478e654a112168879e67a41ce7d7e4ae3af",
+  "ref": "refs/tags/v1.27.0^{}",
+  "tag": "v1.27.0",
+  "version": "1.27.0",
+  "debian": "trixie",
+  "arches": {
+    "arm64v8": {
+      "url": "https://github.com/deskflow/deskflow/releases/download/v1.27.0/deskflow-1.27.0-debian-trixie-aarch64.deb",
+      "sha256": "4780856cca83dc8bcead0495584301d4f83f87f53341bdf447f0915b7b15c596",
+      "dpkgArch": "arm64"
+    },
+    "amd64": {
+      "url": "https://github.com/deskflow/deskflow/releases/download/v1.27.0/deskflow-1.27.0-debian-trixie-x86_64.deb",
+      "sha256": "1f7de2f1fbc68de410339dbdb11ed0e5439bd49bfbfbf66f4467def1c6bb5f96",
+      "dpkgArch": "amd64"
+    }
+  }
+}
