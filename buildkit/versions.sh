@@ -14,8 +14,7 @@ variants=(
 	'0.16'
 	'0.13'
 
-	# TODO add this back when I figure out a clean way to do something more akin to a "weekly snapshot" or something so it doesn't have an update every single day
-	#'dev'
+	'dev'
 )
 
 json='{}'
@@ -52,7 +51,7 @@ for variant in "${variants[@]}"; do
 			;;
 
 		dev)
-			bk="$(git-ref-commit 'https://github.com/moby/buildkit.git' 'HEAD')"
+			bk="$(github-clamp-commit 'moby/buildkit')"
 			;;
 
 		*) echo >&2 "error: unknown variant: '$variant'"; exit 1 ;;
