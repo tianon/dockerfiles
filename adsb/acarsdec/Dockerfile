@@ -31,7 +31,7 @@ RUN set -eux; \
 WORKDIR /libacars
 
 # https://github.com/szpajder/libacars/releases
-ENV LIBACARS_VERSION 2.2.2
+ENV LIBACARS_VERSION 2.2.3
 
 RUN set -eux; \
 	wget -O src.tgz "https://github.com/szpajder/libacars/archive/refs/tags/v${LIBACARS_VERSION}.tar.gz"; \
