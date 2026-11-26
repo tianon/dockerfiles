@@ -51,6 +51,7 @@ jobs:
       - uses: tianon/actions/checkout/composite@64e41cf7037bd50d75e40a6f9f54aa5d07fb59ca # HEAD
       - uses: tianon/actions/docker-please@64e41cf7037bd50d75e40a6f9f54aa5d07fb59ca # HEAD
       # TODO something clever with https://github.com/marketplace/actions/changed-files
+      - uses: tianon/debian-moby-action@HEAD
       - name: Prepare Environment
         run: ${{ matrix.runs.prepare }}
       - name: Pull Dependencies
